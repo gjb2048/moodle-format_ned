@@ -188,7 +188,7 @@ foreach ($tablerows as $tablerow) {
                     $actionurl = new moodle_url('/course/format/ned/colourschema_edit.php',
                         array('courseid' => $courseid, 'duplicate' => $tablerow->id )
                     );
-                    $actioniconurl = $OUTPUT->pix_url('t/copy', '');
+                    $actioniconurl = $OUTPUT->image_url('t/copy');
                     $actionicontext = get_string('duplicate', 'format_ned');
                     $actionicon = html_writer::img($actioniconurl, $actionicontext,
                         array('width' => '16', 'height' => '16')
@@ -202,7 +202,7 @@ foreach ($tablerows as $tablerow) {
                     $actionurl = new moodle_url('/course/format/ned/colourschema_edit.php',
                         array('courseid' => $courseid, 'edit' => $tablerow->id )
                     );
-                    $actioniconurl = $OUTPUT->pix_url('t/edit', '');
+                    $actioniconurl = $OUTPUT->image_url('t/edit');
                     $actionicontext = get_string('edit', 'format_ned');
                     $actionicon = html_writer::img($actioniconurl, $actionicontext, array('width' => '16', 'height' => '16'));
                     $actionlinks .= html_writer::link($actionurl->out(false), $actionicon, array(
@@ -214,7 +214,7 @@ foreach ($tablerows as $tablerow) {
                     $actionurl = new moodle_url('/course/format/ned/colourschema_delete.php',
                         array('courseid' => $courseid, 'delete' => $tablerow->id )
                     );
-                    $actioniconurl = $OUTPUT->pix_url('t/delete', '');
+                    $actioniconurl = $OUTPUT->image_url('t/delete');
                     $actionicontext = get_string('delete', 'format_ned');
                     $actionicon = html_writer::img($actioniconurl, $actionicontext, array('width' => '16', 'height' => '16'));
                     $actionlinks .= html_writer::link($actionurl->out(false), $actionicon, array(

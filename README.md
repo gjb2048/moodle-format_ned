@@ -2,5 +2,5 @@
 
     Name: NED Course Format
     Type: Course Format
-    Moodle version required: 2.9 - 3.2
+    Moodle version required: 3.3+
     For demo and documentation, go to http://ned.ca 

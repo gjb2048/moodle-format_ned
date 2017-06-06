@@ -36,14 +36,17 @@ if ($topic = optional_param('topic', 0, PARAM_INT)) {
 
 $context = context_course::instance($course->id);
 
+// Retrieve course format option fields and add them to the $course object.
+$courseformat = course_get_format($course);
+$course = $courseformat->get_course();
+
 if (($marker >= 0) && has_capability('moodle/course:setcurrentsection', $context) && confirm_sesskey()) {
     $course->marker = $marker;
     course_set_marker($course->id, $marker);
 }
 
-// Make sure all sections are created.
-$course = course_get_format($course)->get_course();
-course_create_sections_if_missing($course, range(0, $course->numsections));
+// Make sure section 0 is created.
+course_create_sections_if_missing($course, 0);
 
 $renderer = $PAGE->get_renderer('format_ned');
 
@@ -149,7 +152,7 @@ if (!empty($course->showsection0) && ($thissection->summary or $thissection->seq
 
     if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
         echo '<p><a title="' . $streditsummary . '" ' .
-            ' href="editsection.php?id=' . $thissection->id . '"><img src="' . $OUTPUT->pix_url('t/edit') . '" ' .
+            ' href="editsection.php?id=' . $thissection->id . '"><img src="' . $OUTPUT->image_url('t/edit') . '" ' .
             ' class="iconsmall edit" alt="' . $streditsummary . '" /></a></p>';
     }
 
@@ -168,7 +171,7 @@ if (!empty($course->showsection0) && ($thissection->summary or $thissection->seq
 
 // Now all the normal modules by week.
 // Everything below uses "section" terminology - each "section" is a week.
-$courseformatoptions = course_get_format($course)->get_format_options();
+$courseformatoptions = $courseformat->get_format_options();
 $course->numsections = $courseformatoptions['numsections'];
 
 if (empty($course->showonlysection0)) {
@@ -431,7 +434,7 @@ if (empty($course->showonlysection0)) {
                 if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
 
                     echo ' <a title="' . $streditsummary . '" href="editsection.php?id=' . $thissection->id . '">' .
-                        '<img src="' . $OUTPUT->pix_url('t/edit') . '" class="iconsmall edit" alt="' . $streditsummary .
+                        '<img src="' . $OUTPUT->image_url('t/edit') . '" class="iconsmall edit" alt="' . $streditsummary .
                         '" /></a><br /><br />';
                 }
 
@@ -456,24 +459,24 @@ if (empty($course->showonlysection0)) {
                     if ($course->marker == $section) {  // Show the "light globe" on/off.
                         echo '<a href="view.php?id=' . $course->id . '&amp;marker=0&amp;sesskey=' . sesskey() .
                             '#section-' . $section . '" title="' . $strmarkedthistopic . '">' .
-                            '<img src="' . $OUTPUT->pix_url('i/marked') . '" alt="' . $strmarkedthistopic .
+                            '<img src="' . $OUTPUT->image_url('i/marked') . '" alt="' . $strmarkedthistopic .
                             '" class="icon"/></a><br />';
                     } else {
                         echo '<a href="view.php?id=' . $course->id . '&amp;marker=' . $section . '&amp;sesskey=' .
                             sesskey() . '#section-' . $section . '" title="' . $strmarkthistopic . '">' .
-                            '<img src="' . $OUTPUT->pix_url('i/marker') . '" alt="' . $strmarkthistopic .
+                            '<img src="' . $OUTPUT->image_url('i/marker') . '" alt="' . $strmarkthistopic .
                             '" class="icon"/></a><br />';
                     }
 
                     if ($thissection->visible) {        // Show the hide/show eye.
                         echo '<a href="view.php?id=' . $course->id . '&amp;hide=' . $section . '&amp;sesskey=' . sesskey() .
                             '#section-' . $section . '" title="' . $strweekhide . '">' .
-                            '<img src="' . $OUTPUT->pix_url('i/hide') . '" class="iconsmall iconhide" alt="' .
+                            '<img src="' . $OUTPUT->image_url('i/hide') . '" class="iconsmall iconhide" alt="' .
                             $strweekhide . '" /></a><br />';
                     } else {
                         echo '<a href="view.php?id=' . $course->id . '&amp;show=' . $section . '&amp;sesskey=' . sesskey() .
                             '#section-' . $section . '" title="' . $strweekshow . '">' .
-                            '<img src="' . $OUTPUT->pix_url('i/show') . '" class="iconsmall iconhide" alt="' .
+                            '<img src="' . $OUTPUT->image_url('i/show') . '" class="iconsmall iconhide" alt="' .
                             $strweekshow . '" /></a><br />';
                     }
 
@@ -481,7 +484,7 @@ if (empty($course->showonlysection0)) {
                         echo '<a href="view.php?id=' . $course->id . '&amp;random=' . rand(1, 10000) .
                             '&amp;section=' . $section . '&amp;move=-1&amp;sesskey=' . sesskey() .
                             '#section-' . ($section - 1) . '" title="' . $strmoveup . '">' .
-                            '<img src="' . $OUTPUT->pix_url('t/up') . '" class="iconsmall up" alt="' .
+                            '<img src="' . $OUTPUT->image_url('t/up') . '" class="iconsmall up" alt="' .
                             $strmoveup . '" /></a><br />';
                     }
 
@@ -489,7 +492,7 @@ if (empty($course->showonlysection0)) {
                         echo '<a href="view.php?id=' . $course->id . '&amp;random=' . rand(1, 10000) .
                             '&amp;section=' . $section . '&amp;move=1&amp;sesskey=' . sesskey() .
                             '#section-' . ($section + 1) . '" title="' . $strmovedown . '">' .
-                            '<img src="' . $OUTPUT->pix_url('t/down') . '" class="iconsmall down" alt="' .
+                            '<img src="' . $OUTPUT->image_url('t/down') . '" class="iconsmall down" alt="' .
                             $strmovedown . '" /></a><br />';
                     }
                     echo html_writer::end_div();

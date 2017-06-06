@@ -22,13 +22,14 @@
 
 $string['pluginname'] = 'NED Format';
 $string['namened'] = 'NED Week';
-$string['currentsection'] = 'This topic';
-$string['editsection'] = 'Edit topic';
-$string['deletesection'] = 'Delete topic';
+$string['currentsection'] = 'This section';
+$string['editsection'] = 'Edit section';
+$string['deletesection'] = 'Delete section';
 $string['page-course-view-ned'] = 'Any course main page in the NED format';
 $string['page-course-view-ned-x'] = 'Any course page in NED format';
-$string['hidefromothers'] = 'Hide topic';
-$string['showfromothers'] = 'Show topic';
+$string['hidefromothers'] = 'Hide section';
+$string['showfromothers'] = 'Show section';
+$string['addsection'] = 'Add section';
 
 $string['colours'] = 'Colours';
 

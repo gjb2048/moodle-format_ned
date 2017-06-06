@@ -96,17 +96,13 @@ class format_ned_renderer extends format_section_renderer_base {
         }
 
         $coursecontext = context_course::instance($course->id);
+        $sectionreturn = $onsectionpage ? $section->section : null;
 
-        if ($onsectionpage) {
-            $url = course_get_url($course, $section->section);
-        } else {
-            $url = course_get_url($course);
-        }
+        $url = course_get_url($course, $sectionreturn);
         $url->param('sesskey', sesskey());
 
-        $isstealth = $section->section > $course->numsections;
         $controls = array();
-        if (!$isstealth && $section->section && has_capability('moodle/course:setcurrentsection', $coursecontext)) {
+        if ($section->section && has_capability('moodle/course:setcurrentsection', $coursecontext)) {
             if ($course->marker == $section->section) {  // Show the "light globe" on/off.
                 $url->param('marker', 0);
                 $markedthistopic = get_string('markedthistopic');
@@ -114,7 +110,8 @@ class format_ned_renderer extends format_section_renderer_base {
                 $controls['highlight'] = array('url' => $url, "icon" => 'i/marked',
                                                'name' => $highlightoff,
                                                'pixattr' => array('class' => '', 'alt' => $markedthistopic),
-                                               'attr' => array('class' => 'editing_highlight', 'title' => $markedthistopic));
+                                               'attr' => array('class' => 'editing_highlight', 'title' => $markedthistopic,
+                                               'data-action' => 'removemarker'));
             } else {
                 $url->param('marker', $section->section);
                 $markthistopic = get_string('markthistopic');
@@ -122,7 +119,8 @@ class format_ned_renderer extends format_section_renderer_base {
                 $controls['highlight'] = array('url' => $url, "icon" => 'i/marker',
                                                'name' => $highlight,
                                                'pixattr' => array('class' => '', 'alt' => $markthistopic),
-                                               'attr' => array('class' => 'editing_highlight', 'title' => $markthistopic));
+                                               'attr' => array('class' => 'editing_highlight', 'title' => $markthistopic,
+                                               'data-action' => 'setmarker'));
             }
         }
 
@@ -829,13 +827,13 @@ class format_ned_renderer extends format_section_renderer_base {
                 if ($usenedicons) {
                     $output .= html_writer::empty_tag('input', array(
                         'type' => 'image',
-                        'src' => $this->output->pix_url('completion-' . $completionicon, 'format_ned'),
+                        'src' => $this->output->image_url('completion-' . $completionicon, 'format_ned'),
                         'alt' => $imgalt, 'title' => $imgtitle,
                         'aria-live' => 'polite'));
                 } else {
                     $output .= html_writer::empty_tag('input', array(
                         'type' => 'image',
-                        'src' => $this->output->pix_url('i/completion-' . $completionicon),
+                        'src' => $this->output->image_url('i/completion-' . $completionicon),
                         'alt' => $imgalt, 'title' => $imgtitle,
                         'aria-live' => 'polite'));
                 }
@@ -1159,7 +1157,7 @@ class format_ned_renderer extends format_section_renderer_base {
         if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
             $settingicon = '<a href="' . $CFG->wwwroot . '/course/format/' . $course->format .
                 '/tabsettings.php?id='.$course->id.'" class="nedsettings"><img src="'.
-                $OUTPUT->pix_url('edit_white', 'format_ned').'" /></a>';
+                $OUTPUT->image_url('edit_white', 'format_ned').'" /></a>';
         }
         $actbar .= '<td width="1" align="center" height="25">'.$settingicon.'</td>';
         $actbar .= '</tr>';

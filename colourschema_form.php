@@ -83,7 +83,7 @@ class colourschema_form extends moodleform {
 
         $mform->addElement('html', '</td><td width="320px">');
 
-        $mform->addElement('html', '<img src="'.$OUTPUT->pix_url('ned_tabs_colourkey', 'format_ned').'" />');
+        $mform->addElement('html', '<img src="'.$OUTPUT->image_url('ned_tabs_colourkey', 'format_ned').'" />');
 
         $mform->addElement('html', '</td></tr></table>');
 
