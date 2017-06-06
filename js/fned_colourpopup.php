@@ -16,7 +16,7 @@
 
 /**
  * @package    course/format
- * @subpackage fntabs
+ * @subpackage ned
  * @copyright  &copy; 2017 G J Barnard.
  * @author     G J Barnard - {@link http://moodle.org/user/profile.php?id=442195}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
@@ -24,12 +24,12 @@
 require_once("HTML/QuickForm/text.php");
 
 /**
- * HTML class for a colorpopup type element
+ * HTML class for a colourpopup type element
  *
  * @author       Iain Checkland - modified from ColourPicker by Jamie Pratt [thanks]
  * @access       public
  */
-class MoodleQuickForm_ftcolourpopup extends HTML_QuickForm_text {
+class MoodleQuickForm_fnedcolourpopup extends HTML_QuickForm_text {
 
     /*
      * html for help button, if empty then no help
@@ -51,8 +51,8 @@ class MoodleQuickForm_ftcolourpopup extends HTML_QuickForm_text {
     public function toHtml() {
         global $PAGE;
         $id = $this->getAttribute('id');
-        $PAGE->requires->js('/course/format/fntabs/js/ft_colourpopup.js');
-        $PAGE->requires->js_init_call('M.util.init_ftcolour_popup', array($id));
+        $PAGE->requires->js('/course/format/ned/js/fned_colourpopup.js');
+        $PAGE->requires->js_init_call('M.util.init_fnedcolour_popup', array($id));
         $colour = $this->getValue();
         if ((!empty($colour)) && ($colour[0] == '#')) {
             $colour = substr($colour, 1);

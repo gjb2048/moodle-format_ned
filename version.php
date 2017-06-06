@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_fntabs
+ * @package    format_ned
  * @subpackage NED
  * @copyright  NED {@link http://ned.ca}
  * @author     NED {@link http://ned.ca}
@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2017053100;
+$plugin->version = 2017060600;
 $plugin->requires = 2015051100.00; // 2.9 (Build: 20150511).
 $plugin->maturity = MATURITY_STABLE;
-$plugin->component = 'format_fntabs';
-$plugin->release = '3.1.6';
+$plugin->component = 'format_ned';
+$plugin->release = '3.1.7';

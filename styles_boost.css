@@ -15,25 +15,25 @@
 */
 
 /**
- * @package    format_fntabs
+ * @package    format_ned
  * @copyright  &copy; 2017 G J Barnard in respect to modifications of standard topics format.
  * @author     G J Barnard - about.me/gjbarnard and {@link http://moodle.org/user/profile.php?id=442195}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-.format-fntabs #region-main .card-block {
+.format-ned #region-main .card-block {
     padding: 0;
 }
 
-.format-fntabs ul.fntabs {
+.format-ned ul.ned {
     padding-left: 0;
 }
 
-.format-fntabs ul.fntabs .toolbox a:first-of-type > .icon,
-.format-fntabs ul.fntabs span:first-of-type > .icon {
+.format-ned ul.ned .toolbox a:first-of-type > .icon,
+.format-ned ul.ned span:first-of-type > .icon {
     margin-left: 0;
 }
 
-.format-fntabs ul.fntabs .section.img-text {
+.format-ned ul.ned .section.img-text {
     width: calc(100% - .4em);
 }

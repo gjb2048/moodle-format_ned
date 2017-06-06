@@ -16,7 +16,7 @@
 
 /**
  * @package    course/format
- * @subpackage fntabs
+ * @subpackage ned
  * @copyright  &copy; 2017 G J Barnard.
  * @author     G J Barnard {@link http://moodle.org/user/profile.php?id=442195}.
  * @link       http://ned.ca/tabs/

@@ -1,5 +1,5 @@
 /**
- * Gruntfile for compiling format_fntabs AMD files.
+ * Gruntfile for compiling format_ned AMD files.
  *
  * This file configures tasks to be run by Grunt
  * http://gruntjs.com/ for the current format.
@@ -40,7 +40,7 @@
  * grunt replace             Run all text replace tasks.
  *
  * @package course/format
- * @subpackage fntabs
+ * @subpackage ned
  * @version    See the value of '$plugin->version' in version.php.
  * @copyright  &copy; 2017-onwards G J Barnard.
  * @author     G J Barnard - {@link http://moodle.org/user/profile.php?id=442195}

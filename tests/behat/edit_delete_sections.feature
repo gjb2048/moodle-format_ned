@@ -1,5 +1,5 @@
-@format @format_fntabs
-Feature: Sections can be edited and deleted in NED Tabs format
+@format @format_ned
+Feature: Sections can be edited and deleted in NED format
   In order to rearrange my course contents
   As a teacher
   I need to edit and Delete topics

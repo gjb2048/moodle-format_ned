@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_fntabs
+ * @package    format_ned
  * @copyright  Michael Gardener <mgardener@cissq.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot.'/course/format/renderer.php');
-require_once($CFG->dirroot.'/course/format/fntabs/lib.php');
+require_once($CFG->dirroot.'/course/format/ned/lib.php');
 
 /**
  * Basic renderer for topics format.
@@ -30,7 +30,7 @@ require_once($CFG->dirroot.'/course/format/fntabs/lib.php');
  * @copyright 2012 Dan Poltawski
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class format_fntabs_renderer extends format_section_renderer_base {
+class format_ned_renderer extends format_section_renderer_base {
 
     /**
      * Constructor method, calls the parent constructor
@@ -150,7 +150,7 @@ class format_fntabs_renderer extends format_section_renderer_base {
     public function get_week_info(&$course, $tabrange, $week) {
         global $SESSION, $DB;
 
-        $fnmaxtab = $DB->get_field('format_fntabs_config', 'value', array('courseid' => $course->id, 'variable' => 'maxtabs'));
+        $fnmaxtab = $DB->get_field('format_ned_config', 'value', array('courseid' => $course->id, 'variable' => 'maxtabs'));
 
         if ($fnmaxtab) {
             $maximumtabs = $fnmaxtab;
@@ -212,7 +212,7 @@ class format_fntabs_renderer extends format_section_renderer_base {
 
         $sectionreturn = null;
         $displayoptions = array();
-        $activitiesstatusarray = format_fntabs_get_activities_status($course, $section);
+        $activitiesstatusarray = format_ned_get_activities_status($course, $section);
 
         $output = '';
         $modinfo = get_fast_modinfo($course);
@@ -329,8 +329,8 @@ class format_fntabs_renderer extends format_section_renderer_base {
             return $output;
         }
 
-        $locationoftrackingicons = format_fntabs_get_setting($course->id, 'locationoftrackingicons');
-        $activitytrackingbackground = format_fntabs_get_setting($course->id, 'activitytrackingbackground');
+        $locationoftrackingicons = format_ned_get_setting($course->id, 'locationoftrackingicons');
+        $activitytrackingbackground = format_ned_get_setting($course->id, 'activitytrackingbackground');
 
         $indentclasses = 'mod-indent';
         if (!empty($mod->indent)) {
@@ -410,7 +410,7 @@ class format_fntabs_renderer extends format_section_renderer_base {
                 $version = explode('.', $CFG->version);
                 $version = reset($version);
                 if ($version >= 2016051300) { // Moodle 3.1.
-                    $output .= ' ' . format_fntabs_course_get_cm_rename_action($mod, $sectionreturn);
+                    $output .= ' ' . format_ned_course_get_cm_rename_action($mod, $sectionreturn);
                 } else {
                     $output .= ' ' . course_get_cm_rename_action($mod, $sectionreturn);
                 }
@@ -719,7 +719,7 @@ class format_fntabs_renderer extends format_section_renderer_base {
         $activitiesstatusarray = null) {
         global $CFG;
 
-        $locationoftrackingicons = format_fntabs_get_setting($course->id, 'locationoftrackingicons');
+        $locationoftrackingicons = format_ned_get_setting($course->id, 'locationoftrackingicons');
 
         $output = '';
         if (!empty($displayoptions['hidecompletion']) || !isloggedin() || isguestuser() || !$mod->uservisible) {
@@ -790,7 +790,7 @@ class format_fntabs_renderer extends format_section_renderer_base {
         if ($completionicon) {
             $formattedname = $mod->get_formatted_name();
             if ($completionicon == 'saved' || $completionicon == 'submitted') {
-                $imgalt = get_string('completion-alt-' . $completionicon, 'format_fntabs', $formattedname);
+                $imgalt = get_string('completion-alt-' . $completionicon, 'format_ned', $formattedname);
             } else {
                 $imgalt = get_string('completion-alt-' . $completionicon, 'completion', $formattedname);
             }
@@ -829,7 +829,7 @@ class format_fntabs_renderer extends format_section_renderer_base {
                 if ($usenedicons) {
                     $output .= html_writer::empty_tag('input', array(
                         'type' => 'image',
-                        'src' => $this->output->pix_url('completion-' . $completionicon, 'format_fntabs'),
+                        'src' => $this->output->pix_url('completion-' . $completionicon, 'format_ned'),
                         'alt' => $imgalt, 'title' => $imgtitle,
                         'aria-live' => 'polite'));
                 } else {
@@ -844,7 +844,7 @@ class format_fntabs_renderer extends format_section_renderer_base {
             } else {
                 // In auto mode, the icon is just an image.
                 if ($usenedicons) {
-                    $completionpixicon = new pix_icon('completion-'.$completionicon, $imgalt, 'format_fntabs',
+                    $completionpixicon = new pix_icon('completion-'.$completionicon, $imgalt, 'format_ned',
                         array('title' => $imgalt));
                 } else {
                     $completionpixicon = new pix_icon('i/completion-'.$completionicon, $imgalt, '',
@@ -929,28 +929,28 @@ class format_fntabs_renderer extends format_section_renderer_base {
             if (!$course = $DB->get_record('course', array('id' => $_POST['id']))) {
                 print_error('This course doesn\'t exist.');
             }
-            format_fntabs_get_course($course);
+            format_ned_get_course($course);
             $course->sec0title = $_POST['sec0title'];
-            format_fntabs_update_course($course);
+            format_ned_update_course($course);
             $cm->course = $course->id;  // ?
         }
     }
 
 
     public function print_weekly_activities_bar($course, $week=0, $tabrange=0) {
-        global $FULLME, $CFG, $course, $DB, $USER, $PAGE, $OUTPUT;
+        global $FULLME, $CFG, $DB, $USER, $PAGE, $OUTPUT;
 
-        $selectedcolour = format_fntabs_get_setting($course->id, 'selectedcolour');
-        $activelinkcolour = format_fntabs_get_setting($course->id, 'activelinkcolour');
-        $activecolour = format_fntabs_get_setting($course->id, 'activecolour');
-        $inactivelinkcolour = format_fntabs_get_setting($course->id, 'inactivelinkcolour');
-        $inactivecolour = format_fntabs_get_setting($course->id, 'inactivecolour');
+        $selectedcolour = format_ned_get_setting($course->id, 'selectedcolour');
+        $activelinkcolour = format_ned_get_setting($course->id, 'activelinkcolour');
+        $activecolour = format_ned_get_setting($course->id, 'activecolour');
+        $inactivelinkcolour = format_ned_get_setting($course->id, 'inactivelinkcolour');
+        $inactivecolour = format_ned_get_setting($course->id, 'inactivecolour');
 
-        $tabcontent = format_fntabs_get_setting($course->id, 'tabcontent');
-        $completiontracking = format_fntabs_get_setting($course->id, 'completiontracking');
-        $tabwidth = format_fntabs_get_setting($course->id, 'tabwidth');
+        $tabcontent = format_ned_get_setting($course->id, 'tabcontent');
+        $completiontracking = format_ned_get_setting($course->id, 'completiontracking');
+        $tabwidth = format_ned_get_setting($course->id, 'tabwidth');
 
-        $fnmaxtab = $DB->get_field('format_fntabs_config', 'value',
+        $fnmaxtab = $DB->get_field('format_ned_config', 'value',
             array('courseid' => $course->id, 'variable' => 'maxtabs'));
 
         if ($fnmaxtab) {
@@ -1015,7 +1015,7 @@ class format_fntabs_renderer extends format_section_renderer_base {
 
         $actbar = '';
         $actbar .= '<table align="center" class="fntabwrapper"><tr><td>';
-        $actbar .= '<table class="fnweeklynav"><tr class="fntabs">';
+        $actbar .= '<table class="fnweeklynav"><tr class="ned">';
 
         if ($tablow <= 1) {
             if ($strtopicheading) {
@@ -1064,10 +1064,10 @@ class format_fntabs_renderer extends format_section_renderer_base {
                     }
                     if ($tabcontent == 'usesectionnumbers') {
                         $actbar .= '<td class="'.$css.' '.$extraclassfortab .
-                            '" title="'.get_string('upcomingsections', 'format_fntabs').'">'.$f.'</td>';
+                            '" title="'.get_string('upcomingsections', 'format_ned').'">'.$f.'</td>';
                     } else if ($tabcontent == 'usesectiontitles') {
                         $actbar .= '<td class="'.$css.' '. $extraclassfortab .
-                            '" title="'.get_string('upcomingsections', 'format_fntabs').'">' .
+                            '" title="'.get_string('upcomingsections', 'format_ned').'">' .
                             $sectionname . '</td>';
                     }
                 } else if ($i == $week) {
@@ -1094,7 +1094,7 @@ class format_fntabs_renderer extends format_section_renderer_base {
                             $f = $this->is_section_finished($this->sections[$i], $this->mods) ? 'green-tab' : 'red-tab';
                             $sectionid = $i;
                             $section = $DB->get_record("course_sections", array("section" => $sectionid, "course" => $course->id));
-                            $activitiesstatusarray = format_fntabs_get_activities_status($course, $section);
+                            $activitiesstatusarray = format_ned_get_activities_status($course, $section);
                             $compl = $activitiesstatusarray['complete'];
                             $incompl = $activitiesstatusarray['incomplete'];
                             $svd = $activitiesstatusarray['saved'];
@@ -1158,8 +1158,8 @@ class format_fntabs_renderer extends format_section_renderer_base {
         $settingicon = '';
         if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
             $settingicon = '<a href="' . $CFG->wwwroot . '/course/format/' . $course->format .
-                '/tabsettings.php?id='.$course->id.'" class="fntabsettings"><img src="'.
-                $OUTPUT->pix_url('edit_white', 'format_fntabs').'" /></a>';
+                '/tabsettings.php?id='.$course->id.'" class="nedsettings"><img src="'.
+                $OUTPUT->pix_url('edit_white', 'format_ned').'" /></a>';
         }
         $actbar .= '<td width="1" align="center" height="25">'.$settingicon.'</td>';
         $actbar .= '</tr>';
@@ -1199,7 +1199,7 @@ class format_fntabs_renderer extends format_section_renderer_base {
     public function is_section_finished(&$section, $mods) {
         global $course;
         $completioninfo = new completion_info($course);
-        $modules = format_fntabs_get_course_section_mods($course->id, $section->id);
+        $modules = format_ned_get_course_section_mods($course->id, $section->id);
         $count = 0;
         if (count($modules) >= 1) {
             foreach ($modules as $modu) {

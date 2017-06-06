@@ -15,18 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_fntabs
+ * @package    format_ned
  * @copyright  Michael Gardener <mgardener@cissq.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'NED Tabs Format';
-$string['namefntabs'] = 'NED Week';
+$string['pluginname'] = 'NED Format';
+$string['namened'] = 'NED Week';
 $string['currentsection'] = 'This topic';
 $string['editsection'] = 'Edit topic';
 $string['deletesection'] = 'Delete topic';
-$string['page-course-view-fntabs'] = 'Any course main page in the NED Tabs format';
-$string['page-course-view-fntabs-x'] = 'Any course page in NED Tabs format';
+$string['page-course-view-ned'] = 'Any course main page in the NED format';
+$string['page-course-view-ned-x'] = 'Any course page in NED format';
 $string['hidefromothers'] = 'Hide topic';
 $string['showfromothers'] = 'Show topic';
 

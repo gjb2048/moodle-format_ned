@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_fntabs
+ * @package    format_ned
  * @copyright  Michael Gardener <mgardener@cissq.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-function xmldb_format_fntabs_install() {
+function xmldb_format_ned_install() {
     global $DB;
 
     $rec = new stdClass();
@@ -38,7 +38,7 @@ function xmldb_format_fntabs_install() {
     $rec->inactivelinkcolour = '000000';
     $rec->predefined = 1;
     $rec->timecreated = time();
-    $DB->insert_record('format_fntabs_color', $rec);
+    $DB->insert_record('format_ned_colour', $rec);
 
     $rec = new stdClass();
     $rec->name = 'Blues on Whyte';
@@ -53,7 +53,7 @@ function xmldb_format_fntabs_install() {
     $rec->inactivelinkcolour = '929292';
     $rec->predefined = 1;
     $rec->timecreated = time();
-    $DB->insert_record('format_fntabs_color', $rec);
+    $DB->insert_record('format_ned_colour', $rec);
 
     return true;
 }

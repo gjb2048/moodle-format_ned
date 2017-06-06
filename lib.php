@@ -15,24 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_fntabs
+ * @package    format_ned
  * @copyright  Michael Gardener <mgardener@cissq.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
-define('FN_EXTRASECTION', 9999); // A non-existant section to hold hidden modules.
+define('NED_EXTRASECTION', 9999); // A non-existant section to hold hidden modules.
 require_once($CFG->dirroot.'/course/format/lib.php');
 require_once($CFG->dirroot.'/course/lib.php');
 
 /**
  * Main class for the Topics course format
  *
- * @package    format_fntabs
+ * @package    format_ned
  * @copyright  2012 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class format_fntabs extends format_base {
+class format_ned extends format_base {
 
     /**
      * Returns true if this course format uses sections
@@ -74,7 +74,7 @@ class format_fntabs extends format_base {
     public function get_default_section_name($section) {
         if ($section->section == 0) {
             // Return the general section.
-            return get_string('section0name', 'format_fntabs');
+            return get_string('section0name', 'format_ned');
         } else {
             // Use format_base::get_default_section_name implementation which
             // will display the section name in "Topic n" format.
@@ -270,7 +270,7 @@ class format_fntabs extends format_base {
                     ),
                 ),
                 'sectiondeliverymethod' => array(
-                    'label' => new lang_string('sectiondeliverymethod', 'format_fntabs'),
+                    'label' => new lang_string('sectiondeliverymethod', 'format_ned'),
                     'element_type' => 'select',
                     'element_attributes' => array(
                         array(
@@ -385,7 +385,7 @@ class format_fntabs extends format_base {
 
         if (!empty($this->course->id)) {
             global $DB;
-            $extradata = $DB->get_records('format_fntabs_config', array('courseid' => $this->course->id));
+            $extradata = $DB->get_records('format_ned_config', array('courseid' => $this->course->id));
         } else {
             $extradata = false;
         }
@@ -408,7 +408,7 @@ class format_fntabs extends format_base {
             'mainheading',
             'topicheading',
             'maxtabs',
-            'colorschema',
+            'colourschema',
             'bgcolour',
             'activecolour',
             'selectedcolour',
@@ -425,7 +425,7 @@ class format_fntabs extends format_base {
 
         foreach ($settings as $index => $setting) {
             if (!isset($this->course->$setting)) {
-                $this->course->$setting = format_fntabs_get_setting($this->course->id, $setting, true);
+                $this->course->$setting = format_ned_get_setting($this->course->id, $setting, true);
             }
         }
         return $this->course;
@@ -434,19 +434,19 @@ class format_fntabs extends format_base {
 
 
 
-function format_fntabs_update_course($form, $oldformat = false) {
+function format_ned_update_course($form, $oldformat = false) {
     global $CFG, $DB, $OUTPUT;
     $configvars = array('showsection0', 'sec0title', 'mainheading', 'topicheading', 'maxtabs');
 
     foreach ($configvars as $configvar) {
-        if ($varrec = $DB->get_record('format_fntabs_config', array('courseid' => $form->id, 'variable' => $configvar))) {
+        if ($varrec = $DB->get_record('format_ned_config', array('courseid' => $form->id, 'variable' => $configvar))) {
             $varrec->value = $form->$configvar;
-            $DB->update_record('format_fntabs_config', $varrec);
+            $DB->update_record('format_ned_config', $varrec);
         } else {
             $varrec->courseid = $form->id;
             $varrec->variable = $configvar;
             $varrec->value = $form->$configvar;
-            $DB->insert_record('format_fntabs_config', $varrec);
+            $DB->insert_record('format_ned_config', $varrec);
         }
     }
 
@@ -486,10 +486,10 @@ function format_fntabs_update_course($form, $oldformat = false) {
  * them to course object
  *
  */
-function format_fntabs_get_course(&$course) {
+function format_ned_get_course(&$course) {
     global $DB;
     // Add course specific variable to the passed in parameter.
-    if ($configvars = $DB->get_records('format_fntabs_config', array('courseid' => $course->id))) {
+    if ($configvars = $DB->get_records('format_ned_config', array('courseid' => $course->id))) {
         foreach ($configvars as $configvar) {
             $course->{$configvar->variable} = $configvar->value;
         }
@@ -501,10 +501,10 @@ function format_fntabs_get_course(&$course) {
  * them to course object
  *
  */
-function format_fntabs_get_week_info($tabrange, $week) {
+function format_ned_get_week_info($tabrange, $week) {
     global $DB, $SESSION;
 
-    $fnmaxtab = $DB->get_field('format_fntabs_config', 'value', array('courseid' => $this->course->id, 'variable' => 'maxtabs'));
+    $fnmaxtab = $DB->get_field('format_ned_config', 'value', array('courseid' => $this->course->id, 'variable' => 'maxtabs'));
     if ($fnmaxtab) {
         $maximumtabs = $fnmaxtab;
     } else {
@@ -558,7 +558,7 @@ function format_fntabs_get_week_info($tabrange, $week) {
     return array($tablow, $tabhigh, $week);
 }
 
-function format_fntabs_get_course_section_mods($courseid, $sectionid) {
+function format_ned_get_course_section_mods($courseid, $sectionid) {
     global $DB;
 
     if (empty($courseid)) {
@@ -585,7 +585,7 @@ function format_fntabs_get_course_section_mods($courseid, $sectionid) {
  * @return assignment object from assignment table
  * @todo Finish documenting this function
  */
-function format_fntabs_get_assignment_object_from_instance($module) {
+function format_ned_get_assignment_object_from_instance($module) {
     global $DB;
 
     if (!($assignment = $DB->get_record('assignment', array('id' => $module->instance)))) {
@@ -603,7 +603,7 @@ function format_fntabs_get_assignment_object_from_instance($module) {
  * @return assignment object from assignment table
  * @todo Finish documenting this function
  */
-function format_fntabs_is_saved_or_submitted($mod, $userid) {
+function format_ned_is_saved_or_submitted($mod, $userid) {
     global $CFG, $DB, $USER, $SESSION;
     require_once($CFG->dirroot . '/mod/assignment/lib.php');
 
@@ -726,7 +726,7 @@ function format_fntabs_is_saved_or_submitted($mod, $userid) {
  * @return saved or submitted
  * @todo Finish documenting this function
  */
-function format_fntabs_get_activities_status($course, $section) {
+function format_ned_get_activities_status($course, $section) {
 
     global $CFG, $USER;
     require_once($CFG->libdir . '/completionlib.php');
@@ -739,7 +739,7 @@ function format_fntabs_get_activities_status($course, $section) {
     $sectionmodule = array();
 
     if ($section->visible) {
-        $modules = format_fntabs_get_course_section_mods($course->id, $section->id);
+        $modules = format_ned_get_course_section_mods($course->id, $section->id);
         $completion = new completion_info($course);
         if ((isset($CFG->enablecompletion)) && !empty($completion)) {
             foreach ($modules as $module) {
@@ -750,7 +750,7 @@ function format_fntabs_get_activities_status($course, $section) {
                     $data = $completion->get_data($module, false, $USER->id, null);
                     $completionstate = $data->completionstate;
                     // Grab assignment status.
-                    $assignementstatus = format_fntabs_is_saved_or_submitted($module, $USER->id);
+                    $assignementstatus = format_ned_is_saved_or_submitted($module, $USER->id);
 
                     if ($completionstate == COMPLETION_INCOMPLETE) {  // If completion=0 then it may be saved or submitted.
                         if (($module->modname == 'assignment' || $module->modname == 'assign')
@@ -774,7 +774,7 @@ function format_fntabs_get_activities_status($course, $section) {
                             }
                         } else {
                             if (($module->modname == 'quiz')
-                                && format_fntabs_quiz_waitingforgrade($module->instance, $USER->id)) {
+                                && format_ned_quiz_waitingforgrade($module->instance, $USER->id)) {
                                 $sectionmodule[$module->id] = 'waitingforgrade';
                                 $waitingforgrade++;
                             } else {
@@ -843,7 +843,7 @@ function format_fntabs_get_activities_status($course, $section) {
     }
 }
 
-function format_fntabs_quiz_waitingforgrade ($quizid, $userid) {
+function format_ned_quiz_waitingforgrade ($quizid, $userid) {
     global $DB;
     $sql = "SELECT qs.id,
                    q.qtype
@@ -873,7 +873,7 @@ function format_fntabs_quiz_waitingforgrade ($quizid, $userid) {
 
 }
 
-function format_fntabs_update_course_setting($variable, $data) {
+function format_ned_update_course_setting($variable, $data) {
     global $course, $DB;
 
     $rec = new stdClass();
@@ -881,16 +881,16 @@ function format_fntabs_update_course_setting($variable, $data) {
     $rec->variable = $variable;
     $rec->value = $data;
 
-    if ($DB->get_field('format_fntabs_config', 'id', array('courseid' => $course->id, 'variable' => $variable))) {
-        $id = $DB->get_field('format_fntabs_config', 'id', array('courseid' => $course->id, 'variable' => $variable));
+    if ($DB->get_field('format_ned_config', 'id', array('courseid' => $course->id, 'variable' => $variable))) {
+        $id = $DB->get_field('format_ned_config', 'id', array('courseid' => $course->id, 'variable' => $variable));
         $rec->id = $id;
-        $DB->update_record('format_fntabs_config', $rec);
+        $DB->update_record('format_ned_config', $rec);
     } else {
-        $rec->id = $DB->insert_record('format_fntabs_config', $rec);
+        $rec->id = $DB->insert_record('format_ned_config', $rec);
     }
 }
 
-function format_fntabs_get_setting($courseid, $name, $getdefaultvalue = false) {
+function format_ned_get_setting($courseid, $name, $getdefaultvalue = false) {
     global $DB;
 
     // Default values.
@@ -904,9 +904,9 @@ function format_fntabs_get_setting($courseid, $name, $getdefaultvalue = false) {
         'activitytrackingbackground' => 1,
         'completiontracking' => 1,
         'mainheading' => '',
-        'topicheading' => get_string('defaulttopicheading', 'format_fntabs'),
+        'topicheading' => get_string('defaulttopicheading', 'format_ned'),
         'maxtabs' => 12,
-        'colorschema' => 0,
+        'colourschema' => 0,
         'bgcolour' => '9DBB61',
         'activecolour' => 'DBE6C4',
         'selectedcolour' => 'FFFF33',
@@ -928,7 +928,7 @@ function format_fntabs_get_setting($courseid, $name, $getdefaultvalue = false) {
     // A colour schema?
     $colourschema = false;
     switch($name) {
-        case 'bgcolor':
+        case 'bgcolour':
         case 'activecolour':
         case 'selectedcolour':
         case 'inactivebgcolour':
@@ -942,21 +942,22 @@ function format_fntabs_get_setting($courseid, $name, $getdefaultvalue = false) {
         break;
     }
 
-    $setting = $DB->get_field('format_fntabs_config', 'value',
-        array('courseid' => $courseid, 'variable' => $name)
-    );
-
     if ($colourschema) {
+        $setting = $DB->get_field('format_ned_config', 'value',
+             array('courseid' => $courseid, 'variable' => $name)
+        );
         if ($setting === false) {
             // Reset name to return default.
             $name = $coloursname;
         } else {
-            $setting = $DB->get_field('format_fntabs_color', $coloursname, array('id' => $setting));
+            $setting = $DB->get_field('format_ned_colour', $coloursname, array('id' => $setting));
             if ($setting === false) {
                 // Reset name to return default.
                 $name = $coloursname;
             }
         }
+    } else {
+        $setting = false;
     }
 
     if ($setting === false) {
@@ -965,7 +966,7 @@ function format_fntabs_get_setting($courseid, $name, $getdefaultvalue = false) {
         return $setting;
     }
 }
-function format_fntabs_course_get_cm_rename_action(cm_info $mod, $sr = null) {
+function format_ned_course_get_cm_rename_action(cm_info $mod, $sr = null) {
     global $COURSE, $OUTPUT;
 
     static $str;

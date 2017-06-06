@@ -1,8 +1,8 @@
 /**
- * NED FN Tabs Format
+ * NED Format
  *
  * @package    course/format
- * @subpackage fntabs
+ * @subpackage ned
  * @version    See the value of '$plugin->version' in version.php.
  * @copyright  2017 Gareth J Barnard
  * @author     G J Barnard - {@link http://moodle.org/user/profile.php?id=442195}
@@ -13,17 +13,17 @@
 define(['jquery', 'core/log'], function($, log) {
 
     "use strict"; // jshint ;_;
-    log.debug('NED FN Tabs AMD tabsettings');
+    log.debug('NED AMD tabsettings');
     return {
         init: function() {
             $(document).ready(function($) {
-                $('#id_managecolorschemas').click(function() {
-                    var colorschema = $('#id_colorschema option:selected').val();
+                $('#id_managecolourschemas').click(function() {
+                    var colourschema = $('#id_colourschema option:selected').val();
                     var courseid = $("[name='id']").val();
-                    location.href = M.cfg.wwwroot + '/course/format/fntabs/colorschema_edit.php?courseid=' + courseid + '&edit=' + colorschema;
+                    location.href = M.cfg.wwwroot + '/course/format/ned/colourschema_edit.php?courseid=' + courseid + '&edit=' + colourschema;
                 });
             });
-            log.debug('NED FN Tabs AMD tabsettings init');
+            log.debug('NED AMD tabsettings init');
         }
     }
 });

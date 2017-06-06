@@ -15,13 +15,13 @@
 
 /**
  * @package    course/format
- * @subpackage fntabs
+ * @subpackage ned
  * @copyright  &copy; 2017 G J Barnard.
  * @author     G J Barnard - {@link http://moodle.org/user/profile.php?id=442195}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  */
 
- M.util.init_ftcolour_popup = function(Y, id, previewconf) {
+ M.util.init_fnedcolour_popup = function(Y, id, previewconf) {
     Y.use('node', 'event-mouseenter', function(){
         /**
          * The colour popup object

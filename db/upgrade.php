@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    format_fntabs
+ * @package    format_ned
  * @copyright  Michael Gardener <mgardener@cissq.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-function xmldb_format_fntabs_upgrade($version) {
+function xmldb_format_ned_upgrade($version) {
 
     if ($version < 2016090600) {
         global $DB;
@@ -38,10 +38,10 @@ function xmldb_format_fntabs_upgrade($version) {
             $dbman->drop_table($table);
         }
 
-        // Define table format_fntabs_color to be created.
-        $table = new xmldb_table('format_fntabs_color');
+        // Define table format_ned_colour to be created.
+        $table = new xmldb_table('format_ned_colour');
 
-        // Adding fields to table format_fntabs_color.
+        // Adding fields to table format_ned_colour.
         $table->add_field('id', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, null, null, '');
         $table->add_field('courseid', XMLDB_TYPE_INTEGER, '18', null, null, null, null);
@@ -57,13 +57,13 @@ function xmldb_format_fntabs_upgrade($version) {
         $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '11', null, XMLDB_NOTNULL, null, '0');
         $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '11', null, XMLDB_NOTNULL, null, '0');
 
-        // Adding keys to table format_fntabs_color.
+        // Adding keys to table format_ned_colour.
         $table->add_key('id', XMLDB_KEY_PRIMARY, array('id'));
 
-        // Adding indexes to table format_fntabs_color.
-        $table->add_index('mdl_formnedtabsconf_cou_ix', XMLDB_INDEX_NOTUNIQUE, array('courseid'));
+        // Adding indexes to table format_ned_colour.
+        $table->add_index('mdl_formnedconf_cou_ix', XMLDB_INDEX_NOTUNIQUE, array('courseid'));
 
-        // Conditionally launch create table for format_fntabs_color.
+        // Conditionally launch create table for format_ned_colour.
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
 
@@ -94,54 +94,54 @@ function xmldb_format_fntabs_upgrade($version) {
             $recone->timecreated = time();
             $rectwo->timecreated = time();
 
-            $DB->insert_record('format_fntabs_color', $recone);
-            $DB->insert_record('format_fntabs_color', $rectwo);
+            $DB->insert_record('format_ned_colour', $recone);
+            $DB->insert_record('format_ned_colour', $rectwo);
         }
 
-        // Define table format_fntabs_cm to be created.
-        $table = new xmldb_table('format_fntabs_cm');
+        // Define table format_ned_cm to be created.
+        $table = new xmldb_table('format_ned_cm');
 
-        // Adding fields to table format_fntabs_cm.
+        // Adding fields to table format_ned_cm.
         $table->add_field('id', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('courseid', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, null);
         $table->add_field('cmid', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, null);
         $table->add_field('hideingradebook', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, null);
         $table->add_field('mandatory', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, null);
 
-        // Adding keys to table format_fntabs_cm.
+        // Adding keys to table format_ned_cm.
         $table->add_key('id', XMLDB_KEY_PRIMARY, array('id'));
 
-        // Adding indexes to table format_fntabs_cm.
-        $table->add_index('mdl_formnedtabscm_cou_ix', XMLDB_INDEX_NOTUNIQUE, array('courseid'));
-        $table->add_index('mdl_formnedtabscm_cmi_ix', XMLDB_INDEX_NOTUNIQUE, array('cmid'));
+        // Adding indexes to table format_ned_cm.
+        $table->add_index('mdl_formnedcm_cou_ix', XMLDB_INDEX_NOTUNIQUE, array('courseid'));
+        $table->add_index('mdl_formnedcm_cmi_ix', XMLDB_INDEX_NOTUNIQUE, array('cmid'));
 
-        // Conditionally launch create table for format_fntabs_cm.
+        // Conditionally launch create table for format_ned_cm.
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
 
-        // Define table format_fntabs_config to be created.
-        $table = new xmldb_table('format_fntabs_config');
+        // Define table format_ned_config to be created.
+        $table = new xmldb_table('format_ned_config');
 
-        // Adding fields to table format_fntabs_config.
+        // Adding fields to table format_ned_config.
         $table->add_field('id', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('courseid', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, null);
         $table->add_field('variable', XMLDB_TYPE_CHAR, '255', null, null, null, null);
         $table->add_field('value', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
 
-        // Adding keys to table format_fntabs_config.
+        // Adding keys to table format_ned_config.
         $table->add_key('id', XMLDB_KEY_PRIMARY, array('id'));
 
-        // Adding indexes to table format_fntabs_config.
-        $table->add_index('mdl_formnedtabsconf_cou_ix', XMLDB_INDEX_NOTUNIQUE, array('courseid'));
+        // Adding indexes to table format_ned_config.
+        $table->add_index('mdl_formnedconf_cou_ix', XMLDB_INDEX_NOTUNIQUE, array('courseid'));
 
-        // Conditionally launch create table for format_fntabs_config.
+        // Conditionally launch create table for format_ned_config.
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
 
-        // Fntabs savepoint reached.
-        upgrade_plugin_savepoint(true, 2016090600, 'format', 'fntabs');
+        // NED savepoint reached.
+        upgrade_plugin_savepoint(true, 2016090600, 'format', 'ned');
     }
     return true;
 }
