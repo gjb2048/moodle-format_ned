@@ -186,15 +186,9 @@ if (empty($course->showonlysection0)) {
 
     $completion = new completion_info($course);
 
-    $showoption = $DB->get_field('format_ned_config', 'value',
-        array('courseid' => $course->id, 'variable' => 'defaulttab')
-    );
-    $defaulttabwhensetindb = $DB->get_field('format_ned_config', 'value',
-        array('courseid' => $course->id, 'variable' => 'defaulttabwhenset')
-    );
-    $selectedweekindb = $DB->get_field('format_ned_config', 'value',
-        array('courseid' => $course->id, 'variable' => 'topictoshow')
-    );
+    $showoption = format_ned_get_setting($course->id, 'defaulttab');
+    $defaulttabwhensetindb = format_ned_get_setting($course->id, 'defaulttabwhenset');
+    $selectedweekindb = format_ned_get_setting($course->id, 'topictoshow');
     // Calculate the current week based on today's date and the starting date of the course.
     $currentweek = ($timenow > $course->startdate) ? (int)((($timenow - $course->startdate) / $weekofseconds) + 1) : 0;
 
@@ -275,7 +269,7 @@ if (empty($course->showonlysection0)) {
 
         echo '<li id ="section-'.$section.'" class ="section main clearfix" >';
 
-        if (!empty($course->mainheading)) {
+        if ((!empty($course->mainheading)) && ($showtabs == '1')) {
             if (($PAGE->user_is_editing()) || !$completion->is_enabled()) {
                 echo $OUTPUT->heading($course->mainheading, 2, 'fnoutlineheadingblock1');
             } else if ($completion->is_enabled() && !$isteacher) {
