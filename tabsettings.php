@@ -57,24 +57,21 @@ if ($delete && $DB->record_exists('format_ned_colour', array('id' => $delete, 'p
 
 $course = course_get_format($course)->get_course();
 
-
 $data = new stdClass();
 $data->courseid = $course->id;
 
-$data->showtabs = format_ned_get_setting($data->courseid, 'showtabs');
-$data->mainheading = format_ned_get_setting($data->courseid, 'mainheading');
-$data->tabcontent = format_ned_get_setting($data->courseid, 'tabcontent');
-$data->tabwidth = format_ned_get_setting($data->courseid, 'tabwidth');
-$data->completiontracking = format_ned_get_setting($data->courseid, 'completiontracking');
-$data->activitytrackingbackground = format_ned_get_setting($data->courseid, 'activitytrackingbackground');
-$data->locationoftrackingicons = format_ned_get_setting($data->courseid, 'locationoftrackingicons');
-$data->showorphaned = format_ned_get_setting($data->courseid, 'showorphaned');
-$data->topicheading = format_ned_get_setting($data->courseid, 'topicheading');
-$data->maxtabs = format_ned_get_setting($data->courseid, 'maxtabs');
+$data->showtabs = $course->showtabs;
+$data->mainheading = $course->mainheading;
+$data->tabcontent = $course->tabcontent;
+$data->tabwidth = $course->tabwidth;
+$data->completiontracking = $course->completiontracking;
+$data->activitytrackingbackground = $course->activitytrackingbackground;
+$data->locationoftrackingicons = $course->locationoftrackingicons;
+$data->showorphaned = $course->showorphaned;
+$data->topicheading = $course->topicheading;
+$data->maxtabs = $course->maxtabs;
 
-$defaulttab = $DB->get_field('format_ned_config', 'value',
-    array('courseid' => $course->id, 'variable' => 'defaulttab')
-);
+$defaulttab = $course->defaulttab;
 
 $completion = new completion_info($course);
 if ((!$completion->is_enabled()) && $defaulttab == 'option2') {
@@ -83,15 +80,15 @@ if ((!$completion->is_enabled()) && $defaulttab == 'option2') {
     $data->defaulttab = ($defaulttab) ? $defaulttab : 'option1';
 }
 
-$data->colourschema = format_ned_get_setting($data->courseid, 'colourschema');
-$data->topictoshow = format_ned_get_setting($data->courseid, 'topictoshow');
-$data->showsection0 = format_ned_get_setting($data->courseid, 'showsection0');
-$data->showonlysection0 = format_ned_get_setting($data->courseid, 'showonlysection0');
+$data->colourschema = $course->colourschema;
+$data->topictoshow = $course->topictoshow;
+$data->showsection0 = $course->showsection0;
+$data->showonlysection0 = $course->showonlysection0;
 $data->defaulttabwhenset = time();
 
 // First create the form.
 $editform = new course_ned_edit_form(null,
-    array('course' => $course, 'colourschema' => $data->colourschema), 'post', '', array('class' => 'ned_settings')
+    array('course' => $course), 'post', '', array('class' => 'ned_settings')
 );
 
 $editform->set_data($data);

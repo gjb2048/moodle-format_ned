@@ -33,13 +33,12 @@ class course_ned_edit_form extends moodleform {
         $mform = &$this->_form;
 
         $course = $this->_customdata['course'];
-
         $mform->addElement('hidden', 'id', $this->_customdata['course']->id);
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'defaulttabwhenset', time());
         $mform->setType('defaulttabwhenset', PARAM_INT);
 
-        $mform->addElement('header', 'fncoursetabs', 'Tabs');
+        $mform->addElement('header', 'fncoursetabs', get_string('tabs', 'format_ned'));
 
         $mform->addElement('static', 'blockinfo', get_string('blockinfo', 'format_ned'),
             '<a target="_blank" href="http://ned.ca/tabs">http://ned.ca/tabs</a>');
@@ -127,14 +126,11 @@ class course_ned_edit_form extends moodleform {
         $colourschemaoptions = $DB->get_records_menu('format_ned_colour');
 
         $saveasarray = array();
-        $colourschemaselect = &$mform->createElement('select', 'colourschema', '', $colourschemaoptions);
-        $colourschemaselect->setSelected($this->_customdata['colourschema']);
-        $saveasarray[] = $colourschemaselect;
+        $saveasarray[] = &$mform->createElement('select', 'colourschema', '', $colourschemaoptions);
         $saveasarray[] = &$mform->createElement('button', 'managecolourschemas',
             get_string('managecolourschemas', 'format_ned')
         );
         $mform->addGroup($saveasarray, 'saveasarr', get_string('loadcolourschema', 'format_ned'), array(' '), false);
-
         $mform->addElement('header', 'sections', get_string('sections', 'format_ned'));
 
         $choices['0'] = get_string("hide");
