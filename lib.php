@@ -106,6 +106,9 @@ class format_ned extends format_base {
             $sectionno = $section;
         }
         if ($sectionno !== null) {
+            if (($sectionno == 0) && ($course->showsection0 == 0)) {
+                return null;
+            }
             if ($sr !== null) {
                 if ($sr) {
                     $usercoursedisplay = COURSE_DISPLAY_MULTIPAGE;
