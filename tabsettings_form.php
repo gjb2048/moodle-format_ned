@@ -131,7 +131,7 @@ class course_ned_edit_form extends moodleform {
             get_string('managecolourschemas', 'format_ned')
         );
         $mform->addGroup($saveasarray, 'saveasarr', get_string('loadcolourschema', 'format_ned'), array(' '), false);
-        $mform->addElement('header', 'sections', get_string('sections', 'format_ned'));
+        $mform->addElement('header', 'othersettings', get_string('othersettings', 'format_ned'));
 
         $choices['0'] = get_string("hide");
         $choices['1'] = get_string("show");
