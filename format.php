@@ -390,13 +390,10 @@ if (empty($course->showonlysection0)) {
             $currenttopic = ($course->marker == $section);
 
             if (!$thissection->visible || ($selectedweek > $currentweek)) {
-                $colorsides = "class=\"fntopicsoutlinesidehidden \"";
                 $colormain = "class=\"fntopicsoutlinecontenthidden fntopicsoutlinecontent fntopicsoutlineinner\"";
             } else if ($currenttopic) {
-                $colorsides = "class=\"fntopicsoutlinesidehighlight\"";
                 $colormain = "class=\"fntopicsoutlinecontenthighlight fntopicsoutlinecontent fntopicsoutlineinner\"";
             } else {
-                $colorsides = "class=\"fntopicsoutlineside\"";
                 $colormain = "class=\"fntopicsoutlinecontent fntopicsoutlineinner\"";
             }
 
