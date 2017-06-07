@@ -942,10 +942,10 @@ function format_ned_get_setting($courseid, $name, $getdefaultvalue = false) {
         break;
     }
 
+    $setting = $DB->get_field('format_ned_config', 'value',
+        array('courseid' => $courseid, 'variable' => $name)
+    );
     if ($colourschema) {
-        $setting = $DB->get_field('format_ned_config', 'value',
-             array('courseid' => $courseid, 'variable' => $name)
-        );
         if ($setting === false) {
             // Reset name to return default.
             $name = $coloursname;
@@ -956,8 +956,6 @@ function format_ned_get_setting($courseid, $name, $getdefaultvalue = false) {
                 $name = $coloursname;
             }
         }
-    } else {
-        $setting = false;
     }
 
     if ($setting === false) {
