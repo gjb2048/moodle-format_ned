@@ -226,7 +226,7 @@ if (empty($course->showonlysection0)) {
                 if ($k > $currentweek) {
                     continue;
                 }
-                if ($k <= $COURSE->numsections) {
+                if ($k <= $course->numsections) {
                     if (!empty($sect)) {
                         $activityinfoarr = format_ned_get_activities_status($course, $sect);
                         if (($activityinfoarr['saved'] > 0)
