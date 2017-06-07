@@ -84,6 +84,9 @@ $data->colourschema = $course->colourschema;
 $data->topictoshow = $course->topictoshow;
 $data->showsection0 = $course->showsection0;
 $data->showonlysection0 = $course->showonlysection0;
+$data->sectionhighlight = $course->sectionhighlight;
+$data->sectionname = $course->sectionname;
+$data->sectionsummary = $course->sectionsummary;
 $data->defaulttabwhenset = time();
 
 // First create the form.
@@ -101,47 +104,14 @@ if ($editform->is_cancelled()) {
     }
 } else if ($data = $editform->get_data()) {
 
-    $variable = 'showsection0';
-    format_ned_update_course_setting($variable, $data->$variable);
+    $variables = array (
+        'showsection0', 'showonlysection0', 'showtabs', 'mainheading', 'tabcontent', 'completiontracking',
+        'activitytrackingbackground', 'locationoftrackingicons', 'showorphaned', 'topicheading', 'maxtabs',
+        'sectionhighlight', 'sectionname', 'sectionsummary', 'defaulttab', 'topictoshow', 'defaulttabwhenset');
 
-    $variable = 'showonlysection0';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'showtabs';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'mainheading';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'tabcontent';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'completiontracking';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'activitytrackingbackground';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'locationoftrackingicons';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'showorphaned';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'topicheading';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'maxtabs';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'defaulttab';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'topictoshow';
-    format_ned_update_course_setting($variable, $data->$variable);
-
-    $variable = 'defaulttabwhenset';
-    format_ned_update_course_setting($variable, $data->$variable);
+    foreach ($variables as $variable) {
+        format_ned_update_course_setting($variable, $data->$variable);
+    }
 
     $variable = 'colourschema';
     if (isset($schema->id)) {

@@ -44,8 +44,8 @@ class course_ned_edit_form extends moodleform {
             '<a target="_blank" href="http://ned.ca/tabs">http://ned.ca/tabs</a>');
 
         $showhideoptions = array(
-            '1' => get_string('show', 'format_ned'),
-            '0' => get_string('hide', 'format_ned')
+            '1' => get_string('tabs', 'format_ned'),
+            '0' => get_string('sections', 'format_ned')
         );
         $mform->addElement('select', 'showtabs', get_string('tabs', 'format_ned'),
             $showhideoptions);
@@ -53,24 +53,28 @@ class course_ned_edit_form extends moodleform {
 
         $mform->addElement('select', 'completiontracking', get_string('completiontracking', 'format_ned'),
             $showhideoptions);
+        $mform->disabledIf('completiontracking', 'showtabs', 'neq', '1');
 
         // For mainheading for the course.
         $label = get_string('mainheading', 'format_ned');
         $mform->addElement('text', 'mainheading', $label, 'maxlength="24" size="25"');
         $mform->setDefault('mainheading', get_string('defaultmainheading', 'format_ned'));
         $mform->setType('mainheading', PARAM_TEXT);
+        $mform->disabledIf('mainheading', 'showtabs', 'neq', '1');
 
         // For topic heading for example Week Section.
         $label = get_string('topicheading', 'format_ned');
         $mform->addElement('text', 'topicheading', $label, 'maxlength="24" size="25"');
         $mform->setDefault('topicheading', get_string('defaulttopicheading', 'format_ned'));
         $mform->setType('topicheading', PARAM_TEXT);
+        $mform->disabledIf('topicheading', 'showtabs', 'neq', '1');
 
         $tabcontentoptions = array(
             'usesectionnumbers' => get_string('usesectionnumbers', 'format_ned'),
             'usesectiontitles' => get_string('usesectiontitles', 'format_ned')
         );
         $mform->addElement('select', 'tabcontent', get_string('tabcontent', 'format_ned'), $tabcontentoptions);
+        $mform->disabledIf('tabcontent', 'showtabs', 'neq', '1');
 
         // For changing the number of tab to show before next link.
         $numberoftabs = array();
@@ -80,6 +84,31 @@ class course_ned_edit_form extends moodleform {
 
         $mform->addElement('select', 'maxtabs', get_string('setnumberoftabs', 'format_ned'), $numberoftabs);
         $mform->setDefault('maxtabs', $numberoftabs[12]);
+        $mform->disabledIf('maxtabs', 'showtabs', 'neq', '1');
+
+        $sectionhighlightoptions = array(
+            'hide' => get_string('hide', 'format_ned'),
+            'border' => get_string('border', 'format_ned'),
+            'bar' => get_string('bar', 'format_ned')
+        );
+        $mform->addElement('select', 'sectionhighlight', get_string('sectionhighlight', 'format_ned'), $sectionhighlightoptions);
+        $mform->disabledIf('sectionhighlight', 'showtabs', 'eq', '1');
+
+        $sectionnameoptions = array(
+            'hide' => get_string('hide', 'format_ned'),
+            'showsectionheader' => get_string('showsectionheader', 'format_ned'),
+            'showsectionbody' => get_string('showsectionbody', 'format_ned')
+        );
+        $mform->addElement('select', 'sectionname', get_string('sectionnamesetting', 'format_ned'), $sectionnameoptions);
+        $mform->disabledIf('sectionname', 'showtabs', 'eq', '1');
+
+        $sectionsummaryoptions = array(
+            'hide' => get_string('hide', 'format_ned'),
+            'showsectionheader' => get_string('showsectionheader', 'format_ned'),
+            'showsectionbody' => get_string('showsectionbody', 'format_ned')
+        );
+        $mform->addElement('select', 'sectionsummary', get_string('sectionsummaryetting', 'format_ned'), $sectionsummaryoptions);
+        $mform->disabledIf('sectionsummary', 'showtabs', 'eq', '1');
 
         // Work to be done for default tab.
         $radioarray = array();
@@ -172,6 +201,10 @@ class course_ned_edit_form extends moodleform {
         unset($choices);
 
         $this->add_action_buttons();
+
+        // Could do.  Use this to create JS that shows / hides the relevant form elements rather than just disabling them.
+        //$args = $mform->getLockOptionObject();
+        //error_log(print_r($args[1], true));
     }
 
 }

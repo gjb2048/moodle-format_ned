@@ -419,7 +419,10 @@ class format_ned extends format_base {
             'topictoshow',
             'showsection0',
             'showonlysection0',
-            'defaulttab'
+            'defaulttab',
+            'sectionhighlight',
+            'sectionname',
+            'sectionsummary'
         );
 
         foreach ($settings as $index => $setting) {
@@ -958,6 +961,9 @@ function format_ned_get_setting($courseid, $name, $getdefaultvalue = false) {
         'showsection0' => 0,
         'showonlysection0' => 0,
         'defaulttab' => 'option1',
+        'sectionhighlight' => 'hide',
+        'sectionname' => 'hide',
+        'sectionsummary' => 'hide'
     );
 
     if ($getdefaultvalue) {
