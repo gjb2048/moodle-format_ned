@@ -88,7 +88,6 @@ class format_ned extends format_base {
      * @return null|moodle_url
      */
     public function get_view_url($section, $options = array()) {
-        global $CFG;
         $course = $this->get_course();
         $url = new moodle_url('/course/view.php', array('id' => $course->id));
 
