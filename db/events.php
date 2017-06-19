@@ -15,11 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    course/format
- * @subpackage ned
- * @copyright  &copy; 2017 G J Barnard.
- * @author     G J Barnard - {@link http://moodle.org/user/profile.php?id=442195}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package    format_ned
+ * @subpackage NED
+ * @copyright  NED {@link http://ned.ca}
+ * @author     NED {@link http://ned.ca}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @developer  G J Barnard - {@link http://about.me/gjbarnard} and
+ *                           {@link http://moodle.org/user/profile.php?id=442195}
  */
 
 defined('MOODLE_INTERNAL') || die();

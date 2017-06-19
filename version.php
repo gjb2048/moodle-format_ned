@@ -20,13 +20,14 @@
  * @copyright  NED {@link http://ned.ca}
  * @author     NED {@link http://ned.ca}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @developer  Michael Gardener <mgardener@cissq.com>
+ * @developer  G J Barnard - {@link http://about.me/gjbarnard} and
+ *                           {@link http://moodle.org/user/profile.php?id=442195}
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2017060601;
+$plugin->version   = 2017061900;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires = 2017051500.00; // 3.3 (Build: 20170515).
-$plugin->maturity = MATURITY_STABLE;
+$plugin->maturity = MATURITY_ALPHA;
 $plugin->component = 'format_ned';
-$plugin->release = '3.3.7';
+$plugin->release = '3.3.0.1';

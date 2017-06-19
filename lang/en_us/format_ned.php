@@ -15,25 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    course/format
- * @subpackage ned
- * @copyright  &copy; 2017 G J Barnard.
- * @author     G J Barnard {@link http://moodle.org/user/profile.php?id=442195}.
- * @link       http://ned.ca/tabs/
- * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package    format_ned
+ * @subpackage NED
+ * @copyright  NED {@link http://ned.ca}
+ * @author     NED {@link http://ned.ca}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @developer  G J Barnard - {@link http://about.me/gjbarnard} and
+ *                           {@link http://moodle.org/user/profile.php?id=442195}
  */
 
-$string['colours'] = 'Colors';
-
-$string['missingbgcolour'] = 'Background color can not be null';
-$string['missingselectedlinkcolour'] = 'Highlight color can not be null';
-$string['missinginactivebgcolour'] = 'Inactive background color can not be null';
-$string['missingselectedcolour'] = 'Selected week\'s color can not be null';
-$string['missingactivecolour'] = 'Active week\'s color can not be null';
-$string['missinginactivecolour'] = 'Inactive week\'s color can not be null';
-
-$string['loadcolourschema'] = 'Load color schema';
-$string['deletecolourschema'] = 'Delete this color schema';
-$string['colourschema'] = 'Color schema';
-$string['colourschemas'] = 'Color schemas';
-$string['managecolourschemas'] = 'Manage color schemas';

@@ -16,8 +16,12 @@
 
 /**
  * @package    format_ned
- * @copyright  Michael Gardener <mgardener@cissq.com>
+ * @subpackage NED
+ * @copyright  NED {@link http://ned.ca}
+ * @author     NED {@link http://ned.ca}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @developer  G J Barnard - {@link http://about.me/gjbarnard} and
+ *                           {@link http://moodle.org/user/profile.php?id=442195}
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -25,36 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/course/lib.php');
 
-/**
- * format_ned related unit tests
- */
 class format_ned_testcase extends advanced_testcase {
-
-    public function test_update_course_numsections() {
-        global $DB;
-        $this->resetAfterTest(true);
-
-        $generator = $this->getDataGenerator();
-
-        $course = $generator->create_course(array('numsections' => 10, 'format' => 'ned'),
-            array('createsections' => true));
-        $generator->create_module('assign', array('course' => $course, 'section' => 7));
-
-        $this->setAdminUser();
-
-        $this->assertEquals(11, $DB->count_records('course_sections', array('course' => $course->id)));
-
-        // Change the numsections to 8, last two sections did not have any activities, they should be deleted.
-        update_course((object)array('id' => $course->id, 'numsections' => 8));
-        $this->assertEquals(9, $DB->count_records('course_sections', array('course' => $course->id)));
-        $this->assertEquals(9, count(get_fast_modinfo($course)->get_section_info_all()));
-
-        // Change the numsections to 5, section 8 should be deleted but section 7 should remain as it has activities.
-        update_course((object)array('id' => $course->id, 'numsections' => 6));
-        $this->assertEquals(8, $DB->count_records('course_sections', array('course' => $course->id)));
-        $this->assertEquals(8, count(get_fast_modinfo($course)->get_section_info_all()));
-        $this->assertEquals(6, course_get_format($course)->get_course()->numsections);
-    }
 
     /**
      * Tests for format_ned::get_section_name method with default section names.
@@ -75,14 +50,8 @@ class format_ned_testcase extends advanced_testcase {
         // Test get_section_name with default section names.
         $courseformat = course_get_format($course);
         foreach ($coursesections as $section) {
-            // Section 0 is different.
-            if ($section->section == 0) {
-                // Assert that with unmodified section names section 0 is what is defined in the language file.
-                $this->assertEquals($courseformat->get_default_section_name($section), get_string('section0name', 'format_ned'));
-            } else {
-                // Assert that with unmodified section names, get_section_name returns the same result as get_default_section_name.
-                $this->assertEquals($courseformat->get_default_section_name($section), $courseformat->get_section_name($section));
-            }
+            // Assert that with unmodified section names, get_section_name returns the same result as get_default_section_name.
+            $this->assertEquals($courseformat->get_default_section_name($section), $courseformat->get_section_name($section));
         }
     }
 
@@ -145,5 +114,109 @@ class format_ned_testcase extends advanced_testcase {
                 $this->assertEquals($sectionname, $courseformat->get_default_section_name($section));
             }
         }
+    }
+
+    /**
+     * Test web service updating section name
+     */
+    public function test_update_inplace_editable() {
+        global $CFG, $DB, $PAGE;
+        require_once($CFG->dirroot . '/lib/external/externallib.php');
+
+        $this->resetAfterTest();
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+        $course = $this->getDataGenerator()->create_course(array('numsections' => 5, 'format' => 'ned'),
+            array('createsections' => true));
+        $section = $DB->get_record('course_sections', array('course' => $course->id, 'section' => 2));
+
+        // Call webservice without necessary permissions.
+        try {
+            core_external::update_inplace_editable('format_ned', 'sectionname', $section->id, 'New section name');
+            $this->fail('Exception expected');
+        } catch (moodle_exception $e) {
+            $this->assertEquals('Course or activity not accessible. (Not enrolled)',
+                    $e->getMessage());
+        }
+
+        // Change to teacher and make sure that section name can be updated using web service update_inplace_editable().
+        $teacherrole = $DB->get_record('role', array('shortname' => 'editingteacher'));
+        $this->getDataGenerator()->enrol_user($user->id, $course->id, $teacherrole->id);
+
+        $res = core_external::update_inplace_editable('format_ned', 'sectionname', $section->id, 'New section name');
+        $res = external_api::clean_returnvalue(core_external::update_inplace_editable_returns(), $res);
+        $this->assertEquals('New section name', $res['value']);
+        $this->assertEquals('New section name', $DB->get_field('course_sections', 'name', array('id' => $section->id)));
+    }
+
+    /**
+     * Test callback updating section name
+     */
+    public function test_inplace_editable() {
+        global $DB, $PAGE;
+
+        $this->resetAfterTest();
+        $user = $this->getDataGenerator()->create_user();
+        $course = $this->getDataGenerator()->create_course(array('numsections' => 5, 'format' => 'ned'),
+            array('createsections' => true));
+        $teacherrole = $DB->get_record('role', array('shortname' => 'editingteacher'));
+        $this->getDataGenerator()->enrol_user($user->id, $course->id, $teacherrole->id);
+        $this->setUser($user);
+
+        $section = $DB->get_record('course_sections', array('course' => $course->id, 'section' => 2));
+
+        // Call callback format_ned_inplace_editable() directly.
+        $tmpl = component_callback('format_ned', 'inplace_editable', array('sectionname', $section->id, 'Rename me again'));
+        $this->assertInstanceOf('core\output\inplace_editable', $tmpl);
+        $res = $tmpl->export_for_template($PAGE->get_renderer('core'));
+        $this->assertEquals('Rename me again', $res['value']);
+        $this->assertEquals('Rename me again', $DB->get_field('course_sections', 'name', array('id' => $section->id)));
+
+        // Try updating using callback from mismatching course format.
+        try {
+            $tmpl = component_callback('format_weeks', 'inplace_editable', array('sectionname', $section->id, 'New name'));
+            $this->fail('Exception expected');
+        } catch (moodle_exception $e) {
+            $this->assertEquals(1, preg_match('/^Can not find data record in database/', $e->getMessage()));
+        }
+    }
+
+    /**
+     * Test get_default_course_enddate.
+     *
+     * @return void
+     */
+    public function test_default_course_enddate() {
+        global $CFG, $DB;
+
+        $this->resetAfterTest(true);
+
+        require_once($CFG->dirroot . '/course/tests/fixtures/testable_course_edit_form.php');
+
+        $this->setTimezone('UTC');
+
+        $params = array('format' => 'ned', 'numsections' => 5, 'startdate' => 1445644800);
+        $course = $this->getDataGenerator()->create_course($params);
+        $category = $DB->get_record('course_categories', array('id' => $course->category));
+
+        $args = [
+            'course' => $course,
+            'category' => $category,
+            'editoroptions' => [
+                'context' => context_course::instance($course->id),
+                'subdirs' => 0
+            ],
+            'returnto' => new moodle_url('/'),
+            'returnurl' => new moodle_url('/'),
+        ];
+
+        $courseform = new testable_course_edit_form(null, $args);
+        $courseform->definition_after_data();
+
+        $enddate = $params['startdate'] + get_config('moodlecourse', 'courseduration');
+
+        $weeksformat = course_get_format($course->id);
+        $this->assertEquals($enddate, $weeksformat->get_default_course_enddate($courseform->get_quick_form()));
+
     }
 }

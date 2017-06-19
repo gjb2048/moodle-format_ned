@@ -16,22 +16,17 @@
 
 /**
  * @package    format_ned
- * @copyright  Michael Gardener <mgardener@cissq.com>
+ * @subpackage NED
+ * @copyright  NED {@link http://ned.ca}
+ * @author     NED {@link http://ned.ca}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @developer  G J Barnard - {@link http://about.me/gjbarnard} and
+ *                           {@link http://moodle.org/user/profile.php?id=442195}
  */
 
 defined('MOODLE_INTERNAL') || die();
-define('NED_EXTRASECTION', 9999); // A non-existant section to hold hidden modules.
-require_once($CFG->dirroot.'/course/format/lib.php');
-require_once($CFG->dirroot.'/course/lib.php');
+require_once($CFG->dirroot. '/course/format/lib.php');
 
-/**
- * Main class for the Topics course format
- *
- * @package    format_ned
- * @copyright  2012 Marina Glancy
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 class format_ned extends format_base {
 
     /**
@@ -55,9 +50,9 @@ class format_ned extends format_base {
         $section = $this->get_section($section);
         if ((string)$section->name !== '') {
             return format_string($section->name, true,
-                array('context' => context_course::instance($this->courseid)));
+                    array('context' => context_course::instance($this->courseid)));
         } else {
-            return parent::get_section_name($section);
+            return $this->get_default_section_name($section);
         }
     }
 
@@ -93,6 +88,7 @@ class format_ned extends format_base {
      * @return null|moodle_url
      */
     public function get_view_url($section, $options = array()) {
+        global $CFG;
         $course = $this->get_course();
         $url = new moodle_url('/course/view.php', array('id' => $course->id));
 
@@ -106,9 +102,6 @@ class format_ned extends format_base {
             $sectionno = $section;
         }
         if ($sectionno !== null) {
-            if (($sectionno == 0) && ($course->showsection0 == 0)) {
-                return null;
-            }
             if ($sr !== null) {
                 if ($sr) {
                     $usercoursedisplay = COURSE_DISPLAY_MULTIPAGE;
@@ -117,7 +110,7 @@ class format_ned extends format_base {
                     $usercoursedisplay = COURSE_DISPLAY_SINGLEPAGE;
                 }
             } else {
-                $usercoursedisplay = COURSE_DISPLAY_MULTIPAGE;
+                $usercoursedisplay = $course->coursedisplay;
             }
             if ($sectionno != 0 && $usercoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
                 $url->param('section', $sectionno);
@@ -150,16 +143,16 @@ class format_ned extends format_base {
      */
     public function extend_course_navigation($navigation, navigation_node $node) {
         global $PAGE;
-        // If section is specified in course/view.php, make sure it is expanded in navigation.
+        // if section is specified in course/view.php, make sure it is expanded in navigation
         if ($navigation->includesectionnum === false) {
             $selectedsection = optional_param('section', null, PARAM_INT);
             if ($selectedsection !== null && (!defined('AJAX_SCRIPT') || AJAX_SCRIPT == '0') &&
-                $PAGE->url->compare(new moodle_url('/course/view.php'), URL_MATCH_BASE)) {
+                    $PAGE->url->compare(new moodle_url('/course/view.php'), URL_MATCH_BASE)) {
                 $navigation->includesectionnum = $selectedsection;
             }
         }
 
-        // Check if there are callbacks to extend course navigation.
+        // check if there are callbacks to extend course navigation
         parent::extend_course_navigation($navigation, $node);
 
         // We want to remove the general section if it is empty.
@@ -183,7 +176,7 @@ class format_ned extends format_base {
      *
      * @return array This will be passed in ajax respose
      */
-    public function ajax_section_move() {
+    function ajax_section_move() {
         global $PAGE;
         $titles = array();
         $course = $this->get_course();
@@ -206,7 +199,7 @@ class format_ned extends format_base {
     public function get_default_blocks() {
         return array(
             BLOCK_POS_LEFT => array(),
-            BLOCK_POS_RIGHT => array('search_forums', 'news_items', 'calendar_upcoming', 'recent_activity')
+            BLOCK_POS_RIGHT => array()
         );
     }
 
@@ -215,7 +208,6 @@ class format_ned extends format_base {
      *
      * Topics format uses the following options:
      * - coursedisplay
-     * - numsections
      * - hiddensections
      *
      * @param bool $foreditform
@@ -226,36 +218,18 @@ class format_ned extends format_base {
         if ($courseformatoptions === false) {
             $courseconfig = get_config('moodlecourse');
             $courseformatoptions = array(
-                'numsections' => array(
-                    'default' => $courseconfig->numsections,
-                    'type' => PARAM_INT,
-                ),
                 'hiddensections' => array(
                     'default' => $courseconfig->hiddensections,
                     'type' => PARAM_INT,
                 ),
-                'sectiondeliverymethod' => array(
-                    'default' => 'week',
-                    'type' => PARAM_TEXT,
+                'coursedisplay' => array(
+                    'default' => $courseconfig->coursedisplay,
+                    'type' => PARAM_INT,
                 ),
             );
         }
         if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
-            $courseconfig = get_config('moodlecourse');
-            $max = $courseconfig->maxsections;
-            if (!isset($max) || !is_numeric($max)) {
-                $max = 52;
-            }
-            $sectionmenu = array();
-            for ($i = 0; $i <= $max; $i++) {
-                $sectionmenu[$i] = "$i";
-            }
             $courseformatoptionsedit = array(
-                'numsections' => array(
-                    'label' => new lang_string('numberweeks'),
-                    'element_type' => 'select',
-                    'element_attributes' => array($sectionmenu),
-                ),
                 'hiddensections' => array(
                     'label' => new lang_string('hiddensections'),
                     'help' => 'hiddensections',
@@ -268,15 +242,17 @@ class format_ned extends format_base {
                         )
                     ),
                 ),
-                'sectiondeliverymethod' => array(
-                    'label' => new lang_string('sectiondeliverymethod', 'format_ned'),
+                'coursedisplay' => array(
+                    'label' => new lang_string('coursedisplay'),
                     'element_type' => 'select',
                     'element_attributes' => array(
                         array(
-                            'week' => new lang_string('week'),
-                            'topic' => new lang_string('topic')
+                            COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
+                            COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi')
                         )
                     ),
+                    'help' => 'coursedisplay',
+                    'help_component' => 'moodle',
                 )
             );
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
@@ -294,24 +270,24 @@ class format_ned extends format_base {
      * @return array array of references to the added form elements.
      */
     public function create_edit_form_elements(&$mform, $forsection = false) {
+        global $COURSE;
         $elements = parent::create_edit_form_elements($mform, $forsection);
 
-        // Increase the number of sections combo box values if the user has increased the number of sections
-        // using the icon on the course page beyond course 'maxsections' or course 'maxsections' has been
-        // reduced below the number of sections already set for the course on the site administration course
-        // defaults page.  This is so that the number of sections is not reduced leaving unintended orphaned
-        // activities / resources.
-        if (!$forsection) {
-            $maxsections = get_config('moodlecourse', 'maxsections');
-            $numsections = $mform->getElementValue('numsections');
-            $numsections = $numsections[0];
-            if ($numsections > $maxsections) {
-                $element = $mform->getElement('numsections');
-                for ($i = $maxsections + 1; $i <= $numsections; $i++) {
-                    $element->addOption("$i", $i);
-                }
+        if (!$forsection && (empty($COURSE->id) || $COURSE->id == SITEID)) {
+            // Add "numsections" element to the create course form - it will force new course to be prepopulated
+            // with empty sections.
+            // The "Number of sections" option is no longer available when editing course, instead teachers should
+            // delete and add sections when needed.
+            $courseconfig = get_config('moodlecourse');
+            $max = (int)$courseconfig->maxsections;
+            $element = $mform->addElement('select', 'numsections', get_string('numberweeks'), range(0, $max ?: 52));
+            $mform->setType('numsections', PARAM_INT);
+            if (is_null($mform->getElementValue('numsections'))) {
+                $mform->setDefault('numsections', $courseconfig->numsections);
             }
+            array_unshift($elements, $element);
         }
+
         return $elements;
     }
 
@@ -319,9 +295,7 @@ class format_ned extends format_base {
      * Updates format options for a course
      *
      * In case if course format was changed to 'topics', we try to copy options
-     * 'coursedisplay', 'numsections' and 'hiddensections' from the previous format.
-     * If previous course format did not have 'numsections' option, we populate it with the
-     * current number of sections
+     * 'coursedisplay' and 'hiddensections' from the previous format.
      *
      * @param stdClass|array $data return value from {@link moodleform::get_data()} or array with data
      * @param stdClass $oldcourse if this function is called from {@link update_course()}
@@ -329,7 +303,6 @@ class format_ned extends format_base {
      * @return bool whether there were any changes to the options values
      */
     public function update_course_format_options($data, $oldcourse = null) {
-        global $DB;
         $data = (array)$data;
         if ($oldcourse !== null) {
             $oldcourse = (array)$oldcourse;
@@ -338,33 +311,11 @@ class format_ned extends format_base {
                 if (!array_key_exists($key, $data)) {
                     if (array_key_exists($key, $oldcourse)) {
                         $data[$key] = $oldcourse[$key];
-                    } else if ($key === 'numsections') {
-                        // If previous format does not have the field 'numsections'
-                        // and data['numsections'] is not set,
-                        // we fill it with the maximum section number from the DB.
-                        $maxsection = $DB->get_field_sql('SELECT max(section) from {course_sections}
-                            WHERE course = ?', array($this->courseid));
-                        if ($maxsection) {
-                            // If there are no sections, or just default 0-section, 'numsections' will be set to default.
-                            $data['numsections'] = $maxsection;
-                        }
                     }
                 }
             }
         }
-        $changed = $this->update_format_options($data);
-        if ($changed && array_key_exists('numsections', $data)) {
-            // If the numsections was decreased, try to completely delete the orphaned sections (unless they are not empty).
-            $numsections = (int)$data['numsections'];
-            $maxsection = $DB->get_field_sql('SELECT max(section) from {course_sections}
-                        WHERE course = ?', array($this->courseid));
-            for ($sectionnum = $maxsection; $sectionnum > $numsections; $sectionnum--) {
-                if (!$this->delete_section($sectionnum, false)) {
-                    break;
-                }
-            }
-        }
-        return $changed;
+        return $this->update_format_options($data);
     }
 
     /**
@@ -379,58 +330,26 @@ class format_ned extends format_base {
         return true;
     }
 
-    public function get_course() {
-        parent::get_course();
-
-        if (!empty($this->course->id)) {
-            global $DB;
-            $extradata = $DB->get_records('format_ned_config', array('courseid' => $this->course->id));
-        } else {
-            $extradata = false;
+    /**
+     * Prepares the templateable object to display section name
+     *
+     * @param \section_info|\stdClass $section
+     * @param bool $linkifneeded
+     * @param bool $editable
+     * @param null|lang_string|string $edithint
+     * @param null|lang_string|string $editlabel
+     * @return \core\output\inplace_editable
+     */
+    public function inplace_editable_render_section_name($section, $linkifneeded = true,
+                                                         $editable = null, $edithint = null, $editlabel = null) {
+        if (empty($edithint)) {
+            $edithint = new lang_string('editsectionname', 'format_topics');
         }
-
-        if ($extradata) {
-            foreach ($extradata as $extra) {
-                $this->course->{$extra->variable} = $extra->value;
-                $this->course->{$extra->variable} = $extra->value;
-            }
+        if (empty($editlabel)) {
+            $title = get_section_name($section->course, $section);
+            $editlabel = new lang_string('newsectionname', 'format_topics', $title);
         }
-
-        $settings = array(
-            'showtabs',
-            'tabcontent',
-            'completiontracking',
-            'tabwidth',
-            'locationoftrackingicons',
-            'activitytrackingbackground',
-            'completiontracking',
-            'mainheading',
-            'topicheading',
-            'maxtabs',
-            'colourschema',
-            'bgcolour',
-            'activecolour',
-            'selectedcolour',
-            'inactivebgcolour',
-            'inactivecolour',
-            'activelinkcolour',
-            'inactivelinkcolour',
-            'selectedlinkcolour',
-            'topictoshow',
-            'showsection0',
-            'showonlysection0',
-            'defaulttab',
-            'sectionhighlight',
-            'sectionname',
-            'sectionsummary'
-        );
-
-        foreach ($settings as $index => $setting) {
-            if (!isset($this->course->$setting)) {
-                $this->course->$setting = format_ned_get_setting($this->course->id, $setting, true);
-            }
-        }
-        return $this->course;
+        return parent::inplace_editable_render_section_name($section, $linkifneeded, $editable, $edithint, $editlabel);
     }
 
     /**
@@ -459,7 +378,7 @@ class format_ned extends format_base {
         global $PAGE;
 
         if ($section->section && ($action === 'setmarker' || $action === 'removemarker')) {
-            // Format 'NED' allows to set and remove markers in addition to common section actions.
+            // Format 'ned' allows to set and remove markers in addition to common section actions.
             require_capability('moodle/course:setcurrentsection', context_course::instance($this->courseid));
             course_set_marker($this->courseid, ($action === 'setmarker') ? $section->section : 0);
             return null;
@@ -471,580 +390,23 @@ class format_ned extends format_base {
         $rv['section_availability'] = $renderer->section_availability($this->get_section($section));
         return $rv;
     }
-
-}
-
-
-
-function format_ned_update_course($form, $oldformat = false) {
-    global $CFG, $DB, $OUTPUT;
-    $configvars = array('showsection0', 'sec0title', 'mainheading', 'topicheading', 'maxtabs');
-
-    foreach ($configvars as $configvar) {
-        if ($varrec = $DB->get_record('format_ned_config', array('courseid' => $form->id, 'variable' => $configvar))) {
-            $varrec->value = $form->$configvar;
-            $DB->update_record('format_ned_config', $varrec);
-        } else {
-            $varrec->courseid = $form->id;
-            $varrec->variable = $configvar;
-            $varrec->value = $form->$configvar;
-            $DB->insert_record('format_ned_config', $varrec);
-        }
-    }
-
-    // We need to have the sections created ahead of time for the weekly nav to work,
-    // so check and create here.
-    if (!($sections = get_fast_modinfo($form->id)->get_section_info_all())) {
-        $sections = array();
-    }
-
-    for ($i = 0; $i <= $form->numsections; $i++) {
-        if (empty($sections[$i])) {
-            $section = new stdClass();
-            $section->course = $form->id;   // Create a new section structure.
-            $section->section = $i;
-            $section->summary = "";
-            $section->visible = 1;
-            if (!$section->id = $DB->insert_record("course_sections", $section)) {
-                $OUTPUT->notification("Error inserting new section!");
-            }
-        }
-    }
-
-    // Check for a change to an FN format. If so, set some defaults as well...
-    if ($oldformat != 'FN') {
-        // Set the news (announcements) forum to no force subscribe, and no posts or discussions.
-        require_once($CFG->dirroot.'/mod/forum/lib.php');
-        $news = forum_get_course_forum($form->id, 'news');
-        $news->open = 0;
-        $news->forcesubscribe = 0;
-        $DB->update_record('forum', $news);
-    }
-    rebuild_course_cache($form->id);
-}
-
-/* get the generic
- *  course object and
- * them to course object
- *
- */
-function format_ned_get_course(&$course) {
-    global $DB;
-    // Add course specific variable to the passed in parameter.
-    if ($configvars = $DB->get_records('format_ned_config', array('courseid' => $course->id))) {
-        foreach ($configvars as $configvar) {
-            $course->{$configvar->variable} = $configvar->value;
-        }
-    }
-}
-
-/* get the get week info
- *  course object and
- * them to course object
- *
- */
-function format_ned_get_week_info($tabrange, $week) {
-    global $DB, $SESSION;
-
-    $fnmaxtab = $DB->get_field('format_ned_config', 'value', array('courseid' => $this->course->id, 'variable' => 'maxtabs'));
-    if ($fnmaxtab) {
-        $maximumtabs = $fnmaxtab;
-    } else {
-        $maximumtabs = 12;
-    }
-
-    if ($this->course->numsections == $maximumtabs) {
-        $tablow = 1;
-        $tabhigh = $maximumtabs;
-    } else if ($tabrange > 1000) {
-        $tablow = $tabrange / 1000;
-        $tabhigh = $tablow + $maximumtabs - 1;
-    } else if (($tabrange == 0) && ($week == 0)) {
-        $tablow = ((int) ((int) ($this->course->numsections - 1) / (int) $maximumtabs) * $maximumtabs) + 1;
-        $tabhigh = $tablow + $maximumtabs - 1;
-    } else if ($tabrange == 0) {
-        $tablow = ((int) ((int) $week / (int) $maximumtabs) * $maximumtabs) + 1;
-        $tabhigh = $tablow + $maximumtabs - 1;
-    } else {
-        $tablow = 1;
-        $tabhigh = $maximumtabs;
-    }
-    $tabhigh = min($tabhigh, $this->course->numsections);
-
-    // Normalize the tabs to always display FNMAXTABS...
-    if (($tabhigh - $tablow + 1) < $maximumtabs) {
-        $tablow = $tabhigh - $maximumtabs + 1;
-    }
-
-    // Save the low and high week in SESSION variables... If they already exist, and the selected
-    // week is in their range, leave them as is.
-    if (($tabrange >= 1000) || !isset($SESSION->FN_tablow[$this->course->id]) || !isset($SESSION->FN_tabhigh[$this->course->id]) ||
-        ($week < $SESSION->FN_tablow[$this->course->id]) || ($week > $SESSION->FN_tabhigh[$this->course->id])) {
-        $SESSION->FN_tablow[$this->course->id] = $tablow;
-        $SESSION->FN_tabhigh[$this->course->id] = $tabhigh;
-    } else {
-        $tablow = $SESSION->FN_tablow[$this->course->id];
-        $tabhigh = $SESSION->FN_tabhigh[$this->course->id];
-    }
-
-    $tablow = max($tablow, 1);
-    $tabhigh = min($tabhigh, $this->course->numsections);
-
-    // If selected week in a different set of tabs, move it to the current set...
-    if (($week != 0) && ($week < $tablow)) {
-        $week = $SESSION->G8_selected_week[$this->course->id] = $tablow;
-    } else if ($week > $tabhigh) {
-        $week = $SESSION->G8_selected_week[$this->course->id] = $tabhigh;
-    }
-
-    return array($tablow, $tabhigh, $week);
-}
-
-function format_ned_get_course_section_mods($courseid, $sectionid) {
-    global $DB;
-
-    if (empty($courseid)) {
-        return false;
-    }
-
-    if (empty($sectionid)) {
-        return false;
-    }
-
-    return $DB->get_records_sql("SELECT cm.*, m.name modname
-                                   FROM {modules} m, {course_modules} cm
-                                  WHERE cm.course = ?
-                                    AND cm.section= ?
-                                    AND cm.completion !=0
-                                    AND cm.module = m.id
-                                    AND m.visible = 1", array($courseid, $sectionid));
 }
 
 /**
- * To get the assignment object from instance
+ * Implements callback inplace_editable() allowing to edit values in-place
  *
- * @param instance of the assignment
- * @return assignment object from assignment table
- * @todo Finish documenting this function
+ * @param string $itemtype
+ * @param int $itemid
+ * @param mixed $newvalue
+ * @return \core\output\inplace_editable
  */
-function format_ned_get_assignment_object_from_instance($module) {
-    global $DB;
-
-    if (!($assignment = $DB->get_record('assignment', array('id' => $module->instance)))) {
-
-        return false;   // Doesn't exist... wtf?
-    } else {
-        return $assignment;
-    }
-}
-
-/**
- * To get the assignment object and user submission
- *
- * @param module of the assignment
- * @return assignment object from assignment table
- * @todo Finish documenting this function
- */
-function format_ned_is_saved_or_submitted($mod, $userid) {
-    global $CFG, $DB, $USER, $SESSION;
-    require_once($CFG->dirroot . '/mod/assignment/lib.php');
-
-    if (isset($SESSION->completioncache)) {
-        unset($SESSION->completioncache);
-    }
-
-    if ($mod->modname == 'assignment') {
-        if (!($assignment = $DB->get_record('assignment', array('id' => $mod->instance)))) {
-            return false;   // Doesn't exist... wtf?
-        }
-        require_once($CFG->dirroot.'/mod/assignment/type/'.$assignment->assignmenttype.'/assignment.class.php');
-        $assignmentclass = "assignment_$assignment->assignmenttype";
-        $assignmentinstance = new $assignmentclass($mod->id, $assignment, $mod);
-
-        if (!($submission = $assignmentinstance->get_submission($userid)) || empty($submission->timemodified)) {
-            return false;
-        }
-
-        switch ($assignment->assignmenttype) {
-            case "upload":
-                if ($assignment->var4) { // If var4 enable then assignment can be saved.
-                    if (!empty($submission->timemodified)
-                        && (empty($submission->data2))
-                        && (empty($submission->timemarked))) {
-                        return 'saved';
-                    } else if (!empty($submission->timemodified)
-                        && ($submission->data2 = 'submitted')
-                        && empty($submission->timemarked)) {
-                        return 'submitted';
-                    } else if (!empty($submission->timemodified)
-                        && ($submission->data2 = 'submitted')
-                        && ($submission->grade == -1)) {
-                        return 'submitted';
-                    }
-                } else if (empty($submission->timemarked)) {
-                    return 'submitted';
-                }
-                break;
-            case "uploadsingle":
-                if (empty($submission->timemarked)) {
-                    return 'submitted';
-                }
-                break;
-            case "online":
-                if (empty($submission->timemarked)) {
-                    return 'submitted';
-                }
-                break;
-            case "offline":
-                if (empty($submission->timemarked)) {
-                    return 'submitted';
-                }
-                break;
-        }
-    } else if ($mod->modname == 'assign') {
-        if (!($assignment = $DB->get_record('assign', array('id' => $mod->instance)))) {
-            return false; // Doesn't exist.
-        }
-
-        if (!$submission = $DB->get_records('assign_submission',
-            array('assignment' => $assignment->id, 'userid' => $USER->id), 'attemptnumber DESC', '*', 0, 1)) {
-            return false;
-        } else {
-            $submission = reset($submission);
-        }
-
-        $attemptnumber = $submission->attemptnumber;
-
-        if (($submission->status == 'reopened') && ($submission->attemptnumber > 0)) {
-            $attemptnumber = $submission->attemptnumber - 1;
-        }
-
-        if ($submissionisgraded = $DB->get_records('assign_grades',
-            array('assignment' => $assignment->id, 'userid' => $USER->id, 'attemptnumber' => $attemptnumber),
-            'attemptnumber DESC', '*', 0, 1)) {
-
-            $submissionisgraded = reset($submissionisgraded);
-            if ($submissionisgraded->grade > -1) {
-                if (($submission->timemodified > $submissionisgraded->timemodified)
-                    || ($submission->attemptnumber > $submissionisgraded->attemptnumber)) {
-                    $graded = false;
-                } else {
-                    $graded = true;
-                }
-            } else {
-                $graded = false;
-            }
-        } else {
-            $graded = false;
-        }
-
-        if ($submission->status == 'draft') {
-            if ($graded) {
-                return 'submitted';
-            } else {
-                return 'saved';
-            }
-        }
-        if ($submission->status == 'reopened') {
-            return 'submitted';
-        }
-        if ($submission->status == 'submitted') {
-            if ($graded) {
-                return 'submitted';
-            } else {
-                return 'waitinggrade';
-            }
-        }
-    } else {
-        return;
-    }
-}
-
-/**
- * To Know status of the activity
- *
- * @param mod object
- * @param userid
- * @return saved or submitted
- * @todo Finish documenting this function
- */
-function format_ned_get_activities_status($course, $section) {
-
-    global $CFG, $USER;
-    require_once($CFG->libdir . '/completionlib.php');
+function format_ned_inplace_editable($itemtype, $itemid, $newvalue) {
+    global $DB, $CFG;
     require_once($CFG->dirroot . '/course/lib.php');
-    $complete = 0;
-    $incomplete = 0;
-    $saved = 0;
-    $notattempted = 0;
-    $waitingforgrade = 0;
-    $sectionmodule = array();
-
-    if ($section->visible) {
-        $modules = format_ned_get_course_section_mods($course->id, $section->id);
-        $completion = new completion_info($course);
-        if ((isset($CFG->enablecompletion)) && !empty($completion)) {
-            foreach ($modules as $module) {
-                if (!$module->visible) {
-                    continue;
-                }
-                if ($completion->is_enabled($course = null, $module)) {
-                    $data = $completion->get_data($module, false, $USER->id, null);
-                    $completionstate = $data->completionstate;
-                    // Grab assignment status.
-                    $assignementstatus = format_ned_is_saved_or_submitted($module, $USER->id);
-
-                    if ($completionstate == COMPLETION_INCOMPLETE) {  // If completion=0 then it may be saved or submitted.
-                        if (($module->modname == 'assignment' || $module->modname == 'assign')
-                            && ($module->completion == '2')
-                            && $assignementstatus) {
-
-                            if (isset($assignementstatus)) {
-                                if ($assignementstatus == 'saved') {
-                                    $sectionmodule[$module->id] = 'saved';
-                                    $saved++;
-                                } else if ($assignementstatus == 'submitted') {
-                                    $sectionmodule[$module->id] = 'notattemted';
-                                    $notattempted++;
-                                } else if ($assignementstatus == 'waitinggrade') {
-                                    $sectionmodule[$module->id] = 'waitingforgrade';
-                                    $waitingforgrade++;
-                                }
-                            } else {
-                                $sectionmodule[$module->id] = 'notattemted';
-                                $notattempted++;
-                            }
-                        } else {
-                            if (($module->modname == 'quiz')
-                                && format_ned_quiz_waitingforgrade($module->instance, $USER->id)) {
-                                $sectionmodule[$module->id] = 'waitingforgrade';
-                                $waitingforgrade++;
-                            } else {
-                                $sectionmodule[$module->id] = 'notattemted';
-                                $notattempted++;
-                            }
-                        }
-                    } else if ($completionstate == COMPLETION_COMPLETE || $completionstate == COMPLETION_COMPLETE_PASS) {
-                        if (($module->modname == 'assignment' || $module->modname == 'assign')
-                            && ($module->completion == 2)
-                            && $assignementstatus) {
-                            if (isset($assignementstatus)) {
-                                if ($assignementstatus == 'saved') {
-                                    $sectionmodule[$module->id] = 'saved';
-                                    $saved++;
-                                } else if ($assignementstatus == 'submitted') {
-                                    $sectionmodule[$module->id] = 'complete';
-                                    $complete++;
-                                } else if ($assignementstatus == 'waitinggrade') {
-                                    $sectionmodule[$module->id] = 'waitingforgrade';
-                                    $waitingforgrade++;
-                                }
-                            } else {
-                                $sectionmodule[$module->id] = 'complete';
-                                $complete++;
-                            }
-                        } else {
-                            $sectionmodule[$module->id] = 'complete';
-                            $complete++;
-                        }
-
-                    } else if ($completionstate == COMPLETION_COMPLETE_FAIL) {
-                        if (($module->modname == 'assignment' || $module->modname == 'assign')
-                            && ($module->completion == 2)
-                            && $assignementstatus) {
-                            if (isset($assignementstatus)) {
-                                if ($assignementstatus == 'saved') {
-                                    $sectionmodule[$module->id] = 'saved';
-                                    $saved++;
-                                } else if ($assignementstatus == 'submitted') {
-                                    $sectionmodule[$module->id] = 'incomplete';
-                                    $incomplete++;
-                                } else if ($assignementstatus == 'waitinggrade') {
-                                    $sectionmodule[$module->id] = 'waitingforgrade';
-                                    $waitingforgrade++;
-                                }
-                            } else {
-                                $sectionmodule[$module->id] = 'incomplete';
-                                $incomplete++;
-                            }
-                        } else {
-                            $sectionmodule[$module->id] = 'incomplete';
-                            $incomplete++;
-                        }
-                    }
-                }
-            }
-            $array["complete"] = "$complete";
-            $array["incomplete"] = "$incomplete";
-            $array["saved"] = "$saved";
-            $array["notattempted"] = "$notattempted";
-            $array["waitngforgrade"] = "$waitingforgrade";
-            $array["modules"] = $sectionmodule;
-            return $array;
-        }
+    if ($itemtype === 'sectionname' || $itemtype === 'sectionnamenl') {
+        $section = $DB->get_record_sql(
+            'SELECT s.* FROM {course_sections} s JOIN {course} c ON s.course = c.id WHERE s.id = ? AND c.format = ?',
+            array($itemid, 'ned'), MUST_EXIST);
+        return course_get_format($section->course)->inplace_editable_update_section_name($section, $itemtype, $newvalue);
     }
-}
-
-function format_ned_quiz_waitingforgrade ($quizid, $userid) {
-    global $DB;
-    $sql = "SELECT qs.id,
-                   q.qtype
-              FROM {quiz_slots} qs
-              JOIN {question} q
-                ON qs.questionid = q.id
-             WHERE qs.quizid = ?
-               AND q.qtype = 'essay'";
-
-    if ($DB->record_exists_sql($sql, array($quizid))) {
-        $sql = "SELECT qa.id,
-                       qa.sumgrades
-                  FROM {quiz_attempts} qa
-                 WHERE qa.quiz = ?
-                   AND qa.userid = ?
-                   AND qa.state = 'finished'
-              ORDER BY qa.attempt DESC";
-
-        if ($attempts = $DB->get_records_sql($sql, array($quizid, $userid))) {
-            $attempt = reset($attempts);
-            if (is_null($attempt->sumgrades)) {
-                return true;
-            }
-        }
-    }
-    return false;
-
-}
-
-function format_ned_update_course_setting($variable, $data) {
-    global $course, $DB;
-
-    $rec = new stdClass();
-    $rec->courseid = $course->id;
-    $rec->variable = $variable;
-    $rec->value = $data;
-
-    if ($DB->get_field('format_ned_config', 'id', array('courseid' => $course->id, 'variable' => $variable))) {
-        $id = $DB->get_field('format_ned_config', 'id', array('courseid' => $course->id, 'variable' => $variable));
-        $rec->id = $id;
-        $DB->update_record('format_ned_config', $rec);
-    } else {
-        $rec->id = $DB->insert_record('format_ned_config', $rec);
-    }
-}
-
-function format_ned_get_setting($courseid, $name, $getdefaultvalue = false) {
-    global $DB;
-
-    // Default values.
-    $defaults = array(
-        'showtabs' => 1,
-        'tabcontent' => 'usesectionnumbers',
-        'completiontracking' => 1,
-        'tabwidth' => 'equalspacing',
-        'locationoftrackingicons' => 'nediconsleft',
-        'showorphaned' => 0,
-        'activitytrackingbackground' => 1,
-        'completiontracking' => 1,
-        'mainheading' => '',
-        'topicheading' => get_string('defaulttopicheading', 'format_ned'),
-        'maxtabs' => 12,
-        'colourschema' => 0,
-        'bgcolour' => '9DBB61',
-        'activecolour' => 'DBE6C4',
-        'selectedcolour' => 'FFFF33',
-        'inactivebgcolour' => 'F5E49C',
-        'inactivecolour' => 'BDBBBB',
-        'activelinkcolour' => '000000',
-        'inactivelinkcolour' => '000000',
-        'selectedlinkcolour' => '000000',
-        'topictoshow' => 1,
-        'showsection0' => 0,
-        'showonlysection0' => 0,
-        'defaulttab' => 'option1',
-        'sectionhighlight' => 'hide',
-        'sectionname' => 'hide',
-        'sectionsummary' => 'hide'
-    );
-
-    if ($getdefaultvalue) {
-        return $defaults[$name];
-    }
-
-    // A colour schema?
-    $colourschema = false;
-    switch($name) {
-        case 'bgcolour':
-        case 'activecolour':
-        case 'selectedcolour':
-        case 'inactivebgcolour':
-        case 'inactivecolour':
-        case 'activelinkcolour':
-        case 'inactivelinkcolour':
-        case 'selectedlinkcolour':
-            $colourschema = true;
-            $coloursname = $name;
-            $name = 'colourschema';
-        break;
-    }
-
-    $setting = $DB->get_field('format_ned_config', 'value',
-        array('courseid' => $courseid, 'variable' => $name)
-    );
-    if ($colourschema) {
-        if ($setting === false) {
-            // Reset name to return default.
-            $name = $coloursname;
-        } else {
-            $setting = $DB->get_field('format_ned_colour', $coloursname, array('id' => $setting));
-            if ($setting === false) {
-                // Reset name to return default.
-                $name = $coloursname;
-            }
-        }
-    }
-
-    if ($setting === false) {
-        return $defaults[$name];
-    } else {
-        return $setting;
-    }
-}
-function format_ned_course_get_cm_rename_action(cm_info $mod, $sr = null) {
-    global $COURSE, $OUTPUT;
-
-    static $str;
-    static $baseurl;
-
-    $modcontext = context_module::instance($mod->id);
-    $hasmanageactivities = has_capability('moodle/course:manageactivities', $modcontext);
-
-    if (!isset($str)) {
-        $str = get_strings(array('edittitle'));
-    }
-
-    if (!isset($baseurl)) {
-        $baseurl = new moodle_url('/course/mod.php', array('sesskey' => sesskey()));
-    }
-
-    if ($sr !== null) {
-        $baseurl->param('sr', $sr);
-    }
-
-    // AJAX edit title.
-    if ($mod->has_view() && $hasmanageactivities && course_ajax_enabled($COURSE) &&
-        (($mod->course == $COURSE->id) || ($mod->course == SITEID))) {
-        // We will not display link if we are on some other-course page (where we should not see this module anyway).
-        return html_writer::span(
-            html_writer::link(
-                new moodle_url($baseurl, array('update' => $mod->id)),
-                $OUTPUT->pix_icon('t/editstring', '', 'moodle', array('class' => 'iconsmall visibleifjs', 'title' => '')),
-                array(
-                    'class' => 'editing_title',
-                    'data-action' => 'edittitle',
-                    'title' => $str->edittitle,
-                )
-            )
-        );
-    }
-    return '';
 }
