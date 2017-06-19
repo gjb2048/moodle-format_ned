@@ -175,7 +175,7 @@ class format_ned extends format_base {
      *
      * @return array This will be passed in ajax respose
      */
-    function ajax_section_move() {
+    public function ajax_section_move() {
         global $PAGE;
         $titles = array();
         $course = $this->get_course();
