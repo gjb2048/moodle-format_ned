@@ -160,7 +160,6 @@ if (!empty($course->showsection0) && ($thissection->summary or $thissection->seq
 
     echo $renderer->print_section_fn($course, $thissection, $mods, $modnamesused);
 
-
     if ($PAGE->user_is_editing()) {
         $renderer->print_section_add_menus($course, $section, $modnames);
     }
@@ -423,7 +422,6 @@ if (empty($course->showonlysection0)) {
                 echo format_text($summarytext, $thissection->summaryformat, $summaryformatoptions);
 
                 if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
-
                     echo ' <a title="' . $streditsummary . '" href="editsection.php?id=' . $thissection->id . '">' .
                         '<img src="' . $OUTPUT->image_url('t/edit') . '" class="iconsmall edit" alt="' . $streditsummary .
                         '" /></a><br /><br />';

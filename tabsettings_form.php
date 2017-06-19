@@ -203,8 +203,8 @@ class course_ned_edit_form extends moodleform {
         $this->add_action_buttons();
 
         // Could do.  Use this to create JS that shows / hides the relevant form elements rather than just disabling them.
-        //$args = $mform->getLockOptionObject();
-        //error_log(print_r($args[1], true));
+        // Get disabledIf details: $args = $mform->getLockOptionObject();.
+        // Describes the details: error_log(print_r($args[1], true));.
     }
 
 }
