@@ -48,16 +48,16 @@ require_login($course);
 $coursecontext = context_course::instance($course->id);
 require_capability('moodle/course:update', $coursecontext);
 
-$data = new stdClass();
-$data->courseid = $course->id;
-$data->coursesettings = $courseformat->get_settings();
-
 // First create the form.
 $editform = new course_ned_edit_form(null,
-    array('course' => $course, 'post', '', array('class' => 'ned_settings'))
+    array('courseid' => $course->id, 'post', '', array('class' => 'ned_settings'))
 );
 
-$editform->set_data($data->coursesettings);
+$data = $courseformat->get_settings();
+// Don't parse non-form course data.
+unset($data->hiddensections);
+unset($data->coursedisplay);
+$editform->set_data($data);
 
 if ($editform->is_cancelled()) {
     if (empty($course)) {
@@ -70,7 +70,7 @@ if ($editform->is_cancelled()) {
     unset($data->id);
     unset($data->submitbutton);
     $courseformat->update_course_format_options($data);
-    redirect($CFG->wwwroot."/course/view.php?id=$course->id" );
+    redirect($CFG->wwwroot.'/course/view.php?id='.$course->id);
 }
 
 // Print the form.

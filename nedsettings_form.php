@@ -36,9 +36,7 @@ class course_ned_edit_form extends moodleform {
         global $DB;
         $mform = &$this->_form;
 
-        $course = $this->_customdata['course'];
-
-        $mform->addElement('hidden', 'id', $this->_customdata['course']->id);
+        $mform->addElement('hidden', 'id', $this->_customdata['courseid']);
         $mform->setType('id', PARAM_INT);
 
         $mform->addElement('header', 'nedformat', get_string('format', 'format_ned'));

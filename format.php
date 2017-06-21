@@ -78,9 +78,5 @@ if (!empty($displaysection)) {
     $renderer->print_multiple_section_page($course, null, null, null, null);
 }
 
-// TODO Remove test code.
-$settings = $courseformat->get_settings();
-echo print_r($settings, true);
-
 // Include course format js module
 $PAGE->requires->js('/course/format/ned/format.js');
