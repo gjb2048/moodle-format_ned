@@ -37,3 +37,16 @@ $string['page-course-view-ned'] = 'Any course main page in ned format';
 $string['page-course-view-ned-x'] = 'Any course page in ned format';
 $string['hidefromothers'] = 'Hide section';
 $string['showfromothers'] = 'Show section';
+
+// Settings form.
+$string['format'] = 'Format';
+$string['formatinfo'] = 'Format info';
+$string['othersettings'] = 'Other settings';
+$string['showsection0'] = 'Show section 0';
+$string['showonlysection0'] = 'Show only section 0';
+$string['activitytrackingbackground'] = 'Activity tracking background';
+$string['locationoftrackingicons'] = 'Location of tracking icons';
+$string['moodleicons'] = 'Moodle icons';
+$string['nediconsleft'] = 'NED icons left';
+$string['nediconsright'] = 'NED icons right';
+$string['sectioncontentjustification'] = 'Center and left jusfify content in sections';

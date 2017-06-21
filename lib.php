@@ -28,6 +28,54 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot. '/course/format/lib.php');
 
 class format_ned extends format_base {
+    private $settings;  // Course format settings.
+
+    /**
+     * Creates a new instance of class
+     *
+     * Please use {@link course_get_format($courseorid)} to get an instance of the format class
+     *
+     * @param string $format
+     * @param int $courseid
+     * @return format_topcoll
+     */
+    protected function __construct($format, $courseid) {
+        if ($courseid === 0) {
+            global $COURSE;
+            $courseid = $COURSE->id;  // Save lots of global $COURSE as we will never be the site course.
+        }
+        parent::__construct($format, $courseid);
+    }
+
+    /**
+     * Returns the format's settings and gets them if they do not exist.
+     * @return type The settings as an array.
+     */
+    public function get_settings() {
+        if (empty($this->settings) == true) {
+            $this->settings = $this->get_format_options();
+        }
+        return $this->settings;
+    }
+
+    public function get_setting($name) {
+        $settings = $this->get_settings();
+        if (array_key_exists($name, $settings)) {
+            return $settings[$name];
+        }
+        return false;
+    }
+
+    public function set_setting($name, $value) {
+        $settings = $this->get_settings();
+        if (array_key_exists($name, $settings)) {
+            $data = new stdClass;
+            $data->$name = $value;
+            $this->update_course_format_options($data);
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Returns true if this course format uses sections
@@ -225,6 +273,22 @@ class format_ned extends format_base {
                     'default' => $courseconfig->coursedisplay,
                     'type' => PARAM_INT,
                 ),
+                'showsection0' => array(
+                    'default' => 1,
+                    'type' => PARAM_INT,
+                ),
+                'activitytrackingbackground' => array(
+                    'default' => 1,
+                    'type' => PARAM_INT,
+                ),
+                'locationoftrackingicons' => array(
+                    'default' => 'nediconsleft',
+                    'type' => PARAM_ALPHA,
+                ),
+                'sectioncontentjustification' => array(
+                    'default' => 1,
+                    'type' => PARAM_INT,
+                )
             );
         }
         if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
@@ -254,6 +318,14 @@ class format_ned extends format_base {
                     'help_component' => 'moodle',
                 )
             );
+            $courseformatoptionsedit['showsection0'] = array(
+                'label' => 'showsection0', 'element_type' => 'hidden');
+            $courseformatoptionsedit['activitytrackingbackground'] = array(
+                'label' => 'activitytrackingbackground', 'element_type' => 'hidden');
+            $courseformatoptionsedit['locationoftrackingicons'] = array(
+                'label' => 'locationoftrackingicons', 'element_type' => 'hidden');
+            $courseformatoptionsedit['sectioncontentjustification'] = array(
+                'label' => 'sectioncontentjustification', 'element_type' => 'hidden');
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
         return $courseformatoptions;
@@ -315,6 +387,24 @@ class format_ned extends format_base {
             }
         }
         return $this->update_format_options($data);
+    }
+
+    /**
+     * Updates format options for a course or section
+     *
+     * If $data does not contain property with the option name, the option will not be updated
+     *
+     * @param stdClass|array $data return value from {@link moodleform::get_data()} or array with data
+     * @param null|int null if these are options for course or section id (course_sections.id)
+     *     if these are options for section
+     * @return bool whether there were any changes to the options values
+     */
+    protected function update_format_options($data, $sectionid = null) {
+        $changed = parent::update_format_options($data, $sectionid);
+        if ($changed) {
+            // Settings have changed so clear our member attribute.
+            unset($this->settings);
+        }
     }
 
     /**
