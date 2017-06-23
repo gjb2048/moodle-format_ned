@@ -7,3 +7,4 @@ Version 3.3.0.1
      not be called for any method called directly or indirectly by the format renderer $this->courseformat attribute
      as effectivly they are two different objects.
   3. Added 'nediconsleft' option.
+  4. Added 'sectioncontentjustification' option.  Note: Uses 'Flexbox' so might not be the solution if old browsers used.

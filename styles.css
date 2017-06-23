@@ -37,6 +37,7 @@
     white-space: nowrap;
 }
 
+/* nediconsleft */
 ul.ned.nediconsleft .section .activity .actions {
     left: -25px;
 }
@@ -45,4 +46,15 @@ ul.ned.nediconsleft .section .activity .actions {
     border-width: 0;
     margin: 0;
     padding: 0;
+}
+
+/* sectioncontentjustification */
+ul.ned.sectioncontentjustification .content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+ul.ned.sectioncontentjustification .section .activity .actions {
+    right: -10px;
 }

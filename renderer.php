@@ -58,9 +58,13 @@ class format_ned_renderer extends format_section_renderer_base {
      */
     protected function start_section_list() {
         $classes = 'ned';
-        if ((!$this->editing) && 
-            ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft)) {
-            $classes .= ' '.\format_ned\toolbox::$nediconsleft;
+        if (!$this->editing) {
+            if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
+                $classes .= ' '.\format_ned\toolbox::$nediconsleft;
+            }
+            if ($this->settings['sectioncontentjustification']) {
+                $classes .= ' sectioncontentjustification';
+            }
         }
         return html_writer::start_tag('ul', array('class' => $classes));
     }
