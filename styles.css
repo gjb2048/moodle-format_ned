@@ -36,3 +36,13 @@
 .course-content ul.ned li.section .section_action_menu .menu-action-text {
     white-space: nowrap;
 }
+
+ul.ned.nediconsleft .section .activity .actions {
+    left: -25px;
+}
+
+.path-course-view ul.ned.nediconsleft .section li.activity .actions form.togglecompletion .btn {
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+}

@@ -32,6 +32,11 @@ class toolbox {
 
     protected static $instance;
 
+    // Constants.
+    public static $moodleicons = 'moodleicons';
+    public static $nediconsleft = 'nediconsleft';
+    public static $nediconsright = 'nediconsright';
+
     private function __construct() {
     }
 

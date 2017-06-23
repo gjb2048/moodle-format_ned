@@ -49,6 +49,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $this->settings = $this->courseformat->get_settings();
         $this->courserenderer = $this->page->get_renderer('format_ned', 'course');
         $this->courserenderer->set_locationoftrackingicons($this->settings['locationoftrackingicons']);
+        $this->editing = $page->user_is_editing();
     }
 
     /**
@@ -56,7 +57,12 @@ class format_ned_renderer extends format_section_renderer_base {
      * @return string HTML to output.
      */
     protected function start_section_list() {
-        return html_writer::start_tag('ul', array('class' => 'ned'));
+        $classes = 'ned';
+        if ((!$this->editing) && 
+            ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft)) {
+            $classes .= ' '.\format_ned\toolbox::$nediconsleft;
+        }
+        return html_writer::start_tag('ul', array('class' => $classes));
     }
 
     /**

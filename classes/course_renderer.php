@@ -54,7 +54,7 @@ class format_ned_course_renderer extends core_course_renderer {
      * @return string
      */
     public function course_section_cm_completion($course, &$completioninfo, cm_info $mod, $displayoptions = array()) {
-        if ($this->locationoftrackingicons == 'moodleicons') {
+        if ($this->locationoftrackingicons == \format_ned\toolbox::$moodleicons) {
             return parent::course_section_cm_completion($course, $completioninfo, $mod, $displayoptions);
         } // Else must be either nediconsleft or nediconsright.
 
