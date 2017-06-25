@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool result
  */
 function xmldb_format_ned_upgrade($oldversion) {
-    global $CFG, $DB;
+    global $CFG;
 
     require_once($CFG->dirroot . '/course/format/ned/db/upgradelib.php');
 
@@ -44,9 +44,6 @@ function xmldb_format_ned_upgrade($oldversion) {
 
         upgrade_plugin_savepoint(true, 2017061900, 'format', 'ned');
     }
-
-    // Automatically generated Moodle v3.3.0 release upgrade line.
-    // Put any upgrade step following this.
 
     return true;
 }

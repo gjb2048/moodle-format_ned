@@ -31,10 +31,6 @@ class format_ned_course_renderer extends core_course_renderer {
     private $activitytrackingbackground;
     private $locationoftrackingicons;
 
-    public function __construct(moodle_page $page, $target) {
-        parent::__construct($page, $target);
-    }
-
     /**
      * Set the state of settings needed to make decisions upon.
      *
@@ -128,15 +124,14 @@ class format_ned_course_renderer extends core_course_renderer {
             } else if ($completion == COMPLETION_TRACKING_MANUAL) {
                 global $CFG;
                 $imgtitle = get_string('completion-title-'.$completionicon, 'completion', $formattedname);
-                $newstate =
-                    $completionstate['completiondata']->completionstate == COMPLETION_COMPLETE
+                $newstate = $completionstate['completiondata']->completionstate == COMPLETION_COMPLETE
                     ? COMPLETION_INCOMPLETE
                     : COMPLETION_COMPLETE;
                 // In manual mode the icon is a toggle form...
 
-                // If this completion state is used by the
-                // conditional activities system, we need to turn
-                // off the JS.
+                /* If this completion state is used by the
+                   conditional activities system, we need to turn
+                   off the JS. */
                 $extraclass = '';
                 if (!empty($CFG->enableavailability) &&
                         core_availability\info::completion_value_used($course, $mod->id)) {
@@ -190,7 +185,7 @@ class format_ned_course_renderer extends core_course_renderer {
             if ($returnnotset) {
                 $completionstate = 'notset';
             }
-        } else { 
+        } else {
             if ($this->page->user_is_editing()) {
                 switch ($completion) {
                     case COMPLETION_TRACKING_MANUAL :
@@ -210,7 +205,7 @@ class format_ned_course_renderer extends core_course_renderer {
                         $completionstate = 'manual-y';
                         break;
                 }
-            } else { // Automatic
+            } else { // Automatic.
                 $completiondata = $completioninfo->get_data($mod, true);
                 switch($completiondata->completionstate) {
                     case COMPLETION_INCOMPLETE:

@@ -75,12 +75,12 @@ M.course.format.process_sections = function(Y, sectionlist, response, sectionfro
         for (var i = sectionfrom; i <= sectionto; i++) {
             // Update section title.
             var content = Y.Node.create('<span>' + response.sectiontitles[i] + '</span>');
-            sectionlist.item(i).all('.'+CSS.SECTIONNAME).setHTML(content);
+            sectionlist.item(i).all('.' + CSS.SECTIONNAME).setHTML(content);
             // Update move icon.
             ele = sectionlist.item(i).one(SELECTORS.SECTIONLEFTSIDE);
             str = ele.getAttribute('alt');
             stridx = str.lastIndexOf(' ');
-            newstr = str.substr(0, stridx +1) + i;
+            newstr = str.substr(0, stridx + 1) + i;
             ele.setAttribute('alt', newstr);
             ele.setAttribute('title', newstr); // For FireFox as 'alt' is not refreshed.
         }

@@ -33,7 +33,6 @@ require_once($CFG->dirroot . '/course/edit_form.php');
 class course_ned_edit_form extends moodleform {
 
     public function definition() {
-        global $DB;
         $mform = &$this->_form;
 
         $mform->addElement('hidden', 'id', $this->_customdata['courseid']);

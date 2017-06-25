@@ -32,7 +32,7 @@ $id = required_param('id', PARAM_INT);
 
 $PAGE->set_pagelayout('admin');
 $PAGE->set_url('/course/format/ned/nedsettings.php', array('id' => $id));
-// Will be needed when colour added in: $PAGE->requires->js_call_amd('format_ned/tabsettings', 'init', array());
+// Will be needed when colour added in: $PAGE->requires->js_call_amd('format_ned/tabsettings', 'init', array());.
 
 if ($id) {
     if ($id == SITEID) {

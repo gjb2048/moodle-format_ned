@@ -190,7 +190,7 @@ class format_ned extends format_base {
      */
     public function extend_course_navigation($navigation, navigation_node $node) {
         global $PAGE;
-        // if section is specified in course/view.php, make sure it is expanded in navigation
+        // If section is specified in course/view.php, make sure it is expanded in navigation.
         if ($navigation->includesectionnum === false) {
             $selectedsection = optional_param('section', null, PARAM_INT);
             if ($selectedsection !== null && (!defined('AJAX_SCRIPT') || AJAX_SCRIPT == '0') &&
@@ -199,7 +199,7 @@ class format_ned extends format_base {
             }
         }
 
-        // check if there are callbacks to extend course navigation
+        // Check if there are callbacks to extend course navigation.
         parent::extend_course_navigation($navigation, $node);
 
         // We want to remove the general section if it is empty.
@@ -345,10 +345,10 @@ class format_ned extends format_base {
         $elements = parent::create_edit_form_elements($mform, $forsection);
 
         if (!$forsection && (empty($COURSE->id) || $COURSE->id == SITEID)) {
-            // Add "numsections" element to the create course form - it will force new course to be prepopulated
-            // with empty sections.
-            // The "Number of sections" option is no longer available when editing course, instead teachers should
-            // delete and add sections when needed.
+            /* Add "numsections" element to the create course form - it will force new course to be prepopulated
+               with empty sections.
+               The "Number of sections" option is no longer available when editing course, instead teachers should
+               delete and add sections when needed. */
             $courseconfig = get_config('moodlecourse');
             $max = (int)$courseconfig->maxsections;
             $element = $mform->addElement('select', 'numsections', get_string('numberweeks'), range(0, $max ?: 52));

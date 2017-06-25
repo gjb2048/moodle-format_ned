@@ -120,7 +120,7 @@ class format_ned_testcase extends advanced_testcase {
      * Test web service updating section name
      */
     public function test_update_inplace_editable() {
-        global $CFG, $DB, $PAGE;
+        global $CFG, $DB;
         require_once($CFG->dirroot . '/lib/external/externallib.php');
 
         $this->resetAfterTest();

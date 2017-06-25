@@ -42,8 +42,9 @@ class format_ned_renderer extends format_section_renderer_base {
     public function __construct(moodle_page $page, $target) {
         parent::__construct($page, $target);
 
-        /* Since format_ned_renderer::section_edit_controls() only displays the 'Set current section' control when editing mode is on
-          we need to be sure that the link 'Turn editing mode on' is available for a user who does not have any other managing capability. */
+        /* Since format_ned_renderer::section_edit_controls() only displays the 'Set current section' control when editing mode is
+           on we need to be sure that the link 'Turn editing mode on' is available for a user who does not have any other managing
+           capability. */
         $page->set_other_editing_capability('moodle/course:setcurrentsection');
 
         $this->editing = $page->user_is_editing();
@@ -199,7 +200,7 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Can we view the section in question?
         if (!($sectioninfo = $modinfo->get_section_info($displaysection))) {
-            // This section doesn't exist
+            // This section doesn't exist.
             print_error('unknowncoursesection', 'error', null, $course->fullname);
             return;
         }
@@ -240,7 +241,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $sectiontitle .= html_writer::start_tag('div', array('class' => 'section-navigation navigationtitle'));
         $sectiontitle .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
         $sectiontitle .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
-        // Title attributes
+        // Title attributes.
         $classes = 'sectionname';
         if (!$thissection->visible) {
             $classes .= ' dimmed_text';

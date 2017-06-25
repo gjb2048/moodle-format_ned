@@ -29,21 +29,8 @@ namespace format_ned;
 defined('MOODLE_INTERNAL') || die;
 
 class toolbox {
-
-    protected static $instance;
-
     // Constants.
     public static $moodleicons = 'moodleicons';
     public static $nediconsleft = 'nediconsleft';
     public static $nediconsright = 'nediconsright';
-
-    private function __construct() {
-    }
-
-    public static function get_instance() {
-        if (!is_object(self::$instance)) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
 }

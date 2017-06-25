@@ -35,14 +35,13 @@ class format_ned_observer {
      * Observer for the event course_content_deleted.
      *
      * Deletes the user preference entries for the given course upon course deletion.
-     * CONTRIB-3520.
      *
      * @param \core\event\course_content_deleted $event
      */
     public static function course_content_deleted(\core\event\course_content_deleted $event) {
-        global $DB;
-        //$DB->delete_records("format_ned_config", array('courseid' => $event->objectid)); // This is the $courseid.
-        //$DB->delete_records("format_ned_colour", array('courseid' => $event->objectid)); // This is the $courseid.
-        //$DB->delete_records("format_ned_cm", array('courseid' => $event->objectid)); // This is the $courseid.
+        // Here for future development.
+        // global $DB;
+        // $DB->delete_records("format_ned_colour", array('courseid' => $event->objectid)); // This is the $courseid.
+        // $DB->delete_records("format_ned_cm", array('courseid' => $event->objectid)); // This is the $courseid.
     }
 }
