@@ -8,3 +8,4 @@ Version 3.3.0.1
      as effectivly they are two different objects.
   3. Added 'nediconsleft' option.
   4. Added 'sectioncontentjustification' option.  Note: Uses 'Flexbox' so might not be the solution if old browsers used.
+  5. Added activity tracking background colours.

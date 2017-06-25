@@ -48,7 +48,9 @@ class format_ned_renderer extends format_section_renderer_base {
         $this->courseformat = course_get_format($page->course); // Needed for settings retrieval.
         $this->settings = $this->courseformat->get_settings();
         $this->courserenderer = $this->page->get_renderer('format_ned', 'course');
-        $this->courserenderer->set_locationoftrackingicons($this->settings['locationoftrackingicons']);
+        $this->courserenderer->set_settings(
+            $this->settings['activitytrackingbackground'],
+            $this->settings['locationoftrackingicons']);
         $this->editing = $page->user_is_editing();
     }
 

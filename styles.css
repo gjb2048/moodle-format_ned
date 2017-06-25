@@ -58,3 +58,36 @@ ul.ned.sectioncontentjustification .content {
 ul.ned.sectioncontentjustification .section .activity .actions {
     right: -10px;
 }
+
+/* Activity completion background */
+.course-content ul.ned li.section .activity.completion-background .activityinstance {
+    margin: 0;
+    padding: 5px 15px 1px 10px;
+}
+
+.course-content ul.ned li.section .activity.completion-auto-fail .activityinstance,
+.course-content ul.ned li.section .activity.completion-auto-n .activityinstance,
+.course-content ul.ned li.section .activity.completion-auto-pass .activityinstance,
+.course-content ul.ned li.section .activity.completion-auto-y .activityinstance,
+.course-content ul.ned li.section .activity.completion-manual-n .activityinstance,
+.course-content ul.ned li.section .activity.completion-manual-y .activityinstance,
+.course-content ul.ned li.section .activity.completion-saved .activityinstance,
+.course-content ul.ned li.section .activity.completion-submitted .activityinstance {
+    border-radius: 10px;
+}
+
+.course-content ul.ned li.section .activity.completion-manual-n .activityinstance,
+.course-content ul.ned li.section .activity.completion-auto-n .activityinstance {
+    background-color: #FFF;
+    border: 1px solid #AEE5E3;
+}
+.course-content ul.ned li.section .activity.completion-auto-pass .activityinstance,
+.course-content ul.ned li.section .activity.completion-auto-y .activityinstance,
+.course-content ul.ned li.section .activity.completion-manual-y .activityinstance {
+    background-color: #D0EFCF;
+    border: 1px solid #D0EFCF;
+}
+
+.course-content ul.ned li.section .activity.completion-background .actions {
+    top: 7px;
+}

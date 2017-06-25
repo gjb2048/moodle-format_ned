@@ -28,29 +28,68 @@ defined('MOODLE_INTERNAL') || die;
 
 class format_ned_course_renderer extends core_course_renderer {
 
+    private $activitytrackingbackground;
     private $locationoftrackingicons;
 
     public function __construct(moodle_page $page, $target) {
         parent::__construct($page, $target);
     }
 
-    public function set_locationoftrackingicons($locationoftrackingicons) {
+    /**
+     * Set the state of settings needed to make decisions upon.
+     *
+     * @param bool $activitytrackingbackground Add backgrounds to activites that have completion tracking.
+     * @param string $locationoftrackingicons Where the location and type of completion tracking icons.
+     */
+    public function set_settings($activitytrackingbackground, $locationoftrackingicons) {
+        $this->activitytrackingbackground = $activitytrackingbackground;
         $this->locationoftrackingicons = $locationoftrackingicons;
     }
 
     /**
-     * Renders html for completion box on course page
+     * Renders HTML to display one course module for display within a section.
      *
-     * If completion is disabled, returns empty string
-     * If completion is automatic, returns an icon of the current completion state
+     * This function calls:
+     * {@link core_course_renderer::course_section_cm()}
+     *
+     * @param stdClass $course
+     * @param completion_info $completioninfo.
+     * @param cm_info $mod.
+     * @param int|null $sectionreturn.
+     * @param array $displayoptions.
+     * @return String.
+     */
+    public function course_section_cm_list_item($course, &$completioninfo, cm_info $mod, $sectionreturn, $displayoptions = array()) {
+        if (!$this->activitytrackingbackground) {
+            return parent::course_section_cm_list_item($course, $completioninfo, $mod, $sectionreturn, $displayoptions);
+        }
+        $output = '';
+        if ($modulehtml = $this->course_section_cm($course, $completioninfo, $mod, $sectionreturn, $displayoptions)) {
+
+            $completionclass = $this->get_completion_state($course, $completioninfo, $mod, true)['completionstate'];
+
+            $modclasses = 'activity '.$mod->modname.' modtype_'.$mod->modname.' '.$mod->extraclasses;
+            if ($completionclass) {
+                $modclasses .= ' completion-background completion-'.$completionclass;
+            }
+            $output .= html_writer::tag('li', $modulehtml, array('class' => $modclasses, 'id' => 'module-' . $mod->id));
+        }
+        return $output;
+    }
+
+    /**
+     * Renders html for completion box on course page.
+     *
+     * If completion is disabled, returns empty string.
+     * If completion is automatic, returns an icon of the current completion state.
      * If completion is manual, returns a form (with an icon inside) that allows user to
-     * toggle completion
+     * toggle completion.
      *
      * @param stdClass $course course object
      * @param completion_info $completioninfo completion info for the course, it is recommended
-     *     to fetch once for all modules in course/section for performance
-     * @param cm_info $mod module to show completion for
-     * @param array $displayoptions display options, not used in core
+     *     to fetch once for all modules in course/section for performance.
+     * @param cm_info $mod module to show completion for.
+     * @param array $displayoptions display options, not used in core.
      * @return string
      */
     public function course_section_cm_completion($course, &$completioninfo, cm_info $mod, $displayoptions = array()) {
@@ -73,38 +112,12 @@ class format_ned_course_renderer extends core_course_renderer {
             return $output;
         }
 
-        $completiondata = $completioninfo->get_data($mod, true);
-        $completionicon = '';
+        $completionstate = $this->get_completion_state($course, $completioninfo, $mod, false);
+        $completionicon = $completionstate['completionstate'];
 
-        if ($this->page->user_is_editing()) {
-            switch ($completion) {
-                case COMPLETION_TRACKING_MANUAL :
-                    $completionicon = 'manual-enabled'; break;
-                case COMPLETION_TRACKING_AUTOMATIC :
-                    $completionicon = 'auto-enabled'; break;
-            }
-        } else if ($completion == COMPLETION_TRACKING_MANUAL) {
-            switch($completiondata->completionstate) {
-                case COMPLETION_INCOMPLETE:
-                    $completionicon = 'manual-n'; break;
-                case COMPLETION_COMPLETE:
-                    $completionicon = 'manual-y'; break;
-            }
-        } else { // Automatic
-            switch($completiondata->completionstate) {
-                case COMPLETION_INCOMPLETE:
-                    $completionicon = 'auto-n'; break;
-                case COMPLETION_COMPLETE:
-                    $completionicon = 'auto-y'; break;
-                case COMPLETION_COMPLETE_PASS:
-                    $completionicon = 'auto-pass'; break;
-                case COMPLETION_COMPLETE_FAIL:
-                    $completionicon = 'auto-fail'; break;
-            }
-        }
         if ($completionicon) {
             $formattedname = $mod->get_formatted_name();
-            $imgalt = get_string('completion-alt-' . $completionicon, 'completion', $formattedname);
+            $imgalt = get_string('completion-alt-'.$completionicon, 'completion', $formattedname);
 
             if ($this->page->user_is_editing()) {
                 // When editing, the icon is just an image.
@@ -114,9 +127,9 @@ class format_ned_course_renderer extends core_course_renderer {
                         array('class' => 'autocompletion'));
             } else if ($completion == COMPLETION_TRACKING_MANUAL) {
                 global $CFG;
-                $imgtitle = get_string('completion-title-' . $completionicon, 'completion', $formattedname);
+                $imgtitle = get_string('completion-title-'.$completionicon, 'completion', $formattedname);
                 $newstate =
-                    $completiondata->completionstate == COMPLETION_COMPLETE
+                    $completionstate['completiondata']->completionstate == COMPLETION_COMPLETE
                     ? COMPLETION_INCOMPLETE
                     : COMPLETION_COMPLETE;
                 // In manual mode the icon is a toggle form...
@@ -142,7 +155,7 @@ class format_ned_course_renderer extends core_course_renderer {
                 $output .= html_writer::empty_tag('input', array(
                     'type' => 'hidden', 'name' => 'completionstate', 'value' => $newstate));
                 $output .= html_writer::tag('button',
-                    $this->output->pix_icon('i/completion-' . $completionicon, $imgalt, 'format_ned'), array('class' => 'btn btn-link'));
+                    $this->output->pix_icon('i/completion-'.$completionicon, $imgalt, 'format_ned'), array('class' => 'btn btn-link'));
                 $output .= html_writer::end_tag('div');
                 $output .= html_writer::end_tag('form');
             } else {
@@ -154,5 +167,68 @@ class format_ned_course_renderer extends core_course_renderer {
             }
         }
         return $output;
+    }
+
+    /**
+     * Helper method to get the competition state.
+     *
+     * @param stdClass $course course object.
+     * @param completion_info $completioninfo completion info for the course, it is recommended
+     *     to fetch once for all modules in course/section for performance.
+     * @param cm_info $mod module to show completion for.
+     * @param boolean $returnnotset If no tracking then return 'notset' as the state.
+     * @return array containing the competition state and data if fetched.
+     */
+    protected function get_completion_state($course, &$completioninfo, cm_info $mod, $returnnotset) {
+        if ($completioninfo === null) {
+            $completioninfo = new completion_info($course);
+        }
+        $completion = $completioninfo->is_enabled($mod);
+        $completionstate = '';
+        $completiondata = null;
+        if ($completion == COMPLETION_TRACKING_NONE) {
+            if ($returnnotset) {
+                $completionstate = 'notset';
+            }
+        } else { 
+            if ($this->page->user_is_editing()) {
+                switch ($completion) {
+                    case COMPLETION_TRACKING_MANUAL :
+                        $completionstate = 'manual-enabled';
+                        break;
+                    case COMPLETION_TRACKING_AUTOMATIC :
+                        $completionstate = 'auto-enabled';
+                        break;
+                }
+            } else if ($completion == COMPLETION_TRACKING_MANUAL) {
+                $completiondata = $completioninfo->get_data($mod, true);
+                switch($completiondata->completionstate) {
+                    case COMPLETION_INCOMPLETE:
+                        $completionstate = 'manual-n';
+                        break;
+                    case COMPLETION_COMPLETE:
+                        $completionstate = 'manual-y';
+                        break;
+                }
+            } else { // Automatic
+                $completiondata = $completioninfo->get_data($mod, true);
+                switch($completiondata->completionstate) {
+                    case COMPLETION_INCOMPLETE:
+                        $completionstate = 'auto-n';
+                        break;
+                    case COMPLETION_COMPLETE:
+                        $completionstate = 'auto-y';
+                        break;
+                    case COMPLETION_COMPLETE_PASS:
+                        $completionstate = 'auto-pass';
+                        break;
+                    case COMPLETION_COMPLETE_FAIL:
+                        $completionstate = 'auto-fail';
+                        break;
+                }
+            }
+        }
+
+        return array('completionstate' => $completionstate, 'completiondata' => $completiondata);
     }
 }
