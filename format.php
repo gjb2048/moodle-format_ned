@@ -64,6 +64,7 @@ if (($marker >= 0) && has_capability('moodle/course:setcurrentsection', $context
 course_create_sections_if_missing($course, 0);
 
 $renderer = $PAGE->get_renderer('format_ned');
+$renderer->set_courseformat($courseformat);
 
 if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
     $nedsettingsurl = new moodle_url('/course/format/ned/nedsettings.php', array('id' => $course->id));
