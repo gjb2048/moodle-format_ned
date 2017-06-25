@@ -124,9 +124,7 @@ class format_ned_course_renderer extends core_course_renderer {
             } else if ($completion == COMPLETION_TRACKING_MANUAL) {
                 global $CFG;
                 $imgtitle = get_string('completion-title-'.$completionicon, 'completion', $formattedname);
-                $newstate = $completionstate['completiondata']->completionstate == COMPLETION_COMPLETE
-                    ? COMPLETION_INCOMPLETE
-                    : COMPLETION_COMPLETE;
+                $newstate = $completionstate['completiondata']->completionstate == COMPLETION_COMPLETE ? COMPLETION_INCOMPLETE : COMPLETION_COMPLETE;
                 // In manual mode the icon is a toggle form...
 
                 /* If this completion state is used by the
