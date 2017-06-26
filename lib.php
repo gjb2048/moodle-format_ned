@@ -499,3 +499,13 @@ function format_ned_inplace_editable($itemtype, $itemid, $newvalue) {
         return course_get_format($section->course)->inplace_editable_update_section_name($section, $itemtype, $newvalue);
     }
 }
+
+function format_ned_extend_navigation_course(navigation_node $parentnode, stdClass $course, context_course $context) {
+    if (has_capability('moodle/course:update', $context)) {
+        $node = navigation_node::create(get_string('editcoursesettings'), new moodle_url('/course/format/ned/nedsettings.php',
+            array('id' => $course->id)), navigation_node::TYPE_SETTING, null, null, new pix_icon('ned_icon',
+            get_string('editcoursesettings'), 'format_ned'));
+        $node->showinflatnavigation = true;
+        $parentnode->add_node($node);
+    }
+}

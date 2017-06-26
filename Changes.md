@@ -10,3 +10,4 @@ Version 3.3.0.1
   4. Added 'sectioncontentjustification' option.  Note: Uses 'Flexbox' so might not be the solution if old browsers used.
   5. Added activity tracking background colours.
   6. Added all 'showsection0' options, being 'hide', 'show' and 'show only section 0'.
+  7. Added 'Edit course settings' to the course administration menu.

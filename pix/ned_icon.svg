@@ -1,0 +1,32 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">]>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" preserveAspectRatio="xMinYMid meet" overflow="visible">
+  <ellipse
+     style="fill:#999999;fill-opacity:1;stroke:none;stroke-width:1.10252714;stroke-opacity:1"
+     cx="12.015625"
+     cy="12"
+     rx="11.921875"
+     ry="11.9375" />
+  <g
+     id="g4524"
+     transform="translate(-2.03125,-3.0625)">
+    <rect
+       y="7.4375"
+       x="9.6875"
+       height="15.59375"
+       width="1.65625"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1" />
+    <rect
+       y="7.4111085"
+       x="17.067507"
+       height="15.59375"
+       width="1.65625"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1" />
+    <rect
+       transform="matrix(0.91335634,-0.40716115,0.44395571,0.89604873,0,0)"
+       y="11.436637"
+       x="5.0843821"
+       height="16.547358"
+       width="1.8177588"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.07918084;stroke-opacity:1" />
+  </g>
+</svg>
