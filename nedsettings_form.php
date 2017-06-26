@@ -74,13 +74,16 @@ class course_ned_edit_form extends moodleform {
         );
         unset($locationoftrackingiconsoptions);
 
-        $choices = array(
-            0 => get_string('no'),
-            1 => get_string('yes')
-        );
-        $label = get_string('sectioncontentjustification', 'format_ned');
-        $mform->addElement('select', 'sectioncontentjustification', $label, $choices);
-        unset($choices);
+        // Hide!
+        if (false) {
+            $choices = array(
+                0 => get_string('no'),
+                1 => get_string('yes')
+            );
+            $label = get_string('sectioncontentjustification', 'format_ned');
+            $mform->addElement('select', 'sectioncontentjustification', $label, $choices);
+            unset($choices);
+        }
 
         $this->add_action_buttons();
     }
