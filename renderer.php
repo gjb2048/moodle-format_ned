@@ -74,7 +74,8 @@ class format_ned_renderer extends format_section_renderer_base {
             if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
                 $classes .= ' '.\format_ned\toolbox::$nediconsleft;
             }
-            if ($this->settings['sectioncontentjustification']) {
+            // Temporarily disabled...
+            if ((false) && ($this->settings['sectioncontentjustification'])) {
                 $classes .= ' sectioncontentjustification';
             }
         }
