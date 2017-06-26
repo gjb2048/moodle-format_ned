@@ -260,8 +260,12 @@ class format_ned_renderer extends format_section_renderer_base {
         $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
         $sectiontitle = '';
         $sectiontitle .= html_writer::start_tag('div', array('class' => 'section-navigation navigationtitle'));
-        $sectiontitle .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
-        $sectiontitle .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
+        $context = context_course::instance($course->id);
+        if (($this->settings['viewsectionforwardbacklinks'] == 0) ||
+            (($this->settings['viewsectionforwardbacklinks'] == 1) && (has_capability('moodle/course:update', $context)))) {
+            $sectiontitle .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
+            $sectiontitle .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
+        }
         // Title attributes.
         $classes = 'sectionname';
         if (!$thissection->visible) {
@@ -289,10 +293,16 @@ class format_ned_renderer extends format_section_renderer_base {
         // Display section bottom navigation.
         $sectionbottomnav = '';
         $sectionbottomnav .= html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
-        $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
-        $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
-        $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection),
-            array('class' => 'mdl-align'));
+        if (($this->settings['viewsectionforwardbacklinks'] == 0) ||
+            (($this->settings['viewsectionforwardbacklinks'] == 1) && (has_capability('moodle/course:update', $context)))) {
+            $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
+            $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
+        }
+        if (($this->settings['viewjumptomenu'] == 0) ||
+            (($this->settings['viewjumptomenu'] == 1) && (has_capability('moodle/course:update', $context)))) {
+            $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection),
+                array('class' => 'mdl-align'));
+        }
         $sectionbottomnav .= html_writer::end_tag('div');
         echo $sectionbottomnav;
 

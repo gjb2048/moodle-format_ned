@@ -51,3 +51,7 @@ $string['nediconsleft'] = 'NED icons left';
 $string['nediconsright'] = 'NED icons right';
 $string['sectioncontentjustification'] = 'Center and left jusfify content in sections';
 $string['editnedformatsettings'] = 'Edit Ned Format settings';
+$string['viewjumptomenu'] = "View 'Jump to...' menu";
+$string['viewsectionforwardbacklinks'] = 'View section forward/back links';
+$string['everyone'] = 'Everyone';
+$string['courseeditors'] = 'Course editors';

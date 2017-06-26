@@ -288,6 +288,14 @@ class format_ned extends format_base {
                 'sectioncontentjustification' => array(
                     'default' => 0,
                     'type' => PARAM_INT,
+                ),
+                'viewjumptomenu' => array(
+                    'default' => 0,
+                    'type' => PARAM_INT,
+                ),
+                'viewsectionforwardbacklinks' => array(
+                    'default' => 0,
+                    'type' => PARAM_INT,
                 )
             );
         }
@@ -326,6 +334,10 @@ class format_ned extends format_base {
                 'label' => 'locationoftrackingicons', 'element_type' => 'hidden');
             $courseformatoptionsedit['sectioncontentjustification'] = array(
                 'label' => 'sectioncontentjustification', 'element_type' => 'hidden');
+            $courseformatoptionsedit['viewjumptomenu'] = array(
+                'label' => 'viewjumptomenu', 'element_type' => 'hidden');
+            $courseformatoptionsedit['viewsectionforwardbacklinks'] = array(
+                'label' => 'viewsectionforwardbacklinks', 'element_type' => 'hidden');
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
         return $courseformatoptions;

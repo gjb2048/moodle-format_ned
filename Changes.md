@@ -14,3 +14,4 @@ Version 3.3.0.1
   8. Disable 'sectioncontentjustification' setting.
   9. Remove 'Your progress' and add down arrow.
  10. Change 'Edit course settings' to 'Edit Ned Format settings'.
+ 11. Added view "Jump to" menu and 'forward/back' navigation settings.
