@@ -37,6 +37,17 @@
     white-space: nowrap;
 }
 
+/* Completion progress icon */
+.path-course-view .completionprogress {
+    right: 65px;
+    width: 16px;
+}
+
+.path-course-view .completionprogress .helptooltip img {
+    padding: 0;
+}
+
+
 /* nediconsleft */
 ul.ned.nediconsleft .section .activity .actions {
     left: -25px;
@@ -46,6 +57,11 @@ ul.ned.nediconsleft .section .activity .actions {
     border-width: 0;
     margin: 0;
     padding: 0;
+}
+
+.path-course-view .completionprogress.nediconsleft {
+    float: left;
+    left: 4px;
 }
 
 /* sectioncontentjustification */

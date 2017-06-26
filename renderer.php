@@ -186,6 +186,27 @@ class format_ned_renderer extends format_section_renderer_base {
     }
 
     /**
+     * Returns the 'Your progress' help icon, if completion tracking is enabled.
+     *
+     * @return string HTML code for help icon, or blank if not needed
+     */
+    public function display_completion_help_icon(completion_info $completioninfo) {
+        global $PAGE, $OUTPUT;
+        $result = '';
+        if ($completioninfo->is_enabled() && !$PAGE->user_is_editing() && isloggedin() && !isguestuser()) {
+            $completionprogressclass = 'completionprogress';
+            if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
+                $completionprogressclass .= ' nediconsleft';
+            }
+            $result .= html_writer::tag('div',
+                    $OUTPUT->help_icon('completionicons', 'completion').
+                    $OUTPUT->pix_icon('t/sort_desc', ''),
+                    array('id' => 'completionprogressid', 'class' => $completionprogressclass));
+        }
+        return $result;
+    }
+
+    /**
      * Output the html for a single section page.
      *
      * @param stdClass $course The course object.
@@ -258,7 +279,7 @@ class format_ned_renderer extends format_section_renderer_base {
         echo $this->section_header($thissection, $course, true, $displaysection);
         // Show completion help icon.
         $completioninfo = new completion_info($course);
-        echo $completioninfo->display_help_icon();
+        echo $this->display_completion_help_icon($completioninfo);
 
         echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
         echo $this->courserenderer->course_section_add_cm_control($course, $displaysection, $displaysection);
@@ -294,7 +315,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $context = context_course::instance($course->id);
         // Title with completion help icon.
         $completioninfo = new completion_info($course);
-        echo $completioninfo->display_help_icon();
+        echo $this->display_completion_help_icon($completioninfo);
         echo $this->output->heading($this->page_title(), 2, 'accesshide');
 
         // Copy activity clipboard.

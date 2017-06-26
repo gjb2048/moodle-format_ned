@@ -1,0 +1,13 @@
+.path-course-view .completionprogress a i {
+    margin: 0;
+}
+
+.path-course-view .completionprogress.nediconsleft {
+    left: 34px;
+}
+
+.path-course-view .completionprogress > i {
+    color: #5bc0de;
+    margin-left: 1px;
+    margin-top: -25px;
+}
