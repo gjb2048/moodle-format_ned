@@ -50,3 +50,4 @@ $string['moodleicons'] = 'Moodle icons';
 $string['nediconsleft'] = 'NED icons left';
 $string['nediconsright'] = 'NED icons right';
 $string['sectioncontentjustification'] = 'Center and left jusfify content in sections';
+$string['editnedformatsettings'] = 'Edit Ned Format settings';

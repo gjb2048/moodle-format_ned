@@ -13,3 +13,4 @@ Version 3.3.0.1
   7. Added 'Edit course settings' to the course administration menu.
   8. Disable 'sectioncontentjustification' setting.
   9. Remove 'Your progress' and add down arrow.
+ 10. Change 'Edit course settings' to 'Edit Ned Format settings'.
