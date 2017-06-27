@@ -227,6 +227,12 @@ class format_ned_renderer extends format_section_renderer_base {
             return;
         }
 
+        // Show completion help icon.
+        $completioninfo = new completion_info($course);
+        echo html_writer::start_tag('div', array('class' => 'single-completion'));
+        echo $this->display_completion_help_icon($completioninfo);
+        echo html_writer::end_tag('div');
+
         if (!$sectioninfo->uservisible) {
             if (!$course->hiddensections) {
                 echo $this->start_section_list();
@@ -282,9 +288,6 @@ class format_ned_renderer extends format_section_renderer_base {
         echo $this->start_section_list();
 
         echo $this->section_header($thissection, $course, true, $displaysection);
-        // Show completion help icon.
-        $completioninfo = new completion_info($course);
-        echo $this->display_completion_help_icon($completioninfo);
 
         echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
         echo $this->courserenderer->course_section_add_cm_control($course, $displaysection, $displaysection);

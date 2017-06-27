@@ -1,12 +1,16 @@
-.path-course-view .completionprogress a i {
+.format-ned.path-course-view .single-completion {
+    height: 30px;
+}
+
+.format-ned.path-course-view .completionprogress a i {
     margin: 0;
 }
 
-.path-course-view .completionprogress.nediconsleft {
-    left: 34px;
+.format-ned.path-course-view .completionprogress.nediconsleft {
+    left: 33px;
 }
 
-.path-course-view .completionprogress > i {
+.format-ned.path-course-view .completionprogress > i {
     color: #5bc0de;
     margin-left: 1px;
     margin-top: -25px;

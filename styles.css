@@ -37,14 +37,28 @@
     white-space: nowrap;
 }
 
+/* Completion progress help */
+.format-ned.path-course-view .course-content {
+    position: relative;
+}
+
 /* Completion progress icon */
-.path-course-view .completionprogress {
-    right: 65px;
+.format-ned.path-course-view .completionprogress {
+    position: absolute;
+    right: 60px;
     width: 16px;
 }
 
-.path-course-view .completionprogress .helptooltip img {
+.format-ned.path-course-view .single-completion {
+    height: 40px;
+}
+
+.format-ned.path-course-view .completionprogress .helptooltip img {
     padding: 0;
+}
+
+.format-ned.path-course-view .completionprogress.nediconsleft {
+    left: 6px;
 }
 
 /* Completion icons */
@@ -52,20 +66,15 @@ ul.ned .section .activity .actions {
     width: 18px;
 }
 
-/* nediconsleft */
-ul.ned.nediconsleft .section .activity .actions {
-    left: -25px;
-}
-
-.path-course-view ul.ned.nediconsleft .section li.activity .actions form.togglecompletion .btn {
+.path-course-view ul.ned .section li.activity .actions form.togglecompletion .btn {
     border-width: 0;
     margin: 0;
     padding: 0;
 }
 
-.path-course-view .completionprogress.nediconsleft {
-    float: left;
-    left: 4px;
+/* nediconsleft */
+ul.ned.nediconsleft .section .activity .actions {
+    left: -25px;
 }
 
 /* sectioncontentjustification */
