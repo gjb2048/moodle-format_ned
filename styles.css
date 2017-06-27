@@ -89,6 +89,14 @@ ul.ned.sectioncontentjustification .section .activity .actions {
 }
 
 /* Activity completion background */
+.course-content ul.ned li.section .activity.completion-background {
+    padding: .4em;
+}
+
+.course-content ul.ned li.section .activity.completion-background .mod-indent-outer {
+    width: calc(100% - 34px);
+}
+
 .course-content ul.ned li.section .activity.completion-background .activityinstance {
     margin: 0;
     padding: 5px 15px 1px 10px;

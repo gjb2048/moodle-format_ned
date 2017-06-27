@@ -17,3 +17,4 @@ Version 3.3.0.1
  11. Added view "Jump to" menu and 'forward/back' navigation settings.
  12. Fix completion icons overlay on activities / resources.
  13. Fix progress help icon position.
+ 14. Fix activity background width and space between.
