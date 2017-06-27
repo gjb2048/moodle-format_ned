@@ -14,7 +14,8 @@ Version 3.3.0.1
   8. Disable 'sectioncontentjustification' setting.
   9. Remove 'Your progress' and add down arrow.
  10. Change 'Edit course settings' to 'Edit Ned Format settings'.
- 11. Added view "Jump to" menu and 'forward/back' navigation settings.
+ 11. Added view "Jump to" menu and "forward/back" navigation settings.
  12. Fix completion icons overlay on activities / resources.
  13. Fix progress help icon position.
  14. Fix activity background width and space between.
+ 15. Added "Jump to" menu and "forward/back" navigation "Nobody" option.
