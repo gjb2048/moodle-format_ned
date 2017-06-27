@@ -47,6 +47,10 @@
     padding: 0;
 }
 
+/* Completion icons */
+ul.ned .section .activity .actions {
+    width: 18px;
+}
 
 /* nediconsleft */
 ul.ned.nediconsleft .section .activity .actions {
