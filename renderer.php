@@ -229,7 +229,7 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Show completion help icon.
         $completioninfo = new completion_info($course);
-        echo html_writer::start_tag('div', array('class' => 'single-completion'));
+        echo html_writer::start_tag('div', array('class' => 'completionprogresshelp'));
         echo $this->display_completion_help_icon($completioninfo);
         echo html_writer::end_tag('div');
 
@@ -329,7 +329,9 @@ class format_ned_renderer extends format_section_renderer_base {
         $context = context_course::instance($course->id);
         // Title with completion help icon.
         $completioninfo = new completion_info($course);
+        echo html_writer::start_tag('div', array('class' => 'completionprogresshelp'));
         echo $this->display_completion_help_icon($completioninfo);
+        echo html_writer::end_tag('div');
         echo $this->output->heading($this->page_title(), 2, 'accesshide');
 
         // Copy activity clipboard.

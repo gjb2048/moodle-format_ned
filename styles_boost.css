@@ -1,4 +1,4 @@
-.format-ned.path-course-view .single-completion {
+.format-ned.path-course-view .completionprogresshelp {
     height: 30px;
 }
 
@@ -7,7 +7,7 @@
 }
 
 .format-ned.path-course-view .completionprogress.nediconsleft {
-    left: 33px;
+    left: 36px;
 }
 
 .format-ned.path-course-view .completionprogress > i {
