@@ -513,7 +513,7 @@ function format_ned_inplace_editable($itemtype, $itemid, $newvalue) {
 }
 
 function format_ned_extend_navigation_course(navigation_node $parentnode, stdClass $course, context_course $context) {
-    if (has_capability('moodle/course:update', $context)) {
+    if (($course->format == 'ned') && (has_capability('moodle/course:update', $context))) {
         $node = navigation_node::create(get_string('editnedformatsettings', 'format_ned'),
             new moodle_url('/course/format/ned/nedsettings.php', array('id' => $course->id)),
             navigation_node::TYPE_SETTING, null, null, new pix_icon('ned_icon',

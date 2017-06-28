@@ -21,3 +21,4 @@ Version 3.3.0.1
  15. Added "Jump to" menu and "forward/back" navigation "Nobody" option.
  16. Fix unsuccessful completion background and 'draft / waiting for grade' states.
  17. Fix saved, submitted and waiting for grade icons.
+ 18. Fix 'Edit NED Format settings' appearing for all formats.
