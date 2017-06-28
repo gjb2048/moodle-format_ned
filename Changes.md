@@ -22,3 +22,4 @@ Version 3.3.0.1
  16. Fix unsuccessful completion background and 'draft / waiting for grade' states.
  17. Fix saved, submitted and waiting for grade icons.
  18. Fix 'Edit NED Format settings' appearing for all formats.
+ 19. Fix completion background colour for complete fixes.

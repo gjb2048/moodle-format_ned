@@ -120,17 +120,17 @@ ul.ned.sectioncontentjustification .section .activity .actions {
     border: 1px solid #AEE5E3;
 }
 
+.course-content ul.ned li.section .activity.completion-submitted .activityinstance,
+.course-content ul.ned li.section .activity.completion-waitinggrade .activityinstance {
+    background-color: #FBFFDB;
+    border: 1px solid #FBFFDB;
+}
+
 .course-content ul.ned li.section .activity.completion-auto-pass .activityinstance,
 .course-content ul.ned li.section .activity.completion-auto-y .activityinstance,
 .course-content ul.ned li.section .activity.completion-manual-y .activityinstance {
     background-color: #D0EFCF;
     border: 1px solid #D0EFCF;
-}
-
-.course-content ul.ned li.section .activity.completion-submitted .activityinstance,
-.course-content ul.ned li.section .activity.completion-waitinggrade .activityinstance {
-    background-color: #FBFFDB;
-    border: 1px solid #FBFFDB;
 }
 
 .course-content ul.ned li.section .activity.completion-auto-fail .activityinstance {
