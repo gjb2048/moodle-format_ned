@@ -30,7 +30,25 @@ defined('MOODLE_INTERNAL') || die;
 
 class toolbox {
     // Constants.
+
+    // Completion icon position.
     public static $moodleicons = 'moodleicons';
     public static $nediconsleft = 'nediconsleft';
     public static $nediconsright = 'nediconsright';
+
+    // Completion state.
+    public static $autoenabled = 'auto-enabled';
+    public static $autofail = 'auto-fail';
+    public static $autopass = 'auto-pass';
+    public static $auton = 'auto-n';
+    public static $autoy = 'auto-y';
+    public static $manualenabled = 'manual-enabled';
+    public static $manualn = 'manual-n';
+    public static $manualy = 'manual-y';
+    public static $notset = 'notset';
+
+    // Completsion icon assignment state.
+    public static $saved = 'saved';
+    public static $submitted = 'submitted';
+    public static $waitinggrade = 'waitinggrade';
 }

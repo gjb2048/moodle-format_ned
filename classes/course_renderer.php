@@ -62,11 +62,14 @@ class format_ned_course_renderer extends core_course_renderer {
         $output = '';
         if ($modulehtml = $this->course_section_cm($course, $completioninfo, $mod, $sectionreturn, $displayoptions)) {
 
-            $completionclass = $this->get_completion_state($course, $completioninfo, $mod, true)['completionstate'];
+            $completionstate = $this->get_completion_state($course, $completioninfo, $mod, true, true);
 
             $modclasses = 'activity '.$mod->modname.' modtype_'.$mod->modname.' '.$mod->extraclasses;
-            if ($completionclass) {
-                $modclasses .= ' completion-background completion-'.$completionclass;
+            if ($completionstate['completionstate']) {
+                $modclasses .= ' completion-background completion-'.$completionstate['completionstate'];
+                if ($completionstate['assgnmentstatus']) {
+                    $modclasses .= ' completion-'.$completionstate['assgnmentstatus'];
+                }
             }
             $output .= html_writer::tag('li', $modulehtml, array('class' => $modclasses, 'id' => 'module-' . $mod->id));
         }
@@ -108,7 +111,7 @@ class format_ned_course_renderer extends core_course_renderer {
             return $output;
         }
 
-        $completionstate = $this->get_completion_state($course, $completioninfo, $mod, false);
+        $completionstate = $this->get_completion_state($course, $completioninfo, $mod, false, false);
         $completionicon = $completionstate['completionstate'];
 
         if ($completionicon) {
@@ -153,6 +156,13 @@ class format_ned_course_renderer extends core_course_renderer {
                 $output .= html_writer::end_tag('form');
             } else {
                 // In auto mode, the icon is just an image.
+                if ($completionicon == \format_ned\toolbox::$auton) {
+                    $assgnmentstatus = $this->is_saved_or_submitted($mod);
+                    if ($assgnmentstatus) {
+                        // Use state icon.
+                        $completionicon = $assgnmentstatus;
+                    }
+                }
                 $completionpixicon = new pix_icon('i/completion-'.$completionicon, $imgalt, 'format_ned',
                         array('title' => $imgalt));
                 $output .= html_writer::tag('span', $this->output->render($completionpixicon),
@@ -170,58 +180,192 @@ class format_ned_course_renderer extends core_course_renderer {
      *     to fetch once for all modules in course/section for performance.
      * @param cm_info $mod module to show completion for.
      * @param boolean $returnnotset If no tracking then return 'notset' as the state.
-     * @return array containing the competition state and data if fetched.
+     * @param boolean $returnassgnmentstatus Request assignment status.
+     * @return array containing the competition state, data if fetched and assignment status if known.
      */
-    protected function get_completion_state($course, &$completioninfo, cm_info $mod, $returnnotset) {
+    protected function get_completion_state($course, &$completioninfo, cm_info $mod, $returnnotset, $returnassgnmentstatus) {
         if ($completioninfo === null) {
             $completioninfo = new completion_info($course);
         }
         $completion = $completioninfo->is_enabled($mod);
+        $assgnmentstatus = false;
         $completionstate = '';
         $completiondata = null;
         if ($completion == COMPLETION_TRACKING_NONE) {
             if ($returnnotset) {
-                $completionstate = 'notset';
+                $completionstate = \format_ned\toolbox::$notset;
             }
         } else {
             if ($this->page->user_is_editing()) {
                 switch ($completion) {
                     case COMPLETION_TRACKING_MANUAL :
-                        $completionstate = 'manual-enabled';
+                        $completionstate = \format_ned\toolbox::$manualenabled;
                         break;
                     case COMPLETION_TRACKING_AUTOMATIC :
-                        $completionstate = 'auto-enabled';
+                        $completionstate = \format_ned\toolbox::$autoenabled;
                         break;
                 }
             } else if ($completion == COMPLETION_TRACKING_MANUAL) {
                 $completiondata = $completioninfo->get_data($mod, true);
                 switch($completiondata->completionstate) {
                     case COMPLETION_INCOMPLETE:
-                        $completionstate = 'manual-n';
+                        $completionstate = \format_ned\toolbox::$manualn;
                         break;
                     case COMPLETION_COMPLETE:
-                        $completionstate = 'manual-y';
+                        $completionstate = \format_ned\toolbox::$manualy;
                         break;
+                }
+                if ($returnassgnmentstatus) {
+                    $assgnmentstatus = $this->is_saved_or_submitted($mod);
                 }
             } else { // Automatic.
                 $completiondata = $completioninfo->get_data($mod, true);
                 switch($completiondata->completionstate) {
                     case COMPLETION_INCOMPLETE:
-                        $completionstate = 'auto-n';
+                        $completionstate = \format_ned\toolbox::$auton;
                         break;
                     case COMPLETION_COMPLETE:
-                        $completionstate = 'auto-y';
+                        $completionstate = \format_ned\toolbox::$autoy;
                         break;
                     case COMPLETION_COMPLETE_PASS:
-                        $completionstate = 'auto-pass';
+                        $completionstate = \format_ned\toolbox::$autopass;
                         break;
                     case COMPLETION_COMPLETE_FAIL:
-                        $completionstate = 'auto-fail';
+                        $completionstate = \format_ned\toolbox::$autofail;
                         break;
+                }
+                if ($returnassgnmentstatus) {
+                    $assgnmentstatus = $this->is_saved_or_submitted($mod);
                 }
             }
         }
 
-        return array('completionstate' => $completionstate, 'completiondata' => $completiondata);
+        return array(
+            'completionstate' => $completionstate,
+            'completiondata' => $completiondata,
+            'assgnmentstatus' => $assgnmentstatus
+        );
+    }
+
+    /**
+     * To get the assignment object and user submission
+     *
+     * @param module of the assignment
+     * @return assignment object from assignment table
+     * @todo Finish documenting this function
+     */
+    protected function is_saved_or_submitted($mod) {
+        global $CFG, $DB, $SESSION, $USER;
+        require_once($CFG->dirroot . '/mod/assignment/lib.php');
+
+        if (isset($SESSION->completioncache)) {
+            unset($SESSION->completioncache);
+        }
+
+        if ($mod->modname == 'assignment') {
+            if (!($assignment = $DB->get_record('assignment', array('id' => $mod->instance)))) {
+                return false; // Doesn't exist?
+            }
+            require_once($CFG->dirroot.'/mod/assignment/type/'.$assignment->assignmenttype.'/assignment.class.php');
+            $assignmentclass = "assignment_$assignment->assignmenttype";
+            $assignmentinstance = new $assignmentclass($mod->id, $assignment, $mod);
+
+            if (!($submission = $assignmentinstance->get_submission($USER->id)) || empty($submission->timemodified)) {
+                return false;
+            }
+
+            switch ($assignment->assignmenttype) {
+                case "upload":
+                    if ($assignment->var4) { // If var4 enable then assignment can be saved.
+                        if (!empty($submission->timemodified)
+                            && (empty($submission->data2))
+                            && (empty($submission->timemarked))) {
+                            return \format_ned\toolbox::$saved;
+                        } else if (!empty($submission->timemodified)
+                            && ($submission->data2 = 'submitted')
+                            && empty($submission->timemarked)) {
+                            return \format_ned\toolbox::$submitted;
+                        } else if (!empty($submission->timemodified)
+                            && ($submission->data2 = 'submitted')
+                            && ($submission->grade == -1)) {
+                            return \format_ned\toolbox::$submitted;
+                        }
+                    } else if (empty($submission->timemarked)) {
+                        return \format_ned\toolbox::$submitted;
+                    }
+                    break;
+                case "uploadsingle":
+                    if (empty($submission->timemarked)) {
+                        return \format_ned\toolbox::$submitted;
+                    }
+                    break;
+                case "online":
+                    if (empty($submission->timemarked)) {
+                        return \format_ned\toolbox::$submitted;
+                    }
+                    break;
+                case "offline":
+                    if (empty($submission->timemarked)) {
+                        return \format_ned\toolbox::$submitted;
+                    }
+                    break;
+            }
+        } else if ($mod->modname == 'assign') {
+            if (!($assignment = $DB->get_record('assign', array('id' => $mod->instance)))) {
+                return false; // Doesn't exist.
+            }
+
+            if (!$submission = $DB->get_records('assign_submission',
+                array('assignment' => $assignment->id, 'userid' => $USER->id), 'attemptnumber DESC', '*', 0, 1)) {
+                return false;
+            } else {
+                $submission = reset($submission);
+            }
+
+            $attemptnumber = $submission->attemptnumber;
+
+            if (($submission->status == 'reopened') && ($submission->attemptnumber > 0)) {
+                $attemptnumber = $submission->attemptnumber - 1;
+            }
+
+            if ($submissionisgraded = $DB->get_records('assign_grades',
+                array('assignment' => $assignment->id, 'userid' => $USER->id, 'attemptnumber' => $attemptnumber),
+                'attemptnumber DESC', '*', 0, 1)) {
+
+                $submissionisgraded = reset($submissionisgraded);
+                if ($submissionisgraded->grade > -1) {
+                    if (($submission->timemodified > $submissionisgraded->timemodified)
+                        || ($submission->attemptnumber > $submissionisgraded->attemptnumber)) {
+                        $graded = false;
+                    } else {
+                        $graded = true;
+                    }
+                } else {
+                    $graded = false;
+                }
+            } else {
+                $graded = false;
+            }
+
+            if ($submission->status == 'draft') {
+                if ($graded) {
+                    return \format_ned\toolbox::$submitted;
+                } else {
+                    return \format_ned\toolbox::$saved;
+                }
+            }
+            if ($submission->status == 'reopened') {
+                return \format_ned\toolbox::$submitted;
+            }
+            if ($submission->status == 'submitted') {
+                if ($graded) {
+                    return \format_ned\toolbox::$submitted;
+                } else {
+                    return \format_ned\toolbox::$waitinggrade;
+                }
+            }
+        } else {
+            return false;
+        }
     }
 }

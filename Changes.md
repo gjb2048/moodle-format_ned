@@ -19,3 +19,5 @@ Version 3.3.0.1
  13. Fix progress help icon position.
  14. Fix activity background width and space between.
  15. Added "Jump to" menu and "forward/back" navigation "Nobody" option.
+ 16. Fix unsuccessful completion background and 'draft / waiting for grade' states.
+ 17. Fix saved, submitted and waiting for grade icons.
