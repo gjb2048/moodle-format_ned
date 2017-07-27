@@ -192,6 +192,10 @@ class format_ned_renderer extends format_section_renderer_base {
      * @return string HTML code for help icon, or blank if not needed
      */
     public function display_completion_help_icon(completion_info $completioninfo) {
+        if ($this->settings['progresstooltip'] == 0) {  // Hide!
+            return '';
+        }
+
         global $PAGE, $OUTPUT;
         $result = '';
         if ($completioninfo->is_enabled() && !$PAGE->user_is_editing() && isloggedin() && !isguestuser()) {
@@ -199,8 +203,13 @@ class format_ned_renderer extends format_section_renderer_base {
             if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
                 $completionprogressclass .= ' nediconsleft';
             }
+            if ($this->settings['progresstooltip'] == 1) {
+                $helpicon = $OUTPUT->help_icon('completioniconsnomanual', 'format_ned');
+            } else {
+                $helpicon = $OUTPUT->help_icon('completionicons', 'completion');
+            }
             $result .= html_writer::tag('div',
-                    $OUTPUT->help_icon('completionicons', 'completion').
+                    $helpicon.
                     $OUTPUT->pix_icon('t/sort_desc', ''),
                     array('id' => 'completionprogressid', 'class' => $completionprogressclass));
         }

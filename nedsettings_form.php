@@ -105,6 +105,16 @@ class course_ned_edit_form extends moodleform {
         );
         unset($viewsectionforwardbacklinksoptions);
 
+        $progresstooltipoptions = array(
+            0 => get_string('hideicon', 'format_ned'),
+            1 => get_string('hidemanualcompletion', 'format_ned'),
+            2 => get_string('showalldescriptions', 'format_ned')
+        );
+        $mform->addElement('select', 'progresstooltip',
+            get_string('progresstooltip', 'format_ned'), $progresstooltipoptions
+        );
+        unset($progresstooltipoptions);
+
         $this->add_action_buttons();
     }
 

@@ -1,5 +1,8 @@
 Version Information
 ===================
+Version 3.3.0.2
+  1. Added progress tooltip options.
+
 Version 3.3.0.1
   1. Clone of topics format.
   2. Added NED format completion icons.  Note: Using own extended 'core_course_render' with overridden method

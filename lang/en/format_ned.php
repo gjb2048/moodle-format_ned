@@ -56,3 +56,14 @@ $string['viewsectionforwardbacklinks'] = 'View section forward/back links';
 $string['courseeditors'] = 'Course editors';
 $string['everyone'] = 'Everyone';
 $string['nobody'] = 'Nobody';
+$string['progresstooltip'] = 'Progress tooltip';
+$string['hideicon'] = 'Hide icon';
+$string['hidemanualcompletion'] = 'Hide manual completion description';
+$string['showalldescriptions'] = 'Show all descriptions';
+
+// Completion icon.
+$string['completioniconsnomanual'] = 'Completion tick boxes';
+$string['completioniconsnomanual_help'] = 'A tick next to an activity name may be used to indicate when the activity is complete.
+
+If a box with a dotted border is shown, a tick will appear automatically when you have completed the activity according to conditions set by the teacher.';
+

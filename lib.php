@@ -296,6 +296,10 @@ class format_ned extends format_base {
                 'viewsectionforwardbacklinks' => array(
                     'default' => 0,
                     'type' => PARAM_INT,
+                ),
+                'progresstooltip' => array(
+                    'default' => 1,
+                    'type' => PARAM_INT,
                 )
             );
         }
@@ -338,6 +342,8 @@ class format_ned extends format_base {
                 'label' => 'viewjumptomenu', 'element_type' => 'hidden');
             $courseformatoptionsedit['viewsectionforwardbacklinks'] = array(
                 'label' => 'viewsectionforwardbacklinks', 'element_type' => 'hidden');
+            $courseformatoptionsedit['progresstooltip'] = array(
+                'label' => 'progresstooltip', 'element_type' => 'hidden');
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
         return $courseformatoptions;
