@@ -43,6 +43,7 @@ $string['format'] = 'Format';
 $string['formatinfo'] = 'Format info';
 
 $string['sectiondeliverymethod'] = 'Section delivery method';
+$string['sectiondeliverymethod_help'] = 'Section delivery method help';
 $string['sectiondeliveryoption'] = 'Section (do not advance sections automatically)<br>Default section:';
 $string['moodledefaultoption'] = 'Moodle default.';
 $string['sectionnotattemptedoption'] = 'Section that contains the earliest "not attempted" activity.';
@@ -51,6 +52,7 @@ $string['scheduledeliveryoption'] = 'Schedule:';
 $string['scheduleadvanceoption'] = 'Advance section every';
 $string['days'] = 'Day(s)';
 $string['weeks'] = 'Week(s)';
+$string['sectionscheduleerror'] = 'Please state either section or schedule delivery method.';
 
 $string['othersettings'] = 'Other settings';
 $string['showsection0'] = 'Show section 0';
