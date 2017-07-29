@@ -2,6 +2,7 @@ Version Information
 ===================
 Version 3.3.0.2
   1. Added progress tooltip options.
+  2. Added section delivery method settings.
 
 Version 3.3.0.1
   1. Clone of topics format.

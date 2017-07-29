@@ -41,6 +41,17 @@ $string['showfromothers'] = 'Show section';
 // Settings form.
 $string['format'] = 'Format';
 $string['formatinfo'] = 'Format info';
+
+$string['sectiondeliverymethod'] = 'Section delivery method';
+$string['sectiondeliveryoption'] = 'Section (do not advance sections automatically)<br>Default section:';
+$string['moodledefaultoption'] = 'Moodle default.';
+$string['sectionnotattemptedoption'] = 'Section that contains the earliest "not attempted" activity.';
+$string['specifydefaultoption'] = 'Specify default section: ';
+$string['scheduledeliveryoption'] = 'Schedule:';
+$string['scheduleadvanceoption'] = 'Advance section every';
+$string['days'] = 'Day(s)';
+$string['weeks'] = 'Week(s)';
+
 $string['othersettings'] = 'Other settings';
 $string['showsection0'] = 'Show section 0';
 $string['showonlysection0'] = 'Show only section 0';

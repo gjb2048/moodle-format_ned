@@ -267,39 +267,43 @@ class format_ned extends format_base {
             $courseformatoptions = array(
                 'hiddensections' => array(
                     'default' => $courseconfig->hiddensections,
-                    'type' => PARAM_INT,
+                    'type' => PARAM_INT
                 ),
                 'coursedisplay' => array(
                     'default' => $courseconfig->coursedisplay,
-                    'type' => PARAM_INT,
+                    'type' => PARAM_INT
                 ),
                 'showsection0' => array(
                     'default' => 1,
-                    'type' => PARAM_INT,
+                    'type' => PARAM_INT
                 ),
                 'activitytrackingbackground' => array(
                     'default' => 1,
-                    'type' => PARAM_INT,
+                    'type' => PARAM_INT
                 ),
                 'locationoftrackingicons' => array(
                     'default' => 'nediconsleft',
-                    'type' => PARAM_ALPHA,
+                    'type' => PARAM_ALPHA
                 ),
                 'sectioncontentjustification' => array(
                     'default' => 0,
-                    'type' => PARAM_INT,
+                    'type' => PARAM_INT
                 ),
                 'viewjumptomenu' => array(
                     'default' => 0,
-                    'type' => PARAM_INT,
+                    'type' => PARAM_INT
                 ),
                 'viewsectionforwardbacklinks' => array(
                     'default' => 0,
-                    'type' => PARAM_INT,
+                    'type' => PARAM_INT
                 ),
                 'progresstooltip' => array(
                     'default' => 1,
-                    'type' => PARAM_INT,
+                    'type' => PARAM_INT
+                ),
+                'sectiondeliverymethod' => array(
+                    'default' => '{"sectiondeliverymethod": 1, "defaultmethod": 1}', // JSON String for use in array.
+                    'type' => PARAM_RAW
                 )
             );
         }
@@ -344,6 +348,8 @@ class format_ned extends format_base {
                 'label' => 'viewsectionforwardbacklinks', 'element_type' => 'hidden');
             $courseformatoptionsedit['progresstooltip'] = array(
                 'label' => 'progresstooltip', 'element_type' => 'hidden');
+            $courseformatoptionsedit['sectiondeliverymethod'] = array(
+                'label' => 'sectiondeliverymethod', 'element_type' => 'hidden');  // Storage from complex element in 'create_edit_form_elements()'.
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
         return $courseformatoptions;
@@ -376,6 +382,63 @@ class format_ned extends format_base {
             }
             array_unshift($elements, $element);
         }
+
+        /*$sectiondeliverymethodgroup = array();
+
+        $sectiondeliveryoption =& $mform->createElement('radio', 'sectiondeliverymethod', null, get_string('sectiondeliveryoption', 'format_ned'), 0);
+        $sectiondeliverymethodgroup[] = $sectiondeliveryoption;
+
+        $sectiondeliveryoptiongroup = array();
+        $sectiondeliveryoptiongroup[] =& $mform->createElement('radio', 'sectiondeliveryoption', null, get_string('moodledefaultoption', 'format_ned'), 0);
+        $sectiondeliveryoptiongroup[] =& $mform->createElement('radio', 'sectiondeliveryoption', null, get_string('sectionnotattemptedoption', 'format_ned'), 1);
+        $specifydefaultoption =& $mform->createElement('radio', 'sectiondeliveryoption', null, get_string('specifydefaultoption', 'format_ned'), 2);
+        $sectiondeliveryoptiongroup[] = $specifydefaultoption;
+        $sectiondeliveryoptiongroupelement = $mform->addGroup($sectiondeliveryoptiongroup, 'sectiondeliveryoptiongroup', '', array('<br />'), false);
+        $sectiondeliverymethodgroup[] = $sectiondeliveryoptiongroupelement;
+
+        $scheduledeliveryoption =& $mform->createElement('radio', 'sectiondeliverymethod', null, get_string('scheduledeliveryoption', 'format_ned'), 1);
+        $sectiondeliverymethodgroup[] = $scheduledeliveryoption;*/
+
+        $sectiondeliverymethodgroup = array();
+
+        $sectiondeliverymethodgroup[] =& $mform->createElement('advcheckbox', 'sectiondeliveryoption', null, get_string('sectiondeliveryoption', 'format_ned'), null, array(0, 1));
+
+        //$sectiondeliverymethodgroup[] =& $mform->createElement('advcheckbox', 'moodledefaultoption', null, get_string('moodledefaultoption', 'format_ned'), null, array(0, 1));
+        //$sectiondeliverymethodgroup[] =& $mform->createElement('advcheckbox', 'sectionnotattemptedoption', null, get_string('sectionnotattemptedoption', 'format_ned'), null, array(0, 1));
+        //$sectiondeliverymethodgroup[] =& $mform->createElement('advcheckbox', 'specifydefaultoption', null, get_string('specifydefaultoption', 'format_ned'), null, array(0, 1));
+
+        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null, get_string('moodledefaultoption', 'format_ned'), 0);
+        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null, get_string('sectionnotattemptedoption', 'format_ned'), 1);
+        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null, get_string('specifydefaultoption', 'format_ned'), 2);
+        $specifydefaultoptionnumber =& $mform->createElement('text', 'specifydefaultoptionnumber', null, array('min' => 1, 'max' => 10, 'class' => 'specifydefaultoptionnumber'));
+        $specifydefaultoptionnumber->setType('number');
+        $sectiondeliverymethodgroup[] = $specifydefaultoptionnumber;
+
+        $sectiondeliverymethodgroup[] =& $mform->createElement('advcheckbox', 'scheduledeliveryoption', null, get_string('scheduledeliveryoption', 'format_ned'), null, array(0, 1));
+
+        $scheduleadvanceoptionnumber =& $mform->createElement('text', 'scheduleadvanceoptionnumber', get_string('scheduleadvanceoption', 'format_ned'), array('min' => 1, 'max' => 10, 'class' => 'scheduleadvanceoptionnumber'));
+        $scheduleadvanceoptionnumber->setType('number');
+        $sectiondeliverymethodgroup[] = $scheduleadvanceoptionnumber;
+
+
+        $sectiondeliverymethodgroup[] =& $mform->createElement('select', 'scheduleadvanceoptionunit', '', array(1 => get_string('weeks', 'format_ned'), 2 => get_string('days', 'format_ned')));
+
+        $mform->disabledIf('sectiondeliveryoption', 'scheduledeliveryoption', 'eq', 1);
+        $mform->disabledIf('scheduledeliveryoption', 'sectiondeliveryoption', 'eq', 1);
+        $mform->disabledIf('sectiondeliveryoptions', 'sectiondeliveryoption', 'eq', 0);
+        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoptions', 'neq', 2);
+        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoption', 'neq', 1);
+        $mform->disabledIf('scheduleadvanceoptionnumber', 'scheduledeliveryoption', 'neq', 1);
+        $mform->disabledIf('scheduleadvanceoptionunit', 'scheduledeliveryoption', 'neq', 1);
+
+        /*$mform->disabledIf('moodledefaultoption', 'scheduledeliveryoption', 'eq', 1);
+        $mform->disabledIf('sectionnotattemptedoption', 'scheduledeliveryoption', 'eq', 1);
+        $mform->disabledIf('specifydefaultoption', 'scheduledeliveryoption', 'eq', 1);
+        $mform->disabledIf('moodledefaultoption', 'sectiondeliveryoption', 'eq', 0);
+        $mform->disabledIf('sectionnotattemptedoption', 'sectiondeliveryoption', 'eq', 0);
+        $mform->disabledIf('specifydefaultoption', 'sectiondeliveryoption', 'eq', 0);*/
+
+        $elements[] = $mform->addGroup($sectiondeliverymethodgroup, 'sectiondeliverymethodgroup', get_string('sectiondeliverymethod', 'format_ned'), array('<br class="nedsep" />'), false);
 
         return $elements;
     }
@@ -450,11 +513,11 @@ class format_ned extends format_base {
     public function inplace_editable_render_section_name($section, $linkifneeded = true,
                                                          $editable = null, $edithint = null, $editlabel = null) {
         if (empty($edithint)) {
-            $edithint = new lang_string('editsectionname', 'format_topics');
+            $edithint = new lang_string('editsectionname', 'format_ned');
         }
         if (empty($editlabel)) {
             $title = get_section_name($section->course, $section);
-            $editlabel = new lang_string('newsectionname', 'format_topics', $title);
+            $editlabel = new lang_string('newsectionname', 'format_ned', $title);
         }
         return parent::inplace_editable_render_section_name($section, $linkifneeded, $editable, $edithint, $editlabel);
     }

@@ -141,3 +141,15 @@ ul.ned.sectioncontentjustification .section .activity .actions {
 .course-content ul.ned li.section .activity.completion-background .actions {
     top: 7px;
 }
+
+/* Course settings. */
+/* Makes items 'inline'. */
+#fgroup_id_sectiondeliverymethodgroup .fgroup br.nedsep:nth-child(8),
+#fgroup_id_sectiondeliverymethodgroup .fgroup br.nedsep:nth-child(13),
+#fgroup_id_sectiondeliverymethodgroup .fgroup br.nedsep:nth-child(16) {
+    display: none;
+}
+
+#fgroup_id_sectiondeliverymethodgroup .fgroup span {
+    vertical-align: top;
+}
