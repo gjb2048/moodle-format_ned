@@ -427,6 +427,9 @@ class format_ned extends format_base {
         $mform->disabledIf('scheduleadvanceoptionnumber', 'scheduledeliveryoption', 'neq', 2);
         $mform->disabledIf('scheduleadvanceoptionunit', 'scheduledeliveryoption', 'neq', 2); */
 
+        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'ct1', 'Test one');
+        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'ct2', 'Test two');
+
         $elements[] = $mform->addGroup($sectiondeliverymethodgroup, 'sectiondeliverymethodgroup', get_string('sectiondeliverymethod', 'format_ned'), array('<br class="nedsep" />'), false);
         $mform->addHelpButton('sectiondeliverymethodgroup', 'sectiondeliverymethod', 'format_ned');
 
@@ -435,6 +438,9 @@ class format_ned extends format_base {
         $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoptions', 'neq', 3);
         $mform->disabledIf('scheduleadvanceoptionnumber', 'sectiondeliverymethod', 'eq', 1);
         $mform->disabledIf('scheduleadvanceoptionunit', 'sectiondeliverymethod', 'eq', 1);
+
+        $mform->disabledIf('ct1', 'ct2', 'checked');
+        $mform->disabledIf('ct2', 'ct1', 'checked');
 
         return $elements;
     }
