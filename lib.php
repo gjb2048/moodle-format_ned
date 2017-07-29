@@ -302,7 +302,7 @@ class format_ned extends format_base {
                     'type' => PARAM_INT
                 ),
                 'sectiondeliverymethod' => array(
-                    'default' => '{"sectiondeliverymethod": 1, "defaultsection": 2}', // JSON String for use in array.
+                    'default' => '{"sectiondeliverymethod": 2, "defaultsection": 2}', // JSON String for use in array.
                     'type' => PARAM_RAW
                 )
             );
@@ -407,13 +407,14 @@ class format_ned extends format_base {
         $scheduleadvanceoptionnumber->setType('number');
         $sectiondeliverymethodgroup[] = $scheduleadvanceoptionnumber;
 
-        if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 1) {
+        /* if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 1) {
             $mform->setDefault('sectiondeliveryoption', 2);
             $mform->setDefault('scheduledeliveryoption', 1);
         } else if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 2) {
             $mform->setDefault('sectiondeliveryoption', 1);
             $mform->setDefault('scheduledeliveryoption', 2);
-        }
+        } */
+        $mform->setDefault('sectiondeliverymethod', $sectiondeliverymethodgroupdata->sectiondeliverymethod);
 
 
         $sectiondeliverymethodgroup[] =& $mform->createElement('select', 'scheduleadvanceoptionunit', '', array(1 => get_string('weeks', 'format_ned'), 2 => get_string('days', 'format_ned')));
@@ -426,16 +427,14 @@ class format_ned extends format_base {
         $mform->disabledIf('scheduleadvanceoptionnumber', 'scheduledeliveryoption', 'neq', 2);
         $mform->disabledIf('scheduleadvanceoptionunit', 'scheduledeliveryoption', 'neq', 2); */
 
-        /*$mform->disabledIf('sectiondeliveryoption', 'scheduledeliveryoption', 'eq', 2);
-        $mform->disabledIf('scheduledeliveryoption', 'sectiondeliveryoption', 'eq', 2);
-        $mform->disabledIf('sectiondeliveryoptions', 'sectiondeliveryoption', 'eq', 1);
-        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoptions', 'neq', 2);
-        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoption', 'neq', 2);
-        $mform->disabledIf('scheduleadvanceoptionnumber', 'scheduledeliveryoption', 'neq', 2);
-        $mform->disabledIf('scheduleadvanceoptionunit', 'scheduledeliveryoption', 'neq', 2); */
-
         $elements[] = $mform->addGroup($sectiondeliverymethodgroup, 'sectiondeliverymethodgroup', get_string('sectiondeliverymethod', 'format_ned'), array('<br class="nedsep" />'), false);
         $mform->addHelpButton('sectiondeliverymethodgroup', 'sectiondeliverymethod', 'format_ned');
+
+        $mform->disabledIf('sectiondeliveryoptions', 'sectiondeliverymethod', 'eq', 2);
+        //$mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliverymethod', 'eq', 2);
+        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoptions', 'neq', 3);
+        $mform->disabledIf('scheduleadvanceoptionnumber', 'sectiondeliverymethod', 'eq', 1);
+        $mform->disabledIf('scheduleadvanceoptionunit', 'sectiondeliverymethod', 'eq', 1);
 
         return $elements;
     }
@@ -457,18 +456,21 @@ class format_ned extends format_base {
 		error_log(print_r($data, true));
         // Convert section delivery method to JSON for storage.
         $sectiondeliverymethod = array();
-        if ($data['sectiondeliveryoption'] == 2) {
+        /*if ($data['sectiondeliveryoption'] == 2) {
             $sectiondeliverymethod['sectiondeliverymethod'] = 1;
         } else if ($data['scheduledeliveryoption'] == 4) {
             $sectiondeliverymethod['sectiondeliverymethod'] = 2;
-        }
-        unset($data['sectiondeliveryoption']);
-        unset($data['scheduledeliveryoption']);
+        }*/
+        $sectiondeliverymethod['sectiondeliverymethod'] = $data['sectiondeliverymethod'];
+        unset($data['sectiondeliverymethod']);
+
+        //unset($data['sectiondeliveryoption']);
+        //unset($data['scheduledeliveryoption']);
         $sectiondeliverymethod['defaultsection'] = $data['sectiondeliveryoptions'];
         unset($data['sectiondeliveryoptions']);
 
         $data['sectiondeliverymethod'] = json_encode($sectiondeliverymethod);
-		error_log(print_r($data, true));
+		//error_log(print_r($data, true));
 
         if ($oldcourse !== null) {
             $oldcourse = (array)$oldcourse;
