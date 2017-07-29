@@ -387,7 +387,8 @@ class format_ned extends format_base {
 		error_log(print_r($sectiondeliverymethodgroupdata, true));
         $sectiondeliverymethodgroup = array();
         //$sectiondeliverymethodgroup[] =& $mform->createElement('advcheckbox', 'sectiondeliveryoption', null, get_string('sectiondeliveryoption', 'format_ned'), null, array(1, 2));
-        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliverymethod', null, get_string('sectiondeliveryoption', 'format_ned'), 1);
+        //$sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliverymethod', null, get_string('sectiondeliveryoption', 'format_ned'), 1);
+        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'sectiondeliveryoption', null, get_string('sectiondeliveryoption', 'format_ned'));
 
 
         $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null, get_string('moodledefaultoption', 'format_ned'), 1);
@@ -401,46 +402,45 @@ class format_ned extends format_base {
         }
 
         //$sectiondeliverymethodgroup[] =& $mform->createElement('advcheckbox', 'scheduledeliveryoption', null, get_string('scheduledeliveryoption', 'format_ned'), null, array(1, 2));
-        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliverymethod', null, get_string('scheduleadvanceoption', 'format_ned'), 2);
+        //$sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliverymethod', null, get_string('scheduleadvanceoption', 'format_ned'), 2);
+        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'scheduledeliveryoption', null, get_string('scheduledeliveryoption', 'format_ned'));
 
         $scheduleadvanceoptionnumber =& $mform->createElement('text', 'scheduleadvanceoptionnumber', get_string('scheduleadvanceoption', 'format_ned'), array('min' => 1, 'max' => 10, 'class' => 'scheduleadvanceoptionnumber'));
         $scheduleadvanceoptionnumber->setType('number');
         $sectiondeliverymethodgroup[] = $scheduleadvanceoptionnumber;
 
-        /* if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 1) {
-            $mform->setDefault('sectiondeliveryoption', 2);
-            $mform->setDefault('scheduledeliveryoption', 1);
+        if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 1) {
+            $mform->setDefault('sectiondeliveryoption', 'checked');
         } else if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 2) {
-            $mform->setDefault('sectiondeliveryoption', 1);
-            $mform->setDefault('scheduledeliveryoption', 2);
-        } */
+            $mform->setDefault('scheduledeliveryoption', 'checked');
+        }
         $mform->setDefault('sectiondeliverymethod', $sectiondeliverymethodgroupdata->sectiondeliverymethod);
 
 
         $sectiondeliverymethodgroup[] =& $mform->createElement('select', 'scheduleadvanceoptionunit', '', array(1 => get_string('weeks', 'format_ned'), 2 => get_string('days', 'format_ned')));
 
-        /*$mform->disabledIf('sectiondeliveryoption', 'scheduledeliveryoption', 'eq', 2);
-        $mform->disabledIf('scheduledeliveryoption', 'sectiondeliveryoption', 'eq', 2);
-        $mform->disabledIf('sectiondeliveryoptions', 'sectiondeliveryoption', 'eq', 1);
-        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoptions', 'neq', 2);
-        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoption', 'neq', 2);
-        $mform->disabledIf('scheduleadvanceoptionnumber', 'scheduledeliveryoption', 'neq', 2);
-        $mform->disabledIf('scheduleadvanceoptionunit', 'scheduledeliveryoption', 'neq', 2); */
+        $mform->disabledIf('sectiondeliveryoption', 'scheduledeliveryoption', 'checked');
+        $mform->disabledIf('scheduledeliveryoption', 'sectiondeliveryoption', 'checked');
+        $mform->disabledIf('sectiondeliveryoptions', 'sectiondeliveryoption', 'notchecked');
+        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoptions', 'neq', 3);
+        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoption', 'notchecked');
+        $mform->disabledIf('scheduleadvanceoptionnumber', 'scheduledeliveryoption', 'notchecked');
+        $mform->disabledIf('scheduleadvanceoptionunit', 'scheduledeliveryoption', 'notchecked');
 
-        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'ct1', 'Test one');
-        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'ct2', 'Test two');
+        //$sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'ct1', 'Test one');
+        //$sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'ct2', 'Test two');
 
         $elements[] = $mform->addGroup($sectiondeliverymethodgroup, 'sectiondeliverymethodgroup', get_string('sectiondeliverymethod', 'format_ned'), array('<br class="nedsep" />'), false);
         $mform->addHelpButton('sectiondeliverymethodgroup', 'sectiondeliverymethod', 'format_ned');
 
-        $mform->disabledIf('sectiondeliveryoptions', 'sectiondeliverymethod', 'eq', 2);
-        //$mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliverymethod', 'eq', 2);
+        /*$mform->disabledIf('sectiondeliveryoptions', 'sectiondeliverymethod', 'eq', 2);
+        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliverymethod', 'eq', 2);
         $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoptions', 'neq', 3);
         $mform->disabledIf('scheduleadvanceoptionnumber', 'sectiondeliverymethod', 'eq', 1);
-        $mform->disabledIf('scheduleadvanceoptionunit', 'sectiondeliverymethod', 'eq', 1);
+        $mform->disabledIf('scheduleadvanceoptionunit', 'sectiondeliverymethod', 'eq', 1); */
 
-        $mform->disabledIf('ct1', 'ct2', 'checked');
-        $mform->disabledIf('ct2', 'ct1', 'checked');
+        //$mform->disabledIf('ct1', 'ct2', 'checked');
+        //$mform->disabledIf('ct2', 'ct1', 'checked');
 
         return $elements;
     }
@@ -462,13 +462,15 @@ class format_ned extends format_base {
 		error_log(print_r($data, true));
         // Convert section delivery method to JSON for storage.
         $sectiondeliverymethod = array();
-        /*if ($data['sectiondeliveryoption'] == 2) {
+        if (!empty($data['sectiondeliveryoption'])) {
             $sectiondeliverymethod['sectiondeliverymethod'] = 1;
-        } else if ($data['scheduledeliveryoption'] == 4) {
+            unset($data['sectiondeliveryoption']);
+        } else if (!empty($data['scheduledeliveryoption'])) {
             $sectiondeliverymethod['sectiondeliverymethod'] = 2;
-        }*/
-        $sectiondeliverymethod['sectiondeliverymethod'] = $data['sectiondeliverymethod'];
-        unset($data['sectiondeliverymethod']);
+            unset($data['scheduledeliveryoption']);
+        }
+        //$sectiondeliverymethod['sectiondeliverymethod'] = $data['sectiondeliverymethod'];
+        //unset($data['sectiondeliverymethod']);
 
         //unset($data['sectiondeliveryoption']);
         //unset($data['scheduledeliveryoption']);
@@ -476,7 +478,7 @@ class format_ned extends format_base {
         unset($data['sectiondeliveryoptions']);
 
         $data['sectiondeliverymethod'] = json_encode($sectiondeliverymethod);
-		//error_log(print_r($data, true));
+		error_log(print_r($data['sectiondeliverymethod'], true));
 
         if ($oldcourse !== null) {
             $oldcourse = (array)$oldcourse;
