@@ -302,7 +302,7 @@ class format_ned extends format_base {
                     'type' => PARAM_INT
                 ),
                 'sectiondeliverymethod' => array(
-                    'default' => '{"sectiondeliverymethod": 2, "defaultsection": 2}', // JSON String for use in array.
+                    'default' => '{"sectiondeliverymethod": 1, "defaultsection": 1}', // JSON String for use in array.
                     'type' => PARAM_RAW
                 )
             );
@@ -390,24 +390,27 @@ class format_ned extends format_base {
         $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null, get_string('moodledefaultoption', 'format_ned'), 1);
         $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null, get_string('sectionnotattemptedoption', 'format_ned'), 2);
         $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null, get_string('specifydefaultoption', 'format_ned'), 3);
-        $specifydefaultoptionnumber =& $mform->createElement('text', 'specifydefaultoptionnumber', null, array('min' => 1, 'max' => $this->get_last_section_number(), 'class' => 'specifydefaultoptionnumber'));
-        $specifydefaultoptionnumber->setType('number');
+        $sections = array();
+        $totalsections = $this->get_last_section_number();
+        for ($sectionnum = 1; $sectionnum <= $totalsections; $sectionnum++) {
+            $sections[$sectionnum] = ''.$sectionnum;
+        }
+        $specifydefaultoptionnumber =& $mform->createElement('select', 'specifydefaultoptionnumber', null, $sections, array('class' => 'specifydefaultoptionnumber'));
+        if (!empty($sectiondeliverymethodgroupdata->specifydefaultoptionnumber)) {
+            $specifydefaultoptionnumber->setSelected($sectiondeliverymethodgroupdata->specifydefaultoptionnumber);
+        }
         $sectiondeliverymethodgroup[] = $specifydefaultoptionnumber;
         if (!empty($sectiondeliverymethodgroupdata->defaultsection)) {
             $mform->setDefault('sectiondeliveryoptions', $sectiondeliverymethodgroupdata->defaultsection);
         }
-        if (!empty($sectiondeliverymethodgroupdata->specifydefaultoptionnumber)) {
-            $mform->setDefault('specifydefaultoptionnumber', $sectiondeliverymethodgroupdata->specifydefaultoptionnumber);
-        }
 
         $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'scheduledeliveryoption', null, get_string('scheduledeliveryoption', 'format_ned'));
 
-        $scheduleadvanceoptionnumber =& $mform->createElement('text', 'scheduleadvanceoptionnumber', get_string('scheduleadvanceoption', 'format_ned'), array('min' => 1, 'max' => 10, 'class' => 'scheduleadvanceoptionnumber'));
-        $scheduleadvanceoptionnumber->setType('number');
-        $sectiondeliverymethodgroup[] = $scheduleadvanceoptionnumber;
+        $scheduleadvanceoptionnumber =& $mform->createElement('select', 'scheduleadvanceoptionnumber', get_string('scheduleadvanceoption', 'format_ned'), $sections, array('class' => 'scheduleadvanceoptionnumber'));
         if (!empty($sectiondeliverymethodgroupdata->scheduleadvanceoptionnumber)) {
-            $mform->setDefault('scheduleadvanceoptionnumber', $sectiondeliverymethodgroupdata->scheduleadvanceoptionnumber);
+            $scheduleadvanceoptionnumber->setSelected($sectiondeliverymethodgroupdata->scheduleadvanceoptionnumber);
         }
+        $sectiondeliverymethodgroup[] = $scheduleadvanceoptionnumber;
 
         $sectiondeliverymethodgroup[] =& $mform->createElement('select', 'scheduleadvanceoptionunit', '', array(1 => get_string('weeks', 'format_ned'), 2 => get_string('days', 'format_ned')));
         if (!empty($sectiondeliverymethodgroupdata->scheduleadvanceoptionunit)) {
