@@ -29,6 +29,8 @@ require_once($CFG->dirroot. '/course/format/lib.php');
 
 class format_ned extends format_base {
     private $settings;  // Course format settings.
+    private $sectiondeliverymethoddata;  // JSON decode of 'sectiondeliverymethod' setting;
+    private $displaysection = false;
 
     /**
      * Creates a new instance of class
@@ -54,6 +56,7 @@ class format_ned extends format_base {
     public function get_settings() {
         if (empty($this->settings) == true) {
             $this->settings = $this->get_format_options();
+            $this->sectiondeliverymethoddata = json_decode($this->settings['sectiondeliverymethod']);
         }
         return $this->settings;
     }
@@ -61,6 +64,9 @@ class format_ned extends format_base {
     public function get_setting($name) {
         $settings = $this->get_settings();
         if (array_key_exists($name, $settings)) {
+            if ($name == 'sectiondeliverymethod') {
+                return $this->sectiondeliverymethoddata;
+            }
             return $settings[$name];
         }
         return false;
@@ -75,6 +81,10 @@ class format_ned extends format_base {
             return true;
         }
         return false;
+    }
+
+    public function set_displaysection($displaysection) {
+        $this->displaysection = $displaysection;
     }
 
     /**
@@ -119,10 +129,94 @@ class format_ned extends format_base {
             // Return the general section.
             return get_string('section0name', 'format_ned');
         } else {
-            // Use format_base::get_default_section_name implementation which
-            // will display the section name in "Topic n" format.
+            $sdmdata = $this->get_setting('sectiondeliverymethod');
+            if (!empty($sdmdata)) {
+                if ($sdmdata->sectiondeliverymethod == 2) {
+                    $dates = $this->get_section_dates($section, false, $sdmdata->scheduleadvanceoptionnumber, $sdmdata->scheduleadvanceoptionunit);
+
+                    // We subtract 24 hours for display purposes.
+                    $dates->end = ($dates->end - 86400);
+
+                    $dateformat = get_string('strftimedateshort');
+                    $weekday = userdate($dates->start, $dateformat);
+                    $endweekday = userdate($dates->end, $dateformat);
+                    return $weekday.' - '.$endweekday;
+                }
+            }
+            // Use format_base::get_default_section_name implementation which will display the section name in "Topic n" format.
             return parent::get_default_section_name($section);
         }
+    }
+
+    /**
+     * Return the start and end date of the passed section
+     *
+     * @param int|stdClass|section_info $section section to get the dates for
+     * @param int $startdate Force course start date, useful when the course is not yet created
+     * @param int $scheduleadvanceoptionnumber Interval number of days or weeks given 'scheduleadvanceoptionunit'.
+     * @param int $scheduleadvanceoptionunit Days = 1 or Weeks = 2.
+     * @return stdClass property start for startdate, property end for enddate
+     */
+    public function get_section_dates($section, $startdate = false, $scheduleadvanceoptionnumber = false, $scheduleadvanceoptionunit = false) {
+
+        if ($startdate === false) {
+            $course = $this->get_course();
+            $startdate = $course->startdate;
+        }
+
+        if (is_object($section)) {
+            $sectionnum = $section->section;
+        } else {
+            $sectionnum = $section;
+        }
+
+        if ((!empty($scheduleadvanceoptionnumber)) && (!empty($scheduleadvanceoptionunit))) {
+            if ($scheduleadvanceoptionunit == 2) { // Days.
+                $durationseconds = 86400 * $scheduleadvanceoptionnumber;  // One day of seconds times the number specified.
+            } else if ($scheduleadvanceoptionunit == 1) { // Weeks.
+                $durationseconds = 604800 * $scheduleadvanceoptionnumber;  // One week of seconds times the number specified.
+            } // else should not happen so leave to code fault if it does.
+        } else {
+            $durationseconds = 604800;  // One week of seconds.
+         }
+        // Hack alert. We add 2 hours to avoid possible DST problems. (e.g. we go into daylight
+        // savings and the date changes.
+        $startdate = $startdate + 7200;
+
+        $dates = new stdClass();
+        $dates->start = $startdate + ($durationseconds * ($sectionnum - 1));
+        $dates->end = $dates->start + $durationseconds;
+
+        return $dates;
+    }
+
+    /**
+     * Returns true if the specified week is current
+     *
+     * @param int|stdClass|section_info $section
+     * @return bool
+     */
+    public function is_section_current($section) {
+        if (is_object($section)) {
+            $sectionnum = $section->section;
+        } else {
+            $sectionnum = $section;
+        }
+        if ($sectionnum < 1) {
+            return false;
+        }
+
+        $sdmdata = $this->get_setting('sectiondeliverymethod');
+        if (!empty($sdmdata)) {
+            if ($sdmdata->sectiondeliverymethod == 1) {
+                // Section based not day / week based.
+                return parent::is_section_current($section);
+            }
+        }
+
+        $timenow = time();
+        $dates = $this->get_section_dates($section);
+        return (($timenow >= $dates->start) && ($timenow < $dates->end));
     }
 
     /**
@@ -156,6 +250,8 @@ class format_ned extends format_base {
                 } else {
                     $usercoursedisplay = COURSE_DISPLAY_SINGLEPAGE;
                 }
+            } else if ($this->displaysection) {
+                $usercoursedisplay = COURSE_DISPLAY_MULTIPAGE;
             } else {
                 $usercoursedisplay = $course->coursedisplay;
             }
@@ -349,7 +445,8 @@ class format_ned extends format_base {
             $courseformatoptionsedit['progresstooltip'] = array(
                 'label' => 'progresstooltip', 'element_type' => 'hidden');
             $courseformatoptionsedit['sectiondeliverymethod'] = array(
-                'label' => 'sectiondeliverymethod', 'element_type' => 'hidden');  // Storage from complex element in 'create_edit_form_elements()'.
+                 // Storage from complex element in 'create_edit_form_elements()'.
+                'label' => 'sectiondeliverymethod', 'element_type' => 'hidden');
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
         return $courseformatoptions;
@@ -383,19 +480,24 @@ class format_ned extends format_base {
             array_unshift($elements, $element);
         }
 
-        $sectiondeliverymethodgroupdata = json_decode($this->get_setting('sectiondeliverymethod'));
+        $sectiondeliverymethodgroupdata = $this->get_setting('sectiondeliverymethod');
         $sectiondeliverymethodgroup = array();
-        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'sectiondeliveryoption', null, get_string('sectiondeliveryoption', 'format_ned'));
+        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'sectiondeliveryoption', null,
+            get_string('sectiondeliveryoption', 'format_ned'));
 
-        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null, get_string('moodledefaultoption', 'format_ned'), 1);
-        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null, get_string('sectionnotattemptedoption', 'format_ned'), 2);
-        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null, get_string('specifydefaultoption', 'format_ned'), 3);
+        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
+            get_string('moodledefaultoption', 'format_ned'), 1);
+        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
+            get_string('sectionnotattemptedoption', 'format_ned'), 2);
+        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
+            get_string('specifydefaultoption', 'format_ned'), 3);
         $sections = array();
         $totalsections = $this->get_last_section_number();
         for ($sectionnum = 1; $sectionnum <= $totalsections; $sectionnum++) {
             $sections[$sectionnum] = ''.$sectionnum;
         }
-        $specifydefaultoptionnumber =& $mform->createElement('select', 'specifydefaultoptionnumber', null, $sections, array('class' => 'specifydefaultoptionnumber'));
+        $specifydefaultoptionnumber =& $mform->createElement('select', 'specifydefaultoptionnumber', null, $sections,
+            array('class' => 'specifydefaultoptionnumber'));
         if (!empty($sectiondeliverymethodgroupdata->specifydefaultoptionnumber)) {
             $specifydefaultoptionnumber->setSelected($sectiondeliverymethodgroupdata->specifydefaultoptionnumber);
         }
@@ -404,15 +506,23 @@ class format_ned extends format_base {
             $mform->setDefault('sectiondeliveryoptions', $sectiondeliverymethodgroupdata->defaultsection);
         }
 
-        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'scheduledeliveryoption', null, get_string('scheduledeliveryoption', 'format_ned'));
+        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'scheduledeliveryoption', null,
+            get_string('scheduledeliveryoption', 'format_ned'));
 
-        $scheduleadvanceoptionnumber =& $mform->createElement('select', 'scheduleadvanceoptionnumber', get_string('scheduleadvanceoption', 'format_ned'), $sections, array('class' => 'scheduleadvanceoptionnumber'));
+        $scheduleadvanceoptionnumbers = array();
+        for ($opnum = 1; $opnum <= 10; $opnum++) {
+            $scheduleadvanceoptionnumbers[$opnum] = ''.$opnum;
+        }
+        $scheduleadvanceoptionnumber =& $mform->createElement('select', 'scheduleadvanceoptionnumber',
+            get_string('scheduleadvanceoption', 'format_ned'), $scheduleadvanceoptionnumbers,
+            array('class' => 'scheduleadvanceoptionnumber'));
         if (!empty($sectiondeliverymethodgroupdata->scheduleadvanceoptionnumber)) {
             $scheduleadvanceoptionnumber->setSelected($sectiondeliverymethodgroupdata->scheduleadvanceoptionnumber);
         }
         $sectiondeliverymethodgroup[] = $scheduleadvanceoptionnumber;
 
-        $sectiondeliverymethodgroup[] =& $mform->createElement('select', 'scheduleadvanceoptionunit', '', array(1 => get_string('weeks', 'format_ned'), 2 => get_string('days', 'format_ned')));
+        $sectiondeliverymethodgroup[] =& $mform->createElement('select', 'scheduleadvanceoptionunit', '',
+            array(1 => get_string('weeks', 'format_ned'), 2 => get_string('days', 'format_ned')));
         if (!empty($sectiondeliverymethodgroupdata->scheduleadvanceoptionunit)) {
             $mform->setDefault('scheduleadvanceoptionunit', $sectiondeliverymethodgroupdata->scheduleadvanceoptionunit);
         }
@@ -432,7 +542,8 @@ class format_ned extends format_base {
         $mform->disabledIf('scheduleadvanceoptionnumber', 'scheduledeliveryoption', 'notchecked');
         $mform->disabledIf('scheduleadvanceoptionunit', 'scheduledeliveryoption', 'notchecked');
 
-        $elements[] = $mform->addGroup($sectiondeliverymethodgroup, 'sectiondeliverymethodgroup', get_string('sectiondeliverymethod', 'format_ned'), array('<br class="nedsep" />'), false);
+        $elements[] = $mform->addGroup($sectiondeliverymethodgroup, 'sectiondeliverymethodgroup',
+            get_string('sectiondeliverymethod', 'format_ned'), array('<br class="nedsep" />'), false);
         $mform->addHelpButton('sectiondeliverymethodgroup', 'sectiondeliverymethod', 'format_ned');
 
         return $elements;

@@ -53,6 +53,25 @@ if ($week = optional_param('week', 0, PARAM_INT)) { // Weeks old section paramet
 $context = context_course::instance($course->id);
 // Retrieve course format option fields and add them to the $course object.
 $courseformat = course_get_format($course);
+
+$sdmdata = $courseformat->get_setting('sectiondeliverymethod');
+if (!empty($sdmdata)) {
+    // Section delivery method 'section' selected = 1, schedule is 2.
+    if ($sdmdata->sectiondeliverymethod == 1) {
+        // Specify default section selected = 3, Moodle default is 1 and earliest not attempted activity is 2.
+        if ($sdmdata->defaultsection == 3) {
+            if (empty($displaysection)) {
+                $url = $PAGE->url;
+                $url->param('section', $sdmdata->specifydefaultoptionnumber);
+                $PAGE->set_url($url);
+                $displaysection = $sdmdata->specifydefaultoptionnumber;
+            } else {
+                $courseformat->set_displaysection($displaysection);
+            }
+        }
+    }
+}
+
 $course = $courseformat->get_course();
 
 if (($marker >= 0) && has_capability('moodle/course:setcurrentsection', $context) && confirm_sesskey()) {
