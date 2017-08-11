@@ -39,7 +39,7 @@ class format_ned extends format_base {
      *
      * @param string $format
      * @param int $courseid
-     * @return format_topcoll
+     * @return format_ned
      */
     protected function __construct($format, $courseid) {
         if ($courseid === 0) {
@@ -546,6 +546,8 @@ class format_ned extends format_base {
         $sectiondeliverymethodgroup[] = $specifydefaultoptionnumber;
         if (!empty($sectiondeliverymethodgroupdata->defaultsection)) {
             $mform->setDefault('sectiondeliveryoptions', $sectiondeliverymethodgroupdata->defaultsection);
+        } else {
+            $mform->setDefault('sectiondeliveryoptions', 1);
         }
 
         $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'scheduledeliveryoption', null,
@@ -569,10 +571,14 @@ class format_ned extends format_base {
             $mform->setDefault('scheduleadvanceoptionunit', $sectiondeliverymethodgroupdata->scheduleadvanceoptionunit);
         }
 
-        if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 1) {
+        if (!empty($sectiondeliverymethodgroupdata->specifydefaultoptionnumber)) {
+            if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 1) {
+                $mform->setDefault('sectiondeliveryoption', 'checked');
+            } else if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 2) {
+                $mform->setDefault('scheduledeliveryoption', 'checked');
+            }
+        } else {
             $mform->setDefault('sectiondeliveryoption', 'checked');
-        } else if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 2) {
-            $mform->setDefault('scheduledeliveryoption', 'checked');
         }
         $mform->setDefault('sectiondeliverymethod', $sectiondeliverymethodgroupdata->sectiondeliverymethod);
 
