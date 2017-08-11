@@ -3,6 +3,12 @@ Version Information
 Version 3.3.0.2
   1. Added progress tooltip options.
   2. Added section delivery method settings.
+  3. Implemented section delivery method 'Section - Specify default section' such that when navigating to the main course
+     page the specified section will be shown.
+  4. Implemented section delivery method 'Section - Section that contains the earliest "Not attempted" activity' such that
+     when navigating to the main course page the calculated section will be shown if there is one, otherwise the main course
+     page will be shown.  By "Not attempted" this means 'Incomplete' as there is no 'Attempted but not finished / in progress'
+     state available in the Moodle API.  But there is an 'Not viewed' state to consider.
 
 Version 3.3.0.1
   1. Clone of topics format.

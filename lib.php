@@ -279,6 +279,48 @@ class format_ned extends format_base {
     }
 
     /**
+     * Returns the section number with the first non-attempted activity.
+     *
+     * @return bool|int false for none / no completion etc. or the section number
+     * of the section containing the first non-attempted activity.
+     */
+    public function get_earliest_not_attempted_activity() {
+        $sectionno = false;
+        $course = $this->get_course();
+        $modinfo = get_fast_modinfo($course);
+        $completioninfo = new completion_info($course);
+        foreach ($modinfo->get_section_info_all() as $section) {
+            if (empty($modinfo->sections[$section->section])) {
+                continue;
+            }
+            foreach ($modinfo->sections[$section->section] as $cmid) {
+                $thismod = $modinfo->cms[$cmid];
+                if ($thismod->modname == 'label') {
+                    // Labels are special.
+                    continue;
+                }
+                if ($thismod->uservisible) {
+                    if ($completioninfo->is_enabled($thismod) != COMPLETION_TRACKING_NONE) {
+                        $completiondata = $completioninfo->get_data($thismod, true);
+                        if ($completiondata->completionstate == COMPLETION_INCOMPLETE) {
+                            // This section is the first.
+                            $sectionno = $section->section;
+                        }
+                    }
+                }
+                if (!empty($sectionno)) {
+                    break;
+                }
+            }
+            if (!empty($sectionno)) {
+                break;
+            }
+        }
+
+        return $sectionno;
+    }
+
+    /**
      * Loads all of the course sections into the navigation
      *
      * @param global_navigation $navigation
@@ -510,7 +552,7 @@ class format_ned extends format_base {
             get_string('scheduledeliveryoption', 'format_ned'));
 
         $scheduleadvanceoptionnumbers = array();
-        for ($opnum = 1; $opnum <= 10; $opnum++) {
+        for ($opnum = 1; $opnum <= 60; $opnum++) {
             $scheduleadvanceoptionnumbers[$opnum] = ''.$opnum;
         }
         $scheduleadvanceoptionnumber =& $mform->createElement('select', 'scheduleadvanceoptionnumber',

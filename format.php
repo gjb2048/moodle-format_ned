@@ -54,18 +54,31 @@ $context = context_course::instance($course->id);
 // Retrieve course format option fields and add them to the $course object.
 $courseformat = course_get_format($course);
 
-$sdmdata = $courseformat->get_setting('sectiondeliverymethod');
-if (!empty($sdmdata)) {
-    // Section delivery method 'section' selected = 1, schedule is 2.
-    if ($sdmdata->sectiondeliverymethod == 1) {
-        // Specify default section selected = 3, Moodle default is 1 and earliest not attempted activity is 2.
-        if ($sdmdata->defaultsection == 3) {
-            if (empty($displaysection)) {
+if (!$PAGE->user_is_editing()) {
+    $sdmdata = $courseformat->get_setting('sectiondeliverymethod');
+    if (!empty($sdmdata)) {
+        // Section delivery method 'section' selected = 1, schedule is 2.
+        if ($sdmdata->sectiondeliverymethod == 1) {
+            $usesectionno = false;
+            // Specify default section selected = 3, Moodle default is 1 and earliest not attempted activity is 2.
+            if ($sdmdata->defaultsection == 3) {
+                if (empty($displaysection)) {
+                    $usesectionno = $sdmdata->specifydefaultoptionnumber;
+                } else {
+                    $courseformat->set_displaysection($displaysection);
+                }
+            } else if ($sdmdata->defaultsection == 2) {
+                if (empty($displaysection)) {
+                    $usesectionno = $courseformat->get_earliest_not_attempted_activity();
+                } else {
+                    $courseformat->set_displaysection($displaysection);
+                }
+            }
+            if (!empty($usesectionno)) {
                 $url = $PAGE->url;
-                $url->param('section', $sdmdata->specifydefaultoptionnumber);
+                $url->param('section', $usesectionno);
                 $PAGE->set_url($url);
-                $displaysection = $sdmdata->specifydefaultoptionnumber;
-            } else {
+                $displaysection = $usesectionno;
                 $courseformat->set_displaysection($displaysection);
             }
         }
