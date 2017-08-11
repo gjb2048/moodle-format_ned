@@ -178,7 +178,7 @@ class format_ned extends format_base {
             } // else should not happen so leave to code fault if it does.
         } else {
             $durationseconds = 604800;  // One week of seconds.
-         }
+        }
         // Hack alert. We add 2 hours to avoid possible DST problems. (e.g. we go into daylight
         // savings and the date changes.
         $startdate = $startdate + 7200;
@@ -614,8 +614,10 @@ class format_ned extends format_base {
             $sectiondeliverymethod['sectiondeliverymethod'] = 2;
             unset($data['scheduledeliveryoption']);
         }
-        $sectiondeliverymethod['defaultsection'] = $data['sectiondeliveryoptions'];
-        unset($data['sectiondeliveryoptions']);
+        if (!empty($data['sectiondeliveryoptions'])) {
+            $sectiondeliverymethod['defaultsection'] = $data['sectiondeliveryoptions'];
+            unset($data['sectiondeliveryoptions']);
+        }
         if (!empty($data['specifydefaultoptionnumber'])) {
             $sectiondeliverymethod['specifydefaultoptionnumber'] = $data['specifydefaultoptionnumber'];
             unset($data['specifydefaultoptionnumber']);
