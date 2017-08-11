@@ -580,7 +580,6 @@ class format_ned extends format_base {
         } else {
             $mform->setDefault('sectiondeliveryoption', 'checked');
         }
-        $mform->setDefault('sectiondeliverymethod', $sectiondeliverymethodgroupdata->sectiondeliverymethod);
 
         $mform->disabledIf('sectiondeliveryoption', 'scheduledeliveryoption', 'checked');
         $mform->disabledIf('scheduledeliveryoption', 'sectiondeliveryoption', 'checked');
@@ -636,7 +635,10 @@ class format_ned extends format_base {
             $sectiondeliverymethod['scheduleadvanceoptionunit'] = $data['scheduleadvanceoptionunit'];
             unset($data['scheduleadvanceoptionunit']);
         }
-        $data['sectiondeliverymethod'] = json_encode($sectiondeliverymethod);
+        if (!empty($sectiondeliverymethod)) {
+            // Only update if we have been parsed a set of data to update by the course edit form.
+            $data['sectiondeliverymethod'] = json_encode($sectiondeliverymethod);
+        }
 
         if ($oldcourse !== null) {
             $oldcourse = (array)$oldcourse;
