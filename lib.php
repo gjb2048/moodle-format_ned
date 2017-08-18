@@ -411,6 +411,18 @@ class format_ned extends format_base {
                     'default' => $courseconfig->coursedisplay,
                     'type' => PARAM_INT
                 ),
+                'sectionformat' => array(
+                    'default' => 1,
+                    'type' => PARAM_INT
+                ),
+                'sectionnamelocation' => array(
+                    'default' => 1,
+                    'type' => PARAM_INT
+                ),
+                'sectionsummarylocation' => array(
+                    'default' => 1,
+                    'type' => PARAM_INT
+                ),
                 'showsection0' => array(
                     'default' => 1,
                     'type' => PARAM_INT
@@ -472,6 +484,13 @@ class format_ned extends format_base {
                     'help_component' => 'moodle',
                 )
             );
+            // Storage for settings defined on 'ned_settings_form.php' and instantiated with defaults above in 'nedsettings.php'.
+            $courseformatoptionsedit['sectionformat'] = array(
+                'label' => 'sectionformat', 'element_type' => 'hidden');
+            $courseformatoptionsedit['sectionnamelocation'] = array(
+                'label' => 'sectionnamelocation', 'element_type' => 'hidden');
+            $courseformatoptionsedit['sectionsummarylocation'] = array(
+                'label' => 'sectionsummarylocation', 'element_type' => 'hidden');
             $courseformatoptionsedit['showsection0'] = array(
                 'label' => 'showsection0', 'element_type' => 'hidden');
             $courseformatoptionsedit['activitytrackingbackground'] = array(
@@ -487,7 +506,7 @@ class format_ned extends format_base {
             $courseformatoptionsedit['progresstooltip'] = array(
                 'label' => 'progresstooltip', 'element_type' => 'hidden');
             $courseformatoptionsedit['sectiondeliverymethod'] = array(
-                 // Storage from complex element in 'create_edit_form_elements()'.
+                 // Storage for complex element in 'create_edit_form_elements()'.  This is in the course not ned settings.
                 'label' => 'sectiondeliverymethod', 'element_type' => 'hidden');
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }

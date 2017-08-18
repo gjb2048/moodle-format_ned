@@ -43,9 +43,35 @@ class course_ned_edit_form extends moodleform {
         $mform->addElement('static', 'formatinfo', get_string('formatinfo', 'format_ned'),
             '<a target="_blank" href="//ned.ca/ned-format">ned.ca/ned-format</a>');
 
+        $choices = array(
+            0 => get_string('sectionformatmoodle', 'format_ned'),
+            1 => get_string('sectionformatframed', 'format_ned')
+        );
+        $label = get_string('sectionformat', 'format_ned');
+        $mform->addElement('select', 'sectionformat', $label, $choices);
+        unset($choices);
+
+        $choices = array(
+            0 => get_string('hide'),
+            1 => get_string('showsectionheader', 'format_ned'),
+            2 => get_string('showsectionbody', 'format_ned')
+        );
+        $label = get_string('sectionnamelocation', 'format_ned');
+        $mform->addElement('select', 'sectionnamelocation', $label, $choices);
+        unset($choices);
+        $mform->disabledIf('sectionnamelocation', 'sectionformat', 'neq', 1);
+
+        $choices = array(
+            0 => get_string('showsectionheader', 'format_ned'),
+            1 => get_string('showsectionbody', 'format_ned')
+        );
+        $label = get_string('sectionsummarylocation', 'format_ned');
+        $mform->addElement('select', 'sectionsummarylocation', $label, $choices);
+        unset($choices);
+        $mform->disabledIf('sectionsummarylocation', 'sectionformat', 'neq', 1);
+
         $mform->addElement('header', 'nedformat', get_string('othersettings', 'format_ned'));
 
-        $choices = array();
         $choices = array(
             0 => get_string('hide'),
             1 => get_string('show'),

@@ -38,10 +38,7 @@ $string['page-course-view-ned-x'] = 'Any course page in ned format';
 $string['hidefromothers'] = 'Hide section';
 $string['showfromothers'] = 'Show section';
 
-// Settings form.
-$string['format'] = 'Format';
-$string['formatinfo'] = 'Format info';
-
+// Course Settings form.
 $string['sectiondeliverymethod'] = 'Section delivery method';
 $string['sectiondeliverymethod_help'] = 'Section delivery method help';
 $string['sectiondeliveryoption'] = 'Section (do not advance sections automatically)<br>Default section:';
@@ -53,6 +50,18 @@ $string['scheduleadvanceoption'] = 'Advance section every';
 $string['days'] = 'Day(s)';
 $string['weeks'] = 'Week(s)';
 $string['sectionscheduleerror'] = 'Please state either section or schedule delivery method.';
+
+// NED Settings form.
+$string['format'] = 'Format';
+$string['formatinfo'] = 'Format info';
+
+$string['sectionformat'] = 'Section format';
+$string['sectionformatmoodle'] = 'Moodle default';
+$string['sectionformatframed'] = 'Framed sections';
+$string['sectionnamelocation'] = 'Section name location';
+$string['showsectionheader'] = 'Show in section header';
+$string['showsectionbody'] = 'Show in section body';
+$string['sectionsummarylocation'] = 'Section summary location';
 
 $string['othersettings'] = 'Other settings';
 $string['showsection0'] = 'Show section 0';
