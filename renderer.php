@@ -70,6 +70,9 @@ class format_ned_renderer extends format_section_renderer_base {
      */
     protected function start_section_list() {
         $classes = 'ned';
+        if ($this->settings['sectionformat'] == 1) { // Framed sections.
+            $classes .= ' ned-framedsections';
+        }
         if (!$this->editing) {
             if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
                 $classes .= ' '.\format_ned\toolbox::$nediconsleft;
@@ -106,7 +109,7 @@ class format_ned_renderer extends format_section_renderer_base {
      * @return string HTML to output.
      */
     public function section_title($section, $course) {
-        return $this->render(course_get_format($course)->inplace_editable_render_section_name($section));
+        return $this->render($this->courseformat->inplace_editable_render_section_name($section));
     }
 
     /**
@@ -117,7 +120,121 @@ class format_ned_renderer extends format_section_renderer_base {
      * @return string HTML to output.
      */
     public function section_title_without_link($section, $course) {
-        return $this->render(course_get_format($course)->inplace_editable_render_section_name($section, false));
+        return $this->render($this->courseformat->inplace_editable_render_section_name($section, false));
+    }
+
+    /**
+     * Generate the display of the header part of a section before
+     * course modules are included
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @param stdClass $course The course entry from DB
+     * @param bool $onsectionpage true if being printed on a single-section page
+     * @param int $sectionreturn The section to return to after an action
+     * @return string HTML to output.
+     */
+    protected function section_header($section, $course, $onsectionpage, $sectionreturn=null) {
+        global $PAGE;
+
+        $o = '';
+        $currenttext = '';
+        $sectionstyle = '';
+
+        if ($section->section != 0) {
+            // Only in the non-general sections.
+            if (!$section->visible) {
+                $sectionstyle = ' hidden';
+            }
+            if (course_get_format($course)->is_section_current($section)) {
+                $sectionstyle = ' current';
+            }
+        }
+
+        // Note 'get_section_name(course, section)' just calls the format's lib.php 'get_section_name(section)'!
+        $thesectionname = $this->courseformat->get_section_name($section);
+        $o.= html_writer::start_tag('li', array('id' => 'section-'.$section->section,
+            'class' => 'section main clearfix'.$sectionstyle, 'role'=>'region',
+            'aria-label'=> $thesectionname));
+
+        // Create a span that contains the section title to be used to create the keyboard section move menu.
+        $o .= html_writer::tag('span', $thesectionname, array('class' => 'hidden sectionname'));
+
+        if (($this->settings['sectionformat'] == 0) ||
+           (($this->settings['sectionformat'] == 1) && (!empty($this->settings['sectionnamelocation'])))) { // 0 is hide otherwise show.
+            $sectionnameclasses = ' accesshide';
+
+            // When not on a section page, we display the section titles except the general section if null.
+            $hasnamenotsecpg = (!$onsectionpage && ($section->section != 0 || !is_null($section->name)));
+
+            // When on a section page, we only display the general section title, if title is not the default one.
+            $hasnamesecpg = ($onsectionpage && ($section->section == 0 && !is_null($section->name)));
+
+            if ($hasnamenotsecpg || $hasnamesecpg) {
+                $sectionnameclasses = '';
+            }
+            $sectionname = html_writer::tag('span', $this->section_title($section, $course));
+            $sectionnamemarkup = $this->output->heading($sectionname, 3, 'sectionname' . $sectionnameclasses);
+        } else {
+            $sectionnamemarkup = '';
+        }
+
+        $summarymarkup = html_writer::start_tag('div', array('class' => 'summary'));
+        $summarymarkup .= $this->format_summary_text($section);
+        $summarymarkup .= html_writer::end_tag('div');
+
+        if ($this->settings['sectionformat'] == 1) { // Framed sections.
+            if ($this->settings['sectionnamelocation'] == 1) { // 1 is show in the section header.
+                $sectionheadercontent = $sectionnamemarkup;
+                if ($this->settings['sectionsummarylocation'] == 0) { // 0 is show in the section header.
+                    $sectionheadercontent .= $summarymarkup;
+                }
+            } else {
+                if ($this->settings['sectionsummarylocation'] == 0) { // 0 is show in the section header.
+                    $sectionheadercontent = $summarymarkup;
+                } else {
+                    $sectionheadercontent = '&nbsp;';
+                }
+            }
+            $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
+        }
+
+        $leftcontent = $this->section_left_content($section, $course, $onsectionpage);
+        $o .= html_writer::tag('div', $leftcontent, array('class' => 'left side'));
+
+        $rightcontent = $this->section_right_content($section, $course, $onsectionpage);
+        $o .= html_writer::tag('div', $rightcontent, array('class' => 'right side'));
+        $o .= html_writer::start_tag('div', array('class' => 'content'));
+
+        // Heading in the body of the section.
+        if (($this->settings['sectionformat'] == 0) ||
+           (($this->settings['sectionformat'] == 1) && ($this->settings['sectionnamelocation'] == 2))) { // 2 is show in the section body.
+            $o .= $sectionnamemarkup;
+        }
+
+        $o .= $this->section_availability($section);
+
+        // Section summary in the body of the section.
+        if (($this->settings['sectionformat'] == 0) ||
+           (($this->settings['sectionformat'] == 1) && ($this->settings['sectionsummarylocation'] == 1))) { // 1 is show in the section body.
+            $o .= $summarymarkup;
+        }
+
+        return $o;
+    }
+
+    /**
+     * Generate the display of the footer part of a section
+     *
+     * @return string HTML to output.
+     */
+    protected function section_footer() {
+        $o = html_writer::end_tag('div');
+        if ($this->settings['sectionformat'] == 1) { // Framed sections.
+            $o .= html_writer::tag('div', '&nbsp;', array('class' => 'footer'));
+        }
+        $o .= html_writer::end_tag('li');
+
+        return $o;
     }
 
     /**

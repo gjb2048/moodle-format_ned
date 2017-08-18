@@ -182,3 +182,84 @@ ul.ned.sectioncontentjustification .section .activity .actions {
 #fgroup_id_sectiondeliverymethodgroup .fgroup span {
     vertical-align: top;
 }
+
+/* Framed sections */
+
+/* Absolute positioning system solution - keeps theme section content background and theme section highlight colour, but can make editing difficult to manage. */
+/*
+.ned-framedsections .section {
+    position: relative;
+}
+
+.ned-framedsections .section .footer,
+.ned-framedsections .section .header {
+    background-color: #9DBB61;
+    padding: 0 40px;
+}
+
+.ned-framedsections .section .left,
+.ned-framedsections .section .right {
+    background-color: #9DBB61;
+    float: none;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.ned-framedsections .section .left {
+    left: 0;
+}
+
+.course-content ul.ned.ned-framedsections li.section .left {
+    padding-top: 0;
+}
+
+.ned-framedsections .section .right {
+    right: 0;
+}
+*/
+
+/* Set the background colour of the li.section - less to style and no adaption for editing but format has to set the section content background and highlight colour. */
+ul.ned-framedsections .section.main {
+    background-color: #9DBB61;
+}
+
+.course-content ul.ned-framedsections .section.main .content {
+    background-color: #fff;
+}
+
+.course-content ul.ned-framedsections .section.main.current .content {
+    background-color: #ffe7aa;
+}
+
+.course-content ul.ned.ned-framedsections li.section .left,
+.course-content ul.ned.ned-framedsections li.section .right {
+    padding: 0;
+}
+
+.editing ul.ned-framedsections .section .activity .mod-indent-outer {
+    position: relative;
+}
+
+.course-content ul.ned-framedsections .section.main .content {
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.ned-framedsections .section .header .sectionname,
+.ned-framedsections .section .header .sectionname a,
+.ned-framedsections .section .header .sectionname a:hover,
+.ned-framedsections .section .header .summary,
+.ned-framedsections .section .left,
+.ned-framedsections .section .right a,
+.ned-framedsections .section .right a:hover {
+    color: #fff;
+}
+
+.jsenabled .ned-framedsections .right .moodle-actionmenu[data-enhance] .toggle-display.textmenu .caret {
+    border-top-color: #fff;
+}
+.ned-framedsections .section .header .sectionname {
+    text-align: center;
+}
