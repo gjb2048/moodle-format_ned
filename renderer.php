@@ -161,16 +161,19 @@ class format_ned_renderer extends format_section_renderer_base {
 
         if (($this->settings['sectionformat'] == 0) ||
            (($this->settings['sectionformat'] == 1) && (!empty($this->settings['sectionnamelocation'])))) { // 0 is hide otherwise show.
-            $sectionnameclasses = ' accesshide';
+            $sectionnameclasses = '';
+            if ($this->settings['sectionformat'] == 0) {
+                $sectionnameclasses = ' accesshide';
 
-            // When not on a section page, we display the section titles except the general section if null.
-            $hasnamenotsecpg = (!$onsectionpage && ($section->section != 0 || !is_null($section->name)));
+                // When not on a section page, we display the section titles except the general section if null.
+                $hasnamenotsecpg = (!$onsectionpage && ($section->section != 0 || !is_null($section->name)));
 
-            // When on a section page, we only display the general section title, if title is not the default one.
-            $hasnamesecpg = ($onsectionpage && ($section->section == 0 && !is_null($section->name)));
+                // When on a section page, we only display the general section title, if title is not the default one.
+                $hasnamesecpg = ($onsectionpage && ($section->section == 0 && !is_null($section->name)));
 
-            if ($hasnamenotsecpg || $hasnamesecpg) {
-                $sectionnameclasses = '';
+                if ($hasnamenotsecpg || $hasnamesecpg) {
+                    $sectionnameclasses = '';
+                }
             }
             $sectionname = html_writer::tag('span', $this->section_title($section, $course));
             $sectionnamemarkup = $this->output->heading($sectionname, 3, 'sectionname' . $sectionnameclasses);
@@ -320,6 +323,9 @@ class format_ned_renderer extends format_section_renderer_base {
             if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
                 $completionprogressclass .= ' nediconsleft';
             }
+            if ($this->settings['sectionformat'] == 1) { // Framed sections.
+                $completionprogressclass .= ' ned-framedsections';
+            }
             if ($this->settings['progresstooltip'] == 1) {
                 $helpicon = $OUTPUT->help_icon('completioniconsnomanual', 'format_ned');
             } else {
@@ -392,20 +398,26 @@ class format_ned_renderer extends format_section_renderer_base {
         // Title with section navigation links.
         $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
         $sectiontitle = '';
-        $sectiontitle .= html_writer::start_tag('div', array('class' => 'section-navigation navigationtitle'));
+        $sectiontitleclasses = 'section-navigation navigationtitle';
+        if ($this->settings['sectionformat'] == 1) {
+            $sectiontitleclasses .= ' ned-framedsections';
+        }
+        $sectiontitle .= html_writer::start_tag('div', array('class' => $sectiontitleclasses));
         $context = context_course::instance($course->id);
         if (($this->settings['viewsectionforwardbacklinks'] == 0) ||
             (($this->settings['viewsectionforwardbacklinks'] == 1) && (has_capability('moodle/course:update', $context)))) {
             $sectiontitle .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
             $sectiontitle .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
         }
-        // Title attributes.
-        $classes = 'sectionname';
-        if (!$thissection->visible) {
-            $classes .= ' dimmed_text';
+        if ($this->settings['sectionformat'] == 0) {
+            // Title attributes.
+            $classes = 'sectionname';
+            if (!$thissection->visible) {
+                $classes .= ' dimmed_text';
+            }
+            $sectionname = html_writer::tag('span', $this->section_title_without_link($thissection, $course));
+            $sectiontitle .= $this->output->heading($sectionname, 3, $classes);
         }
-        $sectionname = html_writer::tag('span', $this->section_title_without_link($thissection, $course));
-        $sectiontitle .= $this->output->heading($sectionname, 3, $classes);
 
         $sectiontitle .= html_writer::end_tag('div');
         echo $sectiontitle;

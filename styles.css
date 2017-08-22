@@ -226,15 +226,30 @@ ul.ned-framedsections .section.main {
 
 .course-content ul.ned-framedsections .section.main .content {
     background-color: #fff;
+    margin: 0 20px;
 }
 
 .course-content ul.ned-framedsections .section.main.current .content {
     background-color: #ffe7aa;
 }
 
+.course-content ul.ned-framedsections ul.section {
+    margin-top: 0;
+}
+
 .course-content ul.ned.ned-framedsections li.section .left,
 .course-content ul.ned.ned-framedsections li.section .right {
     padding: 0;
+    width: 20px;
+}
+
+.editing .course-content ul.ned-framedsections .section.main .content {
+    margin: 0 40px;
+}
+
+.editing .course-content ul.ned.ned-framedsections li.section .left,
+.editing .course-content ul.ned.ned-framedsections li.section .right {
+    width: auto;
 }
 
 .editing ul.ned-framedsections .section .activity .mod-indent-outer {
@@ -262,4 +277,8 @@ ul.ned-framedsections .section.main {
 }
 .ned-framedsections .section .header .sectionname {
     text-align: center;
+}
+
+.course-content .single-section .ned-framedsections.section-navigation {
+    height: 20px;
 }

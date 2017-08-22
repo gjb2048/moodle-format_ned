@@ -31,6 +31,7 @@ class format_ned extends format_base {
     private $settings;  // Course format settings.
     private $sectiondeliverymethoddata;  // JSON decode of 'sectiondeliverymethod' setting;
     private $displaysection = false;
+    private $displaysectioncalculated = false;
 
     /**
      * Creates a new instance of class
@@ -47,6 +48,40 @@ class format_ned extends format_base {
             $courseid = $COURSE->id;  // Save lots of global $COURSE as we will never be the site course.
         }
         parent::__construct($format, $courseid);
+
+        /* This has to be done here instead of format.php because of get_view_url is used to generate its links
+           before format.php is included and 'default section selected' and 'earliest not attempted activity'
+           change the way the format displays despite the value of the 'coursedisplay' format setting. */
+        /*
+        global $PAGE;
+        if (!$PAGE->user_is_editing()) {
+            $sdmdata = $this->get_setting('sectiondeliverymethod');
+            if (!empty($sdmdata)) {
+                // Section delivery method 'section' selected = 1, schedule is 2.
+                if ($sdmdata->sectiondeliverymethod == 1) {
+                    $usesectionno = false;
+                    $displaysection = optional_param('section', 0, PARAM_INT);
+                    // Specify default section selected = 3, Moodle default is 1 and earliest not attempted activity is 2.
+                    if ($sdmdata->defaultsection == 3) {
+                        if (empty($displaysection)) {
+                            $usesectionno = $sdmdata->specifydefaultoptionnumber;
+                        } else {
+                            $this->displaysection = $displaysection;
+                        }
+                    } else if ($sdmdata->defaultsection == 2) {
+                        if (empty($displaysection)) {
+                            $usesectionno = $this->get_earliest_not_attempted_activity(); // Breaks Moodle!
+                        } else {
+                            $this->displaysection = $displaysection;
+                        }
+                    }
+                    if (!empty($usesectionno)) {
+                        $this->displaysection = $usesectionno;
+                    }
+                }
+            }
+        }
+        */
     }
 
     /**
@@ -83,8 +118,47 @@ class format_ned extends format_base {
         return false;
     }
 
-    public function set_displaysection($displaysection) {
-        $this->displaysection = $displaysection;
+    /* public function set_displaysection($displaysection) {
+        return $this->displaysection = $displaysection;
+    } */
+
+    public function get_displaysection() {
+        /* This has to be done here instead of format.php because of get_view_url() is used to generate its links
+           before format.php is included and 'default section selected' and 'earliest not attempted activity'
+           change the way the format displays despite the value of the 'coursedisplay' format setting. */
+        if (!$this->displaysectioncalculated) {
+            global $PAGE;
+            if (!$PAGE->user_is_editing()) {
+                $sdmdata = $this->get_setting('sectiondeliverymethod');
+                if (!empty($sdmdata)) {
+                    // Section delivery method 'section' selected = 1, schedule is 2.
+                    if ($sdmdata->sectiondeliverymethod == 1) {
+                        $usesectionno = false;
+                        $displaysection = optional_param('section', 0, PARAM_INT);
+                        // Specify default section selected = 3, Moodle default is 1 and earliest not attempted activity is 2.
+                        if ($sdmdata->defaultsection == 3) {
+                            if (empty($displaysection)) {
+                                $usesectionno = $sdmdata->specifydefaultoptionnumber;
+                            } else {
+                                $this->displaysection = $displaysection;
+                            }
+                        } else if ($sdmdata->defaultsection == 2) {
+                            if (empty($displaysection)) {
+                                $usesectionno = $this->get_earliest_not_attempted_activity();
+                            } else {
+                                $this->displaysection = $displaysection;
+                            }
+                        }
+                        if (!empty($usesectionno)) {
+                            $this->displaysection = $usesectionno;
+                        }
+                    }
+                }
+            }
+            $this->displaysectioncalculated = true;
+        }
+
+        return $this->displaysection;
     }
 
     /**
@@ -243,6 +317,7 @@ class format_ned extends format_base {
             $sectionno = $section;
         }
         if ($sectionno !== null) {
+            $formatdisplaysectionno = $this->get_displaysection();
             if ($sr !== null) {
                 if ($sr) {
                     $usercoursedisplay = COURSE_DISPLAY_MULTIPAGE;
@@ -250,10 +325,10 @@ class format_ned extends format_base {
                 } else {
                     $usercoursedisplay = COURSE_DISPLAY_SINGLEPAGE;
                 }
-            } else if ($this->displaysection) {
+            } else if ($formatdisplaysectionno) {
                 $usercoursedisplay = COURSE_DISPLAY_MULTIPAGE;
             } else {
-                $usercoursedisplay = $course->coursedisplay;
+                $usercoursedisplay = $formatdisplaysectionno;
             }
             if ($sectionno != 0 && $usercoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
                 $url->param('section', $sectionno);

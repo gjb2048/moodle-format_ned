@@ -54,6 +54,7 @@ $context = context_course::instance($course->id);
 // Retrieve course format option fields and add them to the $course object.
 $courseformat = course_get_format($course);
 
+/*
 if (!$PAGE->user_is_editing()) {
     $sdmdata = $courseformat->get_setting('sectiondeliverymethod');
     if (!empty($sdmdata)) {
@@ -83,6 +84,14 @@ if (!$PAGE->user_is_editing()) {
             }
         }
     }
+} */
+
+$formatdisplaysectionno = $courseformat->get_displaysection();
+if (!empty($formatdisplaysectionno)) {
+    $url = $PAGE->url;
+    $url->param('section', $formatdisplaysectionno);
+    $PAGE->set_url($url);
+    $displaysection = $formatdisplaysectionno;
 }
 
 $course = $courseformat->get_course();

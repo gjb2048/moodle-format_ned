@@ -1,5 +1,12 @@
 Version Information
 ===================
+Version 3.3.0.3
+  1. Implemented Framed sections.
+  2. Fixed issue with navigation block / flat navigation links when using 'Section - Specify default section' or
+     'Section - Section that contains the earliest "Not attempted" activity'.
+  3. Fixed cosmetic issues with Framed sections.  Note:  The frame around the section will change when editing to
+     accomodate the elements within the sides.
+
 Version 3.3.0.2
   1. Added progress tooltip options.
   2. Added section delivery method settings.

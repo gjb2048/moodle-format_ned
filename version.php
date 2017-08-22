@@ -26,8 +26,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017061901;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2017061902;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires = 2017051500.00; // 3.3 (Build: 20170515).
 $plugin->maturity = MATURITY_ALPHA;
 $plugin->component = 'format_ned';
-$plugin->release = '3.3.0.2';
+$plugin->release = '3.3.0.3';
