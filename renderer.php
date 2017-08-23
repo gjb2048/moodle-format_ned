@@ -267,41 +267,64 @@ class format_ned_renderer extends format_section_renderer_base {
                 $markedthistopic = get_string('markedthistopic');
                 $highlightoff = get_string('highlightoff');
                 $controls['highlight'] = array('url' => $url, "icon" => 'i/marked',
-                                               'name' => $highlightoff,
-                                               'pixattr' => array('class' => '', 'alt' => $markedthistopic),
-                                               'attr' => array('class' => 'editing_highlight', 'title' => $markedthistopic,
-                                                   'data-action' => 'removemarker'));
+                    'name' => $highlightoff,
+                    'pixattr' => array('class' => '', 'alt' => $markedthistopic),
+                    'attr' => array('class' => 'editing_highlight', 'title' => $markedthistopic,
+                        'data-action' => 'removemarker'));
             } else {
                 $url->param('marker', $section->section);
                 $markthistopic = get_string('markthistopic');
                 $highlight = get_string('highlight');
                 $controls['highlight'] = array('url' => $url, "icon" => 'i/marker',
-                                               'name' => $highlight,
-                                               'pixattr' => array('class' => '', 'alt' => $markthistopic),
-                                               'attr' => array('class' => 'editing_highlight', 'title' => $markthistopic,
-                                                   'data-action' => 'setmarker'));
+                    'name' => $highlight,
+                    'pixattr' => array('class' => '', 'alt' => $markthistopic),
+                    'attr' => array('class' => 'editing_highlight', 'title' => $markthistopic,
+                        'data-action' => 'setmarker'));
             }
         }
 
         $parentcontrols = parent::section_edit_control_items($course, $section, $onsectionpage);
 
-        // If the edit key exists, we are going to insert our controls after it.
+        $mergedone = array();
+        // If the edit key exists, we are going to insert our mark / hide controls after it.
         if (array_key_exists("edit", $parentcontrols)) {
-            $merged = array();
             // We can't use splice because we are using associative arrays.
             // Step through the array and merge the arrays.
             foreach ($parentcontrols as $key => $action) {
-                $merged[$key] = $action;
+                $mergedone[$key] = $action;
                 if ($key == "edit") {
                     // If we have come to the edit key, merge these controls here.
-                    $merged = array_merge($merged, $controls);
+                    $mergedone = array_merge($mergedone, $controls);
                 }
             }
-
-            return $merged;
         } else {
-            return array_merge($controls, $parentcontrols);
+            $mergedone = array_merge($controls, $parentcontrols);
         }
+
+        $addsectionbelowurl = new moodle_url('/course/changenumsections.php',
+                ['courseid' => $course->id, 'insertsection' => ($section->section + 1), 'sesskey' => sesskey()]);
+        $addsectionbelowstr = get_string('addsectionbelow', 'format_ned');
+        $addsectionbelowcontrol = array('addsectionbelow' => array('url' => $addsectionbelowurl, "icon" => 'i/down',
+            'name' => $addsectionbelowstr,
+            'pixattr' => array('class' => '', 'alt' => $addsectionbelowstr),
+            'attr' => array('title' => $addsectionbelowstr)));
+        $mergedtwo = array();
+        // If the delete key exists, we are going to insert our add section below control before it.
+        if (array_key_exists("delete", $mergedone)) {
+            // We can't use splice because we are using associative arrays.
+            // Step through the array and merge the arrays.
+            foreach ($mergedone as $key => $action) {
+                if ($key == "delete") {
+                    // If we have come to the delete key, merge these controls here.
+                    $mergedtwo = array_merge($mergedtwo, $addsectionbelowcontrol);
+                }
+                $mergedtwo[$key] = $action;
+            }
+        } else {
+            $mergedtwo = array_merge($mergedone, $addsectionbelowcontrol);
+        }
+
+        return $mergedtwo;
     }
 
     /**
