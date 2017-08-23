@@ -328,7 +328,7 @@ class format_ned extends format_base {
             } else if ($formatdisplaysectionno) {
                 $usercoursedisplay = COURSE_DISPLAY_MULTIPAGE;
             } else {
-                $usercoursedisplay = $formatdisplaysectionno;
+                $usercoursedisplay = $course->coursedisplay;
             }
             if ($sectionno != 0 && $usercoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
                 $url->param('section', $sectionno);

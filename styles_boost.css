@@ -23,3 +23,8 @@
 .course-content .single-section .ned-framedsections.section-navigation {
     box-sizing: content-box;
 }
+
+.ned-framedsections .section .right a.dropdown-toggle,
+.ned-framedsections .section .right a.dropdown-toggle:hover {
+    color: #fff;
+}

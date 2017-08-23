@@ -229,6 +229,16 @@ ul.ned-framedsections .section.main {
     margin: 0 20px;
 }
 
+.course-content ul.ned-framedsections .section.main .header {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.course-content ul.ned-framedsections .section.main .header,
+.course-content ul.ned-framedsections .section.main .footer {
+    min-height: 20px;
+}
+
 .course-content ul.ned-framedsections .section.main.current .content {
     background-color: #ffe7aa;
 }
@@ -258,8 +268,8 @@ ul.ned-framedsections .section.main {
 
 .course-content ul.ned-framedsections .section.main .content {
     padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .ned-framedsections .section .header .sectionname,
@@ -267,8 +277,8 @@ ul.ned-framedsections .section.main {
 .ned-framedsections .section .header .sectionname a:hover,
 .ned-framedsections .section .header .summary,
 .ned-framedsections .section .left,
-.ned-framedsections .section .right a,
-.ned-framedsections .section .right a:hover {
+.ned-framedsections .section .right a.toggle-display,
+.ned-framedsections .section .right a.toggle-display:hover {
     color: #fff;
 }
 

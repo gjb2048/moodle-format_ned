@@ -194,8 +194,6 @@ class format_ned_renderer extends format_section_renderer_base {
             } else {
                 if ($this->settings['sectionsummarylocation'] == 0) { // 0 is show in the section header.
                     $sectionheadercontent = $summarymarkup;
-                } else {
-                    $sectionheadercontent = '&nbsp;';
                 }
             }
             $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
@@ -233,7 +231,7 @@ class format_ned_renderer extends format_section_renderer_base {
     protected function section_footer() {
         $o = html_writer::end_tag('div');
         if ($this->settings['sectionformat'] == 1) { // Framed sections.
-            $o .= html_writer::tag('div', '&nbsp;', array('class' => 'footer'));
+            $o .= html_writer::tag('div', '', array('class' => 'footer'));
         }
         $o .= html_writer::end_tag('li');
 
@@ -337,6 +335,60 @@ class format_ned_renderer extends format_section_renderer_base {
                     array('id' => 'completionprogressid', 'class' => $completionprogressclass));
         }
         return $result;
+    }
+
+    /**
+     * Generate a summary of a section for display on the 'course index page'
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @param stdClass $course The course entry from DB
+     * @param array    $mods (argument not used)
+     * @return string HTML to output.
+     */
+    protected function section_summary($section, $course, $mods) {
+        $classattr = 'section main section-summary clearfix';
+        $linkclasses = '';
+
+        // If section is hidden then display grey section link
+        if (!$section->visible) {
+            $classattr .= ' hidden';
+            $linkclasses .= ' dimmed_text';
+        } else if (course_get_format($course)->is_section_current($section)) {
+            $classattr .= ' current';
+        }
+
+        $title = get_section_name($course, $section);
+        $o = '';
+        $o .= html_writer::start_tag('li', array('id' => 'section-'.$section->section,
+            'class' => $classattr, 'role'=>'region', 'aria-label'=> $title));
+
+        if ($this->settings['sectionformat'] == 1) { // Framed sections.
+            $o .= html_writer::tag('div', '', array('class' => 'header'));
+        }
+        $o .= html_writer::tag('div', '', array('class' => 'left side'));
+        $o .= html_writer::tag('div', '', array('class' => 'right side'));
+        $o .= html_writer::start_tag('div', array('class' => 'content'));
+
+        if ($section->uservisible) {
+            $title = html_writer::tag('a', $title,
+                    array('href' => course_get_url($course, $section->section), 'class' => $linkclasses));
+        }
+        $o .= $this->output->heading($title, 3, 'section-title');
+
+        $o.= html_writer::start_tag('div', array('class' => 'summarytext'));
+        $o.= $this->format_summary_text($section);
+        $o.= html_writer::end_tag('div');
+        $o.= $this->section_activity_summary($section, $course, null);
+
+        $o .= $this->section_availability($section);
+
+        $o .= html_writer::end_tag('div');
+        if ($this->settings['sectionformat'] == 1) { // Framed sections.
+            $o .= html_writer::tag('div', '', array('class' => 'footer'));
+        }
+        $o .= html_writer::end_tag('li');
+
+        return $o;
     }
 
     /**
