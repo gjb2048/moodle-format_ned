@@ -33,8 +33,12 @@
 }
 
 .course-content ul.ned li.section .section_action_menu .textmenu,
-.course-content ul.ned li.section .section_action_menu .menu-action-text {
+.course-content ul.ned li.section .section_action_menu .menu-action {
     white-space: nowrap;
+}
+
+.course-content ul.ned li.section .section_action_menu .menu-action .icon {
+    margin-right: .5rem;  /* Same as Boost theme. */
 }
 
 /* Completion progress help */
@@ -232,6 +236,11 @@ ul.ned-framedsections .section.main {
 .course-content ul.ned-framedsections .section.main .header {
     margin-left: 20px;
     margin-right: 20px;
+}
+
+.editing .course-content ul.ned-framedsections .section.main .header {
+    margin-left: 40px;
+    margin-right: 40px;
 }
 
 .course-content ul.ned-framedsections .section.main .header,

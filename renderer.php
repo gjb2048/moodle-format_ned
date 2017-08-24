@@ -306,7 +306,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $addsectionbelowstr = get_string('addsectionbelow', 'format_ned');
         $addsectionbelowcontrol = array('addsectionbelow' => array('url' => $addsectionbelowurl, "icon" => 'i/down',
             'name' => $addsectionbelowstr,
-            'pixattr' => array('class' => '', 'alt' => $addsectionbelowstr),
+            'pixattr' => array('alt' => $addsectionbelowstr),
             'attr' => array('title' => $addsectionbelowstr)));
         $mergedtwo = array();
         // If the delete key exists, we are going to insert our add section below control before it.
