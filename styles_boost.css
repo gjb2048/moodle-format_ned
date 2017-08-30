@@ -20,7 +20,7 @@
 }
 
 .format-ned.path-course-view .completionprogress.nediconsleft {
-    left: 36px;
+    left: 24px;
 }
 
 .format-ned.path-course-view .completionprogress > i {
@@ -29,12 +29,8 @@
     margin-top: -25px;
 }
 
-.format-ned.path-course-view .completionprogress.ned-framedsections {
-    right: 41px;
-}
-
 .format-ned.path-course-view .completionprogress.ned-framedsections.nediconsleft {
-    left: 16px;
+    left: 6px;
 }
 
 .course-content .single-section .ned-framedsections.section-navigation {
