@@ -17,7 +17,11 @@
 }
 
 .format-ned.path-course-view .completionprogress.ned-framedsections {
-    right: 56px;
+    right: 41px;
+}
+
+.format-ned.path-course-view .completionprogress.ned-framedsections.nediconsleft {
+    left: 16px;
 }
 
 .course-content .single-section .ned-framedsections.section-navigation {

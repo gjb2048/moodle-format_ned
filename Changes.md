@@ -7,6 +7,7 @@ Version 3.3.0.3
   3. Fixed cosmetic issues with Framed sections.  Note:  The frame around the section will change when editing to
      accomodate the elements within the sides.
   4. Implemented 'Edit mode' -> 'Add section below'.
+  5. Changed framed sections left, right and bottom border width from 20 to 5 pixels when not editing.
 
 Version 3.3.0.2
   1. Added progress tooltip options.
