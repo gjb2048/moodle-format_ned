@@ -48,40 +48,6 @@ class format_ned extends format_base {
             $courseid = $COURSE->id;  // Save lots of global $COURSE as we will never be the site course.
         }
         parent::__construct($format, $courseid);
-
-        /* This has to be done here instead of format.php because of get_view_url is used to generate its links
-           before format.php is included and 'default section selected' and 'earliest not attempted activity'
-           change the way the format displays despite the value of the 'coursedisplay' format setting. */
-        /*
-        global $PAGE;
-        if (!$PAGE->user_is_editing()) {
-            $sdmdata = $this->get_setting('sectiondeliverymethod');
-            if (!empty($sdmdata)) {
-                // Section delivery method 'section' selected = 1, schedule is 2.
-                if ($sdmdata->sectiondeliverymethod == 1) {
-                    $usesectionno = false;
-                    $displaysection = optional_param('section', 0, PARAM_INT);
-                    // Specify default section selected = 3, Moodle default is 1 and earliest not attempted activity is 2.
-                    if ($sdmdata->defaultsection == 3) {
-                        if (empty($displaysection)) {
-                            $usesectionno = $sdmdata->specifydefaultoptionnumber;
-                        } else {
-                            $this->displaysection = $displaysection;
-                        }
-                    } else if ($sdmdata->defaultsection == 2) {
-                        if (empty($displaysection)) {
-                            $usesectionno = $this->get_earliest_not_attempted_activity(); // Breaks Moodle!
-                        } else {
-                            $this->displaysection = $displaysection;
-                        }
-                    }
-                    if (!empty($usesectionno)) {
-                        $this->displaysection = $usesectionno;
-                    }
-                }
-            }
-        }
-        */
     }
 
     /**
@@ -117,10 +83,6 @@ class format_ned extends format_base {
         }
         return false;
     }
-
-    /* public function set_displaysection($displaysection) {
-        return $this->displaysection = $displaysection;
-    } */
 
     public function get_displaysection() {
         /* This has to be done here instead of format.php because of get_view_url() is used to generate its links
