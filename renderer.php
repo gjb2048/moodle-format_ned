@@ -65,7 +65,25 @@ class format_ned_renderer extends format_section_renderer_base {
     }
 
     /**
-     * Generate the starting container html for a list of sections
+     * Generate the starting container html for section 0.  No Framed sections.
+     * @return string HTML to output.
+     */
+    protected function start_section0_list() {
+        $classes = 'ned';
+        if (!$this->editing) {
+            if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
+                $classes .= ' '.\format_ned\toolbox::$nediconsleft;
+            }
+            // Temporarily disabled...
+            if ((false) && ($this->settings['sectioncontentjustification'])) {
+                $classes .= ' sectioncontentjustification';
+            }
+        }
+        return html_writer::start_tag('ul', array('class' => $classes));
+    }
+
+    /**
+     * Generate the starting container html for a list of sections.
      * @return string HTML to output.
      */
     protected function start_section_list() {
@@ -456,7 +474,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $thissection = $modinfo->get_section_info(0);
         if ($thissection->summary or !empty($modinfo->sections[0]) or $this->editing) {
             if (($this->editing) or ($this->settings['showsection0'] == 1)) {
-                echo $this->start_section_list();
+                echo $this->start_section0_list();
                 echo $this->section_header($thissection, $course, true, $displaysection);
                 echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
                 echo $this->courserenderer->course_section_add_cm_control($course, 0, $displaysection);
@@ -555,31 +573,32 @@ class format_ned_renderer extends format_section_renderer_base {
         // Copy activity clipboard.
         echo $this->course_activity_clipboard($course, 0);
 
-        // Now the list of sections.
-        echo $this->start_section_list();
         $numsections = $this->courseformat->get_last_section_number();
 
-        foreach ($modinfo->get_section_info_all() as $section => $thissection) {
-            if ($section == 0) {
-                if (($this->editing) or ($this->settings['showsection0'] > 0)) {
-                    // Section 0 is displayed a little different then the others.
-                    if ($thissection->summary or !empty($modinfo->sections[0]) or $this->editing) {
-                        echo $this->section_header($thissection, $course, false, 0);
-                        echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
-                        echo $this->courserenderer->course_section_add_cm_control($course, 0, 0);
-                        echo $this->section_footer();
-                    }
-                }
-                if ((!$this->editing) and ($this->settings['showsection0'] == 2)) {
-                    break;
-                } else {
-                    continue;
-                }
+        // Section 0.
+        if (($this->editing) or ($this->settings['showsection0'] > 0)) {
+            // Section 0 is displayed a little different then the others.
+            $thissection = $modinfo->get_section_info(0);
+            if ($thissection->summary or !empty($modinfo->sections[0]) or $this->editing) {
+                echo $this->start_section0_list();
+                echo $this->section_header($thissection, $course, false, 0);
+                echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                echo $this->courserenderer->course_section_add_cm_control($course, 0, 0);
+                echo $this->section_footer();
+                echo $this->end_section_list();
             }
-            if ($section > $numsections) {
-                // Activities inside this section are 'orphaned', this section will be printed as 'stealth' below.
-                continue;
-            }
+        }
+        if ((!$this->editing) and ($this->settings['showsection0'] == 2)) {
+            $numsections = 0; // Effectively don't show the other sections, only 0.
+        }
+
+        // Now the list of sections.
+        echo $this->start_section_list();
+
+        $section = 1;
+        while ($section <= $numsections) {
+            $thissection = $modinfo->get_section_info($section);
+
             /* Show the section if the user is permitted to access it, OR if it's not available
                but there is some available info text which explains the reason & should display. */
             $showsection = $thissection->uservisible ||
@@ -607,6 +626,8 @@ class format_ned_renderer extends format_section_renderer_base {
                 }
                 echo $this->section_footer();
             }
+
+            $section++;
         }
 
         if ($this->editing and has_capability('moodle/course:update', $context)) {
