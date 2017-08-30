@@ -33,6 +33,15 @@
     left: 6px;
 }
 
+.format-ned.path-course-view h3.sectionname {
+    margin-bottom: .25rem;
+    padding-top: .25rem;
+}
+
+.format-ned.path-course-view .course-content ul.ned-framedsections ul.section {
+    margin: 0; /* Compromise for empty sections and yet still have section title vertically centred. */
+}
+
 .course-content .single-section .ned-framedsections.section-navigation {
     box-sizing: content-box;
 }
