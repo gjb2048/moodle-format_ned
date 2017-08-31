@@ -212,6 +212,8 @@ class format_ned_renderer extends format_section_renderer_base {
             } else {
                 if ($this->settings['sectionsummarylocation'] == 0) { // 0 is show in the section header.
                     $sectionheadercontent = $summarymarkup;
+                } else {
+                    $sectionheadercontent = '';
                 }
             }
             $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
