@@ -644,20 +644,18 @@ class format_ned_renderer extends format_section_renderer_base {
                 if (!$course->hiddensections && $thissection->available) {
                     echo $this->section_hidden($section, $course->id);
                 }
-
-                continue;
-            }
-
-            if (!$this->editing && $course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) {
-                // Display section summary only.
-                echo $this->section_summary($thissection, $course, null);
             } else {
-                echo $this->section_header($thissection, $course, false, 0);
-                if ($thissection->uservisible) {
-                    echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
-                    echo $this->courserenderer->course_section_add_cm_control($course, $section, 0);
+                if (!$this->editing && $course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) {
+                    // Display section summary only.
+                    echo $this->section_summary($thissection, $course, null);
+                } else {
+                    echo $this->section_header($thissection, $course, false, 0);
+                    if ($thissection->uservisible) {
+                        echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                        echo $this->courserenderer->course_section_add_cm_control($course, $section, 0);
+                    }
+                    echo $this->section_footer();
                 }
-                echo $this->section_footer();
             }
 
             $section++;
