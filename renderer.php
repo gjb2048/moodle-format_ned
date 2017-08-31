@@ -348,9 +348,9 @@ class format_ned_renderer extends format_section_renderer_base {
     /**
      * Returns the 'Your progress' help icon, if completion tracking is enabled.
      *
-     * @return string HTML code for help icon, or blank if not needed
+     * @return string HTML code for help icon, or blank if not needed.
      */
-    public function display_completion_help_icon(completion_info $completioninfo) {
+    public function display_completion_help_icon(completion_info $completioninfo, $courseid, $sectionno = false) {
         if ($this->settings['progresstooltip'] == 0) {  // Hide!
             return '';
         }
@@ -358,22 +358,59 @@ class format_ned_renderer extends format_section_renderer_base {
         global $PAGE, $OUTPUT;
         $result = '';
         if ($completioninfo->is_enabled() && !$PAGE->user_is_editing() && isloggedin() && !isguestuser()) {
-            $completionprogressclass = 'completionprogress';
-            if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
-                $completionprogressclass .= ' nediconsleft';
+            /* Only display the icon if there are displayed activities with completion on the page.
+               Thus negating the JavaScript 'flash' as it does a 'display: none' and then not having
+               a container with CSS height still there. */
+            $showicon = false;
+            $activitieswithcompletion = $completioninfo->get_activities();
+            $modinfo = get_fast_modinfo($courseid);
+            if ($sectionno) {
+                $section = $modinfo->get_section_info($sectionno);
+                if (!empty($modinfo->sections[$section->section])) {
+                    foreach ($modinfo->sections[$section->section] as $modnumber) {
+                        $mod = $modinfo->cms[$modnumber];
+                        if (!$mod->uservisible && empty($mod->availableinfo)) {
+                            continue;
+                        }
+                        if (array_key_exists($mod->id, $activitieswithcompletion)) {
+                            $showicon = true;
+                            break;
+                        }
+                    }
+                }
+            } else if (count($activitieswithcompletion) > 0) {
+                $mods = $modinfo->get_cms();
+                foreach ($mods as $mod) {
+                    if (!$mod->uservisible) {
+                        continue;
+                    }
+                    if (array_key_exists($mod->id, $activitieswithcompletion)) {
+                        $showicon = true;
+                        break;
+                    }
+                }
             }
-            if ($this->settings['sectionformat'] == 1) { // Framed sections.
-                $completionprogressclass .= ' ned-framedsections';
-            }
-            if ($this->settings['progresstooltip'] == 1) {
-                $helpicon = $OUTPUT->help_icon('completioniconsnomanual', 'format_ned');
-            } else {
-                $helpicon = $OUTPUT->help_icon('completionicons', 'completion');
-            }
-            $result .= html_writer::tag('div',
+
+            if ($showicon) {
+                $result .= html_writer::start_tag('div', array('class' => 'completionprogresshelp'));
+                $completionprogressclass = 'completionprogress';
+                if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
+                    $completionprogressclass .= ' nediconsleft';
+                }
+                if ($this->settings['sectionformat'] == 1) { // Framed sections.
+                    $completionprogressclass .= ' ned-framedsections';
+                }
+                if ($this->settings['progresstooltip'] == 1) {
+                    $helpicon = $OUTPUT->help_icon('completioniconsnomanual', 'format_ned');
+                } else {
+                    $helpicon = $OUTPUT->help_icon('completionicons', 'completion');
+                }
+                $result .= html_writer::tag('div',
                     $helpicon.
                     $OUTPUT->pix_icon('t/sort_desc', ''),
                     array('id' => 'completionprogressid', 'class' => $completionprogressclass));
+                $result .= html_writer::end_tag('div');
+            }
         }
 
         return $result;
@@ -455,9 +492,7 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Show completion help icon.
         $completioninfo = new completion_info($course);
-        echo html_writer::start_tag('div', array('class' => 'completionprogresshelp'));
-        echo $this->display_completion_help_icon($completioninfo);
-        echo html_writer::end_tag('div');
+        echo $this->display_completion_help_icon($completioninfo, $course->id, $displaysection);
 
         if (!$sectioninfo->uservisible) {
             if (!$course->hiddensections) {
@@ -564,9 +599,7 @@ class format_ned_renderer extends format_section_renderer_base {
         if ($course->coursedisplay == COURSE_DISPLAY_SINGLEPAGE) {
             // Title with completion help icon.
             $completioninfo = new completion_info($course);
-            echo html_writer::start_tag('div', array('class' => 'completionprogresshelp'));
-            echo $this->display_completion_help_icon($completioninfo);
-            echo html_writer::end_tag('div');
+            echo $this->display_completion_help_icon($completioninfo, $course->id);
         }
         echo $this->output->heading($this->page_title(), 2, 'accesshide');
 
