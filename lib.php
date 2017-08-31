@@ -485,7 +485,7 @@ class format_ned extends format_base {
                     'type' => PARAM_INT
                 ),
                 'progresstooltip' => array(
-                    'default' => 1,
+                    'default' => 0,
                     'type' => PARAM_INT
                 ),
                 'sectiondeliverymethod' => array(

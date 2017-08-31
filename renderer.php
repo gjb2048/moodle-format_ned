@@ -32,6 +32,7 @@ class format_ned_renderer extends format_section_renderer_base {
     private $courseformat = null; // Our course format object as defined in lib.php.
     private $editing = false;
     private $settings = null;
+    private $progressiconshown = false;
 
     /**
      * Constructor method, calls the parent constructor
@@ -352,8 +353,8 @@ class format_ned_renderer extends format_section_renderer_base {
      *
      * @return string HTML code for help icon, or blank if not needed.
      */
-    public function display_completion_help_icon(completion_info $completioninfo, $courseid, $sectionno = false) {
-        if ($this->settings['progresstooltip'] == 0) {  // Hide!
+    public function display_completion_help_icon(completion_info $completioninfo, $courseid, $sectionno = null) {
+        if (($this->progressiconshown) || ($this->settings['progresstooltip'] == 0)) {  // Already shown or Hide!
             return '';
         }
 
@@ -366,7 +367,7 @@ class format_ned_renderer extends format_section_renderer_base {
             $showicon = false;
             $activitieswithcompletion = $completioninfo->get_activities();
             $modinfo = get_fast_modinfo($courseid);
-            if ($sectionno) {
+            if (!empty($sectionno)) {
                 $section = $modinfo->get_section_info($sectionno);
                 if (!empty($modinfo->sections[$section->section])) {
                     foreach ($modinfo->sections[$section->section] as $modnumber) {
@@ -412,6 +413,7 @@ class format_ned_renderer extends format_section_renderer_base {
                     $OUTPUT->pix_icon('t/sort_desc', ''),
                     array('id' => 'completionprogressid', 'class' => $completionprogressclass));
                 $result .= html_writer::end_tag('div');
+                $this->progressiconshown = true;
             }
         }
 
@@ -492,10 +494,6 @@ class format_ned_renderer extends format_section_renderer_base {
             return;
         }
 
-        // Show completion help icon.
-        $completioninfo = new completion_info($course);
-        echo $this->display_completion_help_icon($completioninfo, $course->id, $displaysection);
-
         if (!$sectioninfo->uservisible) {
             if (!$course->hiddensections) {
                 echo $this->start_section_list();
@@ -513,6 +511,9 @@ class format_ned_renderer extends format_section_renderer_base {
             if (($this->editing) or ($this->settings['showsection0'] == 1)) {
                 echo $this->start_section0_list();
                 echo $this->section_header($thissection, $course, true, $displaysection);
+                // Show completion help icon.
+                $completioninfo = new completion_info($course);
+                echo $this->display_completion_help_icon($completioninfo, $course->id, $displaysection);
                 echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
                 echo $this->courserenderer->course_section_add_cm_control($course, 0, $displaysection);
                 echo $this->section_footer();
@@ -558,6 +559,11 @@ class format_ned_renderer extends format_section_renderer_base {
 
         echo $this->section_header($thissection, $course, true, $displaysection);
 
+        // Show completion help icon.
+        if (empty($completioninfo)) {
+            $completioninfo = new completion_info($course);
+        }
+        echo $this->display_completion_help_icon($completioninfo, $course->id, $displaysection);
         echo $this->courserenderer->course_section_cm_list($course, $thissection, $displaysection);
         echo $this->courserenderer->course_section_add_cm_control($course, $displaysection, $displaysection);
         echo $this->section_footer();
@@ -597,12 +603,6 @@ class format_ned_renderer extends format_section_renderer_base {
 
         $context = context_course::instance($course->id);
 
-        // Don't display on the multiple section list page when "One section per page".
-        if ($course->coursedisplay == COURSE_DISPLAY_SINGLEPAGE) {
-            // Title with completion help icon.
-            $completioninfo = new completion_info($course);
-            echo $this->display_completion_help_icon($completioninfo, $course->id);
-        }
         echo $this->output->heading($this->page_title(), 2, 'accesshide');
 
         // Copy activity clipboard.
@@ -617,6 +617,12 @@ class format_ned_renderer extends format_section_renderer_base {
             if ($thissection->summary or !empty($modinfo->sections[0]) or $this->editing) {
                 echo $this->start_section0_list();
                 echo $this->section_header($thissection, $course, false, 0);
+                // Don't display on the multiple section list page when "One section per page".
+                if ($course->coursedisplay == COURSE_DISPLAY_SINGLEPAGE) {
+                    // Possibly show completion help icon once.
+                    $completioninfo = new completion_info($course);
+                    echo $this->display_completion_help_icon($completioninfo, $course->id);
+                }
                 echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
                 echo $this->courserenderer->course_section_add_cm_control($course, 0, 0);
                 echo $this->section_footer();
@@ -653,6 +659,14 @@ class format_ned_renderer extends format_section_renderer_base {
                 } else {
                     echo $this->section_header($thissection, $course, false, 0);
                     if ($thissection->uservisible) {
+                        // Don't display on the multiple section list page when "One section per page".
+                        if ($course->coursedisplay == COURSE_DISPLAY_SINGLEPAGE) {
+                            // Possibly show completion help icon once.
+                            if (empty($completioninfo)) {
+                                $completioninfo = new completion_info($course);
+                            }
+                            echo $this->display_completion_help_icon($completioninfo, $course->id);
+                        }
                         echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
                         echo $this->courserenderer->course_section_add_cm_control($course, $section, 0);
                     }

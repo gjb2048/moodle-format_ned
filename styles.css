@@ -1,3 +1,7 @@
+.format-ned #maincontent {
+    display: none;
+}
+
 .course-content ul.ned {
     margin: 0;
     list-style: none;
@@ -191,6 +195,11 @@ ul.ned.sectioncontentjustification .section .activity .actions {
 /* Set the background colour of the li.section - less to style and no adaption for editing but format has to set the section content background and highlight colour. */
 ul.ned-framedsections .section.main {
     background-color: #9DBB61;
+    margin-bottom: 15px;
+}
+
+ul.ned-framedsections .section.main:last-child {
+    margin-bottom: 0;
 }
 
 .course-content ul.ned-framedsections .section.main .content {
