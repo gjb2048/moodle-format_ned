@@ -527,21 +527,11 @@ class format_ned_renderer extends format_section_renderer_base {
         // The requested section page.
         $thissection = $modinfo->get_section_info($displaysection);
 
-        // Title with section navigation links.
-        $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
-        $sectiontitle = '';
-        $sectiontitleclasses = 'section-navigation navigationtitle';
-        if ($this->settings['sectionformat'] == 1) {
-            $sectiontitleclasses .= ' ned-framedsections';
-        }
-        $sectiontitle .= html_writer::start_tag('div', array('class' => $sectiontitleclasses));
         $context = context_course::instance($course->id);
-        if (($this->settings['viewsectionforwardbacklinks'] == 0) ||
-            (($this->settings['viewsectionforwardbacklinks'] == 1) && (has_capability('moodle/course:update', $context)))) {
-            $sectiontitle .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
-            $sectiontitle .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
-        }
+
+        // Title without section navigation links.
         if ($this->settings['sectionformat'] == 0) {
+            $sectiontitle = html_writer::start_tag('div', array('class' => 'section-navigation navigationtitle'));
             // Title attributes.
             $classes = 'sectionname';
             if (!$thissection->visible) {
@@ -549,10 +539,9 @@ class format_ned_renderer extends format_section_renderer_base {
             }
             $sectionname = html_writer::tag('span', $this->section_title_without_link($thissection, $course));
             $sectiontitle .= $this->output->heading($sectionname, 3, $classes);
+            $sectiontitle .= html_writer::end_tag('div');
+            echo $sectiontitle;
         }
-
-        $sectiontitle .= html_writer::end_tag('div');
-        echo $sectiontitle;
 
         // Now the list of sections..
         echo $this->start_section_list();
@@ -574,6 +563,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $sectionbottomnav .= html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
         if (($this->settings['viewsectionforwardbacklinks'] == 0) ||
             (($this->settings['viewsectionforwardbacklinks'] == 1) && (has_capability('moodle/course:update', $context)))) {
+            $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
             $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
             $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
         }
