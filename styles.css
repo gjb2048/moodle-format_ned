@@ -256,6 +256,10 @@ ul.ned-framedsections .section.main:last-child {
     padding-right: 15px;
 }
 
+.course-content ul.ned-framedsections .section.main .content .sectionname {
+    margin-top: 0;
+}
+
 .ned-framedsections .section .header .sectionname,
 .ned-framedsections .section .header .sectionname a,
 .ned-framedsections .section .header .sectionname a:hover,
