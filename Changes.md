@@ -1,5 +1,25 @@
 Version Information
 ===================
+Version 3.3.0.4
+  1. Implemented database end of colour presets.  Notes:
+     'Manage colour schemas' now goes to the list of schemas and thus saving need for:
+        a) Additional JavaScript.
+        b) The user accidentially changing the colour scheme for the course.
+        c) Making the list easier to find.
+     Optimised colourschema.php to use one database query instead of two for the count
+     of records which additionally would have been wrong in the previous version for the
+     paging bar because the count was based on all records and not the actual number when
+     filtered.  Removed strange 'WHERE 0 = 0' SQL statement addition.
+     Optimised course fetching in colour schema code to use core cached API instead of
+     accessing the database directly.
+     Restoring an old course will now check that a colour preset still exists, otherwise
+     reset to default.
+
+  TODO: Need:
+    Updated graphic for pix/ned_tabs_colourkey.png.
+    Details of 'Moodle default' colour scheme for the format as currently the same as 'Embassy Green'.
+    Should the colourschema.php and colourschema_edit.php tables be responsive grids instead?
+
 Version 3.3.0.3
   1. Implemented Framed sections.
   2. Fixed issue with navigation block / flat navigation links when using 'Section - Specify default section' or

@@ -426,6 +426,15 @@ class format_ned extends format_base {
     }
 
     /**
+     * Returns the id of the default colour preset.
+     *
+     * @return int colour preset default id - see nedsettings_form.php.
+     */
+    private function get_colourpreset_default() {
+        return 2;
+    }
+
+    /**
      * Definitions of the additional options that this course format uses for course
      *
      * Topics format uses the following options:
@@ -461,7 +470,7 @@ class format_ned extends format_base {
                     'type' => PARAM_INT
                 ),
                 'colourpreset' => array(
-                    'default' => 2,
+                    'default' => $this->get_colourpreset_default(),
                     'type' => PARAM_INT
                 ),
                 'showsection0' => array(
@@ -656,6 +665,14 @@ class format_ned extends format_base {
         $mform->addHelpButton('sectiondeliverymethodgroup', 'sectiondeliverymethod', 'format_ned');
 
         return $elements;
+    }
+
+    /**
+     * Resets the colour preset for the course.
+     */
+    public function reset_colourpreset() {
+        $data = array('colourpreset' => $this->get_colourpreset_default());
+        $this->update_course_format_options($data);
     }
 
     /**

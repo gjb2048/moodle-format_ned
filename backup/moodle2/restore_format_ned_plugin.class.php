@@ -80,7 +80,6 @@ class restore_format_ned_plugin extends restore_format_plugin {
      * Dummy process method
      */
     public function process_dummy_course() {
-
     }
 
     /**
@@ -91,15 +90,30 @@ class restore_format_ned_plugin extends restore_format_plugin {
     public function after_restore_course() {
         global $DB;
 
-        if (!$this->need_restore_numsections()) {
-            // Backup file was made in Moodle 3.3 or later, we don't need to process 'numsecitons'.
+        $data = $this->connectionpoint->get_data();
+        $backupinfo = $this->step->get_task()->get_info();
+        if ($backupinfo->original_course_format !== 'ned') {
+            // Backup from another course format.
             return;
         }
 
-        $data = $this->connectionpoint->get_data();
-        $backupinfo = $this->step->get_task()->get_info();
-        if ($backupinfo->original_course_format !== 'ned' || !isset($data['tags']['numsections'])) {
-            // Backup from another course format or backup file does not even have 'numsections'.
+        // If our preset id is not a known id then reset to default.
+        $courseid = $this->step->get_task()->get_courseid();
+        $courseformat = course_get_format($courseid);
+        if ($presets = $DB->get_records('format_ned_colour', null, null, 'id')) {
+            $ourpreset = $courseformat->get_setting('colourpreset');
+            if ((!empty($ourpreset)) &&(!array_key_exists($ourpreset, $presets))) {
+                $courseformat->reset_colourpreset();
+            }
+        }
+
+        if (!isset($data['tags']['numsections'])) {
+            // Backup file does not even have 'numsections'.
+            return;
+        }
+
+        if (!$this->need_restore_numsections()) {
+            // Backup file was made in Moodle 3.3 or later, we don't need to process 'numsecitons'.
             return;
         }
 
@@ -114,7 +128,7 @@ class restore_format_ned_plugin extends restore_format_plugin {
                 $sectionnum = (int)$section->title;
                 if ($sectionnum > $numsections && $sectionnum > $this->originalnumsections) {
                     $DB->execute("UPDATE {course_sections} SET visible = 0 WHERE course = ? AND section = ?",
-                        [$this->step->get_task()->get_courseid(), $sectionnum]);
+                        [$courseid, $sectionnum]);
                 }
             }
         }

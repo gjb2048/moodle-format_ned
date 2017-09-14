@@ -24,10 +24,28 @@
  *                           {@link http://moodle.org/user/profile.php?id=442195}
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
-$plugin->version   = 2017061903;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires = 2017051500.00; // 3.3 (Build: 20170515).
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->component = 'format_ned';
-$plugin->release = '3.3.0.4';
+function xmldb_format_ned_install() {
+    global $DB;
+
+    $rec = new stdClass();
+    $rec->name = 'Embassy Green';
+    $rec->framedsectionbgcolour = '9DBB61';
+    $rec->framedsectionheadertxtcolour = 'FFFF33';
+    $rec->predefined = 1;
+    $rec->timecreated = time();
+    $rec->timemodified = time();
+    $DB->insert_record('format_ned_colour', $rec);
+
+    $rec = new stdClass();
+    $rec->name = 'Blues on Whyte';
+    $rec->framedsectionbgcolour = 'FFFFFF';
+    $rec->framedsectionheadertxtcolour = '7CAAFE';
+    $rec->predefined = 1;
+    $rec->timecreated = time();
+    $rec->timemodified = time();
+    $DB->insert_record('format_ned_colour', $rec);
+
+    return true;
+}

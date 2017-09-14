@@ -27,8 +27,8 @@
 defined('MOODLE_INTERNAL') || die;
 
 require_once("$CFG->libdir/formslib.php");
-require_once($CFG->libdir . '/completionlib.php');
-require_once($CFG->dirroot . '/course/edit_form.php');
+require_once($CFG->libdir.'/completionlib.php');
+require_once($CFG->dirroot.'/course/edit_form.php');
 
 class course_ned_edit_form extends moodleform {
 
@@ -70,30 +70,24 @@ class course_ned_edit_form extends moodleform {
         unset($choices);
         $mform->disabledIf('sectionsummarylocation', 'sectionformat', 'neq', 1);
 
-        /*$colourpresetelements = array();
-        $colourpresetitems = array(
-            1 => get_string('colourpresetmoodle', 'format_ned'),
-            2 => get_string('colourpresetembassygreen', 'format_ned'),
-            3 => get_string('colourpresetbluesonwhyte', 'format_ned')
-        );
-        $label = get_string('colourpreset', 'format_ned');
-        $colourpresetelements[] =& $mform->createElement('select', 'colourpreset', '', $colourpresetitems);
-        //unset($colourpresetitems);
-        $managecolourpresetshtml = '<a href="#" class="btn">'.get_string('managecolourpresets', 'format_ned').'</a>';
-        $colourpresetelements[] =& $mform->createElement('html', $managecolourpresetshtml);
-        $mform->addGroup($colourpresetelements, 'colourpresetelements', $label, array(' '), false);
-		*/
         $mform->addElement('html', '<div class="managecolourpresets">');
         // Temporary list until DB.
-        $colourpresetitems = array(
-            0 => get_string('colourpresetmoodle', 'format_ned'),
-            1 => 'Embassy Green',
-            2 => 'Blues on Whyte'
-        );
+        global $DB;
+        $colourpresetitems = array(0 => get_string('colourpresetmoodle', 'format_ned'));
+        if ($schemas = $DB->get_records('format_ned_colour', null, null, 'id,name')) {
+            foreach($schemas as $schema) {
+                $colourpresetitems[$schema->id] = $schema->name;
+            }
+        } else {
+            $colourpresetitems[1] = 'Embassy Green';
+            $colourpresetitems[2] = 'Blues on Whyte';
+        }
         $label = get_string('colourpreset', 'format_ned');
         $mform->addElement('select', 'colourpreset', $label, $colourpresetitems);
         unset($colourpresetitems);
-        $managecolourpresetshtml = '<a href="#" class="btn btn-secondary">'.get_string('managecolourpresets', 'format_ned').'</a>';
+        //$managecolourpresetshtmlurl = new moodle_url('/course/format/ned/colourschema_edit.php', array('courseid' => $this->_customdata['courseid']));
+        $managecolourpresetshtmlurl = new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $this->_customdata['courseid']));
+        $managecolourpresetshtml = '<a href="'.$managecolourpresetshtmlurl.'" class="btn btn-secondary">'.get_string('managecolourpresets', 'format_ned').'</a>';
         $mform->addElement('html', $managecolourpresetshtml);
         $mform->addElement('html', '</div>');
 

@@ -87,6 +87,27 @@ $string['hideicon'] = 'Hide icon';
 $string['hidemanualcompletion'] = 'Hide manual completion description';
 $string['showalldescriptions'] = 'Show all descriptions';
 
+// Colour presets.
+$string['action'] = 'Action';
+$string['addedit'] = 'Add/Edit';
+$string['close'] = 'Close';
+$string['colourschema'] = 'Colour schema';
+$string['colourschemas'] = 'Colour schemas';
+$string['deletecolourschema'] = 'Delete this colour schema';
+$string['deleteconfirmmsg'] = 'Schema will be deleted permanently. Do you want to continue?';
+$string['duplicate'] = 'Duplicate';
+$string['duplicatewithbrackets'] = '[duplicate]';
+$string['framedsectionbgcolour'] = 'Background colour';
+$string['framedsectionheadertxtcolour'] = 'Section header text';
+$string['name'] = 'Name';
+$string['predefined'] = 'Predefined';
+$string['rowcount'] = 'Row';
+$string['sortasc'] = 'Sort ascending';
+$string['sortdesc'] = 'Sort decending';
+$string['successful'] = 'Successful';
+$string['timecreated'] = 'Time created';
+$string['timemodified'] = 'Time modified';
+
 // Completion icon.
 $string['completioniconsnomanual'] = 'Completion tick boxes';
 $string['completioniconsnomanual_help'] = 'A tick next to an activity name may be used to indicate when the activity is complete.
