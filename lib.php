@@ -460,6 +460,10 @@ class format_ned extends format_base {
                     'default' => 1,
                     'type' => PARAM_INT
                 ),
+                'colourpreset' => array(
+                    'default' => 2,
+                    'type' => PARAM_INT
+                ),
                 'showsection0' => array(
                     'default' => 1,
                     'type' => PARAM_INT
@@ -528,6 +532,8 @@ class format_ned extends format_base {
                 'label' => 'sectionnamelocation', 'element_type' => 'hidden');
             $courseformatoptionsedit['sectionsummarylocation'] = array(
                 'label' => 'sectionsummarylocation', 'element_type' => 'hidden');
+            $courseformatoptionsedit['colourpreset'] = array(
+                'label' => 'colourpreset', 'element_type' => 'hidden');
             $courseformatoptionsedit['showsection0'] = array(
                 'label' => 'showsection0', 'element_type' => 'hidden');
             $courseformatoptionsedit['activitytrackingbackground'] = array(

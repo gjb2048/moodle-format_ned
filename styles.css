@@ -288,3 +288,13 @@ ul.ned-framedsections .section.main:last-child {
 .format-ned.path-course-view .completionprogress.ned-framedsections.nediconsleft {
     left: -9px;
 }
+
+/* Colour presets */
+#page-course-format-ned-nedsettings .managecolourpresets > div {
+    display: inline-block;
+}
+
+#page-course-format-ned-nedsettings .managecolourpresets > a.btn {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}

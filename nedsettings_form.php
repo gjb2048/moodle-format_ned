@@ -70,6 +70,34 @@ class course_ned_edit_form extends moodleform {
         unset($choices);
         $mform->disabledIf('sectionsummarylocation', 'sectionformat', 'neq', 1);
 
+        /*$colourpresetelements = array();
+        $colourpresetitems = array(
+            1 => get_string('colourpresetmoodle', 'format_ned'),
+            2 => get_string('colourpresetembassygreen', 'format_ned'),
+            3 => get_string('colourpresetbluesonwhyte', 'format_ned')
+        );
+        $label = get_string('colourpreset', 'format_ned');
+        $colourpresetelements[] =& $mform->createElement('select', 'colourpreset', '', $colourpresetitems);
+        //unset($colourpresetitems);
+        $managecolourpresetshtml = '<a href="#" class="btn">'.get_string('managecolourpresets', 'format_ned').'</a>';
+        $colourpresetelements[] =& $mform->createElement('html', $managecolourpresetshtml);
+        $mform->addGroup($colourpresetelements, 'colourpresetelements', $label, array(' '), false);
+		*/
+        $mform->addElement('html', '<div class="managecolourpresets">');
+        // Temporary list until DB.
+        $colourpresetitems = array(
+            0 => get_string('colourpresetmoodle', 'format_ned'),
+            1 => 'Embassy Green',
+            2 => 'Blues on Whyte'
+        );
+        $label = get_string('colourpreset', 'format_ned');
+        $mform->addElement('select', 'colourpreset', $label, $colourpresetitems);
+        unset($colourpresetitems);
+        $managecolourpresetshtml = '<a href="#" class="btn btn-secondary">'.get_string('managecolourpresets', 'format_ned').'</a>';
+        $mform->addElement('html', $managecolourpresetshtml);
+        $mform->addElement('html', '</div>');
+
+
         $mform->addElement('header', 'nedformat', get_string('othersettings', 'format_ned'));
 
         $choices = array(

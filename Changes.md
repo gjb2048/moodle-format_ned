@@ -8,6 +8,10 @@ Version 3.3.0.3
      accomodate the elements within the sides.
   4. Implemented 'Edit mode' -> 'Add section below'.
   5. Changed framed sections left, right and bottom border width from 20 to 5 pixels when not editing.
+  6. Created colour presets user interface.  Note: Removed use of JavaScript on 'Manage colour presets' button, thus
+     reducing the code, solved by styling a link as a button.  Consequence can be more complicated CSS to structure
+     the layout, especially in Boost - constrained by way forms are rendered and removal of CSS3 'calc()' function
+     by core minifier.
 
 Version 3.3.0.2
   1. Added progress tooltip options.

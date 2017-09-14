@@ -63,6 +63,9 @@ $string['sectionnamelocation'] = 'Section name location';
 $string['showsectionheader'] = 'Show in section header';
 $string['showsectionbody'] = 'Show in section body';
 $string['sectionsummarylocation'] = 'Section summary location';
+$string['colourpreset'] = 'Colour preset';
+$string['colourpresetmoodle'] = 'Moodle default';
+$string['managecolourpresets'] = 'Manage colour presets';
 
 $string['othersettings'] = 'Other settings';
 $string['showsection0'] = 'Show section 0';
