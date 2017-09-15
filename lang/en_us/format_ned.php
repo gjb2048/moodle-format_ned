@@ -24,3 +24,12 @@
  *                           {@link http://moodle.org/user/profile.php?id=442195}
  */
 
+// NED Settings form.
+$string['colourpreset'] = 'Color preset';
+$string['managecolourpresets'] = 'Manage color presets';
+
+// Color presets.
+$string['colourpreset'] = 'Color preset';
+$string['colourpresets'] = 'Color presets';
+$string['deletecolourpreset'] = 'Delete this color preset';
+$string['framedsectionbgcolour'] = 'Background color - A';
