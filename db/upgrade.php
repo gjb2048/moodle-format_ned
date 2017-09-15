@@ -73,9 +73,9 @@ function xmldb_format_ned_upgrade($oldversion) {
             $recone->name = 'Embassy Green';
             $rectwo->name = 'Blues on Whyte';
             $recone->framedsectionbgcolour = '9DBB61';
-            $rectwo->framedsectionbgcolour = 'FFFFFF';
-            $recone->framedsectionheadertxtcolour = 'FFFF33';
-            $rectwo->framedsectionheadertxtcolour = '7CAAFE';
+            $rectwo->framedsectionbgcolour = '7CAAFE';
+            $recone->framedsectionheadertxtcolour = 'FFFFFF';
+            $rectwo->framedsectionheadertxtcolour = 'FFFFFF';
             $recone->predefined = 1;
             $rectwo->predefined = 1;
             $recone->timecreated = time();

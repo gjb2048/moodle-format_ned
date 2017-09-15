@@ -24,16 +24,16 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/formslib.php');
 
-class colourschema_form extends moodleform {
+class colourpreset_form extends moodleform {
     public function definition() {
 
         global $CFG, $OUTPUT;
 
         $mform = $this->_form;
-        $mform->addElement('header', '', get_string('colourschema', 'format_ned'), '');
+        $mform->addElement('header', '', get_string('colourpreset', 'format_ned'), '');
 
-        // TODO: Make responsive and not a table.
-        $mform->addElement('html', '<table style="width:100%"><tr><td>');
+        // TODO: Make responsive and not a table?
+        $mform->addElement('html', '<table class="colourpresetform"><tr><td>');
 
         MoodleQuickForm::registerElementType('fnedcolourpopup',
             "$CFG->dirroot/course/format/ned/js/fned_colourpopup.php", 'MoodleQuickForm_fnedcolourpopup');
@@ -52,9 +52,9 @@ class colourschema_form extends moodleform {
         $mform->setType('framedsectionheadertxtcolour', PARAM_ALPHANUM);
         $mform->addRule('framedsectionheadertxtcolour', null, 'required', null, 'client');
 
-        $mform->addElement('html', '</td><td width="320px">');
+        $mform->addElement('html', '</td><td class="colourpresetformcolourkey">');
 
-        $mform->addElement('html', '<img src="'.$OUTPUT->image_url('ned_tabs_colourkey', 'format_ned').'" />');
+        $mform->addElement('html', '<img class="img-responsive" src="'.$OUTPUT->image_url('ned_tabs_colourkey', 'format_ned').'" />');
 
         $mform->addElement('html', '</td></tr></table>');
 

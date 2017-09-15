@@ -66,12 +66,12 @@ if ($courseformat->get_setting('sectionformat') == 1) { // Framed sections.
     $formatcolourpreset = $courseformat->get_setting('colourpreset');
     if (!empty($formatcolourpreset)) { // 0 is 'Moodle default'.
         global $DB;
-        if ($schema = $DB->get_record('format_ned_colour', array('id' => $formatcolourpreset))) {
+        if ($preset = $DB->get_record('format_ned_colour', array('id' => $formatcolourpreset))) {
             echo '<style type="text/css" media="screen">';
             echo '/* <![CDATA[ */';
 
             echo 'ul.ned-framedsections .section.main {';
-            echo 'background-color: #'.$schema->framedsectionbgcolour.';';
+            echo 'background-color: #'.$preset->framedsectionbgcolour.';';
             echo '}';
 
             echo '.ned-framedsections .section .header .sectionname,';
@@ -81,16 +81,16 @@ if ($courseformat->get_setting('sectionformat') == 1) { // Framed sections.
             echo '.ned-framedsections .section .left,';
             echo '.ned-framedsections .section .right a.toggle-display,';
             echo '.ned-framedsections .section .right a.toggle-display:hover {';
-            echo 'color: #'.$schema->framedsectionheadertxtcolour.';';
+            echo 'color: #'.$preset->framedsectionheadertxtcolour.';';
             echo '}';
 
             echo '.jsenabled .ned-framedsections .right .moodle-actionmenu[data-enhance] .toggle-display.textmenu .caret {';
-            echo 'border-top-color: #'.$schema->framedsectionheadertxtcolour.';';
+            echo 'border-top-color: #'.$preset->framedsectionheadertxtcolour.';';
             echo '}';
 
             echo '/* ]]> */';
             echo '</style>';
-        } /* else Should not happen as when schemas are deleted then courses are updated, but in a
+        } /* else Should not happen as when presets are deleted then courses are updated, but in a
              multi-user environment then could happen if deleted at the same time as page load. */
     }
 }

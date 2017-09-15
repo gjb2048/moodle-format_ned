@@ -194,7 +194,6 @@ ul.ned.sectioncontentjustification .section .activity .actions {
 /* Framed sections */
 /* Set the background colour of the li.section - less to style and no adaption for editing but format has to set the section content background and highlight colour. */
 ul.ned-framedsections .section.main {
-    background-color: #9DBB61;
     margin-bottom: 15px;
 }
 
@@ -203,7 +202,6 @@ ul.ned-framedsections .section.main:last-child {
 }
 
 .course-content ul.ned-framedsections .section.main .content {
-    background-color: #fff;
     margin: 0 8px;
 }
 
@@ -260,19 +258,6 @@ ul.ned-framedsections .section.main:last-child {
     margin-top: 0;
 }
 
-.ned-framedsections .section .header .sectionname,
-.ned-framedsections .section .header .sectionname a,
-.ned-framedsections .section .header .sectionname a:hover,
-.ned-framedsections .section .header .summary,
-.ned-framedsections .section .left,
-.ned-framedsections .section .right a.toggle-display,
-.ned-framedsections .section .right a.toggle-display:hover {
-    color: #fff;
-}
-
-.jsenabled .ned-framedsections .right .moodle-actionmenu[data-enhance] .toggle-display.textmenu .caret {
-    border-top-color: #fff;
-}
 .ned-framedsections .section .header .sectionname {
     text-align: center;
 }
@@ -286,7 +271,7 @@ ul.ned-framedsections .section.main:last-child {
 }
 
 .format-ned.path-course-view .completionprogress.ned-framedsections.nediconsleft {
-    left: -9px;
+    left: -7px;
 }
 
 /* Colour presets */

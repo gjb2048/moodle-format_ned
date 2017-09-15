@@ -72,3 +72,64 @@
 #page-course-format-ned-nedsettings .managecolourpresets > a.btn {
     margin-top: .5rem;
 }
+
+/* Boost does not know how (via a template I suspect) how to style the colour picker. */
+.format-ned .colourpresetform {
+    width: 100%;
+}
+
+.format-ned .colourpresetform .colourpresetformcolourkey {
+    float: right;
+}
+
+
+.format-ned .colourpresetform .felement,
+.format-ned .colourpresetform .fitemtitle {
+    display: inline-block;
+    /* From BS 4 col selectors. */
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    position: relative;
+}
+
+.format-ned .colourpresetform .fitemtitle label {
+    width: 100%;
+}
+
+.format-ned .colourpresetform .fitemtitle label .req {
+    border-bottom: 1px dotted #818a91;
+    float: right;
+    height: 20px;
+}
+
+.format-ned .colourpresetform .fitemtitle label .req .icon {
+    margin-right: 0;
+}
+
+.format-ned .colourpresetform .fitem_fcolourtext {
+    margin-bottom: 1rem;
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-top: .5rem;
+}
+
+.format-ned .colourpresetform .fitem_fcolourtext:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+@media (min-width: 768px) {
+    .format-ned .colourpresetform .form-group.row.fitem > div.col-md-3,
+    .format-ned .colourpresetform .fitemtitle { /* col-md-5 ish */
+        float: left;
+        width: 42%;
+        word-break: break-word;
+    }
+
+    .format-ned .colourpresetform .felement { /* col-md-7 ish*/
+        float: left;
+        width: 58%;
+    }
+}

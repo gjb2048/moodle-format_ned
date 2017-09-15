@@ -74,9 +74,9 @@ class course_ned_edit_form extends moodleform {
         // Temporary list until DB.
         global $DB;
         $colourpresetitems = array(0 => get_string('colourpresetmoodle', 'format_ned'));
-        if ($schemas = $DB->get_records('format_ned_colour', null, null, 'id,name')) {
-            foreach($schemas as $schema) {
-                $colourpresetitems[$schema->id] = $schema->name;
+        if ($presets = $DB->get_records('format_ned_colour', null, null, 'id,name')) {
+            foreach($presets as $preset) {
+                $colourpresetitems[$preset->id] = $preset->name;
             }
         } else {
             $colourpresetitems[1] = 'Embassy Green';
@@ -85,8 +85,8 @@ class course_ned_edit_form extends moodleform {
         $label = get_string('colourpreset', 'format_ned');
         $mform->addElement('select', 'colourpreset', $label, $colourpresetitems);
         unset($colourpresetitems);
-        //$managecolourpresetshtmlurl = new moodle_url('/course/format/ned/colourschema_edit.php', array('courseid' => $this->_customdata['courseid']));
-        $managecolourpresetshtmlurl = new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $this->_customdata['courseid']));
+        //$managecolourpresetshtmlurl = new moodle_url('/course/format/ned/colourpreset_edit.php', array('courseid' => $this->_customdata['courseid']));
+        $managecolourpresetshtmlurl = new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $this->_customdata['courseid']));
         $managecolourpresetshtml = '<a href="'.$managecolourpresetshtmlurl.'" class="btn btn-secondary">'.get_string('managecolourpresets', 'format_ned').'</a>';
         $mform->addElement('html', $managecolourpresetshtml);
         $mform->addElement('html', '</div>');

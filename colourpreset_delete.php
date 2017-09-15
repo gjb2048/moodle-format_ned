@@ -25,7 +25,7 @@
  */
 
 require_once('../../../config.php');
-require_once('colourschema_form.php');
+require_once('colourpreset_form.php');
 require_once($CFG->dirroot.'/course/format/ned/lib.php');
 
 $courseid = required_param('courseid', PARAM_INT);
@@ -40,7 +40,7 @@ require_login($course);
 $coursecontext = context_course::instance($courseid);
 require_capability('moodle/course:update', $coursecontext);
 
-$PAGE->set_url('/course/format/ned/colourschema_delete.php',
+$PAGE->set_url('/course/format/ned/colourpreset_delete.php',
     array('delete' => $delete, 'courseid' => $courseid)
 );
 $PAGE->set_context(context_system::instance());
@@ -55,24 +55,24 @@ $PAGE->navbar->add(get_string('pluginname', 'format_ned'));
 $PAGE->navbar->add(get_string('settings'),
     new moodle_url('/course/format/ned/nedsettings.php', array('id' => $courseid))
 );
-$PAGE->navbar->add(get_string('colourschemas', 'format_ned'),
-    new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $courseid))
+$PAGE->navbar->add(get_string('colourpresets', 'format_ned'),
+    new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid))
 );
 $PAGE->navbar->add($title);
 
 global $DB;
 if (!$toform = $DB->get_record('format_ned_colour', array('id' => $delete, 'predefined' => 0))) {
-    redirect(new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $courseid)));
+    redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)));
 }
 
-$colourschema = $DB->get_record('format_ned_colour', array('id' => $delete, 'predefined' => 0), '*', MUST_EXIST);
+$colourpreset = $DB->get_record('format_ned_colour', array('id' => $delete, 'predefined' => 0), '*', MUST_EXIST);
 
 if ($process) {
     require_sesskey();
     // Throws an exception if fails and thus following code won't run.
     $DB->delete_records('format_ned_colour', array('id' => $delete, 'predefined' => 0));
 
-    // Update existing courses with the schema to the first default if they are using the deleted preset.
+    // Update existing courses with the preset to the first default if they are using the deleted preset.
     if ($nedcourses = $DB->get_records('course', array('format' => 'ned'), null, 'id')) {
         foreach($nedcourses as $nedcourse) {
             $courseformat = course_get_format($nedcourse->id);
@@ -83,7 +83,7 @@ if ($process) {
         }
     }
 
-    redirect(new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $courseid)),
+    redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)),
         get_string('successful', 'format_ned'), 1
     );
     die;
@@ -91,14 +91,14 @@ if ($process) {
     echo $OUTPUT->header();
     echo html_writer::tag('h1', $title, array('class' => 'page-title'));
     echo $OUTPUT->confirm('<div><strong>'.
-        get_string('colourschema', 'format_ned').': </strong>'.$colourschema->name.
+        get_string('colourpreset', 'format_ned').': </strong>'.$colourpreset->name.
         '<br><br>'.
         '</div>'.
         get_string('deleteconfirmmsg', 'format_ned').'<br><br>',
-        new moodle_url('/course/format/ned/colourschema_delete.php',
+        new moodle_url('/course/format/ned/colourpreset_delete.php',
             array('courseid' => $courseid, 'delete' => $delete, 'process' => 1)
         ),
-        new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $courseid))
+        new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid))
     );
     echo $OUTPUT->footer();
 }

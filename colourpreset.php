@@ -47,14 +47,14 @@ require_login($course);
 $coursecontext = context_course::instance($courseid);
 require_capability('moodle/course:update', $coursecontext);
 
-$thispageurl = new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $courseid));
+$thispageurl = new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid));
 
 $PAGE->set_url($thispageurl);
 $PAGE->set_pagelayout('course');
 $PAGE->set_context($coursecontext);
 
-$name = get_string('colourschemas', 'format_ned');
-$title = get_string('colourschemas', 'format_ned');
+$name = get_string('colourpresets', 'format_ned');
+$title = get_string('colourpresets', 'format_ned');
 $heading = $SITE->fullname;
 
 // Breadcrumb.
@@ -184,7 +184,7 @@ foreach ($tablerows as $tablerow) {
             case 'action':
                 // Duplicate.
                 if (has_capability('moodle/course:update', $coursecontext)) {
-                    $actionurl = new moodle_url('/course/format/ned/colourschema_edit.php',
+                    $actionurl = new moodle_url('/course/format/ned/colourpreset_edit.php',
                         array('courseid' => $courseid, 'duplicate' => $tablerow->id )
                     );
                     $actionicontext = get_string('duplicate', 'format_ned');
@@ -195,7 +195,7 @@ foreach ($tablerows as $tablerow) {
                 }
                 // Edit.
                 if (has_capability('moodle/course:update', $coursecontext) && !$tablerow->predefined) {
-                    $actionurl = new moodle_url('/course/format/ned/colourschema_edit.php',
+                    $actionurl = new moodle_url('/course/format/ned/colourpreset_edit.php',
                         array('courseid' => $courseid, 'edit' => $tablerow->id )
                     );
                     $actionicontext = get_string('edit');
@@ -206,7 +206,7 @@ foreach ($tablerows as $tablerow) {
                 }
                 // Delete.
                 if (has_capability('moodle/course:update', $coursecontext) && !$tablerow->predefined) {
-                    $actionurl = new moodle_url('/course/format/ned/colourschema_delete.php',
+                    $actionurl = new moodle_url('/course/format/ned/colourpreset_delete.php',
                         array('courseid' => $courseid, 'delete' => $tablerow->id )
                     );
                     $actionicontext = get_string('delete');
@@ -237,7 +237,7 @@ echo html_writer::start_div('page-content-wrapper', array('id' => 'page-content'
 echo html_writer::tag('h1', $title, array('class' => 'page-title'));
 
 // The view options.
-$searchformurl = new moodle_url('/course/format/ned/colourschema.php');
+$searchformurl = new moodle_url('/course/format/ned/colourpreset.php');
 
 $searchform = html_writer::tag('form',
     html_writer::empty_tag('input', array(
@@ -284,7 +284,7 @@ $searchform = html_writer::tag('form',
 );
 echo html_writer::div($searchform, 'search-form-wrapper', array('id' => 'search-form'));
 
-$pagingurl = new moodle_url('/course/format/ned/colourschema.php?',
+$pagingurl = new moodle_url('/course/format/ned/colourpreset.php?',
     array(
         'perpage' => $perpage,
         'sort' => $sort,
@@ -302,7 +302,7 @@ echo $OUTPUT->render($pagingbar);
 
 // Add record form.
 if (has_capability('moodle/course:update', $coursecontext)) {
-    $formurl = new moodle_url('/course/format/ned/colourschema_edit.php',
+    $formurl = new moodle_url('/course/format/ned/colourpreset_edit.php',
         array('courseid' => $courseid, 'add' => '1')
     );
     $submitbutton  = html_writer::tag('button', get_string('add'), array(

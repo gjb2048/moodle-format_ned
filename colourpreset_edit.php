@@ -25,7 +25,7 @@
  */
 
 require_once('../../../config.php');
-require_once('colourschema_form.php');
+require_once('colourpreset_form.php');
 require_once($CFG->dirroot.'/course/format/ned/lib.php');
 
 $add = optional_param('add', 0, PARAM_INT);
@@ -42,21 +42,21 @@ $coursecontext = context_course::instance($courseid);
 require_capability('moodle/course:update', $coursecontext);
 
 if ($duplicate) {
-    if (!$schema = $DB->get_record('format_ned_colour', array('id' => $duplicate))) {
-        redirect(new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $courseid)));
+    if (!$preset = $DB->get_record('format_ned_colour', array('id' => $duplicate))) {
+        redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)));
     }
-    $schema->name = $schema->name.' '.get_string('duplicatewithbrackets', 'format_ned');
-    $schema->predefined = 0;
-    unset($schema->id);
-    unset($schema->timemodified);
-    $schema->timecreated = time();
-    $schemaid = $DB->insert_record('format_ned_colour', $schema);
-    redirect(new moodle_url('/course/format/ned/colourschema_edit.php', array('courseid' => $courseid, 'edit' => $schemaid)));
+    $preset->name = $preset->name.' '.get_string('duplicatewithbrackets', 'format_ned');
+    $preset->predefined = 0;
+    unset($preset->id);
+    unset($preset->timemodified);
+    $preset->timecreated = time();
+    $presetid = $DB->insert_record('format_ned_colour', $preset);
+    redirect(new moodle_url('/course/format/ned/colourpreset_edit.php', array('courseid' => $courseid, 'edit' => $presetid)));
 }
 
 $PAGE->https_required();
 
-$thispageurl = new moodle_url('/course/format/ned/colourschema_edit.php',
+$thispageurl = new moodle_url('/course/format/ned/colourpreset_edit.php',
     array('courseid' => $courseid, 'edit' => $edit, 'add' => $add)
 );
 
@@ -74,24 +74,24 @@ $PAGE->navbar->add(get_string('pluginname', 'format_ned'));
 $PAGE->navbar->add(get_string('settings'),
     new moodle_url('/course/format/ned/nedsettings.php', array('id' => $courseid))
 );
-$PAGE->navbar->add(get_string('colourschemas', 'format_ned'),
-    new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $courseid))
+$PAGE->navbar->add(get_string('colourpresets', 'format_ned'),
+    new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid))
 );
 $PAGE->navbar->add($name);
 
 $PAGE->set_title($title);
 $PAGE->set_heading($heading);
 
-$mform = new colourschema_form();
+$mform = new colourpreset_form();
 
 if ($edit) {
     if (!$toform = $DB->get_record('format_ned_colour', array('id' => $edit, 'predefined' => 0))) {
-        redirect(new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $courseid)));
+        redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)));
     }
 }
 
 if ($mform->is_cancelled()) {
-    redirect(new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $courseid)));
+    redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)));
 } else if ($fromform = $mform->get_data()) {
     $rec = new stdClass();
     $rec->name = $fromform->name;
@@ -101,13 +101,13 @@ if ($mform->is_cancelled()) {
     if ($add) {
         $rec->timecreated = time();
         $rec->id = $DB->insert_record('format_ned_colour', $rec);
-        redirect(new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $courseid)),
+        redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)),
             get_string('successful', 'format_ned'), 0);
     } else {
         $rec->id = $fromform->edit;
         $rec->timemodified = time();
         $DB->update_record('format_ned_colour', $rec);
-        redirect(new moodle_url('/course/format/ned/colourschema.php', array('courseid' => $courseid)),
+        redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)),
             get_string('successful', 'format_ned'), 0);
     }
     exit;
