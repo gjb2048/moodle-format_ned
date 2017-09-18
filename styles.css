@@ -202,6 +202,7 @@ ul.ned-framedsections .section.main:last-child {
 }
 
 .course-content ul.ned-framedsections .section.main .content {
+    background-color: #fff;
     margin: 0 8px;
 }
 
