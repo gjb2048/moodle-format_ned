@@ -25,7 +25,6 @@
  */
 
 require_once('../../../config.php');
-//require_once($CFG->dirroot.'/lib/excellib.class.php');
 require_once($CFG->dirroot.'/course/format/ned/lib.php');
 
 $courseid   = required_param('courseid', PARAM_INT);

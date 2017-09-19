@@ -54,7 +54,8 @@ class colourpreset_form extends moodleform {
 
         $mform->addElement('html', '</td><td class="colourpresetformcolourkey">');
 
-        $mform->addElement('html', '<img class="img-responsive" src="'.$OUTPUT->image_url('ned_tabs_colourkey', 'format_ned').'" />');
+        $mform->addElement('html',
+            '<img class="img-responsive" src="'.$OUTPUT->image_url('ned_tabs_colourkey', 'format_ned').'" />');
 
         $mform->addElement('html', '</td></tr></table>');
 

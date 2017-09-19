@@ -171,15 +171,16 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Note 'get_section_name(course, section)' just calls the format's lib.php 'get_section_name(section)'!
         $thesectionname = $this->courseformat->get_section_name($section);
-        $o.= html_writer::start_tag('li', array('id' => 'section-'.$section->section,
-            'class' => 'section main clearfix'.$sectionstyle, 'role'=>'region',
-            'aria-label'=> $thesectionname));
+        $o .= html_writer::start_tag('li', array('id' => 'section-'.$section->section,
+            'class' => 'section main clearfix'.$sectionstyle, 'role' => 'region',
+            'aria-label' => $thesectionname));
 
         // Create a span that contains the section title to be used to create the keyboard section move menu.
         $o .= html_writer::tag('span', $thesectionname, array('class' => 'hidden sectionname'));
 
         if (($this->settings['sectionformat'] == 0) ||
-           (($this->settings['sectionformat'] == 1) && (!empty($this->settings['sectionnamelocation'])))) { // 0 is hide otherwise show.
+           (($this->settings['sectionformat'] == 1) &&
+            (!empty($this->settings['sectionnamelocation'])))) { // 0 is hide otherwise show.
             $sectionnameclasses = '';
             if ($this->settings['sectionformat'] == 0) {
                 $sectionnameclasses = ' accesshide';
@@ -229,7 +230,8 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Heading in the body of the section.
         if (($this->settings['sectionformat'] == 0) ||
-           (($this->settings['sectionformat'] == 1) && ($this->settings['sectionnamelocation'] == 2))) { // 2 is show in the section body.
+           (($this->settings['sectionformat'] == 1) &&
+            ($this->settings['sectionnamelocation'] == 2))) { // 2 is show in the section body.
             $o .= $sectionnamemarkup;
         }
 
@@ -237,7 +239,8 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Section summary in the body of the section.
         if (($this->settings['sectionformat'] == 0) ||
-           (($this->settings['sectionformat'] == 1) && ($this->settings['sectionsummarylocation'] == 1))) { // 1 is show in the section body.
+           (($this->settings['sectionformat'] == 1) &&
+            ($this->settings['sectionsummarylocation'] == 1))) { // 1 is show in the section body.
             $o .= $summarymarkup;
         }
 
@@ -432,7 +435,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $classattr = 'section main section-summary clearfix';
         $linkclasses = '';
 
-        // If section is hidden then display grey section link
+        // If section is hidden then display grey section link.
         if (!$section->visible) {
             $classattr .= ' hidden';
             $linkclasses .= ' dimmed_text';
@@ -443,7 +446,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $title = get_section_name($course, $section);
         $o = '';
         $o .= html_writer::start_tag('li', array('id' => 'section-'.$section->section,
-            'class' => $classattr, 'role'=>'region', 'aria-label'=> $title));
+            'class' => $classattr, 'role' => 'region', 'aria-label' => $title));
 
         if ($this->settings['sectionformat'] == 1) { // Framed sections.
             $o .= html_writer::tag('div', '', array('class' => 'header'));
@@ -458,10 +461,10 @@ class format_ned_renderer extends format_section_renderer_base {
         }
         $o .= $this->output->heading($title, 3, 'section-title');
 
-        $o.= html_writer::start_tag('div', array('class' => 'summarytext'));
-        $o.= $this->format_summary_text($section);
-        $o.= html_writer::end_tag('div');
-        $o.= $this->section_activity_summary($section, $course, null);
+        $o .= html_writer::start_tag('div', array('class' => 'summarytext'));
+        $o .= $this->format_summary_text($section);
+        $o .= html_writer::end_tag('div');
+        $o .= $this->section_activity_summary($section, $course, null);
 
         $o .= $this->section_availability($section);
 

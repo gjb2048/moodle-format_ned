@@ -1,4 +1,4 @@
-// Javascript functions for NES course format
+// Javascript functions for NED course format.
 
 M.course = M.course || {};
 

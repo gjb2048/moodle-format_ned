@@ -27,7 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2017061903;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires = 2017051500.00; // 3.3 (Build: 20170515).
+$plugin->requires = 2017051500.00; // This is Moodle 3.3 (Build: 20170515).
 $plugin->maturity = MATURITY_ALPHA;
 $plugin->component = 'format_ned';
 $plugin->release = '3.3.0.4';

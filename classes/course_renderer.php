@@ -55,7 +55,8 @@ class format_ned_course_renderer extends core_course_renderer {
      * @param array $displayoptions.
      * @return String.
      */
-    public function course_section_cm_list_item($course, &$completioninfo, cm_info $mod, $sectionreturn, $displayoptions = array()) {
+    public function course_section_cm_list_item($course, &$completioninfo, cm_info $mod, $sectionreturn,
+        $displayoptions = array()) {
         if (!$this->activitytrackingbackground) {
             return parent::course_section_cm_list_item($course, $completioninfo, $mod, $sectionreturn, $displayoptions);
         }
@@ -100,21 +101,21 @@ class format_ned_course_renderer extends core_course_renderer {
         }
         $completioninfo = new completion_info($course);
 
-        // check if we are currently in the process of moving a module with JavaScript disabled
+        // Check if we are currently in the process of moving a module with JavaScript disabled.
         $ismoving = $this->page->user_is_editing() && ismoving($course->id);
         if ($ismoving) {
             $movingpix = new pix_icon('movehere', get_string('movehere'), 'moodle', array('class' => 'movetarget'));
             $strmovefull = strip_tags(get_string("movefull", "", "'$USER->activitycopyname'"));
         }
 
-        // Get the list of modules visible to user (excluding the module being moved if there is one)
+        // Get the list of modules visible to user (excluding the module being moved if there is one).
         $moduleshtml = array();
         if (!empty($modinfo->sections[$section->section])) {
             foreach ($modinfo->sections[$section->section] as $modnumber) {
                 $mod = $modinfo->cms[$modnumber];
 
                 if ($ismoving and $mod->id == $USER->activitycopy) {
-                    // do not display moving mod
+                    // Do not display moving mod.
                     continue;
                 }
 
@@ -233,7 +234,8 @@ class format_ned_course_renderer extends core_course_renderer {
                 $output .= html_writer::empty_tag('input', array(
                     'type' => 'hidden', 'name' => 'completionstate', 'value' => $newstate));
                 $output .= html_writer::tag('button',
-                    $this->output->pix_icon('i/completion-'.$completionicon, $imgalt, 'format_ned'), array('class' => 'btn btn-link'));
+                    $this->output->pix_icon('i/completion-'.$completionicon, $imgalt, 'format_ned'),
+                        array('class' => 'btn btn-link'));
                 $output .= html_writer::end_tag('div');
                 $output .= html_writer::end_tag('form');
             } else {

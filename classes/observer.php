@@ -39,9 +39,7 @@ class format_ned_observer {
      * @param \core\event\course_content_deleted $event
      */
     public static function course_content_deleted(\core\event\course_content_deleted $event) {
-        // Here for future development.
-        // global $DB;
-        // $DB->delete_records("format_ned_colour", array('courseid' => $event->objectid)); // This is the $courseid.
-        // $DB->delete_records("format_ned_cm", array('courseid' => $event->objectid)); // This is the $courseid.
+        // Here for future development if needed to delete things specific to a given course.
+        // Note: Now implemened colour and removed the need for course specific entries.
     }
 }

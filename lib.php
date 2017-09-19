@@ -29,7 +29,7 @@ require_once($CFG->dirroot. '/course/format/lib.php');
 
 class format_ned extends format_base {
     private $settings;  // Course format settings.
-    private $sectiondeliverymethoddata;  // JSON decode of 'sectiondeliverymethod' setting;
+    private $sectiondeliverymethoddata;  // JSON decode of 'sectiondeliverymethod' setting.
     private $displaysection = false;
     private $displaysectioncalculated = false;
 
@@ -168,7 +168,8 @@ class format_ned extends format_base {
             $sdmdata = $this->get_setting('sectiondeliverymethod');
             if (!empty($sdmdata)) {
                 if ($sdmdata->sectiondeliverymethod == 2) {
-                    $dates = $this->get_section_dates($section, false, $sdmdata->scheduleadvanceoptionnumber, $sdmdata->scheduleadvanceoptionunit);
+                    $dates = $this->get_section_dates($section, false,
+                        $sdmdata->scheduleadvanceoptionnumber, $sdmdata->scheduleadvanceoptionunit);
 
                     // We subtract 24 hours for display purposes.
                     $dates->end = ($dates->end - 86400);
@@ -193,7 +194,8 @@ class format_ned extends format_base {
      * @param int $scheduleadvanceoptionunit Days = 1 or Weeks = 2.
      * @return stdClass property start for startdate, property end for enddate
      */
-    public function get_section_dates($section, $startdate = false, $scheduleadvanceoptionnumber = false, $scheduleadvanceoptionunit = false) {
+    public function get_section_dates($section, $startdate = false, $scheduleadvanceoptionnumber = false,
+        $scheduleadvanceoptionunit = false) {
 
         if ($startdate === false) {
             $course = $this->get_course();

@@ -74,7 +74,7 @@ if ($process) {
 
     // Update existing courses with the preset to the first default if they are using the deleted preset.
     if ($nedcourses = $DB->get_records('course', array('format' => 'ned'), null, 'id')) {
-        foreach($nedcourses as $nedcourse) {
+        foreach ($nedcourses as $nedcourse) {
             $courseformat = course_get_format($nedcourse->id);
             $formatcolourpreset = $courseformat->get_setting('colourpreset');
             if (!empty($formatcolourpreset) && ($formatcolourpreset == $delete)) { // 0 is 'Moodle default'.
