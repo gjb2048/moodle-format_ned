@@ -292,3 +292,9 @@ ul.ned-framedsections .section.main:last-child {
     margin-bottom: 10px;
     margin-left: 10px;
 }
+
+/* Activity / Resource hover */
+.format-ned .activity:hover .activityinstance,
+.format-ned .activity:hover .contentwithoutlink {
+    font-size: 18px;
+}
