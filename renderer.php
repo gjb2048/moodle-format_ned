@@ -563,7 +563,6 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Display section bottom navigation.
         $sectionbottomnav = '';
-        $sectionbottomnav .= html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
         if (($this->settings['viewsectionforwardbacklinks'] == 0) ||
             (($this->settings['viewsectionforwardbacklinks'] == 1) && (has_capability('moodle/course:update', $context)))) {
             $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
@@ -575,8 +574,11 @@ class format_ned_renderer extends format_section_renderer_base {
             $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection),
                 array('class' => 'mdl-align'));
         }
-        $sectionbottomnav .= html_writer::end_tag('div');
-        echo $sectionbottomnav;
+        if (!empty($sectionbottomnav)) {
+            echo html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
+            echo $sectionbottomnav;
+            echo html_writer::end_tag('div');
+        }
 
         // Close single-section div.
         echo html_writer::end_tag('div');
