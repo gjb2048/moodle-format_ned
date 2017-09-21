@@ -297,7 +297,8 @@ ul.ned-framedsections .section.main:last-child {
 .format-ned .nedactresmouseover .activity:hover:not(.label) .activityinstance,
 .format-ned .nedactresmouseover .activity:hover:not(.label) .contentwithoutlink {
     font-size: 18px;
-    line-height: 40px; /* Clean theme line height is 20px, factor of 2 is therefore 40px. */
+    line-height: 30px;
+    padding-top: 10px !important;
 }
 
 .format-ned .nedactresmouseover .activity:hover:not(.label) .activityinstance a,
@@ -306,5 +307,5 @@ ul.ned-framedsections .section.main:last-child {
 }
 
 .course-content ul.ned.nedactresmouseover li.section .activity.completion-background:hover:not(.label) .actions {
-    top: 15px;
+    top: 14px;
 }
