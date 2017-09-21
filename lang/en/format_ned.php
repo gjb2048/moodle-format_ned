@@ -71,6 +71,7 @@ $string['othersettings'] = 'Other settings';
 $string['showsection0'] = 'Show section 0';
 $string['showonlysection0'] = 'Show only section 0';
 $string['activitytrackingbackground'] = 'Activity tracking background';
+$string['activityresourcemouseover'] = 'Activity resource mouseover effect';
 $string['locationoftrackingicons'] = 'Location of tracking icons';
 $string['moodleicons'] = 'Moodle icons';
 $string['nediconsleft'] = 'NED icons left';

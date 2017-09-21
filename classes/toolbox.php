@@ -47,8 +47,11 @@ class toolbox {
     public static $manualy = 'manual-y';
     public static $notset = 'notset';
 
-    // Completsion icon assignment state.
+    // Completion icon assignment state.
     public static $saved = 'saved';
     public static $submitted = 'submitted';
     public static $waitinggrade = 'waitinggrade';
+
+    // Activity / resource mouseover effect.
+    public static $activityresourcemouseover = 'nedactresmouseover';
 }

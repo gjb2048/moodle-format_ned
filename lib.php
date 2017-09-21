@@ -503,6 +503,10 @@ class format_ned extends format_base {
                     'default' => 0,
                     'type' => PARAM_INT
                 ),
+                'activityresourcemouseover' => array(
+                    'default' => 0,
+                    'type' => PARAM_INT
+                ),
                 'sectiondeliverymethod' => array(
                     'default' => '{"sectiondeliverymethod": 1, "defaultsection": 1}', // JSON String for use in array.
                     'type' => PARAM_RAW
@@ -559,6 +563,8 @@ class format_ned extends format_base {
                 'label' => 'viewsectionforwardbacklinks', 'element_type' => 'hidden');
             $courseformatoptionsedit['progresstooltip'] = array(
                 'label' => 'progresstooltip', 'element_type' => 'hidden');
+            $courseformatoptionsedit['activityresourcemouseover'] = array(
+                'label' => 'activityresourcemouseover', 'element_type' => 'hidden');
             $courseformatoptionsedit['sectiondeliverymethod'] = array(
                  // Storage for complex element in 'create_edit_form_elements()'.  This is in the course not ned settings.
                 'label' => 'sectiondeliverymethod', 'element_type' => 'hidden');

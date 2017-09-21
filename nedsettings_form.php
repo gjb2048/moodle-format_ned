@@ -163,6 +163,15 @@ class course_ned_edit_form extends moodleform {
         );
         unset($progresstooltipoptions);
 
+        $activityresourcemouseoveroptions = array(
+            0 => get_string('hide'),
+            1 => get_string('show')
+        );
+        $mform->addElement('select', 'activityresourcemouseover',
+            get_string('activityresourcemouseover', 'format_ned'), $activityresourcemouseoveroptions
+        );
+        unset($activityresourcemouseoveroptions);
+
         $this->add_action_buttons();
     }
 

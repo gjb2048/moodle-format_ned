@@ -294,16 +294,17 @@ ul.ned-framedsections .section.main:last-child {
 }
 
 /* Activity / Resource hover */
-/* Note: Activities with .contentwithoutlink tend to be 'Labels' and not styled.
-         However the logic in /course/renderer.php course_section_cm_text means
-         for any activity without a URL, thus if this becomes an issue, then
-         override that method.
-*/
-.format-ned .activity:hover .activityinstance {
+.format-ned .nedactresmouseover .activity:hover:not(.label) .activityinstance,
+.format-ned .nedactresmouseover .activity:hover:not(.label) .contentwithoutlink {
     font-size: 18px;
     line-height: 40px; /* Clean theme line height is 20px, factor of 2 is therefore 40px. */
 }
 
-.format-ned .activity:hover .activityinstance a {
+.format-ned .nedactresmouseover .activity:hover:not(.label) .activityinstance a,
+.format-ned .nedactresmouseover .activity:hover:not(.label) .contentwithoutlink a {
     vertical-align: middle;
+}
+
+.course-content ul.ned.nedactresmouseover li.section .activity.completion-background:hover:not(.label) .actions {
+    top: 15px;
 }
