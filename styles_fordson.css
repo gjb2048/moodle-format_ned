@@ -1,0 +1,8 @@
+ul.ned span.actions .icon {
+    width: 16px;
+    height: 16px;
+}
+
+.course-content ul.ned li.section .activity.completion-background .actions {
+    top: 9px;
+}
