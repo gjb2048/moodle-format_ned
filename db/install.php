@@ -32,7 +32,7 @@ function xmldb_format_ned_install() {
     $rec = new stdClass();
     $rec->name = 'Embassy Green';
     $rec->framedsectionbgcolour = '9DBB61';
-    $rec->framedsectionheadertxtcolour = 'FFFF33';
+    $rec->framedsectionheadertxtcolour = 'FFFFFF';
     $rec->predefined = 1;
     $rec->timecreated = time();
     $rec->timemodified = time();
@@ -40,8 +40,8 @@ function xmldb_format_ned_install() {
 
     $rec = new stdClass();
     $rec->name = 'Blues on Whyte';
-    $rec->framedsectionbgcolour = 'FFFFFF';
-    $rec->framedsectionheadertxtcolour = '7CAAFE';
+    $rec->framedsectionbgcolour = '7CAAFE';
+    $rec->framedsectionheadertxtcolour = 'FFFFFF';
     $rec->predefined = 1;
     $rec->timecreated = time();
     $rec->timemodified = time();
