@@ -59,6 +59,7 @@ $string['formatinfo'] = 'Format info';
 $string['sectionformat'] = 'Section format';
 $string['sectionformatmoodle'] = 'Moodle default';
 $string['sectionformatframed'] = 'Framed sections';
+$string['sectionformatframedcustom'] = 'Framed sections + custom header';
 $string['sectionnamelocation'] = 'Section name location';
 $string['showsectionheader'] = 'Show in section header';
 $string['showsectionbody'] = 'Show in section body';

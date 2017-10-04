@@ -62,7 +62,7 @@ if (!empty($formatdisplaysectionno)) {
     $displaysection = $formatdisplaysectionno;
 }
 
-if ($courseformat->get_setting('sectionformat') == 1) { // Framed sections.
+if ($courseformat->get_setting('sectionformat') >= 1) { // Framed sections.
     $formatcolourpreset = $courseformat->get_setting('colourpreset');
     if (!empty($formatcolourpreset)) { // 0 is 'Moodle default'.
         global $DB;

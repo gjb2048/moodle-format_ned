@@ -45,7 +45,8 @@ class course_ned_edit_form extends moodleform {
 
         $choices = array(
             0 => get_string('sectionformatmoodle', 'format_ned'),
-            1 => get_string('sectionformatframed', 'format_ned')
+            1 => get_string('sectionformatframed', 'format_ned'),
+            2 => get_string('sectionformatframedcustom', 'format_ned')
         );
         $label = get_string('sectionformat', 'format_ned');
         $mform->addElement('select', 'sectionformat', $label, $choices);
@@ -59,7 +60,7 @@ class course_ned_edit_form extends moodleform {
         $label = get_string('sectionnamelocation', 'format_ned');
         $mform->addElement('select', 'sectionnamelocation', $label, $choices);
         unset($choices);
-        $mform->disabledIf('sectionnamelocation', 'sectionformat', 'neq', 1);
+        $mform->disabledIf('sectionnamelocation', 'sectionformat', 'neq', 2);
 
         $choices = array(
             0 => get_string('showsectionheader', 'format_ned'),
@@ -68,7 +69,7 @@ class course_ned_edit_form extends moodleform {
         $label = get_string('sectionsummarylocation', 'format_ned');
         $mform->addElement('select', 'sectionsummarylocation', $label, $choices);
         unset($choices);
-        $mform->disabledIf('sectionsummarylocation', 'sectionformat', 'neq', 1);
+        $mform->disabledIf('sectionsummarylocation', 'sectionformat', 'neq', 2);
 
         $mform->addElement('html', '<div class="managecolourpresets">');
         // Temporary list until DB.

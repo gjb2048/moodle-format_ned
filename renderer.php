@@ -92,7 +92,7 @@ class format_ned_renderer extends format_section_renderer_base {
      */
     protected function start_section_list() {
         $classes = 'ned';
-        if ($this->settings['sectionformat'] == 1) { // Framed sections.
+        if ($this->settings['sectionformat'] >= 1) { // Framed sections.
             $classes .= ' ned-framedsections';
         }
         if (!$this->editing) {
@@ -185,8 +185,9 @@ class format_ned_renderer extends format_section_renderer_base {
         $o .= html_writer::tag('span', $thesectionname, array('class' => 'hidden sectionname'));
 
         if (($this->settings['sectionformat'] == 0) ||
-           (($this->settings['sectionformat'] == 1) &&
-            (!empty($this->settings['sectionnamelocation'])))) { // 0 is hide otherwise show.
+            ($this->settings['sectionformat'] == 1) ||
+            (($this->settings['sectionformat'] == 2) &&
+             (!empty($this->settings['sectionnamelocation'])))) { // 0 is hide otherwise show.
             $sectionnameclasses = '';
             if ($this->settings['sectionformat'] == 0) {
                 $sectionnameclasses = ' accesshide';
@@ -212,6 +213,8 @@ class format_ned_renderer extends format_section_renderer_base {
         $summarymarkup .= html_writer::end_tag('div');
 
         if ($this->settings['sectionformat'] == 1) { // Framed sections.
+            $o .= html_writer::tag('div', '', array('class' => 'header'));
+        } else if ($this->settings['sectionformat'] == 2) { // Framed sections + custom header.
             if ($this->settings['sectionnamelocation'] == 1) { // 1 is show in the section header.
                 $sectionheadercontent = $sectionnamemarkup;
                 if ($this->settings['sectionsummarylocation'] == 0) { // 0 is show in the section header.
@@ -236,8 +239,9 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Heading in the body of the section.
         if (($this->settings['sectionformat'] == 0) ||
-           (($this->settings['sectionformat'] == 1) &&
-            ($this->settings['sectionnamelocation'] == 2))) { // 2 is show in the section body.
+            ($this->settings['sectionformat'] == 1) ||
+            (($this->settings['sectionformat'] == 2) &&
+             ($this->settings['sectionnamelocation'] == 2))) { // 2 is show in the section body.
             $o .= $sectionnamemarkup;
         }
 
@@ -245,8 +249,9 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Section summary in the body of the section.
         if (($this->settings['sectionformat'] == 0) ||
-           (($this->settings['sectionformat'] == 1) &&
-            ($this->settings['sectionsummarylocation'] == 1))) { // 1 is show in the section body.
+            ($this->settings['sectionformat'] == 1) ||
+            (($this->settings['sectionformat'] == 2) &&
+             ($this->settings['sectionsummarylocation'] == 1))) { // 1 is show in the section body.
             $o .= $summarymarkup;
         }
 
@@ -260,7 +265,7 @@ class format_ned_renderer extends format_section_renderer_base {
      */
     protected function section_footer() {
         $o = html_writer::end_tag('div');
-        if ($this->settings['sectionformat'] == 1) { // Framed sections.
+        if ($this->settings['sectionformat'] >= 1) { // Framed sections.
             $o .= html_writer::tag('div', '', array('class' => 'footer'));
         }
         $o .= html_writer::end_tag('li');
@@ -409,7 +414,7 @@ class format_ned_renderer extends format_section_renderer_base {
                 if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
                     $completionprogressclass .= ' nediconsleft';
                 }
-                if ($this->settings['sectionformat'] == 1) { // Framed sections.
+                if ($this->settings['sectionformat'] >= 1) { // Framed sections.
                     $completionprogressclass .= ' ned-framedsections';
                 }
                 if ($this->settings['progresstooltip'] == 1) {
@@ -454,7 +459,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $o .= html_writer::start_tag('li', array('id' => 'section-'.$section->section,
             'class' => $classattr, 'role' => 'region', 'aria-label' => $title));
 
-        if ($this->settings['sectionformat'] == 1) { // Framed sections.
+        if ($this->settings['sectionformat'] >= 1) { // Framed sections.
             $o .= html_writer::tag('div', '', array('class' => 'header'));
         }
         $o .= html_writer::tag('div', '', array('class' => 'left side'));
@@ -475,7 +480,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $o .= $this->section_availability($section);
 
         $o .= html_writer::end_tag('div');
-        if ($this->settings['sectionformat'] == 1) { // Framed sections.
+        if ($this->settings['sectionformat'] >= 1) { // Framed sections.
             $o .= html_writer::tag('div', '', array('class' => 'footer'));
         }
         $o .= html_writer::end_tag('li');
