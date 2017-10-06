@@ -12,7 +12,7 @@
 
 /* jshint ignore:start */
 define(['jquery', 'core/log'], function($, log) {
-    log.debug('NED Format Form AMD');
+    log.debug('NED Format Settings Form AMD');
     (function( $ ) {
         "use strict";
 
@@ -21,7 +21,7 @@ define(['jquery', 'core/log'], function($, log) {
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
-                log.debug('NED Format Form AMD checkSelect chosen: ' + chosen);
+                log.debug('NED Format Settings Form AMD checkSelect chosen: ' + chosen);
                 if (chosen == 2) {
                     target.show();
                 } else {
@@ -29,26 +29,19 @@ define(['jquery', 'core/log'], function($, log) {
                 }
             };
             
-            //var choose = this.find(':selected').val();
             checkSelect(this);
 
             this.on('change', function (e) {
-                //var $select = $(e.target);
-                //var choose = $select.find(':selected').val();
-                //var choose = $(this).find(':selected').val();
-                //log.debug('NED Format Form AMD sectionFormat change: ' + choose);
-                //$(this).checkSelect();
-                //this.checkSelect();
                 checkSelect($(this));
            });
         }
     }($));
     return {
-        init: function(data) {
+        init: function() {
             $(document).ready(function($) {
                 $('select#id_sectionformat').sectionFormat();
             });
-            log.debug('NED Format Form AMD init: ' + data.debug);
+            log.debug('NED Format Settings Form AMD init.');
         }
     }
 });
