@@ -52,6 +52,7 @@ class course_ned_edit_form extends moodleform {
         $mform->addElement('select', 'sectionformat', $label, $choices);
         unset($choices);
 
+        $mform->addElement('html', '<div id="nedsectionlocation">');
         $choices = array(
             0 => get_string('hide'),
             1 => get_string('showsectionheader', 'format_ned'),
@@ -70,6 +71,7 @@ class course_ned_edit_form extends moodleform {
         $mform->addElement('select', 'sectionsummarylocation', $label, $choices);
         unset($choices);
         $mform->disabledIf('sectionsummarylocation', 'sectionformat', 'neq', 2);
+        $mform->addElement('html', '</div>');
 
         $mform->addElement('html', '<div class="managecolourpresets">');
         // Temporary list until DB.

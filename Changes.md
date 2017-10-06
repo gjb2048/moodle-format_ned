@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.0.5
+  1. Draft 4 - parts 'a' to 'c' section name and location setting hiding functionality which is additionally a
+     proof of concept for elements of part 'd' where the labels can change.
+
 Version 3.3.0.4
   1. Implemented database end of colour presets.  Notes:
      'Manage colour presets' now goes to the list of presets and thus saving need for:
