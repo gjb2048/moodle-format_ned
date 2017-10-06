@@ -35,6 +35,9 @@ class course_ned_edit_form extends moodleform {
     public function definition() {
         $mform = &$this->_form;
 
+        //error_log(print_r($this->_customdata['sectionheaderformats'], true));
+        $shfdata = $this->_customdata['sectionheaderformats'];
+
         $mform->addElement('hidden', 'id', $this->_customdata['courseid']);
         $mform->setType('id', PARAM_INT);
 
@@ -46,7 +49,8 @@ class course_ned_edit_form extends moodleform {
         $choices = array(
             0 => get_string('sectionformatmoodle', 'format_ned'),
             1 => get_string('sectionformatframed', 'format_ned'),
-            2 => get_string('sectionformatframedcustom', 'format_ned')
+            2 => get_string('sectionformatframedcustom', 'format_ned'),
+            3 => get_string('sectionformatframedpreformatted', 'format_ned')
         );
         $label = get_string('sectionformat', 'format_ned');
         $mform->addElement('select', 'sectionformat', $label, $choices);
@@ -71,6 +75,34 @@ class course_ned_edit_form extends moodleform {
         $mform->addElement('select', 'sectionsummarylocation', $label, $choices);
         unset($choices);
         $mform->disabledIf('sectionsummarylocation', 'sectionformat', 'neq', 2);
+        $mform->addElement('html', '</div>');
+
+        $mform->addElement('html', '<div id="nedsectionheaderformats">');
+
+        $sectionheaderformatslabelsgroup = array();
+        $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'shflname', '', get_string('shflname', 'format_ned'));
+        $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'shfllc', '', get_string('shfllc', 'format_ned'));
+        $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'shflmc', '', get_string('shflmc', 'format_ned'));
+        $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'shflrc', '', get_string('shflrc', 'format_ned'));
+        $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'shflcp', '', get_string('colourpreset', 'format_ned'));
+        $mform->addGroup($sectionheaderformatslabelsgroup, 'sectionheaderformatslabelsgroup', get_string('sectionheaderformats', 'format_ned'), array('<span class="nedshfsep"></span>'), false);
+
+        $shfrows = array('sectionheaderformatone', 'sectionheaderformattwo', 'sectionheaderformatthree');
+        foreach ($shfrows as $shfrow) {
+            $shfgroupdataname = $shfrow.'data';
+            $shfgroupname = $shfrow.'group';
+            $$shfgroupdataname = array();
+
+            $$shfgroupdataname[] =& $mform->createElement('checkbox', $shfrow.'active', null, '');
+            if (!empty($shfdata[$shfrow]['active'])) {
+                $mform->setDefault($shfrow.'active', 'checked');
+            }
+            $$shfgroupdataname[] =& $mform->createElement('text', $shfrow.'name');
+            $mform->setDefault($shfrow.'name', $shfdata[$shfrow]['name']);
+
+            $mform->addGroup($$shfgroupdataname, $shfgroupname, '', array('<span class="nedshfsep"></span>'), false);
+        }
+
         $mform->addElement('html', '</div>');
 
         $mform->addElement('html', '<div class="managecolourpresets">');

@@ -17,23 +17,29 @@ define(['jquery', 'core/log'], function($, log) {
         "use strict";
 
         $.fn.sectionFormat = function() {
-            var target = $('#nedsectionlocation');
+            var locationTarget = $('#nedsectionlocation');
+            var locationHeaderFormats = $('#nedsectionheaderformats');
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
                 log.debug('NED Format Settings Form AMD checkSelect chosen: ' + chosen);
                 if (chosen == 2) {
-                    target.show();
+                    locationTarget.show();
+                    locationHeaderFormats.hide();
+                } else if (chosen == 3) {
+                    locationHeaderFormats.show();
+                    locationTarget.hide();
                 } else {
-                    target.hide();
+                    locationTarget.hide();
+                    locationHeaderFormats.hide();
                 }
             };
-            
+
             checkSelect(this);
 
             this.on('change', function (e) {
                 checkSelect($(this));
-           });
+            });
         }
     }($));
     return {

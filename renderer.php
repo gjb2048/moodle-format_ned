@@ -228,6 +228,9 @@ class format_ned_renderer extends format_section_renderer_base {
                 }
             }
             $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
+        } else if ($this->settings['sectionformat'] == 3) { // Framed sections + preformatted header.
+            $sectionheadercontent = '';
+            $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
         }
 
         $leftcontent = $this->section_left_content($section, $course, $onsectionpage);

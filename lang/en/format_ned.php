@@ -60,10 +60,18 @@ $string['sectionformat'] = 'Section format';
 $string['sectionformatmoodle'] = 'Moodle default';
 $string['sectionformatframed'] = 'Framed sections';
 $string['sectionformatframedcustom'] = 'Framed sections + custom header';
+$string['sectionformatframedpreformatted'] = 'Framed sections + preformattted header';
 $string['sectionnamelocation'] = 'Section name location';
 $string['showsectionheader'] = 'Show in section header';
 $string['showsectionbody'] = 'Show in section body';
 $string['sectionsummarylocation'] = 'Section summary location';
+
+$string['sectionheaderformats'] = 'Header formats';
+$string['shflname'] = 'Name';
+$string['shfllc'] = 'Left column';
+$string['shflmc'] = 'Middle column';
+$string['shflrc'] = 'Right column';
+
 $string['colourpreset'] = 'Colour preset';
 $string['colourpresetmoodle'] = 'Moodle default';
 $string['managecolourpresets'] = 'Manage colour presets';

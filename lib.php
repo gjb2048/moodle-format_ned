@@ -30,6 +30,7 @@ require_once($CFG->dirroot. '/course/format/lib.php');
 class format_ned extends format_base {
     private $settings;  // Course format settings.
     private $sectiondeliverymethoddata;  // JSON decode of 'sectiondeliverymethod' setting.
+    private $sectionheaderformatsdata;  // JSON decode of 'sectionheaderformats' setting.
     private $displaysection = false;
     private $displaysectioncalculated = false;
 
@@ -57,7 +58,10 @@ class format_ned extends format_base {
     public function get_settings() {
         if (empty($this->settings) == true) {
             $this->settings = $this->get_format_options();
+            // TODO: Do these need to be 'unset' from 'settings' and 'get_setting($name)' updated?
             $this->sectiondeliverymethoddata = json_decode($this->settings['sectiondeliverymethod']);
+            $this->sectionheaderformatsdata = json_decode($this->settings['sectionheaderformats'], true);
+            // error_log(print_r($this->sectionheaderformatsdata, true));
         }
         return $this->settings;
     }
@@ -67,6 +71,8 @@ class format_ned extends format_base {
         if (array_key_exists($name, $settings)) {
             if ($name == 'sectiondeliverymethod') {
                 return $this->sectiondeliverymethoddata;
+            } else if ($name == 'sectionheaderformats') {
+                return $this->sectionheaderformatsdata;
             }
             return $settings[$name];
         }
@@ -450,6 +456,24 @@ class format_ned extends format_base {
         static $courseformatoptions = false;
         if ($courseformatoptions === false) {
             $courseconfig = get_config('moodlecourse');
+            static $sectionheaderformatsdefault =
+                '{'.
+                    '"sectionheaderformatone": {"active": 1, "name": "Lesson", '.
+                        '"leftcolumn": {"active": 1, "value": "Lesson number"}, '.
+                        '"middlecolumn": {"active": 1, "value": "Title"}, '.
+                        '"rightcolumn": {"active": 1, "value": "Time"}, '.
+                        '"colourpreset": 0}, '.
+                    '"sectionheaderformattwo": {"active": 1, "name": "Unit", '.
+                        '"leftcolumn": {"active": 0, "value": ""}, '.
+                        '"middlecolumn": {"active": 1, "value": "Title"}, '.
+                        '"rightcolumn": {"active": 1, "value": "Time"}, '.
+                        '"colourpreset": 0},'.
+                    '"sectionheaderformatthree": {"active": 0, "name": "Other", '.
+                        '"leftcolumn": {"active": 0, "value": ""}, '.
+                        '"middlecolumn": {"active": 1, "value": "Title"}, '.
+                        '"rightcolumn": {"active": 0, "value": ""}, '.
+                        '"colourpreset": 0}'.
+                '}';
             $courseformatoptions = array(
                 'hiddensections' => array(
                     'default' => $courseconfig->hiddensections,
@@ -510,6 +534,10 @@ class format_ned extends format_base {
                 'sectiondeliverymethod' => array(
                     'default' => '{"sectiondeliverymethod": 1, "defaultsection": 1}', // JSON String for use in array.
                     'type' => PARAM_RAW
+                ),
+                'sectionheaderformats' => array(
+                    'default' => $sectionheaderformatsdefault, // JSON String for use in array.
+                    'type' => PARAM_RAW
                 )
             );
         }
@@ -568,6 +596,9 @@ class format_ned extends format_base {
             $courseformatoptionsedit['sectiondeliverymethod'] = array(
                  // Storage for complex element in 'create_edit_form_elements()'.  This is in the course not ned settings.
                 'label' => 'sectiondeliverymethod', 'element_type' => 'hidden');
+            $courseformatoptionsedit['sectiondeliverymethod'] = array(
+                 // Storage for complex element in 'nedsettings_form.php' and procesed into JSON in 'update_course_format_options()'.
+                'label' => 'sectionheaderformats', 'element_type' => 'hidden');
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
         return $courseformatoptions;
@@ -726,6 +757,15 @@ class format_ned extends format_base {
             // Only update if we have been parsed a set of data to update by the course edit form.
             $data['sectiondeliverymethod'] = json_encode($sectiondeliverymethod);
         }
+
+        // Convert section header formats to JSON for storage.
+        $sectionheaderformats = array();
+		/*
+        if (!empty($data['sectionheaderformatoneactive'])) {
+            $sectionheaderformats['sectionheaderformatone']['active'] = 1;
+        } else {
+            $sectionheaderformats['sectionheaderformatone']['active'] = 0;
+        }*/
 
         if ($oldcourse !== null) {
             $oldcourse = (array)$oldcourse;
