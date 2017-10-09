@@ -77,6 +77,18 @@ class course_ned_edit_form extends moodleform {
         $mform->disabledIf('sectionsummarylocation', 'sectionformat', 'neq', 2);
         $mform->addElement('html', '</div>');
 
+        // List of colour presets.
+        global $DB;
+        $colourpresetitems = array(0 => get_string('colourpresetmoodle', 'format_ned'));
+        if ($presets = $DB->get_records('format_ned_colour', null, null, 'id,name')) {
+            foreach ($presets as $preset) {
+                $colourpresetitems[$preset->id] = $preset->name;
+            }
+        } else {
+            $colourpresetitems[1] = 'Embassy Green';
+            $colourpresetitems[2] = 'Blues on Whyte';
+        }
+
         $mform->addElement('html', '<div id="nedsectionheaderformats">');
 
         $sectionheaderformatslabelsgroup = array();
@@ -93,12 +105,63 @@ class course_ned_edit_form extends moodleform {
             $shfgroupname = $shfrow.'group';
             $$shfgroupdataname = array();
 
+            // Active.
             $$shfgroupdataname[] =& $mform->createElement('checkbox', $shfrow.'active', null, '');
             if (!empty($shfdata[$shfrow]['active'])) {
                 $mform->setDefault($shfrow.'active', 'checked');
             }
+
+            // Name.
             $$shfgroupdataname[] =& $mform->createElement('text', $shfrow.'name');
             $mform->setDefault($shfrow.'name', $shfdata[$shfrow]['name']);
+            $mform->setType($shfrow.'name', PARAM_TEXT);
+
+            // Left column active.
+            $$shfgroupdataname[] =& $mform->createElement('checkbox', $shfrow.'leftcolumnactive', null, '');
+            if (!empty($shfdata[$shfrow]['leftcolumn']['active'])) {
+                $mform->setDefault($shfrow.'leftcolumnactive', 'checked');
+            }
+
+            // Left column value.
+            $$shfgroupdataname[] =& $mform->createElement('text', $shfrow.'leftcolumnvalue');
+            $mform->setDefault($shfrow.'leftcolumnvalue', $shfdata[$shfrow]['leftcolumn']['value']);
+            $mform->setType($shfrow.'leftcolumnvalue', PARAM_TEXT);
+            $mform->disabledIf($shfrow.'leftcolumnvalue', $shfrow.'leftcolumnactive');
+
+            // Middle column active.
+            $$shfgroupdataname[] =& $mform->createElement('checkbox', $shfrow.'middlecolumnactive', null, '');
+            if (!empty($shfdata[$shfrow]['middlecolumn']['active'])) {
+                $mform->setDefault($shfrow.'middlecolumnactive', 'checked');
+            }
+
+            // Middle column value.
+            $$shfgroupdataname[] =& $mform->createElement('text', $shfrow.'middlecolumnvalue');
+            $mform->setDefault($shfrow.'middlecolumnvalue', $shfdata[$shfrow]['middlecolumn']['value']);
+            $mform->setType($shfrow.'middlecolumnvalue', PARAM_TEXT);
+            $mform->disabledIf($shfrow.'middlecolumnvalue', $shfrow.'middlecolumnactive');
+
+            // Right column active.
+            $$shfgroupdataname[] =& $mform->createElement('checkbox', $shfrow.'rightcolumnactive', null, '');
+            if (!empty($shfdata[$shfrow]['rightcolumn']['active'])) {
+                $mform->setDefault($shfrow.'rightcolumnactive', 'checked');
+            }
+
+            // Right column value.
+            $$shfgroupdataname[] =& $mform->createElement('text', $shfrow.'rightcolumnvalue');
+            $mform->setDefault($shfrow.'rightcolumnvalue', $shfdata[$shfrow]['rightcolumn']['value']);
+            $mform->setType($shfrow.'rightcolumnvalue', PARAM_TEXT);
+            $mform->disabledIf($shfrow.'rightcolumnvalue', $shfrow.'rightcolumnactive');
+
+            // Colour preset.
+            $shfrowcolourpreset = $shfrow.'colourpreset';
+            $shfrowcolourpresetarray = array(-1 => get_string('shfldefault', 'format_ned'));
+            foreach ($colourpresetitems as $cpikey => $cpivalue) {
+                $shfrowcolourpresetarray[$cpikey] = $cpivalue;
+            }
+            $$shfrowcolourpreset =& $mform->createElement('select', $shfrow.'colourpreset', null, $shfrowcolourpresetarray);
+            $$shfgroupdataname[] = $$shfrowcolourpreset;
+            // Does not work, despite the documentation! $$shfrowcolourpreset->setSelected($shfrow.'colourpreset', $shfdata[$shfrow]['colourpreset']);
+            $mform->setDefault($shfrow.'colourpreset', $shfdata[$shfrow]['colourpreset']);
 
             $mform->addGroup($$shfgroupdataname, $shfgroupname, '', array('<span class="nedshfsep"></span>'), false);
         }
@@ -106,17 +169,7 @@ class course_ned_edit_form extends moodleform {
         $mform->addElement('html', '</div>');
 
         $mform->addElement('html', '<div class="managecolourpresets">');
-        // Temporary list until DB.
-        global $DB;
-        $colourpresetitems = array(0 => get_string('colourpresetmoodle', 'format_ned'));
-        if ($presets = $DB->get_records('format_ned_colour', null, null, 'id,name')) {
-            foreach ($presets as $preset) {
-                $colourpresetitems[$preset->id] = $preset->name;
-            }
-        } else {
-            $colourpresetitems[1] = 'Embassy Green';
-            $colourpresetitems[2] = 'Blues on Whyte';
-        }
+
         $label = get_string('colourpreset', 'format_ned');
         $mform->addElement('select', 'colourpreset', $label, $colourpresetitems);
         unset($colourpresetitems);

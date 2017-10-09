@@ -58,7 +58,7 @@ class format_ned extends format_base {
     public function get_settings() {
         if (empty($this->settings) == true) {
             $this->settings = $this->get_format_options();
-            // TODO: Do these need to be 'unset' from 'settings' and 'get_setting($name)' updated?
+            // TODO: Do these (JSON Strings) need to be 'unset' from 'settings' and 'get_setting($name)' updated?
             $this->sectiondeliverymethoddata = json_decode($this->settings['sectiondeliverymethod']);
             $this->sectionheaderformatsdata = json_decode($this->settings['sectionheaderformats'], true);
             // error_log(print_r($this->sectionheaderformatsdata, true));
@@ -458,21 +458,36 @@ class format_ned extends format_base {
             $courseconfig = get_config('moodlecourse');
             static $sectionheaderformatsdefault =
                 '{'.
-                    '"sectionheaderformatone": {"active": 1, "name": "Lesson", '.
-                        '"leftcolumn": {"active": 1, "value": "Lesson number"}, '.
-                        '"middlecolumn": {"active": 1, "value": "Title"}, '.
-                        '"rightcolumn": {"active": 1, "value": "Time"}, '.
-                        '"colourpreset": 0}, '.
-                    '"sectionheaderformattwo": {"active": 1, "name": "Unit", '.
-                        '"leftcolumn": {"active": 0, "value": ""}, '.
-                        '"middlecolumn": {"active": 1, "value": "Title"}, '.
-                        '"rightcolumn": {"active": 1, "value": "Time"}, '.
-                        '"colourpreset": 0},'.
-                    '"sectionheaderformatthree": {"active": 0, "name": "Other", '.
-                        '"leftcolumn": {"active": 0, "value": ""}, '.
-                        '"middlecolumn": {"active": 1, "value": "Title"}, '.
-                        '"rightcolumn": {"active": 0, "value": ""}, '.
-                        '"colourpreset": 0}'.
+                    '"sectionheaderformatone": {'.
+                        '"active": 1, '.
+                        '"name": "Lesson", '.
+                        '"leftcolumn": '.
+                            '{"active": 1, "value": "Lesson number"}, '.
+                        '"middlecolumn": '.
+                            '{"active": 1, "value": "Title"}, '.
+                        '"rightcolumn": '.
+                            '{"active": 1, "value": "Time"}, '.
+                        '"colourpreset": -1}, '.
+                    '"sectionheaderformattwo": {'.
+                        '"active": 1, '.
+                        '"name": "Unit", '.
+                        '"leftcolumn": '.
+                            '{"active": 0, "value": ""}, '.
+                        '"middlecolumn": '.
+                            '{"active": 1, "value": "Title"}, '.
+                        '"rightcolumn": '.
+                            '{"active": 1, "value": "Time"}, '.
+                        '"colourpreset": -1},'.
+                    '"sectionheaderformatthree": {'.
+                        '"active": 0, '.
+                        '"name": "Other", '.
+                        '"leftcolumn": '.
+                            '{"active": 0, "value": ""}, '.
+                        '"middlecolumn": '.
+                            '{"active": 1, "value": "Title"}, '.
+                        '"rightcolumn": '.
+                            '{"active": 0, "value": ""}, '.
+                        '"colourpreset": -1}'.
                 '}';
             $courseformatoptions = array(
                 'hiddensections' => array(
@@ -596,7 +611,7 @@ class format_ned extends format_base {
             $courseformatoptionsedit['sectiondeliverymethod'] = array(
                  // Storage for complex element in 'create_edit_form_elements()'.  This is in the course not ned settings.
                 'label' => 'sectiondeliverymethod', 'element_type' => 'hidden');
-            $courseformatoptionsedit['sectiondeliverymethod'] = array(
+            $courseformatoptionsedit['sectionheaderformats'] = array(
                  // Storage for complex element in 'nedsettings_form.php' and procesed into JSON in 'update_course_format_options()'.
                 'label' => 'sectionheaderformats', 'element_type' => 'hidden');
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
@@ -759,13 +774,106 @@ class format_ned extends format_base {
         }
 
         // Convert section header formats to JSON for storage.
-        $sectionheaderformats = array();
-		/*
-        if (!empty($data['sectionheaderformatoneactive'])) {
-            $sectionheaderformats['sectionheaderformatone']['active'] = 1;
-        } else {
-            $sectionheaderformats['sectionheaderformatone']['active'] = 0;
-        }*/
+        $sectionheaderformats = $this->sectionheaderformatsdata;
+        $shfupdated = false;
+        $shfrows = array('sectionheaderformatone', 'sectionheaderformattwo', 'sectionheaderformatthree');
+        foreach ($shfrows as $shfrow) {
+            // Active.
+            if (!empty($data[$shfrow.'active'])) {
+                if ($sectionheaderformats[$shfrow]['active'] != 1) {
+                    $sectionheaderformats[$shfrow]['active'] = 1;
+                    $shfupdated = true;
+                }
+                unset($data[$shfrow.'active']);
+            } else {
+                if ($sectionheaderformats[$shfrow]['active'] != 0) {
+                    $sectionheaderformats[$shfrow]['active'] = 0;
+                    $shfupdated = true;
+                }
+            }
+
+            // Name.
+            if ($data[$shfrow.'name'] !== $sectionheaderformats[$shfrow]['name']) {
+                $sectionheaderformats[$shfrow]['name'] = $data[$shfrow.'name'];
+                $shfupdated = true;
+            }
+            unset($data[$shfrow.'name']);
+
+            // Left column active.
+            if (!empty($data[$shfrow.'leftcolumnactive'])) {
+                if ($sectionheaderformats[$shfrow]['leftcolumn']['active'] != 1) {
+                    $sectionheaderformats[$shfrow]['leftcolumn']['active'] = 1;
+                    $shfupdated = true;
+                }
+                unset($data[$shfrow.'leftcolumnactive']);
+            } else {
+                if ($sectionheaderformats[$shfrow]['leftcolumn']['active'] != 0) {
+                    $sectionheaderformats[$shfrow]['leftcolumn']['active'] = 0;
+                    $shfupdated = true;
+                }
+            }
+
+            // Left column value.
+            if ($data[$shfrow.'leftcolumnvalue'] !== $sectionheaderformats[$shfrow]['leftcolumn']['value']) {
+                $sectionheaderformats[$shfrow]['leftcolumn']['value'] = $data[$shfrow.'leftcolumnvalue'];
+                $shfupdated = true;
+            }
+            unset($data[$shfrow.'leftcolumnvalue']);
+
+            // Middle column active.
+            if (!empty($data[$shfrow.'middlecolumnactive'])) {
+                if ($sectionheaderformats[$shfrow]['middlecolumn']['active'] != 1) {
+                    $sectionheaderformats[$shfrow]['middlecolumn']['active'] = 1;
+                    $shfupdated = true;
+                }
+                unset($data[$shfrow.'middlecolumnactive']);
+            } else {
+                if ($sectionheaderformats[$shfrow]['middlecolumn']['active'] != 0) {
+                    $sectionheaderformats[$shfrow]['middlecolumn']['active'] = 0;
+                    $shfupdated = true;
+                }
+            }
+
+            // Middle column value.
+            if ($data[$shfrow.'middlecolumnvalue'] !== $sectionheaderformats[$shfrow]['middlecolumn']['value']) {
+                $sectionheaderformats[$shfrow]['middlecolumn']['value'] = $data[$shfrow.'middlecolumnvalue'];
+                $shfupdated = true;
+            }
+            unset($data[$shfrow.'middlecolumnvalue']);
+
+            // Right column active.
+            if (!empty($data[$shfrow.'rightcolumnactive'])) {
+                if ($sectionheaderformats[$shfrow]['rightcolumn']['active'] != 1) {
+                    $sectionheaderformats[$shfrow]['rightcolumn']['active'] = 1;
+                    $shfupdated = true;
+                }
+                unset($data[$shfrow.'rightcolumnactive']);
+            } else {
+                if ($sectionheaderformats[$shfrow]['rightcolumn']['active'] != 0) {
+                    $sectionheaderformats[$shfrow]['rightcolumn']['active'] = 0;
+                    $shfupdated = true;
+                }
+            }
+
+            // Right column value.
+            if ($data[$shfrow.'rightcolumnvalue'] !== $sectionheaderformats[$shfrow]['rightcolumn']['value']) {
+                $sectionheaderformats[$shfrow]['rightcolumn']['value'] = $data[$shfrow.'rightcolumnvalue'];
+                $shfupdated = true;
+            }
+            unset($data[$shfrow.'rightcolumnvalue']);
+
+            // Colour preset.
+            if ($data[$shfrow.'colourpreset'] != $sectionheaderformats[$shfrow]['colourpreset']) {
+                $sectionheaderformats[$shfrow]['colourpreset'] = $data[$shfrow.'colourpreset'];
+                $shfupdated = true;
+            }
+			//error_log(print_r($sectionheaderformats[$shfrow]['colourpreset'], true));
+            unset($data[$shfrow.'colourpreset']);
+        }
+        if ($shfupdated) {
+            // Only update if the data from the course edit form has changed.
+            $data['sectionheaderformats'] = json_encode($sectionheaderformats);
+        }
 
         if ($oldcourse !== null) {
             $oldcourse = (array)$oldcourse;
