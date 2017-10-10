@@ -54,6 +54,11 @@ class nededitsection_form extends editsection_form {
         $mform->addElement('hidden', 'name', $sectioninfo->name);
         $mform->setType('name', PARAM_RAW);
 
+        $mform->addElement('hidden', 'sectionno', $sectioninfo->section);
+        $mform->setType('sectionno', PARAM_INT);
+
+        $mform->addElement('html', '<div id="sectionheaderformat">');
+
         $courseformat = course_get_format($course);
         $sectionheaderformats = $courseformat->get_setting('sectionheaderformats');
         $sectionheaderformat = $courseformat->get_setting('sectionheaderformat', $sectioninfo->section);
@@ -62,15 +67,57 @@ class nededitsection_form extends editsection_form {
         $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
         $formatchoices = array();
         foreach ($shfrows as $shfrowskey => $shfrowsvalue) {
-            $formatchoices[$shfrowskey] = $sectionheaderformats[$shfrowsvalue]['name'];
+            if ($sectionheaderformats[$shfrowsvalue]['active'] == 1) {
+                $formatchoices[$shfrowskey] = $sectionheaderformats[$shfrowsvalue]['name'];
+            }
         }
         $label = get_string('sectionheaderformat', 'format_ned');
         $mform->addElement('select', 'sectionheaderformat', $label, $formatchoices);
         $mform->setDefault('sectionheaderformat', $sectionheaderformat['headerformat']);
         unset($formatchoices);
 
-        // Prepare course and the editor.
+        // ToDo: Section name in navigation block.
 
+        // Section name.
+        $sectionheaderformatnamelabelsgroup = array();
+        $sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflleftcolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['value']);
+        $sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflmiddlecolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['value']);
+        $sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflrightcolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['value']);
+        $mform->addGroup($sectionheaderformatnamelabelsgroup, 'sectionheaderformatnamelabelsgroup', get_string('sectionname'), array('<span class="nedshfsep"></span>'), false);
+
+        $sectionheaderformatnamevaluesgroup = array();
+        $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('checkbox', 'shfcleftcolumn', null, '');
+        if (!empty($sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['active'])) {
+            $mform->setDefault('shfcleftcolumn', 'checked');
+        }
+        $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('text', 'shfvleftcolumn');
+        $mform->setDefault('shfvleftcolumn', $sectionheaderformat['sectionname']['leftcolumn']);
+        $mform->setType('shfvleftcolumn', PARAM_TEXT);
+        $mform->disabledIf('shfvleftcolumn', 'shfcleftcolumn');
+
+        $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('checkbox', 'shfcmiddlecolumn', null, '');
+        if (!empty($sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['active'])) {
+            $mform->setDefault('shfcmiddlecolumn', 'checked');
+        }
+        $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('text', 'shfvmiddlecolumn');
+        $mform->setDefault('shfvmiddlecolumn', $sectionheaderformat['sectionname']['middlecolumn']);
+        $mform->setType('shfvmiddlecolumn', PARAM_TEXT);
+        $mform->disabledIf('shfvmiddlecolumn', 'shfcmiddlecolumn');
+
+        $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('checkbox', 'shfcrightcolumn', null, '');
+        if (!empty($sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['active'])) {
+            $mform->setDefault('shfcrightcolumn', 'checked');
+        }
+        $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('text', 'shfvrightcolumn');
+        $mform->setDefault('shfvrightcolumn', $sectionheaderformat['sectionname']['rightcolumn']);
+        $mform->setType('shfvrightcolumn', PARAM_TEXT);
+        $mform->disabledIf('shfvrightcolumn', 'shfcrightcolumn');
+
+        $mform->addGroup($sectionheaderformatnamevaluesgroup, 'sectionheaderformatnamevaluesgroup', '', array('<span class="nedshfsep"></span>'), false);
+
+        $mform->addElement('html', '</div>');
+
+        // Prepare course and the editor.
         $mform->addElement('editor', 'summary_editor', get_string('summary'), null, $this->_customdata['editoroptions']);
         $mform->addHelpButton('summary_editor', 'summary');
         $mform->setType('summary_editor', PARAM_RAW);

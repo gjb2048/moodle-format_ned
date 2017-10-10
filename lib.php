@@ -954,7 +954,6 @@ class format_ned extends format_base {
                 $sectionheaderformats[$shfrow]['colourpreset'] = $data[$shfrow.'colourpreset'];
                 $shfupdated = true;
             }
-			//error_log(print_r($sectionheaderformats[$shfrow]['colourpreset'], true));
             unset($data[$shfrow.'colourpreset']);
         }
         if ($shfupdated) {
@@ -997,7 +996,8 @@ class format_ned extends format_base {
     /**
      * Updates format options for a section.
      *
-     * Section id is expected in $data->id (or $data['id']).  Not the same as section number.  This is in $data['sr'].
+     * Section id is expected in $data->id (or $data['id']).  Not the same as section number,
+     * this is in $data['sectionno'] - an addition to nededitsection_form.php.
      * If $data does not contain property with the option name, the option will not be updated.
      *
      * @param stdClass|array $data return value from {@link moodleform::get_data()} or array with data.
@@ -1008,7 +1008,50 @@ class format_ned extends format_base {
 
         // Convert form data into section format option setting.
         if ($this->get_setting('sectionformat') == 3) {
-            // json_encode
+            //error_log(print_r($data, true));
+
+            //$this->sectionheaderformatheaders[$data['sectionno']]
+            $changeddata = false;
+            if ($this->sectionheaderformatheaders[$data['sectionno']]['headerformat'] != $data['sectionheaderformat']) {
+                $this->sectionheaderformatheaders[$data['sectionno']]['headerformat'] = $data['sectionheaderformat'];
+                $changeddata = true;
+            }
+            unset($data['sectionheaderformat']);
+
+            // ToDo: unset($data['navigationname']);
+
+            if (!empty($data['shfcleftcolumn'])) { // Tick is ticked.
+                if ($this->sectionheaderformatheaders[$data['sectionno']]['sectionname']['leftcolumn'] !== $data['shfvleftcolumn']) {
+                    $this->sectionheaderformatheaders[$data['sectionno']]['sectionname']['leftcolumn'] = $data['shfvleftcolumn'];
+                    $changeddata = true;
+                }
+                unset($data['shfcleftcolumn']);
+            }
+            unset($data['shfvleftcolumn']);
+
+            if (!empty($data['shfcmiddlecolumn'])) { // Tick is ticked.
+                if ($this->sectionheaderformatheaders[$data['sectionno']]['sectionname']['middlecolumn'] !== $data['shfvmiddlecolumn']) {
+                    $this->sectionheaderformatheaders[$data['sectionno']]['sectionname']['middlecolumn'] = $data['shfvmiddlecolumn'];
+                    $changeddata = true;
+                }
+                unset($data['shfcmiddlecolumn']);
+            }
+            unset($data['shfvmiddlecolumn']);
+
+            if (!empty($data['shfcrightcolumn'])) { // Tick is ticked.
+                if ($this->sectionheaderformatheaders[$data['sectionno']]['sectionname']['rightcolumn'] !== $data['shfvrightcolumn']) {
+                    $this->sectionheaderformatheaders[$data['sectionno']]['sectionname']['rightcolumn'] = $data['shfvrightcolumn'];
+                    $changeddata = true;
+                }
+                unset($data['shfcrightcolumn']);
+            }
+            unset($data['shfvrightcolumn']);
+
+            if ($changeddata) {
+                $data['headerformat'] = json_encode($this->sectionheaderformatheaders[$data['sectionno']]);
+            } else {
+                unset($data['headerformat']);
+            }
         }
 
         return $this->update_format_options($data, $data['id']);
