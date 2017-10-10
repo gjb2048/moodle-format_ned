@@ -31,6 +31,7 @@ class format_ned extends format_base {
     private $settings;  // Course format settings.
     private $sectiondeliverymethoddata;  // JSON decode of 'sectiondeliverymethod' setting.
     private $sectionheaderformatsdata;  // JSON decode of 'sectionheaderformats' setting.
+    private $sectionheaderformatheaders = null; // Array (indexed by section number) of JSON decodes of 'headerformat' section settings.
     private $displaysection = false;
     private $displaysectioncalculated = false;
 
@@ -62,11 +63,27 @@ class format_ned extends format_base {
             $this->sectiondeliverymethoddata = json_decode($this->settings['sectiondeliverymethod']);
             $this->sectionheaderformatsdata = json_decode($this->settings['sectionheaderformats'], true);
             // error_log(print_r($this->sectionheaderformatsdata, true));
+            if ($this->settings['sectionformat'] == 3) {
+                $numsections = $this->get_last_section_number();
+                $this->sectionheaderformatheaders = array();
+                $section = 1;
+                while ($section <= $numsections) {
+                    $this->sectionheaderformatheaders[$section] = json_decode($this->get_format_options($section)['headerformat'], true);
+                    $section++;
+                }
+            }
         }
         return $this->settings;
     }
 
-    public function get_setting($name) {
+    /**
+     * Returns the value of the given setting.
+     *
+     * @param string $name Name of the setting.
+     * @param int $section null or integer section number.
+     * @return setting value of any type.
+     */
+    public function get_setting($name, $section = null) {
         $settings = $this->get_settings();
         if (array_key_exists($name, $settings)) {
             if ($name == 'sectiondeliverymethod') {
@@ -75,6 +92,10 @@ class format_ned extends format_base {
                 return $this->sectionheaderformatsdata;
             }
             return $settings[$name];
+        } else if ($settings['sectionformat'] == 3) {
+            if (($name === 'sectionheaderformat') && ($section !== null)) {
+                return $this->sectionheaderformatheaders[$section];
+            }
         }
         return false;
     }
@@ -87,6 +108,7 @@ class format_ned extends format_base {
             $this->update_course_format_options($data);
             return true;
         }
+        // Note 'sectionheaderformat' not set here but by the nededitsection_form.php indirectly calling 'update_section_format_options'.
         return false;
     }
 
@@ -443,6 +465,69 @@ class format_ned extends format_base {
     }
 
     /**
+     * Definitions of the additional options that this course format uses for section
+     *
+     * See {@link format_base::course_format_options()} for return array definition.
+     *
+     * Additionally section format options may have property 'cache' set to true
+     * if this option needs to be cached in {@link get_fast_modinfo()}. The 'cache' property
+     * is recommended to be set only for fields used in {@link format_base::get_section_name()},
+     * {@link format_base::extend_course_navigation()} and {@link format_base::get_view_url()}
+     *
+     * For better performance cached options are recommended to have 'cachedefault' property
+     * Unlike 'default', 'cachedefault' should be static and not access get_config().
+     *
+     * Regardless of value of 'cache' all options are accessed in the code as
+     * $sectioninfo->OPTIONNAME
+     * where $sectioninfo is instance of section_info, returned by
+     * get_fast_modinfo($course)->get_section_info($sectionnum)
+     * or get_fast_modinfo($course)->get_section_info_all()
+     *
+     * All format options for particular section are returned by calling:
+     * $this->get_format_options($section);
+     *
+     * @param bool $foreditform
+     * @return array
+     */
+    public function section_format_options($foreditform = false) {
+        static $sectionformatoptions = false;
+        static $headerformatdefault =
+            '{'.
+                '"headerformat": 1, '. // 1, 2 or 3 for 'sectionheaderformatone' etc.
+                '"navigationname": 0, '. // 0 = Default, 1 = left column, 2 = middle column and 3 = right column.
+                '"sectionname: {'.
+                    '"leftcolumn": "Left", '.
+                    '"middlecolumn": "Middle", '.
+                    '"rightcolumn": "Right"'.
+                '}'.
+            '}';
+
+        if ($sectionformatoptions === false) {
+            $sectionformatoptions = array(
+                'headerformat' => array(
+                    'default' => $headerformatdefault, // JSON String for use in array.
+                    'type' => PARAM_RAW
+                )
+            );
+        }
+        if ($foreditform && !isset($sectionformatoptions['headerformat']['label'])) {
+            $sectionformatoptionsedit = array(
+                'headerformat' => array(
+                    'label' => 'headerformat',
+                    'element_type' => 'hidden'
+                )
+            );
+            $sectionformatoptions = array_merge_recursive($sectionformatoptions, $sectionformatoptionsedit);
+        }
+
+        if ($this->get_setting('sectionformat') == 3) {
+            return $sectionformatoptions;
+        } else {
+            return array();
+        }
+    }
+
+    /**
      * Definitions of the additional options that this course format uses for course
      *
      * Topics format uses the following options:
@@ -647,76 +732,78 @@ class format_ned extends format_base {
             array_unshift($elements, $element);
         }
 
-        $sectiondeliverymethodgroupdata = $this->get_setting('sectiondeliverymethod');
-        $sectiondeliverymethodgroup = array();
-        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'sectiondeliveryoption', null,
-            get_string('sectiondeliveryoption', 'format_ned'));
+        if (!$forsection) {
+            $sectiondeliverymethodgroupdata = $this->get_setting('sectiondeliverymethod');
+            $sectiondeliverymethodgroup = array();
+            $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'sectiondeliveryoption', null,
+                get_string('sectiondeliveryoption', 'format_ned'));
 
-        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
-            get_string('moodledefaultoption', 'format_ned'), 1);
-        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
-            get_string('sectionnotattemptedoption', 'format_ned'), 2);
-        $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
-            get_string('specifydefaultoption', 'format_ned'), 3);
-        $sections = array();
-        $totalsections = $this->get_last_section_number();
-        for ($sectionnum = 1; $sectionnum <= $totalsections; $sectionnum++) {
-            $sections[$sectionnum] = ''.$sectionnum;
-        }
-        $specifydefaultoptionnumber =& $mform->createElement('select', 'specifydefaultoptionnumber', null, $sections,
-            array('class' => 'specifydefaultoptionnumber'));
-        if (!empty($sectiondeliverymethodgroupdata->specifydefaultoptionnumber)) {
-            $specifydefaultoptionnumber->setSelected($sectiondeliverymethodgroupdata->specifydefaultoptionnumber);
-        }
-        $sectiondeliverymethodgroup[] = $specifydefaultoptionnumber;
-        if (!empty($sectiondeliverymethodgroupdata->defaultsection)) {
-            $mform->setDefault('sectiondeliveryoptions', $sectiondeliverymethodgroupdata->defaultsection);
-        } else {
-            $mform->setDefault('sectiondeliveryoptions', 1);
-        }
-
-        $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'scheduledeliveryoption', null,
-            get_string('scheduledeliveryoption', 'format_ned'));
-
-        $scheduleadvanceoptionnumbers = array();
-        for ($opnum = 1; $opnum <= 60; $opnum++) {
-            $scheduleadvanceoptionnumbers[$opnum] = ''.$opnum;
-        }
-        $scheduleadvanceoptionnumber =& $mform->createElement('select', 'scheduleadvanceoptionnumber',
-            get_string('scheduleadvanceoption', 'format_ned'), $scheduleadvanceoptionnumbers,
-            array('class' => 'scheduleadvanceoptionnumber'));
-        if (!empty($sectiondeliverymethodgroupdata->scheduleadvanceoptionnumber)) {
-            $scheduleadvanceoptionnumber->setSelected($sectiondeliverymethodgroupdata->scheduleadvanceoptionnumber);
-        }
-        $sectiondeliverymethodgroup[] = $scheduleadvanceoptionnumber;
-
-        $sectiondeliverymethodgroup[] =& $mform->createElement('select', 'scheduleadvanceoptionunit', '',
-            array(1 => get_string('weeks', 'format_ned'), 2 => get_string('days', 'format_ned')));
-        if (!empty($sectiondeliverymethodgroupdata->scheduleadvanceoptionunit)) {
-            $mform->setDefault('scheduleadvanceoptionunit', $sectiondeliverymethodgroupdata->scheduleadvanceoptionunit);
-        }
-
-        if (!empty($sectiondeliverymethodgroupdata->specifydefaultoptionnumber)) {
-            if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 1) {
-                $mform->setDefault('sectiondeliveryoption', 'checked');
-            } else if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 2) {
-                $mform->setDefault('scheduledeliveryoption', 'checked');
+            $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
+                get_string('moodledefaultoption', 'format_ned'), 1);
+            $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
+                get_string('sectionnotattemptedoption', 'format_ned'), 2);
+            $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
+                get_string('specifydefaultoption', 'format_ned'), 3);
+            $sections = array();
+            $totalsections = $this->get_last_section_number();
+            for ($sectionnum = 1; $sectionnum <= $totalsections; $sectionnum++) {
+                $sections[$sectionnum] = ''.$sectionnum;
             }
-        } else {
-            $mform->setDefault('sectiondeliveryoption', 'checked');
+            $specifydefaultoptionnumber =& $mform->createElement('select', 'specifydefaultoptionnumber', null, $sections,
+                array('class' => 'specifydefaultoptionnumber'));
+            if (!empty($sectiondeliverymethodgroupdata->specifydefaultoptionnumber)) {
+                $specifydefaultoptionnumber->setSelected($sectiondeliverymethodgroupdata->specifydefaultoptionnumber);
+            }
+            $sectiondeliverymethodgroup[] = $specifydefaultoptionnumber;
+            if (!empty($sectiondeliverymethodgroupdata->defaultsection)) {
+                $mform->setDefault('sectiondeliveryoptions', $sectiondeliverymethodgroupdata->defaultsection);
+            } else {
+                $mform->setDefault('sectiondeliveryoptions', 1);
+            }
+
+            $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'scheduledeliveryoption', null,
+                get_string('scheduledeliveryoption', 'format_ned'));
+
+            $scheduleadvanceoptionnumbers = array();
+            for ($opnum = 1; $opnum <= 60; $opnum++) {
+                $scheduleadvanceoptionnumbers[$opnum] = ''.$opnum;
+            }
+            $scheduleadvanceoptionnumber =& $mform->createElement('select', 'scheduleadvanceoptionnumber',
+                get_string('scheduleadvanceoption', 'format_ned'), $scheduleadvanceoptionnumbers,
+                array('class' => 'scheduleadvanceoptionnumber'));
+            if (!empty($sectiondeliverymethodgroupdata->scheduleadvanceoptionnumber)) {
+                $scheduleadvanceoptionnumber->setSelected($sectiondeliverymethodgroupdata->scheduleadvanceoptionnumber);
+            }
+            $sectiondeliverymethodgroup[] = $scheduleadvanceoptionnumber;
+
+            $sectiondeliverymethodgroup[] =& $mform->createElement('select', 'scheduleadvanceoptionunit', '',
+                array(1 => get_string('weeks', 'format_ned'), 2 => get_string('days', 'format_ned')));
+            if (!empty($sectiondeliverymethodgroupdata->scheduleadvanceoptionunit)) {
+                $mform->setDefault('scheduleadvanceoptionunit', $sectiondeliverymethodgroupdata->scheduleadvanceoptionunit);
+            }
+
+            if (!empty($sectiondeliverymethodgroupdata->specifydefaultoptionnumber)) {
+                if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 1) {
+                    $mform->setDefault('sectiondeliveryoption', 'checked');
+                } else if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 2) {
+                    $mform->setDefault('scheduledeliveryoption', 'checked');
+                }
+            } else {
+                $mform->setDefault('sectiondeliveryoption', 'checked');
+            }
+
+            $mform->disabledIf('sectiondeliveryoption', 'scheduledeliveryoption', 'checked');
+            $mform->disabledIf('scheduledeliveryoption', 'sectiondeliveryoption', 'checked');
+            $mform->disabledIf('sectiondeliveryoptions', 'sectiondeliveryoption', 'notchecked');
+            $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoptions', 'neq', 3);
+            $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoption', 'notchecked');
+            $mform->disabledIf('scheduleadvanceoptionnumber', 'scheduledeliveryoption', 'notchecked');
+            $mform->disabledIf('scheduleadvanceoptionunit', 'scheduledeliveryoption', 'notchecked');
+
+            $elements[] = $mform->addGroup($sectiondeliverymethodgroup, 'sectiondeliverymethodgroup',
+                get_string('sectiondeliverymethod', 'format_ned'), array('<br class="nedsep" />'), false);
+            $mform->addHelpButton('sectiondeliverymethodgroup', 'sectiondeliverymethod', 'format_ned');
         }
-
-        $mform->disabledIf('sectiondeliveryoption', 'scheduledeliveryoption', 'checked');
-        $mform->disabledIf('scheduledeliveryoption', 'sectiondeliveryoption', 'checked');
-        $mform->disabledIf('sectiondeliveryoptions', 'sectiondeliveryoption', 'notchecked');
-        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoptions', 'neq', 3);
-        $mform->disabledIf('specifydefaultoptionnumber', 'sectiondeliveryoption', 'notchecked');
-        $mform->disabledIf('scheduleadvanceoptionnumber', 'scheduledeliveryoption', 'notchecked');
-        $mform->disabledIf('scheduleadvanceoptionunit', 'scheduledeliveryoption', 'notchecked');
-
-        $elements[] = $mform->addGroup($sectiondeliverymethodgroup, 'sectiondeliverymethodgroup',
-            get_string('sectiondeliverymethod', 'format_ned'), array('<br class="nedsep" />'), false);
-        $mform->addHelpButton('sectiondeliverymethodgroup', 'sectiondeliverymethod', 'format_ned');
 
         return $elements;
     }
@@ -908,6 +995,26 @@ class format_ned extends format_base {
     }
 
     /**
+     * Updates format options for a section.
+     *
+     * Section id is expected in $data->id (or $data['id']).  Not the same as section number.  This is in $data['sr'].
+     * If $data does not contain property with the option name, the option will not be updated.
+     *
+     * @param stdClass|array $data return value from {@link moodleform::get_data()} or array with data.
+     * @return bool whether there were any changes to the options values.
+     */
+    public function update_section_format_options($data) {
+        $data = (array)$data;
+
+        // Convert form data into section format option setting.
+        if ($this->get_setting('sectionformat') == 3) {
+            // json_encode
+        }
+
+        return $this->update_format_options($data, $data['id']);
+    }
+
+    /**
      * Override if you need to perform some extra validation of the format options
      *
      * @param array $data array of ("fieldname"=>value) of submitted data
@@ -924,6 +1031,37 @@ class format_ned extends format_base {
             $retr['sectiondeliverymethodgroup'] = get_string('sectionscheduleerror', 'format_ned');
         }
         return $retr;
+    }
+
+    /**
+     * Return an instance of moodleform to edit a specified section
+     *
+     * Default implementation returns instance of editsection_form that automatically adds
+     * additional fields defined in {@link format_base::section_format_options()}
+     *
+     * This is so we can override the layout of the edit section page and have the extra
+     * section header format elements.
+     *
+     * @param mixed $action the action attribute for the form. If empty defaults to auto detect the
+     *              current url. If a moodle_url object then outputs params as hidden variables.
+     * @param array $customdata the array with custom data to be passed to the form
+     *     /course/editsection.php passes section_info object in 'cs' field
+     *     for filling availability fields
+     * @return moodleform
+     */
+    public function editsection_form($action, $customdata = array()) {
+        if ($this->get_setting('sectionformat') == 3) {
+            global $CFG;
+			error_log(print_r($customdata['cs'], true));
+            require_once($CFG->dirroot. '/course/format/ned/nededitsection_form.php');
+            $context = context_course::instance($this->courseid);
+            if (!array_key_exists('course', $customdata)) {
+                $customdata['course'] = $this->get_course();
+            }
+            return new nededitsection_form($action, $customdata);
+        } else {
+            return parent::editsection_form($action, $customdata);
+        }
     }
 
     /**

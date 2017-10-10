@@ -47,8 +47,8 @@
     box-sizing: content-box;
 }
 
-.ned-framedsections .section .right a.dropdown-toggle,
-.ned-framedsections .section .right a.dropdown-toggle:hover {
+body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle,
+body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
     color: #fff;
 }
 
