@@ -151,8 +151,9 @@ class format_ned_course_renderer extends core_course_renderer {
            otherwise header will not be 8px when empty.  This is because of the 1em margin on
            it, which despite having no top margin still makes the header bigger than it should
            and removing / altering this margin then messes up the activity / resource margin
-           when there are there / the alignment of the completion icons. */
-        if (!empty($sectionoutput)) {
+           when there are there / the alignment of the completion icons.
+           Update: breaks Drag and Drop when editing, so need to show when doing so. */
+        if (($this->page->user_is_editing()) || (!empty($sectionoutput))) {
             $output .= html_writer::tag('ul', $sectionoutput, array('class' => 'section img-text'));
         }
 
