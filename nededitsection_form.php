@@ -59,6 +59,9 @@ class nededitsection_form extends editsection_form {
 
         $mform->addElement('html', '<div id="sectionheaderformat">');
 
+        global $PAGE;
+        $PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init', array());
+
         $courseformat = course_get_format($course);
         $sectionheaderformats = $courseformat->get_setting('sectionheaderformats');
         $sectionheaderformat = $courseformat->get_setting('sectionheaderformat', $sectioninfo->section);

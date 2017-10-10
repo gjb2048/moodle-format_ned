@@ -308,6 +308,12 @@ ul.ned-framedsections .section.main:last-child {
     text-align: right;
 }
 
+#id_shfcleftcolumn,
+#id_shfcmiddlecolumn,
+#id_shfcrightcolumn {
+    display: none;
+}
+
 /* Colour presets */
 #page-course-format-ned-nedsettings #managecolourpresets > div {
     display: inline-block;
