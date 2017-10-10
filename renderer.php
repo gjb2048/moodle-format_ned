@@ -236,17 +236,34 @@ class format_ned_renderer extends format_section_renderer_base {
         } else if ($this->settings['sectionformat'] == 3) { // Framed sections + preformatted header.
             if ($section->section != 0) {
                 $sectionheaderformatdata = $this->courseformat->get_setting('sectionheaderformat', $section->section);
-                $sectionheadercontent = '';
+                //$sectionheadercontent = '<div class="row-fluid nedshfcolumns">';
+                $sectionheadercontent = '<div class="nedshfcolumns">';
                 static $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
+                //$sectionheadercontent .= '<div class="span4 nedshfleftcolumn">';
+                $sectionheadercontent .= '<div class="nedshfleftcolumn">';
                 if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['leftcolumn']['active'] == 1) {
-                    $sectionheadercontent .= '<span class="nedleftcolumn">'.$sectionheaderformatdata['sectionname']['leftcolumn'].'</span>';
+                    $sectionheadercontent .= '<span>'.$sectionheaderformatdata['sectionname']['leftcolumn'].'</span>';
+                } else {
+                    $sectionheadercontent .= '<span>&nbsp;</span>';
                 }
+                $sectionheadercontent .= '</div>';
+                //$sectionheadercontent .= '<div class="span4 nedshfmiddlecolumn">';
+                $sectionheadercontent .= '<div class="nedshfmiddlecolumn">';
                 if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['middlecolumn']['active'] == 1) {
-                    $sectionheadercontent .= '<span class="nedmiddlecolumn">'.$sectionheaderformatdata['sectionname']['middlecolumn'].'</span>';
+                    $sectionheadercontent .= '<span>'.$sectionheaderformatdata['sectionname']['middlecolumn'].'</span>';
+                } else {
+                    $sectionheadercontent .= '<span>&nbsp;</span>';
                 }
+                $sectionheadercontent .= '</div>';
+                //$sectionheadercontent .= '<div class="span4 nedshfrightcolumn">';
+                $sectionheadercontent .= '<div class="nedshfrightcolumn">';
                 if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['rightcolumn']['active'] == 1) {
-                    $sectionheadercontent .= '<span class="nedrightcolumn">'.$sectionheaderformatdata['sectionname']['rightcolumn'].'</span>';
+                    $sectionheadercontent .= '<span>'.$sectionheaderformatdata['sectionname']['rightcolumn'].'</span>';
+                } else {
+                    $sectionheadercontent .= '<span>&nbsp;</span>';
                 }
+                $sectionheadercontent .= '</div>';
+                $sectionheadercontent .= '</div>';
 
                 $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
             }

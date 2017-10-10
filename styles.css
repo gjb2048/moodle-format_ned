@@ -283,6 +283,31 @@ ul.ned-framedsections .section.main:last-child {
     left: 3px;
 }
 
+.nedshfcolumns {
+    min-height: 20px;
+    width: 100%;
+}
+
+.nedshfleftcolumn,
+.nedshfmiddlecolumn,
+.nedshfrightcolumn {
+    display: block;
+    float: left;
+    width: 33.3%;
+}
+
+.nedshfleftcolumn {
+    text-align: left;
+}
+
+.nedshfmiddlecolumn {
+    text-align: center;
+}
+
+.nedshfrightcolumn {
+    text-align: right;
+}
+
 /* Colour presets */
 #page-course-format-ned-nedsettings #managecolourpresets > div {
     display: inline-block;
