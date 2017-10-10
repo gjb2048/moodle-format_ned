@@ -67,6 +67,7 @@ $string['showsectionbody'] = 'Show in section body';
 $string['sectionsummarylocation'] = 'Section summary location';
 
 $string['sectionheaderformats'] = 'Header formats';
+$string['sectionheaderformat'] = 'Header format';
 $string['shfldefault'] = 'NED default';
 $string['shflname'] = 'Name';
 $string['shfllc'] = 'Left column';

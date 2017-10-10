@@ -54,6 +54,21 @@ class nededitsection_form extends editsection_form {
         $mform->addElement('hidden', 'name', $sectioninfo->name);
         $mform->setType('name', PARAM_RAW);
 
+        $courseformat = course_get_format($course);
+        $sectionheaderformats = $courseformat->get_setting('sectionheaderformats');
+        $sectionheaderformat = $courseformat->get_setting('sectionheaderformat', $sectioninfo->section);
+		//error_log(print_r($courseformat->get_setting('sectionheaderformats'), true));
+		//error_log(print_r($courseformat->get_setting('sectionheaderformat', $sectioninfo->section), true));
+        $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
+        $formatchoices = array();
+        foreach ($shfrows as $shfrowskey => $shfrowsvalue) {
+            $formatchoices[$shfrowskey] = $sectionheaderformats[$shfrowsvalue]['name'];
+        }
+        $label = get_string('sectionheaderformat', 'format_ned');
+        $mform->addElement('select', 'sectionheaderformat', $label, $formatchoices);
+        $mform->setDefault('sectionheaderformat', $sectionheaderformat['headerformat']);
+        unset($formatchoices);
+
         // Prepare course and the editor.
 
         $mform->addElement('editor', 'summary_editor', get_string('summary'), null, $this->_customdata['editoroptions']);

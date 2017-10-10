@@ -495,7 +495,7 @@ class format_ned extends format_base {
             '{'.
                 '"headerformat": 1, '. // 1, 2 or 3 for 'sectionheaderformatone' etc.
                 '"navigationname": 0, '. // 0 = Default, 1 = left column, 2 = middle column and 3 = right column.
-                '"sectionname: {'.
+                '"sectionname": {'.
                     '"leftcolumn": "Left", '.
                     '"middlecolumn": "Middle", '.
                     '"rightcolumn": "Right"'.
@@ -1050,9 +1050,9 @@ class format_ned extends format_base {
      * @return moodleform
      */
     public function editsection_form($action, $customdata = array()) {
-        if ($this->get_setting('sectionformat') == 3) {
+        // Framed sections with Preformatted headers and not section 0.
+        if (($this->get_setting('sectionformat') == 3) && ($customdata['cs']->section != 0)) {
             global $CFG;
-			error_log(print_r($customdata['cs'], true));
             require_once($CFG->dirroot. '/course/format/ned/nededitsection_form.php');
             $context = context_course::instance($this->courseid);
             if (!array_key_exists('course', $customdata)) {
