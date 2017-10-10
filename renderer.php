@@ -32,6 +32,7 @@ class format_ned_renderer extends format_section_renderer_base {
     private $courseformat = null; // Our course format object as defined in lib.php.
     private $editing = false;
     private $settings = null;
+    private $sectionheaderformatssetting = null; // JSON decode of 'sectionheaderformats' setting.
     private $progressiconshown = false;
 
     /**
@@ -58,6 +59,9 @@ class format_ned_renderer extends format_section_renderer_base {
     public function set_courseformat($courseformat) {
         $this->courseformat = $courseformat; // Needed for settings retrieval.
         $this->settings = $this->courseformat->get_settings();
+        if ($this->settings['sectionformat'] == 3) {
+            $this->sectionheaderformatssetting = $this->courseformat->get_setting('sectionheaderformats');
+        }
         $this->courserenderer = $this->page->get_renderer('format_ned', 'course');
         $this->courserenderer->set_settings(
             $this->settings['activitytrackingbackground'],
@@ -187,7 +191,8 @@ class format_ned_renderer extends format_section_renderer_base {
         if (($this->settings['sectionformat'] == 0) ||
             ($this->settings['sectionformat'] == 1) ||
             (($this->settings['sectionformat'] == 2) &&
-             (!empty($this->settings['sectionnamelocation'])))) { // 0 is hide otherwise show.
+             (!empty($this->settings['sectionnamelocation'])))||  // 0 is hide otherwise show.
+            (($this->settings['sectionformat'] == 3) && ($section->section == 0))) {
             $sectionnameclasses = '';
             if ($this->settings['sectionformat'] == 0) {
                 $sectionnameclasses = ' accesshide';
@@ -229,8 +234,22 @@ class format_ned_renderer extends format_section_renderer_base {
             }
             $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
         } else if ($this->settings['sectionformat'] == 3) { // Framed sections + preformatted header.
-            $sectionheadercontent = '';
-            $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
+            if ($section->section != 0) {
+                $sectionheaderformatdata = $this->courseformat->get_setting('sectionheaderformat', $section->section);
+                $sectionheadercontent = '';
+                static $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
+                if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['leftcolumn']['active'] == 1) {
+                    $sectionheadercontent .= '<span class="nedleftcolumn">'.$sectionheaderformatdata['sectionname']['leftcolumn'].'</span>';
+                }
+                if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['middlecolumn']['active'] == 1) {
+                    $sectionheadercontent .= '<span class="nedmiddlecolumn">'.$sectionheaderformatdata['sectionname']['middlecolumn'].'</span>';
+                }
+                if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['rightcolumn']['active'] == 1) {
+                    $sectionheadercontent .= '<span class="nedrightcolumn">'.$sectionheaderformatdata['sectionname']['rightcolumn'].'</span>';
+                }
+
+                $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
+            }
         }
 
         $leftcontent = $this->section_left_content($section, $course, $onsectionpage);
