@@ -60,8 +60,6 @@ class nededitsection_form extends editsection_form {
         $mform->addElement('html', '<div id="sectionheaderformat">');
 
         global $PAGE;
-        $PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init', array());
-
         $courseformat = course_get_format($course);
         $sectionheaderformats = $courseformat->get_setting('sectionheaderformats');
         $sectionheaderformat = $courseformat->get_setting('sectionheaderformat', $sectioninfo->section);
@@ -69,9 +67,20 @@ class nededitsection_form extends editsection_form {
 		//error_log(print_r($courseformat->get_setting('sectionheaderformat', $sectioninfo->section), true));
         $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
         $formatchoices = array();
+        $sectionheaderformatsdata = array();
         foreach ($shfrows as $shfrowskey => $shfrowsvalue) {
             if ($sectionheaderformats[$shfrowsvalue]['active'] == 1) {
                 $formatchoices[$shfrowskey] = $sectionheaderformats[$shfrowsvalue]['name'];
+                $sectionheaderformatsdata[$shfrowskey] = array();
+                $sectionheaderformatsdata[$shfrowskey]['leftcolumn'] = array();
+                $sectionheaderformatsdata[$shfrowskey]['leftcolumn']['active'] = $sectionheaderformats[$shfrowsvalue]['leftcolumn']['active'];
+                $sectionheaderformatsdata[$shfrowskey]['leftcolumn']['value'] = $sectionheaderformats[$shfrowsvalue]['leftcolumn']['value'];
+                $sectionheaderformatsdata[$shfrowskey]['middlecolumn'] = array();
+                $sectionheaderformatsdata[$shfrowskey]['middlecolumn']['active'] = $sectionheaderformats[$shfrowsvalue]['middlecolumn']['active'];
+                $sectionheaderformatsdata[$shfrowskey]['middlecolumn']['value'] = $sectionheaderformats[$shfrowsvalue]['middlecolumn']['value'];
+                $sectionheaderformatsdata[$shfrowskey]['rightcolumn'] = array();
+                $sectionheaderformatsdata[$shfrowskey]['rightcolumn']['active'] = $sectionheaderformats[$shfrowsvalue]['rightcolumn']['active'];
+                $sectionheaderformatsdata[$shfrowskey]['rightcolumn']['value'] = $sectionheaderformats[$shfrowsvalue]['rightcolumn']['value'];
             }
         }
         $label = get_string('sectionheaderformat', 'format_ned');
@@ -79,16 +88,31 @@ class nededitsection_form extends editsection_form {
         $mform->setDefault('sectionheaderformat', $sectionheaderformat['headerformat']);
         unset($formatchoices);
 
+        //$PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init', array('data' => array('sectionheaderformats' => $sectionheaderformats, 'sectionheaderformatsdata' => $sectionheaderformatsdata)));
+        $PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init', array('data' => array('sectionheaderformatsdata' => $sectionheaderformatsdata)));
+
         // ToDo: Section name in navigation block.
 
         // Section name.
+        //$mform->addElement('html', '<div class="nedshfeditcolumns">');
         $sectionheaderformatnamelabelsgroup = array();
-        $sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflleftcolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['value']);
-        $sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflmiddlecolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['value']);
-        $sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflrightcolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['value']);
+        //$sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflleftcolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['value']);
+        //$sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflmiddlecolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['value']);
+        //$sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflrightcolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['value']);
+        $sectionheaderformatnamelabelscontent = '<div class="nedshfeditcolumns">';
+        $sectionheaderformatnamelabelscontent .= '<span id="nedshfleftlabel" class="nedshfeditleftcolumn">'.$sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['value'].'</span>';
+        $sectionheaderformatnamelabelscontent .= '<span id="nedshfmiddlelabel" class="nedshfeditmiddlecolumn">'.$sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['value'].'</span>';
+        $sectionheaderformatnamelabelscontent .= '<span id="nedshfrightlabel" class="nedshfeditrightcolumn">'.$sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['value'].'</span>';
+        $sectionheaderformatnamelabelscontent .= '</div>';
+        $sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflcolumns', '', $sectionheaderformatnamelabelscontent);
         $mform->addGroup($sectionheaderformatnamelabelsgroup, 'sectionheaderformatnamelabelsgroup', get_string('sectionname'), array('<span class="nedshfsep"></span>'), false);
+        //$mform->addGroup($sectionheaderformatnamelabelsgroup, 'sectionheaderformatnamelabelsgroup', get_string('sectionname'), null, false);
+        //$mform->addElement('html', '</div>');
 
         $sectionheaderformatnamevaluesgroup = array();
+        $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('html', '<div class="nedshfeditcolumns">');
+
+        $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('html', '<div class="nedshfeditleftcolumn">');
         $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('checkbox', 'shfcleftcolumn', null, '');
         if (!empty($sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['active'])) {
             $mform->setDefault('shfcleftcolumn', 'checked');
@@ -97,6 +121,8 @@ class nededitsection_form extends editsection_form {
         $mform->setDefault('shfvleftcolumn', $sectionheaderformat['sectionname']['leftcolumn']);
         $mform->setType('shfvleftcolumn', PARAM_TEXT);
         $mform->disabledIf('shfvleftcolumn', 'shfcleftcolumn');
+
+        $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('html', '</div><div class="nedshfeditmiddlecolumn">');
 
         $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('checkbox', 'shfcmiddlecolumn', null, '');
         if (!empty($sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['active'])) {
@@ -107,6 +133,8 @@ class nededitsection_form extends editsection_form {
         $mform->setType('shfvmiddlecolumn', PARAM_TEXT);
         $mform->disabledIf('shfvmiddlecolumn', 'shfcmiddlecolumn');
 
+        $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('html', '</div><div class="nedshfeditrightcolumn">');
+
         $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('checkbox', 'shfcrightcolumn', null, '');
         if (!empty($sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['active'])) {
             $mform->setDefault('shfcrightcolumn', 'checked');
@@ -116,7 +144,9 @@ class nededitsection_form extends editsection_form {
         $mform->setType('shfvrightcolumn', PARAM_TEXT);
         $mform->disabledIf('shfvrightcolumn', 'shfcrightcolumn');
 
+        $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('html', '</div></div>');
         $mform->addGroup($sectionheaderformatnamevaluesgroup, 'sectionheaderformatnamevaluesgroup', '', array('<span class="nedshfsep"></span>'), false);
+        //$mform->addGroup($sectionheaderformatnamevaluesgroup, 'sectionheaderformatnamevaluesgroup', '', null, false);
 
         $mform->addElement('html', '</div>');
 

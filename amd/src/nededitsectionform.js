@@ -16,34 +16,39 @@ define(['jquery', 'core/log'], function($, log) {
     (function( $ ) {
         "use strict";
 
-        $.fn.sectionHeaderFormat = function() {
-            var locationTarget = $('#nedsectionlocation');
-            var locationColourPresets = $('#managecolourpresets');
-            var locationHeaderFormats = $('#nedsectionheaderformats');
+        $.fn.sectionHeaderFormat = function(data) {
+            var sectionheaderformatsdata = data.sectionheaderformatsdata;
+            var leftLabel = $('#nedshfleftlabel');
+            var middleLabel = $('#nedshfmiddlelabel');
+            var rightLabel = $('#nedshfrightlabel');
+            var leftActive = $('#id_shfcleftcolumn');
+            var middleActive = $('#id_shfcmiddlecolumn');
+            var rightActive = $('#id_shfcrightcolumn');
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
                 log.debug('NED Format Edit Section Form AMD checkSelect chosen: ' + chosen);
-                if (chosen == 0) {
-                    locationTarget.hide();
-                    locationColourPresets.hide();
-                    locationHeaderFormats.hide();
-                } else if (chosen == 2) {
-                    locationTarget.show();
-                    locationColourPresets.show();
-                    locationHeaderFormats.hide();
-                } else if (chosen == 3) {
-                    locationColourPresets.show();
-                    locationHeaderFormats.show();
-                    locationTarget.hide();
-                } else { // Effectively 1.
-                    locationColourPresets.show();
-                    locationTarget.hide();
-                    locationHeaderFormats.hide();
+
+                leftLabel.text(sectionheaderformatsdata[chosen]['leftcolumn']['value']);
+                middleLabel.text(sectionheaderformatsdata[chosen]['middlecolumn']['value']);
+                rightLabel.text(sectionheaderformatsdata[chosen]['rightcolumn']['value']);
+
+                if (sectionheaderformatsdata[chosen]['leftcolumn']['active'] == 1) {
+                    leftActive.prop("checked", true);
+                } else {
+                    leftActive.prop("checked", false);
+                }
+                if (sectionheaderformatsdata[chosen]['middlecolumn']['active'] == 1) {
+                    middleActive.prop("checked", true);
+                } else {
+                    middleActive.prop("checked", false);
+                }
+                if (sectionheaderformatsdata[chosen]['rightcolumn']['active'] == 1) {
+                    rightActive.prop("checked", true);
+                } else {
+                    rightActive.prop("checked", false);
                 }
             };
-
-            checkSelect(this);
 
             this.on('change', function (e) {
                 checkSelect($(this));
@@ -51,12 +56,16 @@ define(['jquery', 'core/log'], function($, log) {
         }
     }($));
     return {
-        init: function() {
+        init: function(data) {
             $(document).ready(function($) {
-                //$('select#id_sectionheaderformat').sectionHeaderFormat();
+                $('select#id_sectionheaderformat').sectionHeaderFormat(data);
                 /*if ($('#id_shfcleftcolumn').prop("checked")) {
                     $('#id_shfcleftcolumn').prop("checked", false);
                 }*/
+                if (window.JSON && window.JSON.stringify) {
+                   log.debug('NED Format Edit Section Form AMD data: ' + JSON.stringify(data));
+                   //log.debug('NED Format Edit Section Form AMD data: ' + JSON.stringify(data.sectionheaderformatsdata[1]));
+                }
             });
             log.debug('NED Format Edit Section Form AMD init.');
         }

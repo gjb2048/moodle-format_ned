@@ -283,6 +283,7 @@ ul.ned-framedsections .section.main:last-child {
     left: 3px;
 }
 
+/* Display on the course page. */
 .nedshfcolumns {
     min-height: 20px;
     width: 100%;
@@ -312,6 +313,26 @@ ul.ned-framedsections .section.main:last-child {
 #id_shfcmiddlecolumn,
 #id_shfcrightcolumn {
     display: none;
+}
+
+/* Section edit form. */
+.nedshfeditcolumns {
+    width: 100%;
+}
+
+.nedshfeditleftcolumn,
+.nedshfeditmiddlecolumn,
+.nedshfeditrightcolumn {
+    display: block;
+    float: left;
+    width: 33.3%;
+}
+
+div.nedshfeditleftcolumn,
+div.nedshfeditmiddlecolumn,
+div.nedshfeditrightcolumn {
+    margin-left: -5px;
+    margin-right: 5px;
 }
 
 /* Colour presets */
