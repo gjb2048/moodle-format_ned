@@ -124,12 +124,36 @@ if ($sectionformat >= 1) { // Framed sections.
                     } else {
                         $sectionpreset = $DB->get_record('format_ned_colour', array('id' => $presetno));
                     }
+
                     $selectors = array();
                     foreach ($sectionnos as $sectionno) {
                         $selectors[] = 'ul.ned-framedsections '.$sectionno.'.section.main';
                     }
                     echo implode(',', $selectors).' {';
                     echo 'background-color: #'.$sectionpreset->framedsectionbgcolour.';';
+                    echo '}';
+
+                    $selectors = array();
+                    foreach ($sectionnos as $sectionno) {
+                        $selectors[] =
+                            '.ned-framedsections '.$sectionno.'.section .header .sectionname,'.
+                            '.ned-framedsections '.$sectionno.'.section .header .sectionname a,'.
+                            '.ned-framedsections '.$sectionno.'.section .header .sectionname a:hover,'.
+                            '.ned-framedsections '.$sectionno.'.section .header .summary,'.
+                            '.ned-framedsections '.$sectionno.'.section .left,'.
+                            '.ned-framedsections '.$sectionno.'.section .right a.toggle-display,'.
+                            '.ned-framedsections '.$sectionno.'.section .right a.toggle-display:hover';
+                    }
+                    echo implode(',', $selectors).' {';
+                    echo 'color: #'.$sectionpreset->framedsectionheadertxtcolour.';';
+                    echo '}';
+
+                    $selectors = array();
+                    foreach ($sectionnos as $sectionno) {
+                        $selectors[] = '.jsenabled .ned-framedsections '.$sectionno.' .right .moodle-actionmenu[data-enhance] .toggle-display.textmenu .caret';
+                    }
+                    echo implode(',', $selectors).' {';
+                    echo 'border-top-color: #'.$sectionpreset->framedsectionheadertxtcolour.';';
                     echo '}';
                 }
                 echo '/* ]]> */';
