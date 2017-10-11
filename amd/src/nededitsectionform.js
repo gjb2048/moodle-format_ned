@@ -24,6 +24,9 @@ define(['jquery', 'core/log'], function($, log) {
             var leftActive = $('#id_shfcleftcolumn');
             var middleActive = $('#id_shfcmiddlecolumn');
             var rightActive = $('#id_shfcrightcolumn');
+            var leftValue = $('#id_shfvleftcolumn');
+            var middleValue = $('#id_shfvmiddlecolumn');
+            var rightValue = $('#id_shfvrightcolumn');
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
@@ -33,20 +36,29 @@ define(['jquery', 'core/log'], function($, log) {
                 middleLabel.text(sectionheaderformatsdata[chosen]['middlecolumn']['value']);
                 rightLabel.text(sectionheaderformatsdata[chosen]['rightcolumn']['value']);
 
+                /* For some reason the disabledIf JS does not react to this, however is still
+                   needed as the state is changed and the PHP 'update_section_format_options()' in lib.php
+                   does see the change and make decisions upon it. */
                 if (sectionheaderformatsdata[chosen]['leftcolumn']['active'] == 1) {
                     leftActive.prop("checked", true);
+                    leftValue.prop("disabled", false);
                 } else {
                     leftActive.prop("checked", false);
+                    leftValue.prop("disabled", true);
                 }
                 if (sectionheaderformatsdata[chosen]['middlecolumn']['active'] == 1) {
                     middleActive.prop("checked", true);
+                    middleValue.prop("disabled", false);
                 } else {
                     middleActive.prop("checked", false);
+                    middleValue.prop("disabled", true);
                 }
                 if (sectionheaderformatsdata[chosen]['rightcolumn']['active'] == 1) {
                     rightActive.prop("checked", true);
+                    rightValue.prop("disabled", false);
                 } else {
                     rightActive.prop("checked", false);
+                    rightValue.prop("disabled", true);
                 }
             };
 
