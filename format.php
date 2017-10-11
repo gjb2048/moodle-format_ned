@@ -62,7 +62,8 @@ if (!empty($formatdisplaysectionno)) {
     $displaysection = $formatdisplaysectionno;
 }
 
-if ($courseformat->get_setting('sectionformat') >= 1) { // Framed sections.
+$sectionformat = $courseformat->get_setting('sectionformat');
+if ($sectionformat >= 1) { // Framed sections.
     $formatcolourpreset = $courseformat->get_setting('colourpreset');
     if (!empty($formatcolourpreset)) { // 0 is 'Moodle default'.
         global $DB;
@@ -92,6 +93,50 @@ if ($courseformat->get_setting('sectionformat') >= 1) { // Framed sections.
             echo '</style>';
         } /* else Should not happen as when presets are deleted then courses are updated, but in a
              multi-user environment then could happen if deleted at the same time as page load. */
+        if ($sectionformat == 3) { // Framed sections + preformatted header.
+            /* Build an array of sections with their colour preset value.  Any that are not '-1', the
+               NED Default, as set above will need to be specified here. */
+            static $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
+            $sectionheaderformats = $courseformat->get_setting('sectionheaderformats');
+            $sectioncolourpresets = array(); // Indexed by colour preset.
+            $numsections = $courseformat->get_last_section_number();
+            $sectionno = 1;
+            while ($sectionno <= $numsections) {
+                $sectionformat = $courseformat->get_setting('sectionheaderformat', $sectionno);
+                $sectioncolourpreset = $sectionheaderformats[$shfrows[$sectionformat['headerformat']]]['colourpreset'];
+                if ($sectioncolourpreset >= 0) { // Not NED Default.
+                    //$sectioncolourpresets[$sectionno] = $sectioncolourpreset;
+                    if (empty($sectioncolourpresets[$sectioncolourpreset])) {
+                        $sectioncolourpresets[$sectioncolourpreset] = array();
+                    }
+                    $sectioncolourpresets[$sectioncolourpreset][] = '#section-'.$sectionno; // Prefixing the CSS id selector here helps below.
+                }
+                $sectionno++;
+            }
+            /* We now have an array of colour presets (or none!) that tell us which sections have chosen them.
+               Also $preset will contain a preset that we may need and don't need to fetch again from the database. */
+            if (!empty($sectioncolourpresets)) {
+                echo '<style type="text/css" media="screen">';
+                echo '/* <![CDATA[ */';
+                foreach ($sectioncolourpresets as $presetno => $sectionnos) {
+                    if ($preset->id == $presetno) {
+                        $sectionpreset = $preset;
+                    } else {
+                        $sectionpreset = $DB->get_record('format_ned_colour', array('id' => $presetno));
+                    }
+                    $selectors = array();
+                    foreach ($sectionnos as $sectionno) {
+                        $selectors[] = 'ul.ned-framedsections '.$sectionno.'.section.main';
+                    }
+                    echo implode(',', $selectors).' {';
+                    echo 'background-color: #'.$sectionpreset->framedsectionbgcolour.';';
+                    echo '}';
+                }
+                echo '/* ]]> */';
+                echo '</style>';
+            }
+
+        }
     }
 }
 
