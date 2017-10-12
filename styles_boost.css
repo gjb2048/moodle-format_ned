@@ -141,3 +141,9 @@ body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
 .course-content ul.ned.nedactresmouseover li.section .activity.completion-background:hover:not(.label) .actions {
     top: 9px;
 }
+
+/* Why?! -> https://github.com/moodle/moodle/blame/master/theme/boost/scss/moodle/drawer.scss#L9-L12 -> MDL-55074 */
+.ned :target {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
