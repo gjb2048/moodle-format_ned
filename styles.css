@@ -315,6 +315,48 @@ ul.ned-framedsections .section.main:last-child {
     display: none;
 }
 
+/* NED Edit settings. */
+.nedhfeditcolumns {
+    width: 100%;
+}
+
+.nedhfeditcolumn {
+    display: block;
+    float: left;
+    width: 20%;
+}
+
+div.nedhfeditcolumn {
+    margin-left: -5px;
+    margin-right: 5px;
+}
+
+.nedhfeditcolumnvalue {
+    display: inline-block;
+}
+
+.nedhfeditcolumnvalue .fitem {
+    width: 4em;
+}
+
+@media(min-width: 1024px) {
+    .nedhfeditcolumnvalue .fitem {
+        width: 5em;
+    }
+}
+
+@media(min-width: 1200px) {
+    .nedhfeditcolumnvalue .fitem {
+        width: 4em;
+    }
+}
+
+@media(min-width: 1684px) {
+    .nedhfeditcolumnvalue .fitem {
+        width: 9em;
+    }
+}
+
 /* Section edit form. */
 .nedshfeditcolumns {
     width: 100%;
