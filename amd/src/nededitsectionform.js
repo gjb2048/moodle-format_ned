@@ -27,11 +27,14 @@ define(['jquery', 'core/log'], function($, log) {
             var leftValue = $('#id_shfvleftcolumn');
             var middleValue = $('#id_shfvmiddlecolumn');
             var rightValue = $('#id_shfvrightcolumn');
+            var navigationDefaultString = data.defaultstring;
+            var navigationNameSelect = $('#id_navigationname');
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
                 log.debug('NED Format Edit Section Form AMD checkSelect chosen: ' + chosen);
 
+                // Change the section name labels.
                 leftLabel.text(sectionheaderformatsdata[chosen]['leftcolumn']['value']);
                 middleLabel.text(sectionheaderformatsdata[chosen]['middlecolumn']['value']);
                 rightLabel.text(sectionheaderformatsdata[chosen]['rightcolumn']['value']);
@@ -60,6 +63,17 @@ define(['jquery', 'core/log'], function($, log) {
                     rightActive.prop("checked", false);
                     rightValue.prop("disabled", true);
                 }
+
+                // Change the navigation name values.
+                navigationNameSelect.empty();
+                navigationNameSelect.append($("<option></option>")
+                    .attr("value", 0)
+                    .text(navigationDefaultString));
+                $.each(sectionheaderformatsdata[chosen]['navigationname'], function(key, value) {
+                    navigationNameSelect.append($("<option></option>")
+                        .attr("value", key)
+                        .text(value));
+                });
             };
 
             this.on('change', function (e) {

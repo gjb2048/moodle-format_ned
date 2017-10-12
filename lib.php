@@ -1018,7 +1018,11 @@ class format_ned extends format_base {
             }
             unset($data['sectionheaderformat']);
 
-            // ToDo: unset($data['navigationname']);
+            if ($data['navigationname'] != $this->sectionheaderformatheaders[$data['sectionno']]['navigationname']) {
+                $this->sectionheaderformatheaders[$data['sectionno']]['navigationname'] = $data['navigationname'];
+                $changeddata = true;
+            }
+            unset($data['navigationname']);
 
             if (!empty($data['shfcleftcolumn'])) { // Tick is ticked.
                 if ($this->sectionheaderformatheaders[$data['sectionno']]['sectionname']['leftcolumn'] !== $data['shfvleftcolumn']) {

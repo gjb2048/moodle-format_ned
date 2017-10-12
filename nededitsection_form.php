@@ -63,6 +63,7 @@ class nededitsection_form extends editsection_form {
         $courseformat = course_get_format($course);
         $sectionheaderformats = $courseformat->get_setting('sectionheaderformats');
         $sectionheaderformat = $courseformat->get_setting('sectionheaderformat', $sectioninfo->section);
+        $defaultstring = get_string('default');
 		//error_log(print_r($courseformat->get_setting('sectionheaderformats'), true));
 		//error_log(print_r($courseformat->get_setting('sectionheaderformat', $sectioninfo->section), true));
         $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
@@ -81,6 +82,16 @@ class nededitsection_form extends editsection_form {
                 $sectionheaderformatsdata[$shfrowskey]['rightcolumn'] = array();
                 $sectionheaderformatsdata[$shfrowskey]['rightcolumn']['active'] = $sectionheaderformats[$shfrowsvalue]['rightcolumn']['active'];
                 $sectionheaderformatsdata[$shfrowskey]['rightcolumn']['value'] = $sectionheaderformats[$shfrowsvalue]['rightcolumn']['value'];
+                $sectionheaderformatsdata[$shfrowskey]['navigationname'] = array();
+                if ($sectionheaderformats[$shfrowsvalue]['leftcolumn']['active'] == 1) {
+                    $sectionheaderformatsdata[$shfrowskey]['navigationname'][1] = $sectionheaderformats[$shfrowsvalue]['leftcolumn']['value'];
+                }
+                if ($sectionheaderformats[$shfrowsvalue]['middlecolumn']['active'] == 1) {
+                    $sectionheaderformatsdata[$shfrowskey]['navigationname'][2] = $sectionheaderformats[$shfrowsvalue]['middlecolumn']['value'];
+                }
+                if ($sectionheaderformats[$shfrowsvalue]['rightcolumn']['active'] == 1) {
+                    $sectionheaderformatsdata[$shfrowskey]['navigationname'][3] = $sectionheaderformats[$shfrowsvalue]['rightcolumn']['value'];
+                }
             }
         }
         $label = get_string('sectionheaderformat', 'format_ned');
@@ -89,9 +100,25 @@ class nededitsection_form extends editsection_form {
         unset($formatchoices);
 
         //$PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init', array('data' => array('sectionheaderformats' => $sectionheaderformats, 'sectionheaderformatsdata' => $sectionheaderformatsdata)));
-        $PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init', array('data' => array('sectionheaderformatsdata' => $sectionheaderformatsdata)));
+        $PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init', array('data' => array('sectionheaderformatsdata' => $sectionheaderformatsdata, 'defaultstring' => $defaultstring)));
 
-        // ToDo: Section name in navigation block.
+        // Section name in navigation block.
+        $sectionnav = array(0 => $defaultstring); // 0 = Default, 1 = left column, 2 = middle column and 3 = right column.
+        /* Only add the column name as an option if it is active.  The assocated nededitsectionform.js does this dynamically when
+           'sectionheaderformat' changes. */
+        if ($sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['active'] == 1) {
+            $sectionnav[1] = $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['value'];
+        }
+        if ($sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['active'] == 1) {
+            $sectionnav[2] = $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['value'];
+        }
+        if ($sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['active'] == 1) {
+            $sectionnav[3] = $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['value'];
+        }
+        $label = get_string('shflnavigationname', 'format_ned');
+        $mform->addElement('select', 'navigationname', $label, $sectionnav);
+        $mform->setDefault('navigationname', $sectionheaderformat['navigationname']);
+        unset($sectionnav);
 
         // Section name.
         //$mform->addElement('html', '<div class="nedshfeditcolumns">');

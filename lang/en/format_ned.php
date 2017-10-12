@@ -70,6 +70,7 @@ $string['sectionheaderformats'] = 'Header formats';
 $string['sectionheaderformat'] = 'Header format';
 $string['shfldefault'] = 'NED default';
 $string['shflname'] = 'Name';
+$string['shflnavigationname'] = 'Set section name in Navigation block';
 $string['shfllc'] = 'Left column';
 $string['shflmc'] = 'Middle column';
 $string['shflrc'] = 'Right column';
