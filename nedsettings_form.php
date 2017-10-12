@@ -124,9 +124,10 @@ class course_ned_edit_form extends moodleform {
             $shfgroupname = $shfrow.'group';
             $$shfgroupdataname = array();
 
-            $$shfgroupdataname[] =& $mform->createElement('html', '<div class="nedhfeditcolumns">');
+            // Note: Changed from 'html' type to 'static' for the Clean theme.
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditcolumnsstart'.$shfrow, '', '<div class="nedhfeditcolumns">');
 
-            $$shfgroupdataname[] =& $mform->createElement('html', '<div class="nedhfeditcolumn">');
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditcolumnstart'.$shfrow, '', '<div class="nedhfeditcolumn">');
             // Active.
             $$shfgroupdataname[] =& $mform->createElement('checkbox', $shfrow.'active', null, '');
             if (!empty($shfdata[$shfrow]['active'])) {
@@ -134,13 +135,13 @@ class course_ned_edit_form extends moodleform {
             }
 
             // Name.
-            $$shfgroupdataname[] =& $mform->createElement('html', '<div class="nedhfeditcolumnvalue">');
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditleftcolumnvalue'.$shfrow, '', '<div class="nedhfeditcolumnvalue">');
             $$shfgroupdataname[] =& $mform->createElement('text', $shfrow.'name');
             $mform->setDefault($shfrow.'name', $shfdata[$shfrow]['name']);
             $mform->setType($shfrow.'name', PARAM_TEXT);
             $mform->disabledIf($shfrow.'name', $shfrow.'active');
 
-            $$shfgroupdataname[] =& $mform->createElement('html', '</div></div><div class="nedhfeditcolumn">');
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditnamecolumn'.$shfrow, '', '</div></div><div class="nedhfeditcolumn">');
 
             // Left column active.
             $$shfgroupdataname[] =& $mform->createElement('checkbox', $shfrow.'leftcolumnactive', null, '');
@@ -150,14 +151,14 @@ class course_ned_edit_form extends moodleform {
             $mform->disabledIf($shfrow.'leftcolumnactive', $shfrow.'active');
 
             // Left column value.
-            $$shfgroupdataname[] =& $mform->createElement('html', '<div class="nedhfeditcolumnvalue">');
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditleftcolumnvalue'.$shfrow, '', '<div class="nedhfeditcolumnvalue">');
             $$shfgroupdataname[] =& $mform->createElement('text', $shfrow.'leftcolumnvalue');
             $mform->setDefault($shfrow.'leftcolumnvalue', $shfdata[$shfrow]['leftcolumn']['value']);
             $mform->setType($shfrow.'leftcolumnvalue', PARAM_TEXT);
             $mform->disabledIf($shfrow.'leftcolumnvalue', $shfrow.'leftcolumnactive');
             $mform->disabledIf($shfrow.'leftcolumnvalue', $shfrow.'active');
 
-            $$shfgroupdataname[] =& $mform->createElement('html', '</div></div><div class="nedhfeditcolumn">');
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditleftcolumn'.$shfrow, '', '</div></div><div class="nedhfeditcolumn">');
 
             // Middle column active.
             $$shfgroupdataname[] =& $mform->createElement('checkbox', $shfrow.'middlecolumnactive', null, '');
@@ -167,14 +168,14 @@ class course_ned_edit_form extends moodleform {
             $mform->disabledIf($shfrow.'middlecolumnactive', $shfrow.'active');
 
             // Middle column value.
-            $$shfgroupdataname[] =& $mform->createElement('html', '<div class="nedhfeditcolumnvalue">');
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditmiddlecolumnvalue'.$shfrow, '', '<div class="nedhfeditcolumnvalue">');
             $$shfgroupdataname[] =& $mform->createElement('text', $shfrow.'middlecolumnvalue');
             $mform->setDefault($shfrow.'middlecolumnvalue', $shfdata[$shfrow]['middlecolumn']['value']);
             $mform->setType($shfrow.'middlecolumnvalue', PARAM_TEXT);
             $mform->disabledIf($shfrow.'middlecolumnvalue', $shfrow.'middlecolumnactive');
             $mform->disabledIf($shfrow.'middlecolumnvalue', $shfrow.'active');
 
-            $$shfgroupdataname[] =& $mform->createElement('html', '</div></div><div class="nedhfeditcolumn">');
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditmiddlecolumn'.$shfrow, '', '</div></div><div class="nedhfeditcolumn">');
 
             // Right column active.
             $$shfgroupdataname[] =& $mform->createElement('checkbox', $shfrow.'rightcolumnactive', null, '');
@@ -184,14 +185,14 @@ class course_ned_edit_form extends moodleform {
             $mform->disabledIf($shfrow.'rightcolumnactive', $shfrow.'active');
 
             // Right column value.
-            $$shfgroupdataname[] =& $mform->createElement('html', '<div class="nedhfeditcolumnvalue">');
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditrightcolumnvalue'.$shfrow, '', '<div class="nedhfeditcolumnvalue">');
             $$shfgroupdataname[] =& $mform->createElement('text', $shfrow.'rightcolumnvalue');
             $mform->setDefault($shfrow.'rightcolumnvalue', $shfdata[$shfrow]['rightcolumn']['value']);
             $mform->setType($shfrow.'rightcolumnvalue', PARAM_TEXT);
             $mform->disabledIf($shfrow.'rightcolumnvalue', $shfrow.'rightcolumnactive');
             $mform->disabledIf($shfrow.'rightcolumnvalue', $shfrow.'active');
 
-            $$shfgroupdataname[] =& $mform->createElement('html', '</div></div><div class="nedhfeditcolumn">');
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditrightcolumn'.$shfrow, '', '</div></div><div class="nedhfeditcolumn">');
 
             // Colour preset.
             $shfrowcolourpreset = $shfrow.'colourpreset';
@@ -199,14 +200,14 @@ class course_ned_edit_form extends moodleform {
             foreach ($colourpresetitems as $cpikey => $cpivalue) {
                 $shfrowcolourpresetarray[$cpikey] = $cpivalue;
             }
-            $$shfgroupdataname[] =& $mform->createElement('html', '<div class="nedhfeditcolumnvalue">');
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditcolourcolumnvalue'.$shfrow, '', '<div class="nedhfeditcolumnvalue">');
             $$shfrowcolourpreset =& $mform->createElement('select', $shfrow.'colourpreset', null, $shfrowcolourpresetarray);
             $$shfgroupdataname[] = $$shfrowcolourpreset;
             // Does not work, despite the documentation! $$shfrowcolourpreset->setSelected($shfrow.'colourpreset', $shfdata[$shfrow]['colourpreset']);
             $mform->setDefault($shfrow.'colourpreset', $shfdata[$shfrow]['colourpreset']);
             $mform->disabledIf($shfrow.'colourpreset', $shfrow.'active');
 
-            $$shfgroupdataname[] =& $mform->createElement('html', '</div></div></div>');
+            $$shfgroupdataname[] =& $mform->createElement('static', 'nedhfeditend'.$shfrow, '', '</div></div></div>');
             $mform->addGroup($$shfgroupdataname, $shfgroupname, '', array('<span class="nedshfsep"></span>'), false);
         }
 

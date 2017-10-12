@@ -326,34 +326,34 @@ ul.ned-framedsections .section.main:last-child {
     width: 20%;
 }
 
-div.nedhfeditcolumn {
-    margin-left: -5px;
-    margin-right: 5px;
-}
-
 .nedhfeditcolumnvalue {
     display: inline-block;
 }
 
-.nedhfeditcolumnvalue .fitem {
-    width: 4em;
+.nedhfeditcolumnvalue [type="text"],
+.nedhfeditcolumnvalue select {
+    max-width: none !important;
+    width: 4em !important;
 }
 
 @media(min-width: 1024px) {
-    .nedhfeditcolumnvalue .fitem {
-        width: 5em;
+    .nedhfeditcolumnvalue [type="text"],
+    .nedhfeditcolumnvalue select {
+        width: 5em !important;
     }
 }
 
 @media(min-width: 1200px) {
-    .nedhfeditcolumnvalue .fitem {
-        width: 4em;
+    .nedhfeditcolumnvalue [type="text"],
+    .nedhfeditcolumnvalue select {
+        width: 4em !important;
     }
 }
 
 @media(min-width: 1684px) {
-    .nedhfeditcolumnvalue .fitem {
-        width: 9em;
+    .nedhfeditcolumnvalue [type="text"],
+    .nedhfeditcolumnvalue select {
+        width: 9em !important;
     }
 }
 
@@ -368,13 +368,6 @@ div.nedhfeditcolumn {
     display: block;
     float: left;
     width: 33.3%;
-}
-
-div.nedshfeditleftcolumn,
-div.nedshfeditmiddlecolumn,
-div.nedshfeditrightcolumn {
-    margin-left: -5px;
-    margin-right: 5px;
 }
 
 /* Colour presets */

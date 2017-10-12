@@ -131,6 +131,14 @@ body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
     }
 }
 
+/* Section edit form. */
+div.nedshfeditleftcolumn,
+div.nedshfeditmiddlecolumn,
+div.nedshfeditrightcolumn {
+    margin-left: -5px;
+    margin-right: 5px;
+}
+
 /* Activity / Resource hover */
 .format-ned .nedactresmouseover .activity:hover:not(.label) .activityinstance,
 .format-ned .nedactresmouseover .activity:hover:not(.label) .contentwithoutlink {
