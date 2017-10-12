@@ -131,7 +131,9 @@ if ($sectionformat >= 1) { // Framed sections.
                     }
                     echo implode(',', $selectors).' {';
                     /* Note: If $sectionpreset is null then check that 'sectionheaderformats' in the 'course_format_options' table
-                             in the database has not been corrupted and contains 'null's for the 'colourpreset'. */
+                             in the database has not been corrupted and contains 'null's for the 'colourpreset'.
+                             This can be caused by '$data[$shfrow.'colourpreset']' being 'null' in 'update_course_format_options()'
+                             in lib.php. */
                     echo 'background-color: #'.$sectionpreset->framedsectionbgcolour.';';
                     echo '}';
 
