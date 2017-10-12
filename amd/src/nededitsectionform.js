@@ -35,9 +35,9 @@ define(['jquery', 'core/log'], function($, log) {
                 log.debug('NED Format Edit Section Form AMD checkSelect chosen: ' + chosen);
 
                 // Change the section name labels.
-                leftLabel.text(sectionheaderformatsdata[chosen]['leftcolumn']['value']);
-                middleLabel.text(sectionheaderformatsdata[chosen]['middlecolumn']['value']);
-                rightLabel.text(sectionheaderformatsdata[chosen]['rightcolumn']['value']);
+                leftLabel.html(sectionheaderformatsdata[chosen]['leftcolumn']['value']);
+                middleLabel.html(sectionheaderformatsdata[chosen]['middlecolumn']['value']);
+                rightLabel.html(sectionheaderformatsdata[chosen]['rightcolumn']['value']);
 
                 /* For some reason the disabledIf JS does not react to this, however is still
                    needed as the state is changed and the PHP 'update_section_format_options()' in lib.php

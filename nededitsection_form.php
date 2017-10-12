@@ -76,12 +76,21 @@ class nededitsection_form extends editsection_form {
                 $sectionheaderformatsdata[$shfrowskey]['leftcolumn'] = array();
                 $sectionheaderformatsdata[$shfrowskey]['leftcolumn']['active'] = $sectionheaderformats[$shfrowsvalue]['leftcolumn']['active'];
                 $sectionheaderformatsdata[$shfrowskey]['leftcolumn']['value'] = $sectionheaderformats[$shfrowsvalue]['leftcolumn']['value'];
+                if (empty($sectionheaderformatsdata[$shfrowskey]['leftcolumn']['value'])) {
+                    $sectionheaderformatsdata[$shfrowskey]['leftcolumn']['value'] = '&nbsp;';
+                }
                 $sectionheaderformatsdata[$shfrowskey]['middlecolumn'] = array();
                 $sectionheaderformatsdata[$shfrowskey]['middlecolumn']['active'] = $sectionheaderformats[$shfrowsvalue]['middlecolumn']['active'];
                 $sectionheaderformatsdata[$shfrowskey]['middlecolumn']['value'] = $sectionheaderformats[$shfrowsvalue]['middlecolumn']['value'];
+                if (empty($sectionheaderformatsdata[$shfrowskey]['middlecolumn']['value'])) {
+                    $sectionheaderformatsdata[$shfrowskey]['middlecolumn']['value'] = '&nbsp;';
+                }
                 $sectionheaderformatsdata[$shfrowskey]['rightcolumn'] = array();
                 $sectionheaderformatsdata[$shfrowskey]['rightcolumn']['active'] = $sectionheaderformats[$shfrowsvalue]['rightcolumn']['active'];
                 $sectionheaderformatsdata[$shfrowskey]['rightcolumn']['value'] = $sectionheaderformats[$shfrowsvalue]['rightcolumn']['value'];
+                if (empty($sectionheaderformatsdata[$shfrowskey]['rightcolumn']['value'])) {
+                    $sectionheaderformatsdata[$shfrowskey]['rightcolumn']['value'] = '&nbsp;';
+                }
                 $sectionheaderformatsdata[$shfrowskey]['navigationname'] = array();
                 if ($sectionheaderformats[$shfrowsvalue]['leftcolumn']['active'] == 1) {
                     $sectionheaderformatsdata[$shfrowskey]['navigationname'][1] = $sectionheaderformats[$shfrowsvalue]['leftcolumn']['value'];
@@ -127,9 +136,21 @@ class nededitsection_form extends editsection_form {
         //$sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflmiddlecolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['value']);
         //$sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflrightcolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['value']);
         $sectionheaderformatnamelabelscontent = '<div class="nedshfeditcolumns">';
-        $sectionheaderformatnamelabelscontent .= '<span id="nedshfleftlabel" class="nedshfeditleftcolumn">'.$sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['value'].'</span>';
-        $sectionheaderformatnamelabelscontent .= '<span id="nedshfmiddlelabel" class="nedshfeditmiddlecolumn">'.$sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['value'].'</span>';
-        $sectionheaderformatnamelabelscontent .= '<span id="nedshfrightlabel" class="nedshfeditrightcolumn">'.$sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['value'].'</span>';
+        $nedshfeditleftcolumnvalue = $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['value'];
+        if (empty($nedshfeditleftcolumnvalue)) {
+            $nedshfeditleftcolumnvalue = '&nbsp;';
+        }
+        $sectionheaderformatnamelabelscontent .= '<span id="nedshfleftlabel" class="nedshfeditleftcolumn">'.$nedshfeditleftcolumnvalue.'</span>';
+        $nedshfeditmiddlecolumnvalue = $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['value'];
+        if (empty($nedshfeditmiddlecolumnvalue)) {
+            $nedshfeditmiddlecolumnvalue = '&nbsp;';
+        }
+        $sectionheaderformatnamelabelscontent .= '<span id="nedshfmiddlelabel" class="nedshfeditmiddlecolumn">'.$nedshfeditmiddlecolumnvalue.'</span>';
+        $nedshfeditrightcolumnvalue = $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['value'];
+        if (empty($nedshfeditrightcolumnvalue)) {
+            $nedshfeditrightcolumnvalue = '&nbsp;';
+        }
+        $sectionheaderformatnamelabelscontent .= '<span id="nedshfrightlabel" class="nedshfeditrightcolumn">'.$nedshfeditrightcolumnvalue.'</span>';
         $sectionheaderformatnamelabelscontent .= '</div>';
         $sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflcolumns', '', $sectionheaderformatnamelabelscontent);
         $mform->addGroup($sectionheaderformatnamelabelsgroup, 'sectionheaderformatnamelabelsgroup', get_string('sectionname'), array('<span class="nedshfsep"></span>'), false);
