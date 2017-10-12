@@ -110,7 +110,8 @@ class course_ned_edit_form extends moodleform {
         $sectionheaderformatsnamelabelscontent .= '<span class="nedhfeditcolumn">'.get_string('colourpreset', 'format_ned').'</span>';
         $sectionheaderformatsnamelabelscontent .= '</div>';
         $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'hflcolumns', '', $sectionheaderformatsnamelabelscontent);
-        $mform->addGroup($sectionheaderformatslabelsgroup, 'sectionheaderformatslabelsgroup', get_string('sectionheaderformats', 'format_ned'), array('<span class="nedshfsep"></span>'), false);
+        $mform->addGroup($sectionheaderformatslabelsgroup, 'sectionheaderformatslabelsgroup', get_string('sectionheaderformats', 'format_ned'),
+            array('<span class="nedshfsep"></span>'), false);
 
         $shfrows = array('sectionheaderformatone', 'sectionheaderformattwo', 'sectionheaderformatthree');
         foreach ($shfrows as $shfrow) {

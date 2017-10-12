@@ -35,7 +35,7 @@ require_once($CFG->dirroot. '/course/editsection_form.php');
  */
 class nededitsection_form extends editsection_form {
 
-    function definition() {
+    public function definition() {
 
         $mform  = $this->_form;
         $course = $this->_customdata['course'];
@@ -101,7 +101,8 @@ class nededitsection_form extends editsection_form {
         $mform->setDefault('sectionheaderformat', $sectionheaderformat['headerformat']);
         unset($formatchoices);
 
-        $PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init', array('data' => array('sectionheaderformatsdata' => $sectionheaderformatsdata, 'defaultstring' => $defaultstring)));
+        $PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init',
+            array('data' => array('sectionheaderformatsdata' => $sectionheaderformatsdata, 'defaultstring' => $defaultstring)));
 
         // Section name in navigation block.
         $sectionnav = array(0 => $defaultstring); // 0 = Default, 1 = left column, 2 = middle column and 3 = right column.

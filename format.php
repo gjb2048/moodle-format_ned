@@ -119,7 +119,8 @@ if ($sectionformat >= 1) { // Framed sections.
                 echo '/* <![CDATA[ */';
                 foreach ($sectioncolourpresets as $presetno => $sectionnos) {
                     if ($preset->id == $presetno) {
-                        $sectionpreset = $preset;
+                        // No need for more CSS as the colour preset set for the section is the same as the course.
+                        continue;
                     } else {
                         $sectionpreset = $DB->get_record('format_ned_colour', array('id' => $presetno));
                     }
@@ -129,6 +130,8 @@ if ($sectionformat >= 1) { // Framed sections.
                         $selectors[] = 'ul.ned-framedsections '.$sectionno.'.section.main';
                     }
                     echo implode(',', $selectors).' {';
+                    /* Note: If $sectionpreset is null then check that 'sectionheaderformats' in the 'course_format_options' table
+                             in the database has not been corrupted and contains 'null's for the 'colourpreset'. */
                     echo 'background-color: #'.$sectionpreset->framedsectionbgcolour.';';
                     echo '}';
 
