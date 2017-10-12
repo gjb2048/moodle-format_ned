@@ -43,13 +43,8 @@ class nededitsection_form extends editsection_form {
 
         $mform->addElement('header', 'generalhdr', get_string('general'));
 
-        // Note: From 'update_section_format_options($data)' - If $data does not contain property with the option name, the option will not be updated.
-        /*$mform->addElement('defaultcustom', 'name', get_string('sectionname'), [
-            'defaultvalue' => $this->_customdata['defaultsectionname'],
-            'customvalue' => $sectioninfo->name,
-        ], ['size' => 30, 'maxlength' => 255]);
-        $mform->setDefault('name', false);
-        $mform->addGroupRule('name', array('name' => array(array(get_string('maximumchars', '', 255), 'maxlength', 255))));*/
+        /* Note: From 'update_section_format_options($data)' - If $data does not contain property with the option name,
+                 the option will not be updated, therefore we still need it! */
 
         $mform->addElement('hidden', 'name', $sectioninfo->name);
         $mform->setType('name', PARAM_RAW);
@@ -64,8 +59,6 @@ class nededitsection_form extends editsection_form {
         $sectionheaderformats = $courseformat->get_setting('sectionheaderformats');
         $sectionheaderformat = $courseformat->get_setting('sectionheaderformat', $sectioninfo->section);
         $defaultstring = get_string('default');
-		//error_log(print_r($courseformat->get_setting('sectionheaderformats'), true));
-		//error_log(print_r($courseformat->get_setting('sectionheaderformat', $sectioninfo->section), true));
         $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
         $formatchoices = array();
         $sectionheaderformatsdata = array();
@@ -108,7 +101,6 @@ class nededitsection_form extends editsection_form {
         $mform->setDefault('sectionheaderformat', $sectionheaderformat['headerformat']);
         unset($formatchoices);
 
-        //$PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init', array('data' => array('sectionheaderformats' => $sectionheaderformats, 'sectionheaderformatsdata' => $sectionheaderformatsdata)));
         $PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init', array('data' => array('sectionheaderformatsdata' => $sectionheaderformatsdata, 'defaultstring' => $defaultstring)));
 
         // Section name in navigation block.
@@ -130,11 +122,7 @@ class nededitsection_form extends editsection_form {
         unset($sectionnav);
 
         // Section name.
-        //$mform->addElement('html', '<div class="nedshfeditcolumns">');
         $sectionheaderformatnamelabelsgroup = array();
-        //$sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflleftcolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['value']);
-        //$sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflmiddlecolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['middlecolumn']['value']);
-        //$sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflrightcolumn', '', $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['rightcolumn']['value']);
         $sectionheaderformatnamelabelscontent = '<div class="nedshfeditcolumns">';
         $nedshfeditleftcolumnvalue = $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['value'];
         if (empty($nedshfeditleftcolumnvalue)) {
@@ -154,8 +142,6 @@ class nededitsection_form extends editsection_form {
         $sectionheaderformatnamelabelscontent .= '</div>';
         $sectionheaderformatnamelabelsgroup[] =& $mform->createElement('static', 'shflcolumns', '', $sectionheaderformatnamelabelscontent);
         $mform->addGroup($sectionheaderformatnamelabelsgroup, 'sectionheaderformatnamelabelsgroup', get_string('sectionname'), array('<span class="nedshfsep"></span>'), false);
-        //$mform->addGroup($sectionheaderformatnamelabelsgroup, 'sectionheaderformatnamelabelsgroup', get_string('sectionname'), null, false);
-        //$mform->addElement('html', '</div>');
 
         $sectionheaderformatnamevaluesgroup = array();
         // Note: Changed from 'html' type to 'static' for the Clean theme.
@@ -195,7 +181,6 @@ class nededitsection_form extends editsection_form {
 
         $sectionheaderformatnamevaluesgroup[] =& $mform->createElement('static', 'nedshfeditendrightcolumn', '', '</div></div>');
         $mform->addGroup($sectionheaderformatnamevaluesgroup, 'sectionheaderformatnamevaluesgroup', '', array('<span class="nedshfsep"></span>'), false);
-        //$mform->addGroup($sectionheaderformatnamevaluesgroup, 'sectionheaderformatnamevaluesgroup', '', null, false);
 
         $mform->addElement('static', 'nedshfeditendgroup', '', '</div>');
 

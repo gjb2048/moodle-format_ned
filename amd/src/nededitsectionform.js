@@ -85,12 +85,8 @@ define(['jquery', 'core/log'], function($, log) {
         init: function(data) {
             $(document).ready(function($) {
                 $('select#id_sectionheaderformat').sectionHeaderFormat(data);
-                /*if ($('#id_shfcleftcolumn').prop("checked")) {
-                    $('#id_shfcleftcolumn').prop("checked", false);
-                }*/
                 if (window.JSON && window.JSON.stringify) {
-                   log.debug('NED Format Edit Section Form AMD data: ' + JSON.stringify(data));
-                   //log.debug('NED Format Edit Section Form AMD data: ' + JSON.stringify(data.sectionheaderformatsdata[1]));
+                    log.debug('NED Format Edit Section Form AMD data: ' + JSON.stringify(data));
                 }
             });
             log.debug('NED Format Edit Section Form AMD init.');

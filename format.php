@@ -105,7 +105,6 @@ if ($sectionformat >= 1) { // Framed sections.
                 $sectionformat = $courseformat->get_setting('sectionheaderformat', $sectionno);
                 $sectioncolourpreset = $sectionheaderformats[$shfrows[$sectionformat['headerformat']]]['colourpreset'];
                 if ($sectioncolourpreset >= 0) { // Not NED Default.
-                    //$sectioncolourpresets[$sectionno] = $sectioncolourpreset;
                     if (empty($sectioncolourpresets[$sectioncolourpreset])) {
                         $sectioncolourpresets[$sectioncolourpreset] = array();
                     }
@@ -135,8 +134,7 @@ if ($sectionformat >= 1) { // Framed sections.
 
                     $selectors = array();
                     foreach ($sectionnos as $sectionno) {
-                        $selectors[] =
-                            '.ned-framedsections '.$sectionno.'.section .header .sectionname,'.
+                        $selectors[] = '.ned-framedsections '.$sectionno.'.section .header .sectionname,'.
                             '.ned-framedsections '.$sectionno.'.section .header .sectionname a,'.
                             '.ned-framedsections '.$sectionno.'.section .header .sectionname a:hover,'.
                             '.ned-framedsections '.$sectionno.'.section .header .summary,'.

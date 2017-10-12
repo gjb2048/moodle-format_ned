@@ -35,7 +35,6 @@ class course_ned_edit_form extends moodleform {
     public function definition() {
         $mform = &$this->_form;
 
-        //error_log(print_r($this->_customdata['sectionheaderformats'], true));
         $shfdata = $this->_customdata['sectionheaderformats'];
 
         $mform->addElement('hidden', 'id', $this->_customdata['courseid']);
@@ -110,11 +109,6 @@ class course_ned_edit_form extends moodleform {
         $sectionheaderformatsnamelabelscontent .= '<span class="nedhfeditcolumn">'.get_string('shflrc', 'format_ned').'</span>';
         $sectionheaderformatsnamelabelscontent .= '<span class="nedhfeditcolumn">'.get_string('colourpreset', 'format_ned').'</span>';
         $sectionheaderformatsnamelabelscontent .= '</div>';
-        /* $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'shflname', '', get_string('shflname', 'format_ned'));
-        $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'shfllc', '', get_string('shfllc', 'format_ned'));
-        $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'shflmc', '', get_string('shflmc', 'format_ned'));
-        $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'shflrc', '', get_string('shflrc', 'format_ned'));
-        $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'shflcp', '', get_string('colourpreset', 'format_ned')); */
         $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'hflcolumns', '', $sectionheaderformatsnamelabelscontent);
         $mform->addGroup($sectionheaderformatslabelsgroup, 'sectionheaderformatslabelsgroup', get_string('sectionheaderformats', 'format_ned'), array('<span class="nedshfsep"></span>'), false);
 
@@ -293,6 +287,9 @@ class course_ned_edit_form extends moodleform {
             get_string('activityresourcemouseover', 'format_ned'), $activityresourcemouseoveroptions
         );
         unset($activityresourcemouseoveroptions);
+
+        $mform->addElement('hidden', 'nedsettingsform', 1);
+        $mform->setType('nedsettingsform', PARAM_INT);
 
         $this->add_action_buttons();
     }

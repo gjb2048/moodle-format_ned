@@ -330,28 +330,46 @@ ul.ned-framedsections .section.main:last-child {
     display: inline-block;
 }
 
-.nedhfeditcolumnvalue [type="text"],
-.nedhfeditcolumnvalue select {
+.nedhfeditcolumnvalue input[type="text"] {
     max-width: none !important;
     width: 4em !important;
 }
 
 @media(min-width: 1024px) {
-    .nedhfeditcolumnvalue [type="text"],
+    .nedhfeditcolumnvalue input[type="text"] {
+        width: 5em !important;
+    }
+}
+
+@media(min-width: 1200px) {
+    .nedhfeditcolumnvalue input[type="text"] {
+        width: 4em !important;
+    }
+}
+
+@media(min-width: 1684px) {
+    .nedhfeditcolumnvalue input[type="text"] {
+        width: 9em !important;
+    }
+}
+
+.nedhfeditcolumnvalue select {
+    width: 4em !important;
+}
+
+@media(min-width: 1024px) {
     .nedhfeditcolumnvalue select {
         width: 5em !important;
     }
 }
 
 @media(min-width: 1200px) {
-    .nedhfeditcolumnvalue [type="text"],
     .nedhfeditcolumnvalue select {
         width: 4em !important;
     }
 }
 
 @media(min-width: 1684px) {
-    .nedhfeditcolumnvalue [type="text"],
     .nedhfeditcolumnvalue select {
         width: 9em !important;
     }
