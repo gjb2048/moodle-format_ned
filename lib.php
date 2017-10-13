@@ -525,9 +525,9 @@ class format_ned extends format_base {
                 '"headerformat": 1, '. // 1, 2 or 3 for 'sectionheaderformatone' etc.
                 '"navigationname": 0, '. // 0 = Default, 1 = left column, 2 = middle column and 3 = right column.
                 '"sectionname": {'.
-                    '"leftcolumn": "Left", '.
-                    '"middlecolumn": "Middle", '.
-                    '"rightcolumn": "Right"'.
+                    '"leftcolumn": "", '.
+                    '"middlecolumn": "", '.
+                    '"rightcolumn": ""'.
                 '}'.
             '}';
 

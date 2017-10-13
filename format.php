@@ -75,10 +75,14 @@ if ($sectionformat >= 1) { // Framed sections.
             echo 'background-color: #'.$preset->framedsectionbgcolour.';';
             echo '}';
 
-            echo '.ned-framedsections .section .header .sectionname,';
-            echo '.ned-framedsections .section .header .sectionname a,';
-            echo '.ned-framedsections .section .header .sectionname a:hover,';
-            echo '.ned-framedsections .section .header .summary,';
+            if ($sectionformat == 3) { // Framed sections + preformatted header.
+                echo '.ned-framedsections .section .header,';
+            } else {
+                echo '.ned-framedsections .section .header .sectionname,';
+                echo '.ned-framedsections .section .header .sectionname a,';
+                echo '.ned-framedsections .section .header .sectionname a:hover,';
+                echo '.ned-framedsections .section .header .summary,';
+            }
             echo '.ned-framedsections .section .left,';
             echo '.ned-framedsections .section .right a.toggle-display,';
             echo '.ned-framedsections .section .right a.toggle-display:hover {';
@@ -139,10 +143,7 @@ if ($sectionformat >= 1) { // Framed sections.
 
                     $selectors = array();
                     foreach ($sectionnos as $sectionno) {
-                        $selectors[] = '.ned-framedsections '.$sectionno.'.section .header .sectionname,'.
-                            '.ned-framedsections '.$sectionno.'.section .header .sectionname a,'.
-                            '.ned-framedsections '.$sectionno.'.section .header .sectionname a:hover,'.
-                            '.ned-framedsections '.$sectionno.'.section .header .summary,'.
+                        $selectors[] = '.ned-framedsections '.$sectionno.'.section .header,'.
                             '.ned-framedsections '.$sectionno.'.section .left,'.
                             '.ned-framedsections '.$sectionno.'.section .right a.toggle-display,'.
                             '.ned-framedsections '.$sectionno.'.section .right a.toggle-display:hover';
