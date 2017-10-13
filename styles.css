@@ -285,7 +285,7 @@ ul.ned-framedsections .section.main:last-child {
 
 /* Display on the course page. */
 .nedshfcolumns {
-    min-height: 20px;
+    min-height: 8px;
     width: 100%;
 }
 
