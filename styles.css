@@ -317,62 +317,26 @@ ul.ned-framedsections .section.main:last-child {
 
 /* NED Edit settings. */
 .nedhfeditcolumns {
+    display: flex;
     width: 100%;
 }
 
 .nedhfeditcolumn {
-    display: block;
-    float: left;
-    width: 20%;
+    display: inline-flex;
+    margin: 0 4px;
+    width: 100%;
 }
 
-.nedhfeditcolumnvalue {
-    display: inline-block;
+.mform .form-inline .nedhfeditcolumnvalue .form-control {
+    width: 100%;
 }
 
-.nedhfeditcolumnvalue input[type="text"] {
-    max-width: none !important;
-    width: 4em !important;
+.nedhfeditcolumnvalue input {
+    width: 90%;
 }
 
-@media(min-width: 1024px) {
-    .nedhfeditcolumnvalue input[type="text"] {
-        width: 5em !important;
-    }
-}
-
-@media(min-width: 1200px) {
-    .nedhfeditcolumnvalue input[type="text"] {
-        width: 4em !important;
-    }
-}
-
-@media(min-width: 1684px) {
-    .nedhfeditcolumnvalue input[type="text"] {
-        width: 9em !important;
-    }
-}
-
-.nedhfeditcolumnvalue select {
-    width: 4em !important;
-}
-
-@media(min-width: 1024px) {
-    .nedhfeditcolumnvalue select {
-        width: 5em !important;
-    }
-}
-
-@media(min-width: 1200px) {
-    .nedhfeditcolumnvalue select {
-        width: 4em !important;
-    }
-}
-
-@media(min-width: 1684px) {
-    .nedhfeditcolumnvalue select {
-        width: 9em !important;
-    }
+.nedhfeditcolumn input[type="checkbox"] {
+    vertical-align: bottom;
 }
 
 /* Section edit form. */
@@ -386,6 +350,12 @@ ul.ned-framedsections .section.main:last-child {
     display: block;
     float: left;
     width: 33.3%;
+}
+
+@media (max-width: 1199px) {
+    #fgroup_id_sectionheaderformatnamevaluesgroup fieldset {
+        width: 100% !important;
+    }
 }
 
 /* Colour presets */
