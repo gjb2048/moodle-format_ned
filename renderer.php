@@ -237,27 +237,39 @@ class format_ned_renderer extends format_section_renderer_base {
             if ($section->section != 0) {
                 $sectionheaderformatdata = $this->courseformat->get_setting('sectionheaderformat', $section->section);
                 static $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
-                $sectionheadercontent = '<div class="nedshfcolumns"><div class="nedshfleftcolumn">';
+                $hasheadercontent = false;
+                $sectionheadercontent = '<div class="nedshfleftcolumn">';
+                $leftcontent = '&nbsp;';
                 if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['leftcolumn']['active'] == 1) {
-                    $sectionheadercontent .= '<span>'.$sectionheaderformatdata['sectionname']['leftcolumn'].'</span>';
-                } else {
-                    $sectionheadercontent .= '<span>&nbsp;</span>';
+                    if (!empty($sectionheaderformatdata['sectionname']['leftcolumn'])) {
+                        $leftcontent = $sectionheaderformatdata['sectionname']['leftcolumn'];
+                        $hasheadercontent = true;
+                    }
                 }
-                $sectionheadercontent .= '</div><div class="nedshfmiddlecolumn">';
+                $sectionheadercontent .= '<span>'.$leftcontent.'</span></div><div class="nedshfmiddlecolumn">';
+                $middlecontent = '&nbsp;';
                 if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['middlecolumn']['active'] == 1) {
-                    $sectionheadercontent .= '<span>'.$sectionheaderformatdata['sectionname']['middlecolumn'].'</span>';
-                } else {
-                    $sectionheadercontent .= '<span>&nbsp;</span>';
+                    if (!empty($sectionheaderformatdata['sectionname']['middlecolumn'])) {
+                        $middlecontent = $sectionheaderformatdata['sectionname']['middlecolumn'];
+                        $hasheadercontent = true;
+                    }
                 }
-                $sectionheadercontent .= '</div><div class="nedshfrightcolumn">';
+                $sectionheadercontent .= '<span>'.$middlecontent.'</span></div><div class="nedshfrightcolumn">';
+                $rightcontent = '&nbsp;';
                 if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['rightcolumn']['active'] == 1) {
-                    $sectionheadercontent .= '<span>'.$sectionheaderformatdata['sectionname']['rightcolumn'].'</span>';
-                } else {
-                    $sectionheadercontent .= '<span>&nbsp;</span>';
+                    if (!empty($sectionheaderformatdata['sectionname']['rightcolumn'])) {
+                        $rightcontent = $sectionheaderformatdata['sectionname']['rightcolumn'];
+                        $hasheadercontent = true;
+                    }
                 }
-                $sectionheadercontent .= '</div></div>';
+                $sectionheadercontent .= '<span>'.$rightcontent.'</span></div>';
+                $sectionheaderheader = '<div class="nedshfcolumns';
+                if ($hasheadercontent) {
+                    $sectionheaderheader .= ' nedshfcolumnswithcontent';
+                }
+                $sectionheaderheader .= '">'.$sectionheadercontent.'</div>';
 
-                $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
+                $o .= html_writer::tag('div', $sectionheaderheader, array('class' => 'header'));
             }
         }
 

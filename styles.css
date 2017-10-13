@@ -289,6 +289,10 @@ ul.ned-framedsections .section.main:last-child {
     width: 100%;
 }
 
+.nedshfcolumnswithcontent {
+    min-height: 20px;
+}
+
 .nedshfleftcolumn,
 .nedshfmiddlecolumn,
 .nedshfrightcolumn {
