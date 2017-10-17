@@ -56,6 +56,19 @@ body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
     margin-left: .5rem;
 }
 
+/* Edit section icon. */
+.editing .course-content ul.ned.ned-framedsections .nedrightside .icon.edit {
+    position: relative;
+}
+
+.editing .course-content ul.ned.ned-framedsections.ned-framedsectionscustom .nedrightside .icon.edit {
+    top: -32px;
+}
+
+.editing .course-content ul.ned.ned-framedsections.ned-framedsectionspreformatted .nedrightside .icon.edit {
+    top: -38px;
+}
+
 /* Colour presets */
 #page-course-format-ned-nedsettings #managecolourpresets {
     margin-left: -15px;

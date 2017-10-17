@@ -98,6 +98,11 @@ class format_ned_renderer extends format_section_renderer_base {
         $classes = 'ned';
         if ($this->settings['sectionformat'] >= 1) { // Framed sections.
             $classes .= ' ned-framedsections';
+            if ($this->settings['sectionformat'] == 2) { // Framed sections with custom header.
+                $classes .= ' ned-framedsectionscustom';
+            } else if ($this->settings['sectionformat'] == 3) { // Framed sections with preformatted.
+                $classes .= ' ned-framedsectionspreformatted';
+            }
         }
         if (!$this->editing) {
             if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
@@ -266,7 +271,7 @@ class format_ned_renderer extends format_section_renderer_base {
                 if ($hasheadercontent) {
                     $sectionheaderheader = '<div class="nedshfcolumns nedshfcolumnswithcontent">'.$sectionheadercontent.'</div>';
                 } else {
-                    $sectionheaderheader = '';
+                    $sectionheaderheader = '<div class="nedshfcolumns nedshfcolumnswithoutcontent"></div>';
                 }
 
                 $o .= html_writer::tag('div', $sectionheaderheader, array('class' => 'header'));
@@ -277,7 +282,11 @@ class format_ned_renderer extends format_section_renderer_base {
         $o .= html_writer::tag('div', $leftcontent, array('class' => 'left side'));
 
         $rightcontent = $this->section_right_content($section, $course, $onsectionpage);
-        $o .= html_writer::tag('div', $rightcontent, array('class' => 'right side'));
+        $rightclasses = 'right side';
+        if ($section->section != 0) {
+            $rightclasses .= ' nedrightside';
+        }
+        $o .= html_writer::tag('div', $rightcontent, array('class' => $rightclasses));
         $o .= html_writer::start_tag('div', array('class' => 'content'));
 
         // Heading in the body of the section.

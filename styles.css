@@ -49,6 +49,53 @@
     margin-left: 7px;
 }
 
+/* Edit section icon. */
+.editing .course-content ul.ned li.section .right {
+    text-align: center;
+}
+
+.editing .course-content ul.ned.ned-framedsections li.section .nedrightside {
+    position: relative;
+    width: 40px;
+}
+
+.editing .course-content ul.ned li.section .right .icon.edit {
+    background-color: #fff;
+    display: block;
+    height: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1px;
+    width: 16px;
+}
+
+.editing .course-content ul.ned.ned-framedsections .nedrightside .icon.edit {
+    left: 0;
+    position: absolute;
+    right: 0;
+    top:0;
+}
+
+.editing .course-content ul.ned.ned-framedsections.ned-framedsectionscustom .nedrightside .icon.edit {
+    top: -38px;
+}
+
+.editing .course-content ul.ned.ned-framedsections.ned-framedsectionspreformatted .nedrightside .icon.edit {
+    top: -28px;
+}
+
+.editing .course-content ul.ned li.section .right .icon.edit .icon {
+    margin-left: 0;
+    margin-right: 0;
+    vertical-align: top;
+}
+
+.jsenabled .nedrightside .moodle-actionmenu[data-enhance] .toggle-display.textmenu {
+    margin-left: 0;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
 /* Completion progress help */
 .format-ned.path-course-view .course-content {
     position: relative;
@@ -293,7 +340,8 @@ ul.ned-framedsections .section.main:last-child {
     width: 100%;
 }
 
-.nedshfcolumnswithcontent {
+.nedshfcolumnswithcontent,
+.editing .nedshfcolumnswithoutcontent {
     min-height: 38px;
 }
 
