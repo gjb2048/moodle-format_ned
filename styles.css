@@ -290,7 +290,13 @@ ul.ned-framedsections .section.main:last-child {
 }
 
 .nedshfcolumnswithcontent {
-    min-height: 20px;
+    min-height: 38px;
+}
+
+.nedshfcolumnswithcontent .nedshfleftcolumn,
+.nedshfcolumnswithcontent .nedshfmiddlecolumn,
+.nedshfcolumnswithcontent .nedshfrightcolumn {
+    transform: translateY(50%);
 }
 
 .nedshfleftcolumn,
