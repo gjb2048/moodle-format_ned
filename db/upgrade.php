@@ -91,5 +91,10 @@ function xmldb_format_ned_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2017061903, 'format', 'ned');
     }
 
+    // Automatic 'Purge all caches'....
+    if ($oldversion < 2117101700) {
+        purge_all_caches();
+    }
+
     return true;
 }

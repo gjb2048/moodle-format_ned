@@ -1,5 +1,11 @@
 Version Information
 ===================
+Version 3.3.0.6
+  1. Change NED Edit icon to green and replace cog at the top of the course.
+  2. Increase height of the preformatted framed header to 38px.
+  3. Ensure framed section edit menu text is the same as the colour preset text.
+  4. Move 'Edit section' outside of the 'Edit' menu in a section and transform into a cog with a white background.
+
 Version 3.3.0.5
   1. Draft 4 - parts 'a' to 'c' section name and location setting hiding functionality which is additionally a
      proof of concept for elements of part 'd' where the labels can change.

@@ -188,8 +188,8 @@ $renderer->set_courseformat($courseformat);
 if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
     $nedsettingsurl = new moodle_url('/course/format/ned/nedsettings.php', array('id' => $course->id));
     echo html_writer::link($nedsettingsurl,
-        $OUTPUT->pix_icon('t/edit', get_string('editcoursesettings')),
-        array('title' => get_string('editcoursesettings'), 'class' => 'nededitsection'));
+        $OUTPUT->pix_icon('ned_icon', get_string('editnedformatsettings', 'format_ned'), 'format_ned'),
+        array('title' => get_string('editnedformatsettings', 'format_ned'), 'class' => 'nededitsection'));
 }
 
 if (!empty($displaysection)) {
