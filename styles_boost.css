@@ -52,6 +52,10 @@ body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
     color: #fff;
 }
 
+.editing .course-content ul.ned li.section .left .section-handle .icon {
+    margin-left: .5rem;
+}
+
 /* Colour presets */
 #page-course-format-ned-nedsettings #managecolourpresets {
     margin-left: -15px;

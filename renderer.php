@@ -263,11 +263,11 @@ class format_ned_renderer extends format_section_renderer_base {
                     }
                 }
                 $sectionheadercontent .= '<span>'.$rightcontent.'</span></div>';
-                $sectionheaderheader = '<div class="nedshfcolumns';
                 if ($hasheadercontent) {
-                    $sectionheaderheader .= ' nedshfcolumnswithcontent';
+                    $sectionheaderheader = '<div class="nedshfcolumns nedshfcolumnswithcontent">'.$sectionheadercontent.'</div>';
+                } else {
+                    $sectionheaderheader = '';
                 }
-                $sectionheaderheader .= '">'.$sectionheadercontent.'</div>';
 
                 $o .= html_writer::tag('div', $sectionheaderheader, array('class' => 'header'));
             }
@@ -363,7 +363,7 @@ class format_ned_renderer extends format_section_renderer_base {
 
         $parentcontrols = parent::section_edit_control_items($course, $section, $onsectionpage);
 
-        $mergedone = array();
+        /*$mergedone = array();
         // If the edit key exists, we are going to insert our mark / hide controls after it.
         if (array_key_exists("edit", $parentcontrols)) {
             // We can't use splice because we are using associative arrays.
@@ -377,7 +377,10 @@ class format_ned_renderer extends format_section_renderer_base {
             }
         } else {
             $mergedone = array_merge($controls, $parentcontrols);
-        }
+        }*/
+
+        // Do not have to worry about the edit key as not in the menu in 'section_right_content()' below but data still used.
+        $mergedone = array_merge($controls, $parentcontrols);
 
         $addsectionbelowurl = new moodle_url('/course/changenumsections.php',
                 ['courseid' => $course->id, 'insertsection' => ($section->section + 1), 'sesskey' => sesskey()]);
@@ -392,17 +395,43 @@ class format_ned_renderer extends format_section_renderer_base {
             // We can't use splice because we are using associative arrays.
             // Step through the array and merge the arrays.
             foreach ($mergedone as $key => $action) {
+                $mergedtwo[$key] = $action;
                 if ($key == "delete") {
                     // If we have come to the delete key, merge these controls here.
                     $mergedtwo = array_merge($mergedtwo, $addsectionbelowcontrol);
                 }
-                $mergedtwo[$key] = $action;
             }
         } else {
             $mergedtwo = array_merge($mergedone, $addsectionbelowcontrol);
         }
 
         return $mergedtwo;
+    }
+
+    /**
+     * Generate the content to displayed on the right part of a section
+     * before course modules are included
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @param stdClass $course The course entry from DB
+     * @param bool $onsectionpage true if being printed on a section page
+     * @return string HTML to output.
+     */
+    protected function section_right_content($section, $course, $onsectionpage) {
+        $o = $this->output->spacer();
+
+        $controls = $this->section_edit_control_items($course, $section, $onsectionpage);
+
+        if (array_key_exists("edit", $controls)) {
+            $icon = $this->output->pix_icon($controls['edit']['icon'], $controls['edit']['name'], 'moodle', $controls['edit']['pixattr']);
+            $o .= html_writer::link($controls['edit']['url'], $icon, $controls['edit']['attr']);
+
+            unset($controls['edit']);
+        }
+
+        $o .= $this->section_edit_control_menu($controls, $course, $section);
+
+        return $o;
     }
 
     /**
@@ -415,7 +444,7 @@ class format_ned_renderer extends format_section_renderer_base {
             return '';
         }
 
-        global $PAGE, $OUTPUT;
+        global $PAGE;
         $result = '';
         if ($completioninfo->is_enabled() && !$PAGE->user_is_editing() && isloggedin() && !isguestuser()) {
             /* Only display the icon if there are displayed activities with completion on the page.
@@ -461,13 +490,13 @@ class format_ned_renderer extends format_section_renderer_base {
                     $completionprogressclass .= ' ned-framedsections';
                 }
                 if ($this->settings['progresstooltip'] == 1) {
-                    $helpicon = $OUTPUT->help_icon('completioniconsnomanual', 'format_ned');
+                    $helpicon = $this->output->help_icon('completioniconsnomanual', 'format_ned');
                 } else {
-                    $helpicon = $OUTPUT->help_icon('completionicons', 'completion');
+                    $helpicon = $this->output->help_icon('completionicons', 'completion');
                 }
                 $result .= html_writer::tag('div',
                     $helpicon.
-                    $OUTPUT->pix_icon('t/sort_desc', ''),
+                    $this->output->pix_icon('t/sort_desc', ''),
                     array('id' => 'completionprogressid', 'class' => $completionprogressclass));
                 $result .= html_writer::end_tag('div');
                 $this->progressiconshown = true;

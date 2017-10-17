@@ -45,6 +45,10 @@
     margin-right: .5rem;  /* Same as Boost theme. */
 }
 
+.editing .course-content ul.ned li.section .left .section-handle .icon {
+    margin-left: 7px;
+}
+
 /* Completion progress help */
 .format-ned.path-course-view .course-content {
     position: relative;
