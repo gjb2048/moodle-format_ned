@@ -1050,7 +1050,8 @@ class format_ned extends format_base {
         $data = (array)$data;
 
         // Convert form data into section format option setting.
-        if ($this->get_setting('sectionformat') == 3) {
+        // If no 'sectionno' then not our custom 'nededitsection_form' + not used on section 0.
+        if (($this->get_setting('sectionformat') == 3) && (!empty($data['sectionno']))) {
             $changeddata = false;
             if ($this->sectionheaderformatheaders[$data['sectionno']]['headerformat'] != $data['sectionheaderformat']) {
                 $this->sectionheaderformatheaders[$data['sectionno']]['headerformat'] = $data['sectionheaderformat'];

@@ -238,7 +238,7 @@ class format_ned_renderer extends format_section_renderer_base {
                 }
             }
             $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
-        } else if ($this->settings['sectionformat'] == 3) { // Framed sections + formatted header.
+        } else if ($this->settings['sectionformat'] == 3) { // Framed sections + Formatted header.
             if ($section->section != 0) {
                 $sectionheaderformatdata = $this->courseformat->get_setting('sectionheaderformat', $section->section);
                 static $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
@@ -307,7 +307,8 @@ class format_ned_renderer extends format_section_renderer_base {
         if (($this->settings['sectionformat'] == 0) ||
             ($this->settings['sectionformat'] == 1) ||
             (($this->settings['sectionformat'] == 2) &&
-             ($this->settings['sectionsummarylocation'] == 1))) { // 1 is show in the section body.
+             ($this->settings['sectionsummarylocation'] == 1)) || // 1 is show in the section body.
+            ($this->settings['sectionformat'] == 3)) {
             $o .= $summarymarkup;
         }
 
