@@ -205,9 +205,18 @@ class course_ned_edit_form extends moodleform {
             ${$shfgroupdataname}[] =& $mform->createElement('static', 'nedhfeditend'.$shfrow, '', '</div></div></div>');
             $mform->addGroup($$shfgroupdataname, $shfgroupname, '', array('<span class="nedshfsep"></span>'), false);
         }
+        unset($colourpresetitems);
+
+        $choices = array(
+            0 => get_string('no'),
+            1 => get_string('yes')
+        );
+        $label = get_string('shfmclt', 'format_ned');
+        $mform->addElement('select', 'shfmclt', $label, $choices);
+        $mform->setDefault('shfmclt', $shfdata['shfmclt']);
+        unset($choices);
 
         $mform->addElement('html', '</div>');
-        unset($colourpresetitems);
 
         $mform->addElement('header', 'nedformat', get_string('othersettings', 'format_ned'));
 

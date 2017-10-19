@@ -600,7 +600,8 @@ class format_ned extends format_base {
                             '{"active": 1, "value": "Title"}, '.
                         '"rightcolumn": '.
                             '{"active": 0, "value": ""}, '.
-                        '"colourpreset": -1}'.
+                        '"colourpreset": -1}, '.
+                    '"shfmclt": 1'.
                 '}';
             $courseformatoptions = array(
                 'hiddensections' => array(
@@ -815,6 +816,8 @@ class format_ned extends format_base {
                     $mform->setDefault('sectiondeliveryoption', 'checked');
                 } else if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 2) {
                     $mform->setDefault('scheduledeliveryoption', 'checked');
+                } else {
+                    $mform->setDefault('sectiondeliveryoption', 'checked');
                 }
             } else {
                 $mform->setDefault('sectiondeliveryoption', 'checked');
@@ -988,6 +991,13 @@ class format_ned extends format_base {
                 }
                 unset($data[$shfrow.'colourpreset']);
             }
+
+            if ($data['shfmclt'] !== $sectionheaderformats['shfmclt']) {
+                $sectionheaderformats['shfmclt'] = $data['shfmclt'];
+                $shfupdated = true;
+            }
+            unset($data['shfmclt']);
+
             if ($shfupdated) {
                 // Only update if the data from the course edit form has changed.
                 $data['sectionheaderformats'] = json_encode($sectionheaderformats);

@@ -253,13 +253,17 @@ class format_ned_renderer extends format_section_renderer_base {
                 }
                 $sectionheadercontent .= '<span>'.$leftcontent.'</span></div><div class="nedshfmiddlecolumn">';
                 $middlecontent = '&nbsp;';
+                $middlecontentattr = '';
                 if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['middlecolumn']['active'] == 1) {
                     if (!empty($sectionheaderformatdata['sectionname']['middlecolumn'])) {
                         $middlecontent = $sectionheaderformatdata['sectionname']['middlecolumn'];
                         $hasheadercontent = true;
+                        if ($this->sectionheaderformatssetting['shfmclt'] == 1) {
+                            $middlecontentattr = ' class="nedshfmiddlecolumnlarge"';
+                        }
                     }
                 }
-                $sectionheadercontent .= '<span>'.$middlecontent.'</span></div><div class="nedshfrightcolumn">';
+                $sectionheadercontent .= '<span'.$middlecontentattr.'>'.$middlecontent.'</span></div><div class="nedshfrightcolumn">';
                 $rightcontent = '&nbsp;';
                 if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['rightcolumn']['active'] == 1) {
                     if (!empty($sectionheaderformatdata['sectionname']['rightcolumn'])) {
@@ -371,22 +375,6 @@ class format_ned_renderer extends format_section_renderer_base {
         }
 
         $parentcontrols = parent::section_edit_control_items($course, $section, $onsectionpage);
-
-        /*$mergedone = array();
-        // If the edit key exists, we are going to insert our mark / hide controls after it.
-        if (array_key_exists("edit", $parentcontrols)) {
-            // We can't use splice because we are using associative arrays.
-            // Step through the array and merge the arrays.
-            foreach ($parentcontrols as $key => $action) {
-                $mergedone[$key] = $action;
-                if ($key == "edit") {
-                    // If we have come to the edit key, merge these controls here.
-                    $mergedone = array_merge($mergedone, $controls);
-                }
-            }
-        } else {
-            $mergedone = array_merge($controls, $parentcontrols);
-        }*/
 
         // Do not have to worry about the edit key as not in the menu in 'section_right_content()' below but data still used.
         $mergedone = array_merge($controls, $parentcontrols);

@@ -59,7 +59,7 @@ $string['formatinfo'] = 'Format info';
 $string['sectionformat'] = 'Section format';
 $string['sectionformatmoodle'] = 'Moodle default';
 $string['sectionformatframed'] = 'Framed sections';
-$string['sectionformatframedcustom'] = 'Framed sections + custom header';
+$string['sectionformatframedcustom'] = 'Framed sections + Custom header';
 $string['sectionformatframedformatted'] = 'Framed sections + Formattted header';
 $string['sectionnamelocation'] = 'Section name location';
 $string['showsectionheader'] = 'Show in section header';
@@ -74,6 +74,7 @@ $string['shflnavigationname'] = 'Set section name in Navigation block';
 $string['shfllc'] = 'Left column';
 $string['shflmc'] = 'Middle column';
 $string['shflrc'] = 'Right column';
+$string['shfmclt'] = 'Show larger text in middle column?';
 
 $string['colourpreset'] = 'Colour preset';
 $string['colourpresetmoodle'] = 'Moodle default';
