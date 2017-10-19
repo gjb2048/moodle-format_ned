@@ -1127,7 +1127,7 @@ class format_ned extends format_base {
      * @return moodleform
      */
     public function editsection_form($action, $customdata = array()) {
-        // Framed sections with Preformatted headers and not section 0.
+        // Framed sections with Formatted headers and not section 0.
         if (($this->get_setting('sectionformat') == 3) && ($customdata['cs']->section != 0)) {
             global $CFG;
             require_once($CFG->dirroot. '/course/format/ned/nededitsection_form.php');

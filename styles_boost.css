@@ -65,7 +65,7 @@ body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
     top: -32px;
 }
 
-.editing .course-content ul.ned.ned-framedsections.ned-framedsectionspreformatted .nedrightside .icon.edit {
+.editing .course-content ul.ned.ned-framedsections.ned-framedsectionsformatted .nedrightside .icon.edit {
     top: -38px;
 }
 

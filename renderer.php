@@ -100,8 +100,8 @@ class format_ned_renderer extends format_section_renderer_base {
             $classes .= ' ned-framedsections';
             if ($this->settings['sectionformat'] == 2) { // Framed sections with custom header.
                 $classes .= ' ned-framedsectionscustom';
-            } else if ($this->settings['sectionformat'] == 3) { // Framed sections with preformatted.
-                $classes .= ' ned-framedsectionspreformatted';
+            } else if ($this->settings['sectionformat'] == 3) { // Framed sections with formatted.
+                $classes .= ' ned-framedsectionsformatted';
             }
         }
         if (!$this->editing) {
@@ -238,7 +238,7 @@ class format_ned_renderer extends format_section_renderer_base {
                 }
             }
             $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
-        } else if ($this->settings['sectionformat'] == 3) { // Framed sections + preformatted header.
+        } else if ($this->settings['sectionformat'] == 3) { // Framed sections + formatted header.
             if ($section->section != 0) {
                 $sectionheaderformatdata = $this->courseformat->get_setting('sectionheaderformat', $section->section);
                 static $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');

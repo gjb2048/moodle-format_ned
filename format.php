@@ -75,7 +75,7 @@ if ($sectionformat >= 1) { // Framed sections.
             echo 'background-color: #'.$preset->framedsectionbgcolour.';';
             echo '}';
 
-            if ($sectionformat == 3) { // Framed sections + preformatted header.
+            if ($sectionformat == 3) { // Framed sections + Formatted header.
                 echo '.ned-framedsections .section .header,';
             } else {
                 echo '.ned-framedsections .section .header .sectionname,';
@@ -99,7 +99,7 @@ if ($sectionformat >= 1) { // Framed sections.
             echo '</style>';
         } /* else Should not happen as when presets are deleted then courses are updated, but in a
              multi-user environment then could happen if deleted at the same time as page load. */
-        if ($sectionformat == 3) { // Framed sections + preformatted header.
+        if ($sectionformat == 3) { // Framed sections + Formatted header.
             /* Build an array of sections with their colour preset value.  Any that are not '-1', the
                NED Default, as set above will need to be specified here. */
             static $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
