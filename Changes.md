@@ -5,6 +5,7 @@ Version 3.3.0.6
   2. Increase height of the preformatted framed header to 38px.
   3. Ensure framed section edit menu text is the same as the colour preset text.
   4. Move 'Edit section' outside of the 'Edit' menu in a section and transform into a cog with a white background.
+  5. Fix indenting of 'Edit menu'.
 
 Version 3.3.0.5
   1. Draft 4 - parts 'a' to 'c' section name and location setting hiding functionality which is additionally a

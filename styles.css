@@ -125,7 +125,7 @@
 }
 
 /* Completion icons */
-ul.ned .section .activity .actions {
+body:not(.editing) ul.ned .section .activity .actions {
     width: 18px;
 }
 
