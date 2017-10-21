@@ -299,10 +299,6 @@ ul.ned-framedsections .section.main:last-child {
     width: auto;
 }
 
-.editing ul.ned-framedsections .section .activity .mod-indent-outer {
-    position: relative;
-}
-
 .course-content ul.ned-framedsections .section.main .content {
     min-height: 1em;
     padding-bottom: 8px;
