@@ -247,7 +247,7 @@ class format_ned_renderer extends format_section_renderer_base {
                 $leftcontent = '&nbsp;';
                 if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['leftcolumn']['active'] == 1) {
                     if (!empty($sectionheaderformatdata['sectionname']['leftcolumn'])) {
-                        $leftcontent = $sectionheaderformatdata['sectionname']['leftcolumn'];
+                        $leftcontent = format_text($sectionheaderformatdata['sectionname']['leftcolumn']);
                         $hasheadercontent = true;
                     }
                 }
@@ -256,7 +256,7 @@ class format_ned_renderer extends format_section_renderer_base {
                 $middlecontentattr = '';
                 if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['middlecolumn']['active'] == 1) {
                     if (!empty($sectionheaderformatdata['sectionname']['middlecolumn'])) {
-                        $middlecontent = $sectionheaderformatdata['sectionname']['middlecolumn'];
+                        $middlecontent = format_text($sectionheaderformatdata['sectionname']['middlecolumn']);
                         $hasheadercontent = true;
                         if ($this->sectionheaderformatssetting['shfmclt'] == 1) {
                             $middlecontentattr = ' class="nedshfmiddlecolumnlarge"';
@@ -267,7 +267,7 @@ class format_ned_renderer extends format_section_renderer_base {
                 $rightcontent = '&nbsp;';
                 if ($this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['rightcolumn']['active'] == 1) {
                     if (!empty($sectionheaderformatdata['sectionname']['rightcolumn'])) {
-                        $rightcontent = $sectionheaderformatdata['sectionname']['rightcolumn'];
+                        $rightcontent = format_text($sectionheaderformatdata['sectionname']['rightcolumn']);
                         $hasheadercontent = true;
                     }
                 }

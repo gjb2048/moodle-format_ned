@@ -2,6 +2,7 @@ Version Information
 ===================
 Version 3.3.1.0
   1. Beta version.
+  2. Added FontAwesome filter (https://moodle.org/plugins/filter_fontawesome) support on Framed sections + Formatted header.
 
 Version 3.3.0.6
   1. Change NED Edit icon to green and replace cog at the top of the course.
