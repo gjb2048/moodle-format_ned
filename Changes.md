@@ -1,5 +1,8 @@
 Version Information
 ===================
+Version 3.3.1.0
+  1. Beta version.
+
 Version 3.3.0.6
   1. Change NED Edit icon to green and replace cog at the top of the course.
   2. Increase height of the preformatted framed header to 38px.
