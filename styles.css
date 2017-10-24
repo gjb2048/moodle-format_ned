@@ -363,7 +363,14 @@ ul.ned-framedsections .section.main:last-child {
 .nedshfrightcolumn {
     display: block;
     float: left;
-    width: 33.3%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nedshfleftcolumn,
+.nedshfrightcolumn {
+    width: 25%;
 }
 
 .nedshfleftcolumn {
@@ -372,6 +379,7 @@ ul.ned-framedsections .section.main:last-child {
 
 .nedshfmiddlecolumn {
     text-align: center;
+    width: 50%;
 }
 
 .nedshfrightcolumn {

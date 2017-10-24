@@ -11,6 +11,8 @@ Version 3.3.0.6
             position: relative;
         }
      added in commit https://github.com/fernandooliveira/moodle-format_ned/commit/8795cfa700ac115d735509617a8ffe82b92bc82c#diff-4e7bb40584b55a44f4657b188986bff4R240.
+  7. Change widths of columns from all 33.3% for Framed sections + Formatted header to 25% for left and right and 50% for middle
+     and add ellipsis text overflow.
 
 Version 3.3.0.5
   1. Draft 4 - parts 'a' to 'c' section name and location setting hiding functionality which is additionally a
