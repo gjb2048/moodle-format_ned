@@ -246,6 +246,7 @@ class format_ned_course_renderer extends core_course_renderer {
                     if ($assgnmentstatus) {
                         // Use state icon.
                         $completionicon = $assgnmentstatus;
+                        $imgalt = get_string('completion-alt-'.$completionicon, 'format_ned', $formattedname);
                     }
                 }
                 $completionpixicon = new pix_icon('i/completion-'.$completionicon, $imgalt, 'format_ned',
