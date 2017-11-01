@@ -29,6 +29,7 @@ define(['jquery', 'core/log'], function($, log) {
             var rightValue = $('#id_shfvrightcolumn');
             var navigationDefaultString = data.defaultstring;
             var navigationNameSelect = $('#id_navigationname');
+            var navigationNameBlockValue = $('#sectionnamenavblockvalue');
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
@@ -74,13 +75,22 @@ define(['jquery', 'core/log'], function($, log) {
                         .attr("value", key)
                         .text(value));
                 });
+                // Goes back to 'default' so update the text.
+                navigationNameBlockValue.text(data.sectionnamenavblockvaluedata[0]);
             };
+
+            navigationNameSelect.on('change', function (e) {
+                // Change the navigation name block value.
+                var chosen = $(this).find(':selected').val();
+                navigationNameBlockValue.text(data.sectionnamenavblockvaluedata[chosen]);
+            });
 
             this.on('change', function (e) {
                 checkSelect($(this));
             });
         }
     }($));
+
     return {
         init: function(data) {
             $(document).ready(function($) {

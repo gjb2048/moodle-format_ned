@@ -102,8 +102,19 @@ class nededitsection_form extends editsection_form {
         $mform->setDefault('sectionheaderformat', $sectionheaderformat['headerformat']);
         unset($formatchoices);
 
+        $sectionnamenavblockvaluedata = array(
+            0 => $defaultvalue,
+            1 => $sectionheaderformat['sectionname']['leftcolumn'],
+            2 => $sectionheaderformat['sectionname']['middlecolumn'],
+            3 => $sectionheaderformat['sectionname']['rightcolumn']
+        );
         $PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init',
-            array('data' => array('sectionheaderformatsdata' => $sectionheaderformatsdata, 'defaultstring' => $defaultstring)));
+            array('data' => array(
+                'sectionheaderformatsdata' => $sectionheaderformatsdata,
+                'sectionnamenavblockvaluedata' => $sectionnamenavblockvaluedata,
+                'defaultstring' => $defaultstring)
+            )
+        );
 
         // Section name in navigation block.
         $mform->addElement('html', '<div id="sectionnamenavblock">');
@@ -123,21 +134,7 @@ class nededitsection_form extends editsection_form {
         $mform->addElement('select', 'navigationname', $label, $sectionnav);
         $mform->setDefault('navigationname', $sectionheaderformat['navigationname']);
         unset($sectionnav);
-        switch ($sectionheaderformat['navigationname']) {
-            case 0:
-                $sectionnamenavblockvalue = $defaultvalue;
-                break;
-            case 1:
-                $sectionnamenavblockvalue = $sectionheaderformat['sectionname']['leftcolumn'];
-                break;
-            case 2:
-                $sectionnamenavblockvalue = $sectionheaderformat['sectionname']['middlecolumn'];
-                break;
-            case 3:
-                $sectionnamenavblockvalue = $sectionheaderformat['sectionname']['rightcolumn'];
-                break;
-        }
-        $mform->addElement('html', '<div id="sectionnamenavblockvalue">'.$sectionnamenavblockvalue.'</div>');
+        $mform->addElement('html', '<div id="sectionnamenavblockvalue">'.$sectionnamenavblockvaluedata[$sectionheaderformat['navigationname']].'</div>');
         $mform->addElement('html', '</div>');
 
         // Section name.
