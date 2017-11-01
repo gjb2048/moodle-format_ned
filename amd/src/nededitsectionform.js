@@ -30,7 +30,7 @@ define(['jquery', 'core/log'], function($, log) {
             var navigationDefaultString = data.defaultstring;
             var navigationNameSelect = $('#id_navigationname');
             var navigationNameBlockValue = $('#sectionnamenavblockvalue');
-            var navigationNameSelectValue = '0';
+            var navigationNameSelectValue = navigationNameSelect.find(':selected').val();
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
@@ -97,22 +97,23 @@ define(['jquery', 'core/log'], function($, log) {
                         navigationNameBlockValue.text(rightValue.val());
                         break;
                 }
+                navigationNameSelectValue = chosen;
             });
 
             leftValue.on('keyup', function (e) {
-                if (navigationNameSelect.find(':selected').val() == '1') { // Left column.
+                if (navigationNameSelectValue == '1') { // Left column.
                     navigationNameBlockValue.text($(this).val());
                 }
             });
 
             middleValue.on('keyup', function (e) {
-                if (navigationNameSelect.find(':selected').val() == '2') { // Middle column.
+                if (navigationNameSelectValue == '2') { // Middle column.
                     navigationNameBlockValue.text($(this).val());
                 }
             });
 
             rightValue.on('keyup', function (e) {
-                if (navigationNameSelect.find(':selected').val() == '3') { // Right column.
+                if (navigationNameSelectValue == '3') { // Right column.
                     navigationNameBlockValue.text($(this).val());
                 }
             });
