@@ -179,8 +179,8 @@ if ($sectionformat >= 1) { // Framed sections.
 
                     $selectors = array();
                     foreach ($sectionnos as $sectionno) {
-                        $selectors[] = 'body:not(.editing) .course-content ul.ned.ned-framedsections li.section'.$sectionno.' .left';
-                        $selectors[] = 'body:not(.editing) .course-content ul.ned.ned-framedsections li.section'.$sectionno.' .right';
+                        $selectors[] = 'body:not(.editing) .course-content ul.ned.ned-framedsections li.section'.$sectionno.' .left,'.
+                            'body:not(.editing) .course-content ul.ned.ned-framedsections li.section'.$sectionno.' .right';
                     }
                     echo implode(',', $selectors).' {';
                     echo 'width: '.$sectionpreset->framedsectionborderwidth.'px;';
@@ -196,9 +196,9 @@ if ($sectionformat >= 1) { // Framed sections.
 
                     $selectors = array();
                     foreach ($sectionnos as $sectionno) {
-                        $selectors[] = 'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .header';
-                        $selectors[] = 'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .footer';
-                        $selectors[] = 'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .header .nedshfcolumnswithoutcontent {';
+                        $selectors[] = 'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .header,'.
+                            'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .footer,'.
+                            'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .header .nedshfcolumnswithoutcontent';
                     }
                     echo implode(',', $selectors).' {';
                     echo 'min-height: '.$sectionpreset->framedsectionborderwidth.'px;';
