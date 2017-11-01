@@ -111,7 +111,7 @@ class nededitsection_form extends editsection_form {
         $PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init',
             array('data' => array(
                 'sectionheaderformatsdata' => $sectionheaderformatsdata,
-                'sectionnamenavblockvaluedata' => $sectionnamenavblockvaluedata,
+                'sectionnamenavblockvaluedata' => $sectionnamenavblockvaluedata[0], // JS gets the others from the values of the inputs.
                 'defaultstring' => $defaultstring)
             )
         );

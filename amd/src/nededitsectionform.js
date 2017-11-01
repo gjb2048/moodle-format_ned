@@ -30,6 +30,7 @@ define(['jquery', 'core/log'], function($, log) {
             var navigationDefaultString = data.defaultstring;
             var navigationNameSelect = $('#id_navigationname');
             var navigationNameBlockValue = $('#sectionnamenavblockvalue');
+            var navigationNameSelectValue = '0';
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
@@ -68,7 +69,7 @@ define(['jquery', 'core/log'], function($, log) {
                 // Change the navigation name values.
                 navigationNameSelect.empty();
                 navigationNameSelect.append($("<option></option>")
-                    .attr("value", 0)
+                    .attr("value", '0')
                     .text(navigationDefaultString));
                 $.each(sectionheaderformatsdata[chosen]['navigationname'], function(key, value) {
                     navigationNameSelect.append($("<option></option>")
@@ -76,13 +77,44 @@ define(['jquery', 'core/log'], function($, log) {
                         .text(value));
                 });
                 // Goes back to 'default' so update the text.
-                navigationNameBlockValue.text(data.sectionnamenavblockvaluedata[0]);
+                navigationNameBlockValue.text(data.sectionnamenavblockvaluedata);
             };
 
             navigationNameSelect.on('change', function (e) {
                 // Change the navigation name block value.
                 var chosen = $(this).find(':selected').val();
-                navigationNameBlockValue.text(data.sectionnamenavblockvaluedata[chosen]);
+                switch (chosen) {
+                    case '0':
+                        navigationNameBlockValue.text(data.sectionnamenavblockvaluedata);
+                        break;
+                    case '1':
+                        navigationNameBlockValue.text(leftValue.val());
+                        break;
+                    case '2':
+                        navigationNameBlockValue.text(middleValue.val());
+                        break;
+                    case '3':
+                        navigationNameBlockValue.text(rightValue.val());
+                        break;
+                }
+            });
+
+            leftValue.on('keyup', function (e) {
+                if (navigationNameSelect.find(':selected').val() == '1') { // Left column.
+                    navigationNameBlockValue.text($(this).val());
+                }
+            });
+
+            middleValue.on('keyup', function (e) {
+                if (navigationNameSelect.find(':selected').val() == '2') { // Middle column.
+                    navigationNameBlockValue.text($(this).val());
+                }
+            });
+
+            rightValue.on('keyup', function (e) {
+                if (navigationNameSelect.find(':selected').val() == '3') { // Right column.
+                    navigationNameBlockValue.text($(this).val());
+                }
             });
 
             this.on('change', function (e) {
