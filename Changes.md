@@ -1,5 +1,8 @@
 Version Information
 ===================
+Version 3.3.1.1
+  1. Add border width to colour presets.
+
 Version 3.3.1.0
   1. Beta version.
   2. Added FontAwesome filter (https://moodle.org/plugins/filter_fontawesome) support on Framed sections + Formatted header.

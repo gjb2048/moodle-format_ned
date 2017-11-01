@@ -112,6 +112,7 @@ $string['deleteconfirmmsg'] = 'Preset will be deleted permanently. Do you want t
 $string['duplicate'] = 'Duplicate';
 $string['duplicatewithbrackets'] = '[duplicate]';
 $string['framedsectionbgcolour'] = 'Background colour - A';
+$string['framedsectionborderwidth'] = 'Border width - C';
 $string['framedsectionheadertxtcolour'] = 'Section header text - B';
 $string['name'] = 'Name';
 $string['predefined'] = 'Predefined';

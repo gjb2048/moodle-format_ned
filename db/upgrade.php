@@ -86,9 +86,25 @@ function xmldb_format_ned_upgrade($oldversion) {
             $DB->insert_record('format_ned_colour', $recone);
             $DB->insert_record('format_ned_colour', $rectwo);
         }
-
         // NED savepoint reached.
         upgrade_plugin_savepoint(true, 2017061903, 'format', 'ned');
+    }
+    if ($oldversion < 2017061907) {
+        global $DB;
+        $dbman = $DB->get_manager();
+
+        // Define table format_ned_colour to be created.
+        $table = new xmldb_table('format_ned_colour');
+
+        $field = new xmldb_field('framedsectionborderwidth', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '3');
+
+        // Conditionally launch add field framedsectionborderwidth.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // NED savepoint reached.
+        upgrade_plugin_savepoint(true, 2017061907, 'format', 'ned');
     }
 
     // Automatic 'Purge all caches'....

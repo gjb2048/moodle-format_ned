@@ -52,6 +52,16 @@ class colourpreset_form extends moodleform {
         $mform->setType('framedsectionheadertxtcolour', PARAM_ALPHANUM);
         $mform->addRule('framedsectionheadertxtcolour', null, 'required', null, 'client');
 
+        $choices = array();
+        for ($value = 0; $value <= 10; $value++) {
+            $choices[] = $value;
+        }
+        $label = get_string('framedsectionborderwidth', 'format_ned');
+        $mform->addElement('select', 'framedsectionborderwidth', $label, $choices);
+        $mform->setType('framedsectionborderwidth', PARAM_INT);
+        $mform->addRule('framedsectionborderwidth', null, 'required', null, 'client');
+        unset($choices);
+
         $mform->addElement('html', '</td><td class="colourpresetformcolourkey">');
 
         $mform->addElement('html',

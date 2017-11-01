@@ -97,6 +97,7 @@ if ($mform->is_cancelled()) {
     $rec->name = $fromform->name;
     $rec->framedsectionbgcolour = $fromform->framedsectionbgcolour;
     $rec->framedsectionheadertxtcolour = $fromform->framedsectionheadertxtcolour;
+    $rec->framedsectionborderwidth = $fromform->framedsectionborderwidth;
 
     if ($add) {
         $rec->timecreated = time();

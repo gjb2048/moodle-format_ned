@@ -95,6 +95,19 @@ if ($sectionformat >= 1) { // Framed sections.
             echo 'border-top-color: #'.$preset->framedsectionheadertxtcolour.';';
             echo '}';
 
+            echo 'body:not(.editing) .course-content ul.ned.ned-framedsections li.section .left, ';
+            echo 'body:not(.editing) .course-content ul.ned.ned-framedsections li.section .right {';
+            echo 'width: '.$preset->framedsectionborderwidth.'px;';
+            echo '}';
+            echo 'body:not(.editing) .course-content ul.ned-framedsections .section.main .content {';
+            echo 'margin: 0 '.$preset->framedsectionborderwidth.'px;';
+            echo '}';
+            echo 'body:not(.editing) .course-content ul.ned-framedsections .section.main .header, ';
+            echo 'body:not(.editing) .course-content ul.ned-framedsections .section.main .footer, ';
+            echo 'body:not(.editing) .course-content ul.ned-framedsections .section.main .header .nedshfcolumnswithoutcontent {';
+            echo 'min-height: '.$preset->framedsectionborderwidth.'px;';
+            echo '}';
+
             echo '/* ]]> */';
             echo '</style>';
         } /* else Should not happen as when presets are deleted then courses are updated, but in a
@@ -163,6 +176,34 @@ if ($sectionformat >= 1) { // Framed sections.
                     echo implode(',', $selectors).' {';
                     echo 'border-top-color: #'.$sectionpreset->framedsectionheadertxtcolour.';';
                     echo '}';
+
+                    $selectors = array();
+                    foreach ($sectionnos as $sectionno) {
+                        $selectors[] = 'body:not(.editing) .course-content ul.ned.ned-framedsections li.section'.$sectionno.' .left';
+                        $selectors[] = 'body:not(.editing) .course-content ul.ned.ned-framedsections li.section'.$sectionno.' .right';
+                    }
+                    echo implode(',', $selectors).' {';
+                    echo 'width: '.$sectionpreset->framedsectionborderwidth.'px;';
+                    echo '}';
+
+                    $selectors = array();
+                    foreach ($sectionnos as $sectionno) {
+                        $selectors[] = 'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .content';
+                    }
+                    echo implode(',', $selectors).' {';
+                    echo 'margin: 0 '.$sectionpreset->framedsectionborderwidth.'px;';
+                    echo '}';
+
+                    $selectors = array();
+                    foreach ($sectionnos as $sectionno) {
+                        $selectors[] = 'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .header';
+                        $selectors[] = 'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .footer';
+                        $selectors[] = 'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .header .nedshfcolumnswithoutcontent {';
+                    }
+                    echo implode(',', $selectors).' {';
+                    echo 'min-height: '.$sectionpreset->framedsectionborderwidth.'px;';
+                    echo '}';
+
                 }
                 echo '/* ]]> */';
                 echo '</style>';
