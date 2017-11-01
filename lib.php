@@ -200,6 +200,22 @@ class format_ned extends format_base {
                     array('context' => context_course::instance($this->courseid)));
             }
         }
+        return $this->get_section_name_noshf($section);
+    }
+
+    /**
+     * Returns the display name of the given section ignoring the 'sectionheaderformat' setting.
+     *
+     * Use section name is specified by user. Otherwise use default ("Section #")
+     *
+     * @param int|stdClass $section Section object from database or just field section.section
+     * @return string Display name that the course format prefers, e.g. "Section 2"
+     */
+    public function get_section_name_noshf($section) {
+        if (!is_object($section)) {
+            $section = $this->get_section($section);
+        }
+
         if ((string)$section->name !== '') {
             return format_string($section->name, true,
                     array('context' => context_course::instance($this->courseid)));
@@ -209,7 +225,7 @@ class format_ned extends format_base {
     }
 
     /**
-     * Returns the default section name for the topics course format.
+     * Returns the default section name for the NED course format.
      *
      * If the section number is 0, it will use the string with key = section0name from the course format's lang file.
      * If the section number is not 0, the base implementation of format_base::get_default_section_name which uses

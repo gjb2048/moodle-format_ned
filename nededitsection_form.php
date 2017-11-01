@@ -59,6 +59,7 @@ class nededitsection_form extends editsection_form {
         $sectionheaderformats = $courseformat->get_setting('sectionheaderformats');
         $sectionheaderformat = $courseformat->get_setting('sectionheaderformat', $sectioninfo->section);
         $defaultstring = get_string('default');
+        $defaultvalue = $courseformat->get_section_name_noshf($sectioninfo->section);
         $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
         $formatchoices = array();
         $sectionheaderformatsdata = array();
@@ -105,6 +106,7 @@ class nededitsection_form extends editsection_form {
             array('data' => array('sectionheaderformatsdata' => $sectionheaderformatsdata, 'defaultstring' => $defaultstring)));
 
         // Section name in navigation block.
+        $mform->addElement('html', '<div id="sectionnamenavblock">');
         $sectionnav = array(0 => $defaultstring); // 0 = Default, 1 = left column, 2 = middle column and 3 = right column.
         /* Only add the column name as an option if it is active.  The assocated nededitsectionform.js does this dynamically when
            'sectionheaderformat' changes. */
@@ -121,6 +123,22 @@ class nededitsection_form extends editsection_form {
         $mform->addElement('select', 'navigationname', $label, $sectionnav);
         $mform->setDefault('navigationname', $sectionheaderformat['navigationname']);
         unset($sectionnav);
+        switch ($sectionheaderformat['navigationname']) {
+            case 0:
+                $sectionnamenavblockvalue = $defaultvalue;
+                break;
+            case 1:
+                $sectionnamenavblockvalue = $sectionheaderformat['sectionname']['leftcolumn'];
+                break;
+            case 2:
+                $sectionnamenavblockvalue = $sectionheaderformat['sectionname']['middlecolumn'];
+                break;
+            case 3:
+                $sectionnamenavblockvalue = $sectionheaderformat['sectionname']['rightcolumn'];
+                break;
+        }
+        $mform->addElement('html', '<div id="sectionnamenavblockvalue">'.$sectionnamenavblockvalue.'</div>');
+        $mform->addElement('html', '</div>');
 
         // Section name.
         $sectionheaderformatnamelabelsgroup = array();
