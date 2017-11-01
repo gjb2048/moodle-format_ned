@@ -13,8 +13,15 @@
 /* jshint ignore:start */
 define(['jquery', 'core/log'], function($, log) {
     log.debug('NED Format Edit Section Form AMD');
-    (function( $ ) {
+    (function($) {
         "use strict";
+
+        var navigationNameSelect = $('#id_navigationname');
+        var navigationNameBlockValue = $('#sectionnamenavblockvalue');
+        var navigationNameSelectValue = navigationNameSelect.find(':selected').val();
+        var leftValue = $('#id_shfvleftcolumn');
+        var middleValue = $('#id_shfvmiddlecolumn');
+        var rightValue = $('#id_shfvrightcolumn');
 
         $.fn.sectionHeaderFormat = function(data) {
             var sectionheaderformatsdata = data.sectionheaderformatsdata;
@@ -24,14 +31,8 @@ define(['jquery', 'core/log'], function($, log) {
             var leftActive = $('#id_shfcleftcolumn');
             var middleActive = $('#id_shfcmiddlecolumn');
             var rightActive = $('#id_shfcrightcolumn');
-            var leftValue = $('#id_shfvleftcolumn');
-            var middleValue = $('#id_shfvmiddlecolumn');
-            var rightValue = $('#id_shfvrightcolumn');
             var navigationDefaultString = data.defaultstring;
-            var navigationNameSelect = $('#id_navigationname');
-            var navigationNameBlockValue = $('#sectionnamenavblockvalue');
-            var navigationNameSelectValue = navigationNameSelect.find(':selected').val();
-
+    
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
                 log.debug('NED Format Edit Section Form AMD checkSelect chosen: ' + chosen);
@@ -80,12 +81,18 @@ define(['jquery', 'core/log'], function($, log) {
                 navigationNameBlockValue.text(data.sectionnamenavblockvaluedata);
             };
 
-            navigationNameSelect.on('change', function (e) {
+            this.on('change', function (e) {
+                checkSelect($(this));
+            });
+        }
+
+        $.fn.navigationNameSelect = function(sectionnamenavblockvaluedata) {
+            this.on('change', function (e) {
                 // Change the navigation name block value.
                 var chosen = $(this).find(':selected').val();
                 switch (chosen) {
                     case '0':
-                        navigationNameBlockValue.text(data.sectionnamenavblockvaluedata);
+                        navigationNameBlockValue.text(sectionnamenavblockvaluedata);
                         break;
                     case '1':
                         navigationNameBlockValue.text(leftValue.val());
@@ -99,35 +106,34 @@ define(['jquery', 'core/log'], function($, log) {
                 }
                 navigationNameSelectValue = chosen;
             });
-
-            leftValue.on('keyup', function (e) {
-                if (navigationNameSelectValue == '1') { // Left column.
-                    navigationNameBlockValue.text($(this).val());
-                }
-            });
-
-            middleValue.on('keyup', function (e) {
-                if (navigationNameSelectValue == '2') { // Middle column.
-                    navigationNameBlockValue.text($(this).val());
-                }
-            });
-
-            rightValue.on('keyup', function (e) {
-                if (navigationNameSelectValue == '3') { // Right column.
-                    navigationNameBlockValue.text($(this).val());
-                }
-            });
-
-            this.on('change', function (e) {
-                checkSelect($(this));
-            });
         }
+
+        leftValue.on('keyup', function (e) {
+            if (navigationNameSelectValue == '1') { // Left column.
+                navigationNameBlockValue.text($(this).val());
+            }
+        });
+
+        middleValue.on('keyup', function (e) {
+            if (navigationNameSelectValue == '2') { // Middle column.
+                navigationNameBlockValue.text($(this).val());
+            }
+        });
+
+        rightValue.on('keyup', function (e) {
+            if (navigationNameSelectValue == '3') { // Right column.
+                navigationNameBlockValue.text($(this).val());
+            }
+        });
+
     }($));
 
     return {
         init: function(data) {
             $(document).ready(function($) {
                 $('select#id_sectionheaderformat').sectionHeaderFormat(data);
+                $('#id_navigationname').navigationNameSelect(data.sectionnamenavblockvaluedata);
+
                 if (window.JSON && window.JSON.stringify) {
                     log.debug('NED Format Edit Section Form AMD data: ' + JSON.stringify(data));
                 }
