@@ -111,16 +111,31 @@ $data['b'] = 'Two';
             $colourpresetitems[2] = 'Blues on Whyte';
         }
 
+        /*
         $sectionheaderformatonecolourpresetvalues = '[';
         foreach ($colourpresetitems as $colourpresetitemkey => $colourpresetitem) {
-            $sectionheaderformatonecolourpresetvalues .= '{"value": "'.$colourpresetitemkey.'", "text": "'.$colourpresetitem.'"';
+            $sectionheaderformatonecolourpresetvalues .= '{"key": "'.$colourpresetitemkey.'", "item": "'.$colourpresetitem.'"';
             if ($shfsdata['sectionheaderformatone']['colourpreset'] == $colourpresetitemkey) {
                 $sectionheaderformatonecolourpresetvalues .= '"selected": true';
             }
-            $sectionheaderformatonecolourpresetvalues .= '}';
+            $sectionheaderformatonecolourpresetvalues .= '},';
         }
         $sectionheaderformatonecolourpresetvalues .= ']';
-
+        //error_log($sectionheaderformatonecolourpresetvalues);
+        //$sectionheaderformatonecolourpresetvalues .= '[{"value": "Moodle default", "text": "0"},{"value": "Embassy Green", "text": "1"},{"value": "Blues on Whyte", "text": "2"},{"value": "Odd", "text": "4"},{"value": "WB", "text": "5"},{"value": "Ooo", "text": "6"}]';
+        */
+        $sectionheaderformatonecolourpresetvalues = '<option value="-1"';
+        if ($shfsdata['sectionheaderformatone']['colourpreset'] == -1) {
+            $sectionheaderformatonecolourpresetvalues .= ' selected="selected"';
+        }
+        $sectionheaderformatonecolourpresetvalues .= '>'.get_string('shfldefault', 'format_ned').'</option>';
+        foreach ($colourpresetitems as $colourpresetitemkey => $colourpresetitem) {
+            $sectionheaderformatonecolourpresetvalues .= '<option value="'.$colourpresetitemkey.'"';
+            if ($shfsdata['sectionheaderformatone']['colourpreset'] == $colourpresetitemkey) {
+                $sectionheaderformatonecolourpresetvalues .= ' selected="selected"';
+            }
+            $sectionheaderformatonecolourpresetvalues .= '>'.$colourpresetitem.'</option>';
+        }
 
         $context = (object) [
             'size' => $this->size,

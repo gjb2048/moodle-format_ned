@@ -54,41 +54,38 @@
     <div class="nedhfeditcolumns">
         {{! Row one }}
         <div class="nedhfeditcolumn">
-             <input name="sectionheaderformatoneactive" type="checkbox" {{#sectionheaderformatoneactive}}checked="checked"{{/sectionheaderformatoneactive}} id="id_sectionheaderformatoneactive">
+             <input name="{{name}}['sectionheaderformatoneactive']" type="checkbox" {{#sectionheaderformatoneactive}}checked="checked"{{/sectionheaderformatoneactive}} id="{{id}}_sectionheaderformatoneactive">
              <div class="nedhfeditcolumnvalue">
                  <label class="accesshide" for="id_sectionheaderformatonename">&nbsp;</label>
-                 <input name="sectionheaderformatonename" type="text" value="{{sectionheaderformatonename}}" id="id_sectionheaderformatonename">
+                 <input name="{{name}}['sectionheaderformatonename']" type="text" value="{{sectionheaderformatonename}}" id="{{id}}_sectionheaderformatonename">
              </div>
         </div>
         <div class="nedhfeditcolumn">
-             <input name="sectionheaderformatoneleftcolumnactive" type="checkbox" {{#sectionheaderformatoneleftcolumnactive}}checked="checked"{{/sectionheaderformatoneleftcolumnactive}} id="id_sectionheaderformatoneleftcolumnactive">
+             <input name="{{name}}['sectionheaderformatoneleftcolumnactive']" type="checkbox" {{#sectionheaderformatoneleftcolumnactive}}checked="checked"{{/sectionheaderformatoneleftcolumnactive}} id="{{id}}_sectionheaderformatoneleftcolumnactive">
              <div class="nedhfeditcolumnvalue">
                  <label class="accesshide" for="id_sectionheaderformatoneleftcolumnvalue">&nbsp;</label>
-                 <input name="sectionheaderformatoneleftcolumnvalue" type="text" value="{{sectionheaderformatoneleftcolumnvalue}}" id="id_sectionheaderformatoneleftcolumnvalue">
+                 <input name="{{name}}['sectionheaderformatoneleftcolumnvalue']" type="text" value="{{sectionheaderformatoneleftcolumnvalue}}" id="{{id}}_sectionheaderformatoneleftcolumnvalue">
              </div>
         </div>
         <div class="nedhfeditcolumn">
-             <input name="sectionheaderformatonemiddlecolumnactive" type="checkbox" {{#sectionheaderformatonemiddlecolumnactive}}checked="checked"{{/sectionheaderformatonemiddlecolumnactive}} id="id_sectionheaderformatonemiddlecolumnactive">
+             <input name="{{name}}['sectionheaderformatonemiddlecolumnactive']" type="checkbox" {{#sectionheaderformatonemiddlecolumnactive}}checked="checked"{{/sectionheaderformatonemiddlecolumnactive}} id="{{id}}_sectionheaderformatonemiddlecolumnactive">
              <div class="nedhfeditcolumnvalue">
                  <label class="accesshide" for="id_sectionheaderformatonemiddlecolumnvalue">&nbsp;</label>
-                 <input name="sectionheaderformatonemiddlecolumnvalue" type="text" value="{{sectionheaderformatonemiddlecolumnvalue}}" id="id_sectionheaderformatonemiddlecolumnvalue">
+                 <input name="{{name}}['sectionheaderformatonemiddlecolumnvalue']" type="text" value="{{sectionheaderformatonemiddlecolumnvalue}}" id="{{id}}_sectionheaderformatonemiddlecolumnvalue">
              </div>
         </div>
         <div class="nedhfeditcolumn">
-             <input name="sectionheaderformatonerightcolumnactive" type="checkbox" {{#sectionheaderformatonerightcolumnactive}}checked="checked"{{/sectionheaderformatonerightcolumnactive}} id="id_sectionheaderformatonerightcolumnactive">
+             <input name="sectionheaderformatonerightcolumnactive" type="checkbox" {{#sectionheaderformatonerightcolumnactive}}checked="checked"{{/sectionheaderformatonerightcolumnactive}} id="{{id}}_sectionheaderformatonerightcolumnactive">
              <div class="nedhfeditcolumnvalue">
                  <label class="accesshide" for="id_sectionheaderformatonerightcolumnvalue">&nbsp;</label>
-                 <input name="sectionheaderformatonerightcolumnvalue" type="text" value="{{sectionheaderformatonerightcolumnvalue}}" id="id_sectionheaderformatonerightcolumnvalue">
+                 <input name="{{name}}['sectionheaderformatonerightcolumnvalue']" type="text" value="{{sectionheaderformatonerightcolumnvalue}}" id="{{id}}_sectionheaderformatonerightcolumnvalue">
              </div>
         </div>
         <div class="nedhfeditcolumn">
             <div class="nedhfeditcolumnvalue">
                 <label class="accesshide" for="id_sectionheaderformatonecolourpreset">&nbsp;</label>
-                <select name="sectionheaderformatonecolourpreset" id="id_sectionheaderformatonecolourpreset">
-                <img {{#attributes}}{{name}}="{{value}}" {{/attributes}}/>
-                {{#sectionheaderformatonecolourpresetvalues}}
-                    <option value="{{value}}"{{#selected}} selected="selected"{{/selected}}>{{text}}</option>
-                {{/sectionheaderformatonecolourpresetvalues}}
+                <select name="{{name}}['sectionheaderformatonecolourpreset']" id="id_sectionheaderformatonecolourpreset">
+                    {{{sectionheaderformatonecolourpresetvalues}}}
                 </select>
             </div>
         </div>
