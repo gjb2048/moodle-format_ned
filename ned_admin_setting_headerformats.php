@@ -31,6 +31,9 @@ class ned_admin_setting_headerformats extends admin_setting_configtext {
     /** @var string Error message to show if validation fails */
     public $error;
 
+    /** @var string Default stored here as do not want the core code to show it on the page. */
+    public $defaultsetting;
+
     /**
      * NED admin setting header formats constructor.
      *
@@ -43,7 +46,8 @@ class ned_admin_setting_headerformats extends admin_setting_configtext {
      */
     public function __construct($name, $visiblename, $description, $defaultsetting, $error) {
         $this->error = $error;
-        parent::__construct($name, $visiblename, $description, $defaultsetting);
+        $this->defaultsetting = $defaultsetting;
+        parent::__construct($name, $visiblename, $description, '');
     }
 
     public function write_setting($data) {
@@ -56,10 +60,10 @@ class ned_admin_setting_headerformats extends admin_setting_configtext {
             return $validated;
         }
 
-        //error_log(print_r($data, true));
+        error_log('write_setting: '.print_r($data, true));
 
         // return ($this->config_write($this->name, $data) ? '' : get_string('errorsetting', 'admin'));
-        return true;
+        return '';
     }
 
     /**
@@ -80,15 +84,58 @@ class ned_admin_setting_headerformats extends admin_setting_configtext {
      */
     public function output_html($data, $query='') {
         global $OUTPUT;
-error_log('output_html: '.print_r($data, true));
+//error_log('output_html: '.print_r($data, true));
 $data['a'] = 'One';
 $data['b'] = 'Two';
 
         $default = $this->get_defaultsetting();
+        $headers = array();
+        $headers[] = get_string('shflname', 'format_ned');
+        $headers[] = get_string('shfllc', 'format_ned');
+        $headers[] = get_string('shflmc', 'format_ned');
+        $headers[] = get_string('shflrc', 'format_ned');
+        $headers[] = get_string('colourpreset', 'format_ned');
+
+        //$shfsdata = json_decode($this->defaultsetting, true);
+        $shfsdata = json_decode(format_ned::get_section_header_format_default(), true);
+
+        // List of colour presets.
+        global $DB;
+        $colourpresetitems = array(0 => get_string('colourpresetmoodle', 'format_ned'));
+        if ($presets = $DB->get_records('format_ned_colour', null, null, 'id,name')) {
+            foreach ($presets as $preset) {
+                $colourpresetitems[$preset->id] = $preset->name;
+            }
+        } else {
+            $colourpresetitems[1] = 'Embassy Green';
+            $colourpresetitems[2] = 'Blues on Whyte';
+        }
+
+        $sectionheaderformatonecolourpresetvalues = '[';
+        foreach ($colourpresetitems as $colourpresetitemkey => $colourpresetitem) {
+            $sectionheaderformatonecolourpresetvalues .= '{"value": "'.$colourpresetitemkey.'", "text": "'.$colourpresetitem.'"';
+            if ($shfsdata['sectionheaderformatone']['colourpreset'] == $colourpresetitemkey) {
+                $sectionheaderformatonecolourpresetvalues .= '"selected": true';
+            }
+            $sectionheaderformatonecolourpresetvalues .= '}';
+        }
+        $sectionheaderformatonecolourpresetvalues .= ']';
+
+
         $context = (object) [
             'size' => $this->size,
             'id' => $this->get_id(),
             'name' => $this->get_full_name(),
+            'headers' => $headers,
+            'sectionheaderformatoneactive' => $shfsdata['sectionheaderformatone']['active'],
+            'sectionheaderformatonename' => $shfsdata['sectionheaderformatone']['name'],
+            'sectionheaderformatoneleftcolumnactive' => $shfsdata['sectionheaderformatone']['leftcolumn']['active'],
+            'sectionheaderformatoneleftcolumnvalue' => $shfsdata['sectionheaderformatone']['leftcolumn']['value'],
+            'sectionheaderformatonemiddlecolumnactive' => $shfsdata['sectionheaderformatone']['middlecolumn']['active'],
+            'sectionheaderformatonemiddlecolumnvalue' => $shfsdata['sectionheaderformatone']['middlecolumn']['value'],
+            'sectionheaderformatonerightcolumnactive' => $shfsdata['sectionheaderformatone']['rightcolumn']['active'],
+            'sectionheaderformatonerightcolumnvalue' => $shfsdata['sectionheaderformatone']['rightcolumn']['value'],
+            'sectionheaderformatonecolourpresetvalues' => $sectionheaderformatonecolourpresetvalues,
             'value_a' => $data['a'],
             'value_b' => $data['b'],
             'forceltr' => $this->get_force_ltr(),

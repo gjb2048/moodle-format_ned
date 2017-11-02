@@ -42,11 +42,57 @@
         "id": "test0",
         "value": "TODO",
         "size": "21",
-        "forceltr": false,
-        "attributes": [ { "name": "readonly", "value": "readonly" } ]
+        "forceltr": false
     }
 }}
 <div class="form-text defaultsnext">
-    <input type="text" name="{{name}}['a']" value="{{value_a}}" size="{{size}}" id="{{id}}_a" class="{{#forceltr}}text-ltr{{/forceltr}}"{{#attributes}} {{name}}="{{value_a}}"{{/attributes}}>
-    <input type="text" name="{{name}}['b']" value="{{value_b}}" size="{{size}}" id="{{id}}_b" class="{{#forceltr}}text-ltr{{/forceltr}}"{{#attributes}} {{name}}="{{value_b}}"{{/attributes}}>
+    <div class="nedhfeditcolumns">
+    {{#headers}}
+     <span class="nedhfeditcolumn">{{.}}</span>
+    {{/headers}}
+    </div>
+    <div class="nedhfeditcolumns">
+        {{! Row one }}
+        <div class="nedhfeditcolumn">
+             <input name="sectionheaderformatoneactive" type="checkbox" {{#sectionheaderformatoneactive}}checked="checked"{{/sectionheaderformatoneactive}} id="id_sectionheaderformatoneactive">
+             <div class="nedhfeditcolumnvalue">
+                 <label class="accesshide" for="id_sectionheaderformatonename">&nbsp;</label>
+                 <input name="sectionheaderformatonename" type="text" value="{{sectionheaderformatonename}}" id="id_sectionheaderformatonename">
+             </div>
+        </div>
+        <div class="nedhfeditcolumn">
+             <input name="sectionheaderformatoneleftcolumnactive" type="checkbox" {{#sectionheaderformatoneleftcolumnactive}}checked="checked"{{/sectionheaderformatoneleftcolumnactive}} id="id_sectionheaderformatoneleftcolumnactive">
+             <div class="nedhfeditcolumnvalue">
+                 <label class="accesshide" for="id_sectionheaderformatoneleftcolumnvalue">&nbsp;</label>
+                 <input name="sectionheaderformatoneleftcolumnvalue" type="text" value="{{sectionheaderformatoneleftcolumnvalue}}" id="id_sectionheaderformatoneleftcolumnvalue">
+             </div>
+        </div>
+        <div class="nedhfeditcolumn">
+             <input name="sectionheaderformatonemiddlecolumnactive" type="checkbox" {{#sectionheaderformatonemiddlecolumnactive}}checked="checked"{{/sectionheaderformatonemiddlecolumnactive}} id="id_sectionheaderformatonemiddlecolumnactive">
+             <div class="nedhfeditcolumnvalue">
+                 <label class="accesshide" for="id_sectionheaderformatonemiddlecolumnvalue">&nbsp;</label>
+                 <input name="sectionheaderformatonemiddlecolumnvalue" type="text" value="{{sectionheaderformatonemiddlecolumnvalue}}" id="id_sectionheaderformatonemiddlecolumnvalue">
+             </div>
+        </div>
+        <div class="nedhfeditcolumn">
+             <input name="sectionheaderformatonerightcolumnactive" type="checkbox" {{#sectionheaderformatonerightcolumnactive}}checked="checked"{{/sectionheaderformatonerightcolumnactive}} id="id_sectionheaderformatonerightcolumnactive">
+             <div class="nedhfeditcolumnvalue">
+                 <label class="accesshide" for="id_sectionheaderformatonerightcolumnvalue">&nbsp;</label>
+                 <input name="sectionheaderformatonerightcolumnvalue" type="text" value="{{sectionheaderformatonerightcolumnvalue}}" id="id_sectionheaderformatonerightcolumnvalue">
+             </div>
+        </div>
+        <div class="nedhfeditcolumn">
+            <div class="nedhfeditcolumnvalue">
+                <label class="accesshide" for="id_sectionheaderformatonecolourpreset">&nbsp;</label>
+                <select name="sectionheaderformatonecolourpreset" id="id_sectionheaderformatonecolourpreset">
+                <img {{#attributes}}{{name}}="{{value}}" {{/attributes}}/>
+                {{#sectionheaderformatonecolourpresetvalues}}
+                    <option value="{{value}}"{{#selected}} selected="selected"{{/selected}}>{{text}}</option>
+                {{/sectionheaderformatonecolourpresetvalues}}
+                </select>
+            </div>
+        </div>
+    </div>
+    <input type="text" name="{{name}}['a']" value="{{value_a}}" size="{{size}}" id="{{id}}_a" class="{{#forceltr}}text-ltr{{/forceltr}}">
+    <input type="text" name="{{name}}['b']" value="{{value_b}}" size="{{size}}" id="{{id}}_b" class="{{#forceltr}}text-ltr{{/forceltr}}">
 </div>
