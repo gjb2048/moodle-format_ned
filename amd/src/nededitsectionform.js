@@ -32,7 +32,7 @@ define(['jquery', 'core/log'], function($, log) {
             var middleActive = $('#id_shfcmiddlecolumn');
             var rightActive = $('#id_shfcrightcolumn');
             var navigationDefaultString = data.defaultstring;
-    
+
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
                 log.debug('NED Format Edit Section Form AMD checkSelect chosen: ' + chosen);

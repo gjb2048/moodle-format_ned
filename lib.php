@@ -572,6 +572,44 @@ class format_ned extends format_base {
         }
     }
 
+    public static function get_section_header_format_default() {
+        static $sectionheaderformatsdefault = '{'.
+                '"sectionheaderformatone": {'.
+                    '"active": 1, '.
+                    '"name": "Lesson", '.
+                    '"leftcolumn": '.
+                        '{"active": 1, "value": "Lesson number"}, '.
+                    '"middlecolumn": '.
+                        '{"active": 1, "value": "Title"}, '.
+                    '"rightcolumn": '.
+                        '{"active": 1, "value": "Time"}, '.
+                    '"colourpreset": -1}, '.
+                '"sectionheaderformattwo": {'.
+                    '"active": 1, '.
+                    '"name": "Unit", '.
+                    '"leftcolumn": '.
+                        '{"active": 0, "value": ""}, '.
+                    '"middlecolumn": '.
+                        '{"active": 1, "value": "Title"}, '.
+                    '"rightcolumn": '.
+                        '{"active": 1, "value": "Time"}, '.
+                    '"colourpreset": -1},'.
+                '"sectionheaderformatthree": {'.
+                    '"active": 0, '.
+                    '"name": "Other", '.
+                    '"leftcolumn": '.
+                        '{"active": 0, "value": ""}, '.
+                    '"middlecolumn": '.
+                        '{"active": 1, "value": "Title"}, '.
+                    '"rightcolumn": '.
+                        '{"active": 0, "value": ""}, '.
+                    '"colourpreset": -1}, '.
+                '"shfmclt": 1'.
+            '}';
+
+        return $sectionheaderformatsdefault;
+    }
+
     /**
      * Definitions of the additional options that this course format uses for course
      *

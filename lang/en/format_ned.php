@@ -66,7 +66,6 @@ $string['showsectionheader'] = 'Show in section header';
 $string['showsectionbody'] = 'Show in section body';
 $string['sectionsummarylocation'] = 'Section summary location';
 
-$string['sectionheaderformats'] = 'Header formats';
 $string['sectionheaderformat'] = 'Header format';
 $string['shfldefault'] = 'NED default';
 $string['shflname'] = 'Name';
@@ -100,6 +99,10 @@ $string['progresstooltip'] = 'Progress tooltip';
 $string['hideicon'] = 'Hide icon';
 $string['hidemanualcompletion'] = 'Hide manual completion description';
 $string['showalldescriptions'] = 'Show all descriptions';
+
+// NED Site settings.
+$string['sectionheaderformats'] = 'Header formats';
+$string['sectionheaderformats_desc'] = 'Header formats for use when the section format is \'Framed sections + Formatted header\'.';
 
 // Colour presets.
 $string['action'] = 'Action';
