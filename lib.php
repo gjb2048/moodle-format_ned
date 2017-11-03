@@ -88,7 +88,8 @@ class format_ned extends format_base {
             if ($name == 'sectiondeliverymethod') {
                 return $this->sectiondeliverymethoddata;
             } else if ($name == 'sectionheaderformats') {
-                return $this->sectionheaderformatsdata;
+                return self::get_section_header_formats_setting();
+                //return $this->sectionheaderformatsdata;
             }
             return $settings[$name];
         } else if ($settings['sectionformat'] == 3) {
@@ -107,7 +108,7 @@ class format_ned extends format_base {
             $this->update_course_format_options($data);
             return true;
         }
-        // Note 'sectionheaderformat' not set here but by the nededitsection_form.php indirectly calling 'update_section_format_options'.
+        // Note 'sectionheaderformats' not set here but by the nedsitesettingheaderformats_form.php indirectly calling 'set_section_header_formats_setting'.
         return false;
     }
 
@@ -572,7 +573,7 @@ class format_ned extends format_base {
         }
     }
 
-    public static function get_section_header_format_default() {
+    public static function get_section_header_formats_setting() {
         static $sectionheaderformatsdefault = '{'.
                 '"sectionheaderformatone": {'.
                     '"active": 1, '.
@@ -607,7 +608,125 @@ class format_ned extends format_base {
                 '"shfmclt": 1'.
             '}';
 
-        return $sectionheaderformatsdefault;
+        $sectionheaderformats = get_config('format_ned', 'sectionheaderformats');
+        if (!$sectionheaderformats) {
+            $sectionheaderformats = $sectionheaderformatsdefault;
+            set_config('sectionheaderformats', $sectionheaderformats, 'format_ned');
+        }
+
+        return json_decode($sectionheaderformats, true);
+    }
+
+    public static function set_section_header_formats_setting($data) {
+        $data = (array)$data;
+
+        // Convert section header formats to JSON for storage.
+        $sectionheaderformats = self::get_section_header_formats_setting();
+        $shfupdated = false;
+        $shfrows = array('sectionheaderformatone', 'sectionheaderformattwo', 'sectionheaderformatthree');
+        foreach ($shfrows as $shfrow) {
+            // Active.
+            if (!empty($data[$shfrow.'active'])) {
+                if ($sectionheaderformats[$shfrow]['active'] != 1) {
+                    $sectionheaderformats[$shfrow]['active'] = 1;
+                    $shfupdated = true;
+                }
+                unset($data[$shfrow.'active']);
+            } else {
+                if ($sectionheaderformats[$shfrow]['active'] != 0) {
+                    $sectionheaderformats[$shfrow]['active'] = 0;
+                    $shfupdated = true;
+                }
+            }
+
+            // Name.
+            if ($data[$shfrow.'name'] !== $sectionheaderformats[$shfrow]['name']) {
+                $sectionheaderformats[$shfrow]['name'] = $data[$shfrow.'name'];
+                $shfupdated = true;
+            }
+            unset($data[$shfrow.'name']);
+
+            // Left column active.
+            if (!empty($data[$shfrow.'leftcolumnactive'])) {
+                if ($sectionheaderformats[$shfrow]['leftcolumn']['active'] != 1) {
+                    $sectionheaderformats[$shfrow]['leftcolumn']['active'] = 1;
+                    $shfupdated = true;
+                }
+                unset($data[$shfrow.'leftcolumnactive']);
+            } else {
+                if ($sectionheaderformats[$shfrow]['leftcolumn']['active'] != 0) {
+                    $sectionheaderformats[$shfrow]['leftcolumn']['active'] = 0;
+                    $shfupdated = true;
+                }
+            }
+
+            // Left column value.
+            if ($data[$shfrow.'leftcolumnvalue'] !== $sectionheaderformats[$shfrow]['leftcolumn']['value']) {
+                $sectionheaderformats[$shfrow]['leftcolumn']['value'] = $data[$shfrow.'leftcolumnvalue'];
+                $shfupdated = true;
+            }
+            unset($data[$shfrow.'leftcolumnvalue']);
+
+            // Middle column active.
+            if (!empty($data[$shfrow.'middlecolumnactive'])) {
+                if ($sectionheaderformats[$shfrow]['middlecolumn']['active'] != 1) {
+                    $sectionheaderformats[$shfrow]['middlecolumn']['active'] = 1;
+                    $shfupdated = true;
+                }
+                unset($data[$shfrow.'middlecolumnactive']);
+            } else {
+                if ($sectionheaderformats[$shfrow]['middlecolumn']['active'] != 0) {
+                    $sectionheaderformats[$shfrow]['middlecolumn']['active'] = 0;
+                    $shfupdated = true;
+                }
+            }
+
+            // Middle column value.
+            if ($data[$shfrow.'middlecolumnvalue'] !== $sectionheaderformats[$shfrow]['middlecolumn']['value']) {
+                $sectionheaderformats[$shfrow]['middlecolumn']['value'] = $data[$shfrow.'middlecolumnvalue'];
+                $shfupdated = true;
+            }
+            unset($data[$shfrow.'middlecolumnvalue']);
+
+            // Right column active.
+            if (!empty($data[$shfrow.'rightcolumnactive'])) {
+                if ($sectionheaderformats[$shfrow]['rightcolumn']['active'] != 1) {
+                    $sectionheaderformats[$shfrow]['rightcolumn']['active'] = 1;
+                    $shfupdated = true;
+                }
+                unset($data[$shfrow.'rightcolumnactive']);
+            } else {
+                if ($sectionheaderformats[$shfrow]['rightcolumn']['active'] != 0) {
+                    $sectionheaderformats[$shfrow]['rightcolumn']['active'] = 0;
+                    $shfupdated = true;
+                }
+            }
+
+            // Right column value.
+            if ($data[$shfrow.'rightcolumnvalue'] !== $sectionheaderformats[$shfrow]['rightcolumn']['value']) {
+                $sectionheaderformats[$shfrow]['rightcolumn']['value'] = $data[$shfrow.'rightcolumnvalue'];
+                $shfupdated = true;
+            }
+            unset($data[$shfrow.'rightcolumnvalue']);
+
+            // Colour preset.
+            if ($data[$shfrow.'colourpreset'] != $sectionheaderformats[$shfrow]['colourpreset']) {
+                $sectionheaderformats[$shfrow]['colourpreset'] = $data[$shfrow.'colourpreset'];
+                $shfupdated = true;
+            }
+            unset($data[$shfrow.'colourpreset']);
+        }
+
+        if ($data['shfmclt'] !== $sectionheaderformats['shfmclt']) {
+            $sectionheaderformats['shfmclt'] = $data['shfmclt'];
+            $shfupdated = true;
+        }
+        unset($data['shfmclt']);
+
+        if ($shfupdated) {
+            // Only update if the data from the course edit form has changed.
+            set_config('sectionheaderformats', json_encode($sectionheaderformats), 'format_ned');
+        }
     }
 
     /**

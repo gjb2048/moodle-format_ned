@@ -75,7 +75,7 @@ class ned_admin_setting_headerformats extends admin_setting { // Like admin_sett
         //$context->description = $this->description;
         //$context->descriptionformatted = highlight($query, markdown_to_html($this->description));
         if (file_exists("{$CFG->dirroot}/course/format/ned/ned_admin_setting_headerformats.php")) {
-            $context->formlink = new moodle_url('/course/format/ned/ned_admin_setting_headerformats.php');
+            $context->formlink = new moodle_url('/course/format/ned/nedsitesettingheaderformats.php');
         }
         return $OUTPUT->render_from_template('format_ned/admin_setting_headerformats', $context);
     }
