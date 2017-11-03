@@ -38,6 +38,5 @@ if ($ADMIN->fulltree) {
     $name = 'format_ned/sectionheaderformats';
     $title = get_string('sectionheaderformats', 'format_ned');
     $description = get_string('sectionheaderformats_desc', 'format_ned');
-    $default = format_ned::get_section_header_format_default();
-    $settings->add(new ned_admin_setting_headerformats($name, $title, $description, $default, 'Opps!'));
+    $settings->add(new ned_admin_setting_headerformats($name, $title, $description));
 }

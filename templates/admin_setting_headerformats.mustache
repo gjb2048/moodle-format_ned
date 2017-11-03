@@ -26,83 +26,19 @@
 {{!
     @template format_ned/admin_setting_headerformats
 
-    Admin text setting template.
+    Admin heading setting template.
 
     Context variables required for this template:
-    * name - form element name
-    * id - element id
-    * value - element value
-    * size - element size
-    * forceltr - always display as ltr
-    * attributes - list of additional attributes containing name, value
+    * title - Title text
+    * description - Description containing descriptionformatted
 
     Example context (json):
     {
-        "name": "test",
-        "id": "test0",
-        "value": "TODO",
-        "size": "21",
-        "forceltr": false
+        "title": "Favourite cheeses",
+        "description": true,
+        "descriptionformatted": "Stilton, Cheddar, Edam"
     }
 }}
-<div class="form-text defaultsnext">
-    <div class="nedhfeditcolumns">
-    {{#headers}}
-     <span class="nedhfeditcolumn">{{.}}</span>
-    {{/headers}}
-    </div>
-    <div class="nedhfeditcolumns">
-        {{! Row one }}
-        <div class="nedhfeditcolumn">
-             <span><input name="{{name}}['sectionheaderformatoneactive']" type="checkbox" {{#sectionheaderformatoneactive}}checked="checked"{{/sectionheaderformatoneactive}} id="{{id}}_sectionheaderformatoneactive"></span>
-             <div class="nedhfeditcolumnvalue">
-                 <label class="accesshide" for="{{id}}_sectionheaderformatonename">&nbsp;</label>
-                 <input name="{{name}}['sectionheaderformatonename']" type="text" value="{{sectionheaderformatonename}}" id="{{id}}_sectionheaderformatonename">
-             </div>
-        </div>
-        <div class="nedhfeditcolumn">
-             <span><input name="{{name}}['sectionheaderformatoneleftcolumnactive']" type="checkbox" {{#sectionheaderformatoneleftcolumnactive}}checked="checked"{{/sectionheaderformatoneleftcolumnactive}} id="{{id}}_sectionheaderformatoneleftcolumnactive"></span>
-             <div class="nedhfeditcolumnvalue">
-                 <label class="accesshide" for="{{id}}_sectionheaderformatoneleftcolumnvalue">&nbsp;</label>
-                 <input name="{{name}}['sectionheaderformatoneleftcolumnvalue']" type="text" value="{{sectionheaderformatoneleftcolumnvalue}}" id="{{id}}_sectionheaderformatoneleftcolumnvalue">
-             </div>
-        </div>
-        <div class="nedhfeditcolumn">
-             <span><input name="{{name}}['sectionheaderformatonemiddlecolumnactive']" type="checkbox" {{#sectionheaderformatonemiddlecolumnactive}}checked="checked"{{/sectionheaderformatonemiddlecolumnactive}} id="{{id}}_sectionheaderformatonemiddlecolumnactive"></span>
-             <div class="nedhfeditcolumnvalue">
-                 <label class="accesshide" for="{{id}}_sectionheaderformatonemiddlecolumnvalue">&nbsp;</label>
-                 <input name="{{name}}['sectionheaderformatonemiddlecolumnvalue']" type="text" value="{{sectionheaderformatonemiddlecolumnvalue}}" id="{{id}}_sectionheaderformatonemiddlecolumnvalue">
-             </div>
-        </div>
-        <div class="nedhfeditcolumn">
-             <span><input name="sectionheaderformatonerightcolumnactive" type="checkbox" {{#sectionheaderformatonerightcolumnactive}}checked="checked"{{/sectionheaderformatonerightcolumnactive}} id="{{id}}_sectionheaderformatonerightcolumnactive"></span>
-             <div class="nedhfeditcolumnvalue">
-                 <label class="accesshide" for="{{id}}_sectionheaderformatonerightcolumnvalue">&nbsp;</label>
-                 <input name="{{name}}['sectionheaderformatonerightcolumnvalue']" type="text" value="{{sectionheaderformatonerightcolumnvalue}}" id="{{id}}_sectionheaderformatonerightcolumnvalue">
-             </div>
-        </div>
-        <div class="nedhfeditcolumn">
-            <div class="nedhfeditcolumnvalue">
-                <label class="accesshide" for="{{id}}_sectionheaderformatonecolourpreset">&nbsp;</label>
-                <select name="{{name}}['sectionheaderformatonecolourpreset']" id="{{id}}_sectionheaderformatonecolourpreset">
-                    {{{sectionheaderformatonecolourpresetvalues}}}
-                </select>
-            </div>
-        </div>
-        {{#js}}
-            require(['jquery'], function($) {
-                $(document).ready(function($) {
-                    $('#{{id}}_sectionheaderformatoneactive').on('change', function(e) {
-                        if ($(this).is(':checked')) {
-                            $('#{{id}}_sectionheaderformatonename').prop('disabled', false);
-                        } else {
-                            $('#{{id}}_sectionheaderformatonename').prop('disabled', true);
-                        }
-                    });
-                });
-            });
-        {{/js}}
-    </div>
-    <input type="text" name="{{name}}['a']" value="{{value_a}}" size="{{size}}" id="{{id}}_a" class="{{#forceltr}}text-ltr{{/forceltr}}">
-    <input type="text" name="{{name}}['b']" value="{{value_b}}" size="{{size}}" id="{{id}}_b" class="{{#forceltr}}text-ltr{{/forceltr}}">
-</div>
+{{#title}}
+    <a href="{{formlink}}" target="_blank" class="btn btn-secondary">{{{title}}}</a>
+{{/title}}
