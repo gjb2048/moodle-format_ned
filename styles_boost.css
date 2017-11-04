@@ -69,27 +69,6 @@ body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
     top: -38px;
 }
 
-/* Colour presets */
-#page-course-format-ned-nedsettings #managecolourpresets {
-    margin-left: -15px;
-    margin-right: -15px;
-}
-
-#page-course-format-ned-nedsettings #managecolourpresets > div.form-group.row.fitem {
-    float: left;
-    margin-left: 0;
-    width: 50%;
-    /* width: calc(50% + 15px); - Wanted to do this!  But removed by Moodle! */
-}
-#page-course-format-ned-nedsettings #managecolourpresets > div.form-group.row.fitem > div.col-md-3,
-#page-course-format-ned-nedsettings #managecolourpresets > div.form-group.row.fitem > div.col-md-9 {
-    width: 50%;
-}
-
-#page-course-format-ned-nedsettings #managecolourpresets > a.btn {
-    margin-top: .5rem;
-}
-
 /* Boost does not know how (via a template I suspect) how to style the colour picker. */
 .format-ned .colourpresetform {
     width: 100%;

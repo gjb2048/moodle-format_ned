@@ -26,10 +26,11 @@
 
 // NED Settings form.
 $string['colourpreset'] = 'Color preset';
-$string['managecolourpresets'] = 'Manage color presets';
 
 // Color presets.
 $string['colourpreset'] = 'Color preset';
 $string['colourpresets'] = 'Color presets';
 $string['deletecolourpreset'] = 'Delete this color preset';
 $string['framedsectionbgcolour'] = 'Background color - A';
+$string['managecolourpresets'] = 'Manage color presets';
+$string['managecolourpresets_desc'] = 'Manage the color presets';

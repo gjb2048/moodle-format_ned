@@ -75,9 +75,6 @@ class colourpreset_form extends moodleform {
         $mform->addElement('hidden', 'edit');
         $mform->setType('edit', PARAM_INT);
 
-        $mform->addElement('hidden', 'courseid');
-        $mform->setType('courseid', PARAM_INT);
-
         $this->add_action_buttons(true, get_string('submit'));
     }
 

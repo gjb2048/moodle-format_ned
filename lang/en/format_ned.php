@@ -60,7 +60,7 @@ $string['sectionformat'] = 'Section format';
 $string['sectionformatmoodle'] = 'Moodle default';
 $string['sectionformatframed'] = 'Framed sections';
 $string['sectionformatframedcustom'] = 'Framed sections + Custom header';
-$string['sectionformatframedformatted'] = 'Framed sections + Formattted header';
+$string['sectionformatframedformatted'] = 'Framed sections + Formatted header';
 $string['sectionnamelocation'] = 'Section name location';
 $string['showsectionheader'] = 'Show in section header';
 $string['showsectionbody'] = 'Show in section body';
@@ -77,7 +77,6 @@ $string['shfmclt'] = 'Show larger text in middle column?';
 
 $string['colourpreset'] = 'Colour preset';
 $string['colourpresetmoodle'] = 'Moodle default';
-$string['managecolourpresets'] = 'Manage colour presets';
 
 $string['othersettings'] = 'Other settings';
 $string['showsection0'] = 'Show section 0';
@@ -117,6 +116,8 @@ $string['duplicatewithbrackets'] = '[duplicate]';
 $string['framedsectionbgcolour'] = 'Background colour - A';
 $string['framedsectionborderwidth'] = 'Border width - C';
 $string['framedsectionheadertxtcolour'] = 'Section header text - B';
+$string['managecolourpresets'] = 'Manage colour presets';
+$string['managecolourpresets_desc'] = 'Manage the colour presets';
 $string['name'] = 'Name';
 $string['predefined'] = 'Predefined';
 $string['rowcount'] = 'Row';

@@ -52,16 +52,6 @@ class course_ned_sitesettingheaderformats_form extends moodleform {
             $colourpresetitems[2] = 'Blues on Whyte';
         }
 
-/*        $mform->addElement('html', '<div id="managecolourpresets">');
-        $label = get_string('colourpreset', 'format_ned');
-        $mform->addElement('select', 'colourpreset', $label, $colourpresetitems);
-        $managecolourpresetshtmlurl = new moodle_url('/course/format/ned/colourpreset.php',
-            array('courseid' => $this->_customdata['courseid']));
-        $managecolourpresetshtml = '<a href="'.$managecolourpresetshtmlurl.'" class="btn btn-secondary">'.
-            get_string('managecolourpresets', 'format_ned').'</a>';
-        $mform->addElement('html', $managecolourpresetshtml);
-        $mform->addElement('html', '</div>'); */
-
         $mform->addElement('html', '<div id="nedsectionheaderformats">');
 
         $sectionheaderformatslabelsgroup = array();

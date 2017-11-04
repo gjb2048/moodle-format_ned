@@ -30,13 +30,19 @@ require_once($CFG->dirroot . '/course/format/ned/lib.php'); // For format_ned st
 
 if ($ADMIN->fulltree) {
     global $CFG;
-    if (file_exists("{$CFG->dirroot}/course/format/ned/ned_admin_setting_headerformats.php")) {
-        require_once($CFG->dirroot . '/course/format/ned/ned_admin_setting_headerformats.php');
+    if (file_exists("{$CFG->dirroot}/course/format/ned/ned_admin_setting_button.php")) {
+        require_once($CFG->dirroot . '/course/format/ned/ned_admin_setting_button.php');
     }
 
     // Header formats.
     $name = 'format_ned/sectionheaderformats';
     $title = get_string('sectionheaderformats', 'format_ned');
     $description = get_string('sectionheaderformats_desc', 'format_ned');
-    $settings->add(new ned_admin_setting_headerformats($name, $title, $description));
+    $settings->add(new ned_admin_setting_button($name, $title, $description, 'nedsitesettingheaderformats'));
+
+    // Colour preset.
+    $name = 'format_ned/managecolourpresets';
+    $title = get_string('managecolourpresets', 'format_ned');
+    $description = get_string('managecolourpresets_desc', 'format_ned');
+    $settings->add(new ned_admin_setting_button($name, $title, $description, 'colourpreset'));
 }

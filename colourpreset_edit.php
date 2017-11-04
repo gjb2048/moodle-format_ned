@@ -25,25 +25,25 @@
  */
 
 require_once('../../../config.php');
+
+defined('MOODLE_INTERNAL') || die;
+
+if (!is_siteadmin()) {
+    print_error(get_string('adminonly', 'badges'));
+    die();
+}
+
+$PAGE->set_context(context_system::instance());
+
 require_once('colourpreset_form.php');
-require_once($CFG->dirroot.'/course/format/ned/lib.php');
 
 $add = optional_param('add', 0, PARAM_INT);
-$courseid = required_param('courseid', PARAM_INT);
 $duplicate = optional_param('duplicate', 0, PARAM_INT);
 $edit = optional_param('edit', 0, PARAM_INT);
 
-$courseformat = course_get_format($courseid);
-$course = $courseformat->get_course();
-require_login($course);
-
-// Permission.
-$coursecontext = context_course::instance($courseid);
-require_capability('moodle/course:update', $coursecontext);
-
 if ($duplicate) {
     if (!$preset = $DB->get_record('format_ned_colour', array('id' => $duplicate))) {
-        redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)));
+        redirect(new moodle_url('/course/format/ned/colourpreset.php'));
     }
     $preset->name = $preset->name.' '.get_string('duplicatewithbrackets', 'format_ned');
     $preset->predefined = 0;
@@ -51,18 +51,17 @@ if ($duplicate) {
     unset($preset->timemodified);
     $preset->timecreated = time();
     $presetid = $DB->insert_record('format_ned_colour', $preset);
-    redirect(new moodle_url('/course/format/ned/colourpreset_edit.php', array('courseid' => $courseid, 'edit' => $presetid)));
+    redirect(new moodle_url('/course/format/ned/colourpreset_edit.php', array('edit' => $presetid)));
 }
 
 $PAGE->https_required();
 
 $thispageurl = new moodle_url('/course/format/ned/colourpreset_edit.php',
-    array('courseid' => $courseid, 'edit' => $edit, 'add' => $add)
+    array('edit' => $edit, 'add' => $add)
 );
 
 $PAGE->set_url($thispageurl);
-$PAGE->set_pagelayout('course');
-$PAGE->set_context($coursecontext);
+$PAGE->set_pagelayout('admin');
 $PAGE->verify_https_required();
 
 $name = get_string('addedit', 'format_ned');
@@ -71,11 +70,9 @@ $heading = $SITE->fullname;
 
 // Breadcrumb.
 $PAGE->navbar->add(get_string('pluginname', 'format_ned'));
-$PAGE->navbar->add(get_string('settings'),
-    new moodle_url('/course/format/ned/nedsettings.php', array('id' => $courseid))
-);
+$PAGE->navbar->add(get_string('settings'));
 $PAGE->navbar->add(get_string('colourpresets', 'format_ned'),
-    new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid))
+    new moodle_url('/course/format/ned/colourpreset.php')
 );
 $PAGE->navbar->add($name);
 
@@ -86,12 +83,12 @@ $mform = new colourpreset_form();
 
 if ($edit) {
     if (!$toform = $DB->get_record('format_ned_colour', array('id' => $edit, 'predefined' => 0))) {
-        redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)));
+        redirect(new moodle_url('/course/format/ned/colourpreset.php'));
     }
 }
 
 if ($mform->is_cancelled()) {
-    redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)));
+    redirect(new moodle_url('/course/format/ned/colourpreset.php'));
 } else if ($fromform = $mform->get_data()) {
     $rec = new stdClass();
     $rec->name = $fromform->name;
@@ -102,13 +99,13 @@ if ($mform->is_cancelled()) {
     if ($add) {
         $rec->timecreated = time();
         $rec->id = $DB->insert_record('format_ned_colour', $rec);
-        redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)),
+        redirect(new moodle_url('/course/format/ned/colourpreset.php'),
             get_string('successful', 'format_ned'), 0);
     } else {
         $rec->id = $fromform->edit;
         $rec->timemodified = time();
         $DB->update_record('format_ned_colour', $rec);
-        redirect(new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid)),
+        redirect(new moodle_url('/course/format/ned/colourpreset.php'),
             get_string('successful', 'format_ned'), 0);
     }
     exit;
@@ -122,7 +119,6 @@ if ($edit) {
     $toform = new stdClass();
     $toform->add = $add;
 }
-$toform->courseid = $courseid;
 $mform->set_data($toform);
 
 $mform->display();

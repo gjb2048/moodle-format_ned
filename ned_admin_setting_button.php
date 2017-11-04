@@ -26,15 +26,19 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-class ned_admin_setting_headerformats extends admin_setting { // Like admin_setting_heading in that no actual direct setting.
+class ned_admin_setting_button extends admin_setting { // Like admin_setting_heading in that no actual direct setting.
+    protected $buttonfile;
+
     /**
-     * not a setting, just text
+     * Not a setting, just a button.
      * @param string $name unique ascii name, either 'mysetting' for settings that in config, or 'myplugin/mysetting' for ones in config_plugins.
-     * @param string $heading heading
-     * @param string $information text in box
+     * @param string $heading heading.
+     * @param string $information text in box.
+     * @param string $buttonfile filename without '.php' that the button links to.
      */
-    public function __construct($name, $heading, $information) {
+    public function __construct($name, $heading, $information, $buttonfile) {
         $this->nosave = true;
+        $this->buttonfile = $buttonfile;
         parent::__construct($name, $heading, $information, '');
     }
 
@@ -72,11 +76,9 @@ class ned_admin_setting_headerformats extends admin_setting { // Like admin_sett
 
         $context = new stdClass();
         $context->title = $this->visiblename;
-        //$context->description = $this->description;
-        //$context->descriptionformatted = highlight($query, markdown_to_html($this->description));
-        if (file_exists("{$CFG->dirroot}/course/format/ned/ned_admin_setting_headerformats.php")) {
-            $context->formlink = new moodle_url('/course/format/ned/nedsitesettingheaderformats.php');
+        if (file_exists("{$CFG->dirroot}/course/format/ned/{$this->buttonfile}.php")) {
+            $context->formlink = new moodle_url('/course/format/ned/'.$this->buttonfile.'.php');
         }
-        return $OUTPUT->render_from_template('format_ned/admin_setting_headerformats', $context);
+        return $OUTPUT->render_from_template('format_ned/admin_setting_nedbutton', $context);
     }
 }

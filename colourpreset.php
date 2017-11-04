@@ -25,9 +25,16 @@
  */
 
 require_once('../../../config.php');
-require_once($CFG->dirroot.'/course/format/ned/lib.php');
+defined('MOODLE_INTERNAL') || die;
 
-$courseid   = required_param('courseid', PARAM_INT);
+if (!is_siteadmin()) {
+    print_error(get_string('adminonly', 'badges'));
+    die();
+}
+
+$PAGE->set_context(context_system::instance());
+
+$PAGE->set_pagelayout('admin');
 
 // Paging options.
 $page      = optional_param('page', 0, PARAM_INT);
@@ -38,42 +45,22 @@ $dir       = optional_param('dir', 'ASC', PARAM_ALPHA);
 $action    = optional_param('action', false, PARAM_ALPHA);
 $search    = optional_param('search', '', PARAM_TEXT);
 
-$courseformat = course_get_format($courseid);
-$course = $courseformat->get_course();
-require_login($course);
-
-// Permission.
-$coursecontext = context_course::instance($courseid);
-require_capability('moodle/course:update', $coursecontext);
-
-$thispageurl = new moodle_url('/course/format/ned/colourpreset.php', array('courseid' => $courseid));
+$thispageurl = new moodle_url('/course/format/ned/colourpreset.php');
 
 $PAGE->set_url($thispageurl);
-$PAGE->set_pagelayout('course');
-$PAGE->set_context($coursecontext);
+$PAGE->set_pagelayout('admin');
 
 $name = get_string('colourpresets', 'format_ned');
 $title = get_string('colourpresets', 'format_ned');
 $heading = $SITE->fullname;
 
 // Breadcrumb.
-if ($course) {
-    $PAGE->navbar->add($course->shortname,
-        new moodle_url('/course/view.php', array('id' => $course->id))
-    );
-}
 $PAGE->navbar->add(get_string('pluginname', 'format_ned'));
-$PAGE->navbar->add(get_string('settings'),
-    new moodle_url('/course/format/ned/nedsettings.php', array('id' => $courseid))
-);
+$PAGE->navbar->add(get_string('settings'));
 $PAGE->navbar->add($name);
 
 $PAGE->set_title($title);
-if ($course) {
-    $PAGE->set_heading($course->fullname);
-} else {
-    $PAGE->set_heading($heading);
-}
+$PAGE->set_heading($heading);
 
 $datacolumns = array(
     'id' => 'tc.id',
@@ -182,20 +169,18 @@ foreach ($tablerows as $tablerow) {
                 break;
             case 'action':
                 // Duplicate.
-                if (has_capability('moodle/course:update', $coursecontext)) {
-                    $actionurl = new moodle_url('/course/format/ned/colourpreset_edit.php',
-                        array('courseid' => $courseid, 'duplicate' => $tablerow->id )
-                    );
-                    $actionicontext = get_string('duplicate', 'format_ned');
-                    $actionicon = $OUTPUT->pix_icon('t/copy', $actionicontext);
-                    $actionlinks .= html_writer::link($actionurl->out(false), $actionicon, array(
-                            'class' => 'actionlink',
-                            'title' => $actionicontext));
-                }
+                $actionurl = new moodle_url('/course/format/ned/colourpreset_edit.php',
+                    array('duplicate' => $tablerow->id )
+                );
+                $actionicontext = get_string('duplicate', 'format_ned');
+                $actionicon = $OUTPUT->pix_icon('t/copy', $actionicontext);
+                $actionlinks .= html_writer::link($actionurl->out(false), $actionicon, array(
+                    'class' => 'actionlink',
+                    'title' => $actionicontext));
                 // Edit.
-                if (has_capability('moodle/course:update', $coursecontext) && !$tablerow->predefined) {
+                if (!$tablerow->predefined) {
                     $actionurl = new moodle_url('/course/format/ned/colourpreset_edit.php',
-                        array('courseid' => $courseid, 'edit' => $tablerow->id )
+                        array('edit' => $tablerow->id )
                     );
                     $actionicontext = get_string('edit');
                     $actionicon = $OUTPUT->pix_icon('t/edit', $actionicontext);
@@ -204,9 +189,9 @@ foreach ($tablerows as $tablerow) {
                             'title' => $actionicontext));
                 }
                 // Delete.
-                if (has_capability('moodle/course:update', $coursecontext) && !$tablerow->predefined) {
+                if (!$tablerow->predefined) {
                     $actionurl = new moodle_url('/course/format/ned/colourpreset_delete.php',
-                        array('courseid' => $courseid, 'delete' => $tablerow->id )
+                        array('delete' => $tablerow->id )
                     );
                     $actionicontext = get_string('delete');
                     $actionicon = $OUTPUT->pix_icon('t/delete', $actionicontext);
@@ -260,11 +245,6 @@ $searchform = html_writer::tag('form',
         'value' => $dir,
     )).
     html_writer::empty_tag('input', array(
-        'type' => 'hidden',
-        'name' => 'courseid',
-        'value' => $courseid,
-    )).
-    html_writer::empty_tag('input', array(
         'type' => 'text',
         'name' => 'search',
         'value' => $search,
@@ -288,7 +268,6 @@ $pagingurl = new moodle_url('/course/format/ned/colourpreset.php?',
         'perpage' => $perpage,
         'sort' => $sort,
         'dir' => $dir,
-        'courseid' => $courseid,
         'search' => $search
     )
 );
@@ -300,38 +279,34 @@ echo html_writer::table($table);
 echo $OUTPUT->render($pagingbar);
 
 // Add record form.
-if (has_capability('moodle/course:update', $coursecontext)) {
-    $formurl = new moodle_url('/course/format/ned/colourpreset_edit.php',
-        array('courseid' => $courseid, 'add' => '1')
-    );
-    $submitbutton  = html_writer::tag('button', get_string('add'), array(
-        'class' => 'spark-add-record-btn',
-        'type' => 'submit',
-        'value' => 'submit',
-    ));
-    $form = html_writer::tag('form', $submitbutton, array(
-        'action' => $formurl->out(false),
-        'method' => 'post',
-        'style' => 'float: left;',
-        'autocomplete' => 'off'
-    ));
+$formurl = new moodle_url('/course/format/ned/colourpreset_edit.php',
+    array('add' => '1')
+);
+$submitbutton  = html_writer::tag('button', get_string('add'), array(
+    'class' => 'spark-add-record-btn',
+    'type' => 'submit',
+    'value' => 'submit',
+));
+$form = html_writer::tag('form', $submitbutton, array(
+    'action' => $formurl->out(false),
+    'method' => 'post',
+    'style' => 'float: left;',
+    'autocomplete' => 'off'
+));
 
-    $formurlclose = new moodle_url('/course/format/ned/nedsettings.php',
-        array('id' => $courseid)
-    );
-    $submitbuttonclose  = html_writer::tag('button', get_string('close', 'format_ned'), array(
-        'class' => 'spark-close-record-btn',
-        'type' => 'submit',
-        'value' => 'submit',
-    ));
-    $formclose = html_writer::tag('form', $submitbuttonclose, array(
-        'action' => $formurlclose->out(false),
-        'method' => 'post',
-        'style' => 'float: left;',
-        'autocomplete' => 'off'
-    ));
-    echo html_writer::div($form.' '.$formclose, 'add-record-btn-wrapper', array('id' => 'add-record-btn'));
-}
+$formurlclose = new moodle_url('/admin/settings.php?section=formatsettingned');
+$submitbuttonclose  = html_writer::tag('button', get_string('close', 'format_ned'), array(
+    'class' => 'spark-close-record-btn',
+    'type' => 'submit',
+    'value' => 'submit',
+));
+$formclose = html_writer::tag('form', $submitbuttonclose, array(
+    'action' => $formurlclose->out(false),
+    'method' => 'post',
+    'style' => 'float: left;',
+    'autocomplete' => 'off'
+));
+echo html_writer::div($form.' '.$formclose, 'add-record-btn-wrapper', array('id' => 'add-record-btn'));
 
 echo html_writer::end_div(); // Main wrapper.
 echo $OUTPUT->footer();

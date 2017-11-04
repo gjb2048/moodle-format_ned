@@ -24,21 +24,20 @@
                               {@link http://moodle.org/user/profile.php?id=442195}
 }}
 {{!
-    @template format_ned/admin_setting_headerformats
+    @template format_ned/admin_setting_nedbutton
 
     Admin heading setting template.
 
     Context variables required for this template:
-    * title - Title text
-    * description - Description containing descriptionformatted
+    * title - Button text
+    * formlink - URL to the form for the button
 
     Example context (json):
     {
-        "title": "Favourite cheeses",
-        "description": true,
-        "descriptionformatted": "Stilton, Cheddar, Edam"
+        "title": "Header formats",
+        "formlink": ""
     }
 }}
 {{#title}}
-    <a href="{{formlink}}" class="btn btn-secondary">{{{title}}}</a>
+    <a href="{{formlink}}" class="btn btn-secondary ned-button">{{{title}}}</a>
 {{/title}}

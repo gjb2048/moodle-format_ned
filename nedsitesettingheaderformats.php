@@ -38,7 +38,6 @@ $PAGE->set_context(context_system::instance());
 require_once($CFG->dirroot.'/course/format/ned/nedsitesettingheaderformats_form.php');
 require_once($CFG->dirroot.'/course/format/ned/lib.php');
 
-
 $PAGE->set_pagelayout('admin');
 $PAGE->set_url('/course/format/ned/nedsitesettingheaderformats.php', array());
 
@@ -49,12 +48,12 @@ $editform = new course_ned_sitesettingheaderformats_form(null,
 );
 
 if ($editform->is_cancelled()) {
-    redirect($CFG->wwwroot.'/admin/settings.php?section=formatsettingned');
+    redirect(new moodle_url('/admin/settings.php?section=formatsettingned'));
 } else if ($data = $editform->get_data()) {
     // Remove form data that is not setting data.
     unset($data->submitbutton);
     format_ned::set_section_header_formats_setting($data);
-    redirect($CFG->wwwroot.'/admin/settings.php?section=formatsettingned');
+    redirect(new moodle_url('/admin/settings.php?section=formatsettingned'));
 }
 
 // Print the form.
