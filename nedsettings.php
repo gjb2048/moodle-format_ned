@@ -52,9 +52,8 @@ require_capability('moodle/course:update', $coursecontext);
 
 // First create the form.
 $data = $courseformat->get_settings();
-$sectionheaderformatsdata = $courseformat->get_setting('sectionheaderformats');
 $editform = new course_ned_edit_form(null,
-    array('courseid' => $course->id, 'sectionheaderformats' => $sectionheaderformatsdata), 'post', '', array('class' => 'ned_settings')
+    array('courseid' => $course->id), 'post', '', array('class' => 'ned_settings')
 );
 
 // Don't parse non-form course data.

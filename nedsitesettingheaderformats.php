@@ -29,12 +29,11 @@ require_once('../../../config.php');
 defined('MOODLE_INTERNAL') || die;
 
 if (!is_siteadmin()) {
-    print_error('You are not an administrator');
+    print_error(get_string('adminonly', 'badges'));
     die();
 }
 
-$systemcontext = context_system::instance();
-$PAGE->set_context($systemcontext);
+$PAGE->set_context(context_system::instance());
 
 require_once($CFG->dirroot.'/course/format/ned/nedsitesettingheaderformats_form.php');
 require_once($CFG->dirroot.'/course/format/ned/lib.php');
@@ -42,9 +41,6 @@ require_once($CFG->dirroot.'/course/format/ned/lib.php');
 
 $PAGE->set_pagelayout('admin');
 $PAGE->set_url('/course/format/ned/nedsitesettingheaderformats.php', array());
-
-//$courseformat = course_get_format($id);
-//require_login($course);
 
 // First create the form.
 $sectionheaderformatsdata = format_ned::get_section_header_formats_setting();

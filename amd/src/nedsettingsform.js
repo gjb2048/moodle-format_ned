@@ -19,7 +19,6 @@ define(['jquery', 'core/log'], function($, log) {
         $.fn.sectionFormat = function() {
             var locationTarget = $('#nedsectionlocation');
             var locationColourPresets = $('#managecolourpresets');
-            var locationHeaderFormats = $('#nedsectionheaderformats');
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
@@ -27,19 +26,15 @@ define(['jquery', 'core/log'], function($, log) {
                 if (chosen == 0) {
                     locationTarget.hide();
                     locationColourPresets.hide();
-                    locationHeaderFormats.hide();
                 } else if (chosen == 2) {
                     locationTarget.show();
                     locationColourPresets.show();
-                    locationHeaderFormats.hide();
                 } else if (chosen == 3) {
                     locationColourPresets.show();
-                    locationHeaderFormats.show();
                     locationTarget.hide();
                 } else { // Effectively 1.
                     locationColourPresets.show();
                     locationTarget.hide();
-                    locationHeaderFormats.hide();
                 }
             };
 
