@@ -785,10 +785,6 @@ class format_ned extends format_base {
                     'default' => 1,
                     'type' => PARAM_INT
                 ),
-                'activitytrackingbackground' => array(
-                    'default' => 1,
-                    'type' => PARAM_INT
-                ),
                 'locationoftrackingicons' => array(
                     'default' => 'nediconsleft',
                     'type' => PARAM_ALPHA
@@ -857,8 +853,6 @@ class format_ned extends format_base {
                 'label' => 'colourpreset', 'element_type' => 'hidden');
             $courseformatoptionsedit['showsection0'] = array(
                 'label' => 'showsection0', 'element_type' => 'hidden');
-            $courseformatoptionsedit['activitytrackingbackground'] = array(
-                'label' => 'activitytrackingbackground', 'element_type' => 'hidden');
             $courseformatoptionsedit['locationoftrackingicons'] = array(
                 'label' => 'locationoftrackingicons', 'element_type' => 'hidden');
             $courseformatoptionsedit['sectioncontentjustification'] = array(

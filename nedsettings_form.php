@@ -103,15 +103,6 @@ class course_ned_edit_form extends moodleform {
         $mform->addElement('select', 'showsection0', $label, $choices);
         unset($choices);
 
-        $activitytrackingbackgroundoptions = array(
-            0 => get_string('hide'),
-            1 => get_string('show')
-        );
-        $mform->addElement('select', 'activitytrackingbackground',
-            get_string('activitytrackingbackground', 'format_ned'), $activitytrackingbackgroundoptions
-        );
-        unset($activitytrackingbackgroundoptions);
-
         $locationoftrackingiconsoptions = array(
             \format_ned\toolbox::$moodleicons => get_string('moodleicons', 'format_ned'),
             \format_ned\toolbox::$nediconsleft => get_string('nediconsleft', 'format_ned'),

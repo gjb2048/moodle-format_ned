@@ -45,4 +45,25 @@ if ($ADMIN->fulltree) {
     $title = get_string('managecolourpresets', 'format_ned');
     $description = get_string('managecolourpresets_desc', 'format_ned');
     $settings->add(new ned_admin_setting_button($name, $title, $description, 'colourpreset'));
+
+    if (file_exists("{$CFG->dirroot}/course/format/ned/ned_admin_setting_configselect.php")) {
+        require_once($CFG->dirroot . '/course/format/ned/ned_admin_setting_configselect.php');
+    }
+
+    // Other settings.
+    $settings->add(new admin_setting_heading('format_net_othersettings',
+        get_string('othersettings', 'format_ned'), ''));
+
+    // Activity tracking background.
+    $name = 'format_ned/activitytrackingbackground';
+    $title = get_string('activitytrackingbackground', 'format_ned');
+    $description = get_string('activitytrackingbackground_desc', 'format_ned');
+    $default = 1;
+    $setting = new ned_admin_setting_configselect($name, $title, $description, $default,
+        array(
+            0 => get_string('hide'),
+            1 => get_string('show')
+        )
+    );
+    $settings->add($setting);
 }
