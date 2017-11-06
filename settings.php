@@ -66,4 +66,18 @@ if ($ADMIN->fulltree) {
         )
     );
     $settings->add($setting);
+
+    // Location of tracking icons.
+    $name = 'format_ned/locationoftrackingicons';
+    $title = get_string('locationoftrackingicons', 'format_ned');
+    $description = get_string('locationoftrackingicons_desc', 'format_ned');
+    $default = 'nediconsleft';
+    $locationoftrackingiconsoptions = array(
+        \format_ned\toolbox::$moodleicons => get_string('moodleicons', 'format_ned'),
+        \format_ned\toolbox::$nediconsleft => get_string('nediconsleft', 'format_ned'),
+        \format_ned\toolbox::$nediconsright => get_string('nediconsright', 'format_ned')
+    );
+    $setting = new ned_admin_setting_configselect($name, $title, $description, $default, $locationoftrackingiconsoptions);
+    $settings->add($setting);
+    unset($locationoftrackingiconsoptions);
 }

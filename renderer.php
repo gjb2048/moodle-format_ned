@@ -64,7 +64,7 @@ class format_ned_renderer extends format_section_renderer_base {
         }
         $this->courserenderer = $this->page->get_renderer('format_ned', 'course');
         $this->courserenderer->set_settings(
-            get_config('format_ned', 'activitytrackingbackground'),
+            $this->settings['activitytrackingbackground'],
             $this->settings['locationoftrackingicons']
         );
     }

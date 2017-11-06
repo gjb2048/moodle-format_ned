@@ -103,16 +103,6 @@ class course_ned_edit_form extends moodleform {
         $mform->addElement('select', 'showsection0', $label, $choices);
         unset($choices);
 
-        $locationoftrackingiconsoptions = array(
-            \format_ned\toolbox::$moodleicons => get_string('moodleicons', 'format_ned'),
-            \format_ned\toolbox::$nediconsleft => get_string('nediconsleft', 'format_ned'),
-            \format_ned\toolbox::$nediconsright => get_string('nediconsright', 'format_ned')
-        );
-        $mform->addElement('select', 'locationoftrackingicons',
-            get_string('locationoftrackingicons', 'format_ned'), $locationoftrackingiconsoptions
-        );
-        unset($locationoftrackingiconsoptions);
-
         // Hide!
         if (false) {
             $choices = array(

@@ -69,6 +69,8 @@ class format_ned extends format_base {
                     $section++;
                 }
             }
+            $this->settings['activitytrackingbackground'] = get_config('format_ned', 'activitytrackingbackground');
+            $this->settings['locationoftrackingicons'] = get_config('format_ned', 'locationoftrackingicons');
         }
         return $this->settings;
     }
@@ -93,6 +95,10 @@ class format_ned extends format_base {
             } else if (($name === 'sectionheaderformat') && ($section !== null)) {
                 return $this->sectionheaderformatheaders[$section];
             }
+        } else if ($name == 'activitytrackingbackground') {
+            return $this->settings['activitytrackingbackground'];
+        } else if ($name == 'locationoftrackingicons') {
+            return $this->settings['locationoftrackingicons'];
         }
         return false;
     }
@@ -785,10 +791,6 @@ class format_ned extends format_base {
                     'default' => 1,
                     'type' => PARAM_INT
                 ),
-                'locationoftrackingicons' => array(
-                    'default' => 'nediconsleft',
-                    'type' => PARAM_ALPHA
-                ),
                 'sectioncontentjustification' => array(
                     'default' => 0,
                     'type' => PARAM_INT
@@ -853,8 +855,6 @@ class format_ned extends format_base {
                 'label' => 'colourpreset', 'element_type' => 'hidden');
             $courseformatoptionsedit['showsection0'] = array(
                 'label' => 'showsection0', 'element_type' => 'hidden');
-            $courseformatoptionsedit['locationoftrackingicons'] = array(
-                'label' => 'locationoftrackingicons', 'element_type' => 'hidden');
             $courseformatoptionsedit['sectioncontentjustification'] = array(
                 'label' => 'sectioncontentjustification', 'element_type' => 'hidden');
             $courseformatoptionsedit['viewjumptomenu'] = array(

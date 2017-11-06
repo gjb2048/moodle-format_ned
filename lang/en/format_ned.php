@@ -82,7 +82,6 @@ $string['othersettings'] = 'Other settings';
 $string['showsection0'] = 'Show section 0';
 $string['showonlysection0'] = 'Show only section 0';
 $string['activityresourcemouseover'] = 'Activity resource mouseover effect';
-$string['locationoftrackingicons'] = 'Location of tracking icons';
 $string['moodleicons'] = 'Moodle icons';
 $string['nediconsleft'] = 'NED icons left';
 $string['nediconsright'] = 'NED icons right';
@@ -101,6 +100,8 @@ $string['showalldescriptions'] = 'Show all descriptions';
 // NED Site settings.
 $string['activitytrackingbackground'] = 'Activity tracking background';
 $string['activitytrackingbackground_desc'] = 'Show or hide the activity tracking background.';
+$string['locationoftrackingicons'] = 'Location of tracking icons';
+$string['locationoftrackingicons_desc'] = 'Set the location of the tracking icons.';
 $string['sectionheaderformats'] = 'Header formats';
 $string['sectionheaderformats_desc'] = 'Header formats for use when the section format is \'Framed sections + Formatted header\'.';
 
