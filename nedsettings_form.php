@@ -35,6 +35,8 @@ class course_ned_edit_form extends moodleform {
     public function definition() {
         $mform = &$this->_form;
 
+        $shfdata = $this->_customdata['sectionheaderformats'];
+
         $mform->addElement('hidden', 'id', $this->_customdata['courseid']);
         $mform->setType('id', PARAM_INT);
 
@@ -90,6 +92,38 @@ class course_ned_edit_form extends moodleform {
 
         $label = get_string('colourpreset', 'format_ned');
         $mform->addElement('select', 'colourpreset', $label, $colourpresetitems);
+
+        static $shfrows = array('sectionheaderformatone', 'sectionheaderformattwo', 'sectionheaderformatthree');
+        $sectionheaderformatsnedefaultformatname = array();
+        foreach ($shfrows as $shfrow) {
+            if (($shfdata[$shfrow]['active'] == 1) && ($shfdata[$shfrow]['colourpreset'] == -1)) { // Active and NED Default.
+                $sectionheaderformatsnedefaultformatname[] = $shfdata[$shfrow]['name'];
+            }
+        }
+        if (!empty($sectionheaderformatsnedefaultformatname)) {
+            // Must be > 0 and <= 3.
+            $sectionheaderformatsnedefaultformatnamecount = count($sectionheaderformatsnedefaultformatname);
+            switch ($sectionheaderformatsnedefaultformatnamecount) {
+                case 1:
+                    $shfnfnames = get_string('appliestoone', 'format_ned', array('one' => $sectionheaderformatsnedefaultformatname[0]));
+                break;
+                case 2:
+                    $shfnfnames = get_string('appliestotwo', 'format_ned', array(
+                        'one' => $sectionheaderformatsnedefaultformatname[0],
+                        'two' => $sectionheaderformatsnedefaultformatname[1]
+                    ));
+                break;
+                case 3:
+                    $shfnfnames = get_string('appliestothree', 'format_ned', array(
+                        'one' => $sectionheaderformatsnedefaultformatname[0],
+                        'two' => $sectionheaderformatsnedefaultformatname[1],
+                        'three' => $sectionheaderformatsnedefaultformatname[2]
+                    ));
+                break;
+            }
+            $mform->addElement('html', '<span id="cpappliesto">'.get_string('appliesto', 'format_ned').$shfnfnames.'</span>');
+        }
+
         $mform->addElement('html', '</div>');
 
         $mform->addElement('header', 'nedformat', get_string('othersettings', 'format_ned'));

@@ -78,6 +78,26 @@ body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
     float: right;
 }
 
+/* Colour presets */
+#page-course-format-ned-nedsettings #managecolourpresets {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+#page-course-format-ned-nedsettings #managecolourpresets > div.form-group.row.fitem {
+    float: left;
+    margin-left: 0;
+    width: 50%;
+    /* width: calc(50% + 15px); - Wanted to do this!  But removed by Moodle! */
+}
+#page-course-format-ned-nedsettings #managecolourpresets > div.form-group.row.fitem > div.col-md-3,
+#page-course-format-ned-nedsettings #managecolourpresets > div.form-group.row.fitem > div.col-md-9 {
+    width: 50%;
+}
+
+#page-course-format-ned-nedsettings #managecolourpresets > #cpappliesto {
+    line-height: 48px;
+}
 
 .format-ned .colourpresetform .felement,
 .format-ned .colourpresetform .fitemtitle {

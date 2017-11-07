@@ -34,6 +34,50 @@ if ($ADMIN->fulltree) {
         require_once($CFG->dirroot . '/course/format/ned/ned_admin_setting_button.php');
     }
 
+    if (file_exists("{$CFG->dirroot}/course/format/ned/ned_admin_setting_configselect.php")) {
+        require_once($CFG->dirroot . '/course/format/ned/ned_admin_setting_configselect.php');
+    }
+
+    // Format settings.
+    $settings->add(new admin_setting_heading('format_net_formatsettings',
+        get_string('format', 'format_ned'), ''));
+
+    // Default section format.
+    $name = 'format_ned/defaultsectionformat';
+    $title = get_string('defaultsectionformat', 'format_ned');
+    $description = get_string('defaultsectionformat_desc', 'format_ned');
+    $default = 1;
+    $defaultsectionformatoptions = array(
+        0 => get_string('sectionformatmoodle', 'format_ned'),
+        1 => get_string('sectionformatframed', 'format_ned'),
+        2 => get_string('sectionformatframedcustom', 'format_ned'),
+        3 => get_string('sectionformatframedformatted', 'format_ned')
+    );
+    $setting = new ned_admin_setting_configselect($name, $title, $description, $default, $defaultsectionformatoptions);
+    $settings->add($setting);
+    unset($defaultsectionformatoptions);
+
+    // Default colour preset.
+    // List of colour presets.
+    global $DB;
+    $defaultcolourpresetitems = array(0 => get_string('colourpresetmoodle', 'format_ned'));
+    if ($presets = $DB->get_records('format_ned_colour', null, null, 'id,name')) {
+        foreach ($presets as $preset) {
+            $defaultcolourpresetitems[$preset->id] = $preset->name;
+        }
+    } else {
+        $defaultcolourpresetitems[1] = 'Embassy Green';
+        $defaultcolourpresetitems[2] = 'Blues on Whyte';
+    }
+    $name = 'format_ned/defaultcolourpreset';
+    $title = get_string('defaultcolourpreset', 'format_ned');
+    $description = get_string('defaultcolourpreset_desc', 'format_ned');
+    $default = 2;
+    $setting = new ned_admin_setting_configselect($name, $title, $description, $default, $defaultcolourpresetitems);
+    $settings->add($setting);
+    unset($defaultcolourpresetitems);
+
+
     // Header formats.
     $name = 'format_ned/sectionheaderformats';
     $title = get_string('sectionheaderformats', 'format_ned');
@@ -45,10 +89,6 @@ if ($ADMIN->fulltree) {
     $title = get_string('managecolourpresets', 'format_ned');
     $description = get_string('managecolourpresets_desc', 'format_ned');
     $settings->add(new ned_admin_setting_button($name, $title, $description, 'colourpreset'));
-
-    if (file_exists("{$CFG->dirroot}/course/format/ned/ned_admin_setting_configselect.php")) {
-        require_once($CFG->dirroot . '/course/format/ned/ned_admin_setting_configselect.php');
-    }
 
     // Other settings.
     $settings->add(new admin_setting_heading('format_net_othersettings',

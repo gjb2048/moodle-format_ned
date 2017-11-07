@@ -90,11 +90,11 @@ class format_ned extends format_base {
             }
             return $settings[$name];
         } else if ($settings['sectionformat'] == 3) {
-            if ($name == 'sectionheaderformats') {
-                return self::get_section_header_formats_setting();
-            } else if (($name === 'sectionheaderformat') && ($section !== null)) {
+            if (($name === 'sectionheaderformat') && ($section !== null)) {
                 return $this->sectionheaderformatheaders[$section];
             }
+        } else if ($name == 'sectionheaderformats') { // Needed on the nedsettings_form.php regardless of course section format value.
+            return self::get_section_header_formats_setting();
         } else if ($name == 'activitytrackingbackground') {
             return $this->settings['activitytrackingbackground'];
         } else if ($name == 'locationoftrackingicons') {
@@ -511,7 +511,7 @@ class format_ned extends format_base {
      * @return int colour preset default id - see nedsettings_form.php.
      */
     private function get_colourpreset_default() {
-        return 2;
+        return get_config('format_ned', 'defaultcolourpreset');
     }
 
     /**
@@ -772,7 +772,7 @@ class format_ned extends format_base {
                     'type' => PARAM_INT
                 ),
                 'sectionformat' => array(
-                    'default' => 1,
+                    'default' => get_config('format_ned', 'defaultsectionformat'),
                     'type' => PARAM_INT
                 ),
                 'sectionnamelocation' => array(

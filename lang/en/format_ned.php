@@ -100,6 +100,10 @@ $string['showalldescriptions'] = 'Show all descriptions';
 // NED Site settings.
 $string['activitytrackingbackground'] = 'Activity tracking background';
 $string['activitytrackingbackground_desc'] = 'Show or hide the activity tracking background.';
+$string['defaultcolourpreset'] = 'Default colour preset';
+$string['defaultcolourpreset_desc'] = 'Set the default colour preset used when creating a course or a preset gets deleted that is being used by a course.';
+$string['defaultsectionformat'] = 'Section format';
+$string['defaultsectionformat_desc'] = 'Set the default section format used when creating a course.';
 $string['locationoftrackingicons'] = 'Location of tracking icons';
 $string['locationoftrackingicons_desc'] = 'Set the location of the tracking icons.';
 $string['sectionheaderformats'] = 'Header formats';
@@ -108,6 +112,10 @@ $string['sectionheaderformats_desc'] = 'Header formats for use when the section 
 // Colour presets.
 $string['action'] = 'Action';
 $string['addedit'] = 'Add/Edit';
+$string['appliesto'] = 'Applies to: ';
+$string['appliestoone'] = '{$a->one}.';
+$string['appliestotwo'] = '{$a->one} and {$a->two}.';
+$string['appliestothree'] = '{$a->one}, {$a->two} and {$a->three}.';
 $string['close'] = 'Close';
 $string['colourpreset'] = 'Colour preset';
 $string['colourpresets'] = 'Colour presets';

@@ -440,6 +440,16 @@ ul.ned-framedsections .section.main:last-child {
     vertical-align: super;
 }
 
+/* Colour presets */
+#page-course-format-ned-nedsettings #managecolourpresets > div {
+    display: inline-block;
+}
+
+#page-course-format-ned-nedsettings #managecolourpresets > #cpappliesto {
+    margin-left: 10px;
+    vertical-align: text-bottom;
+}
+
 /* Activity / Resource hover */
 .format-ned .nedactresmouseover .activity:hover:not(.label) .activityinstance,
 .format-ned .nedactresmouseover .activity:hover:not(.label) .contentwithoutlink {
