@@ -89,16 +89,16 @@ class format_ned extends format_base {
                 return $this->sectiondeliverymethoddata;
             }
             return $settings[$name];
-        } else if ($settings['sectionformat'] == 3) {
-            if (($name === 'sectionheaderformat') && ($section !== null)) {
-                return $this->sectionheaderformatheaders[$section];
-            }
         } else if ($name == 'sectionheaderformats') { // Needed on the nedsettings_form.php regardless of course section format value.
             return self::get_section_header_formats_setting();
         } else if ($name == 'activitytrackingbackground') {
             return $this->settings['activitytrackingbackground'];
         } else if ($name == 'locationoftrackingicons') {
             return $this->settings['locationoftrackingicons'];
+        } else if ($settings['sectionformat'] == 3) {
+            if (($name === 'sectionheaderformat') && ($section !== null)) {
+                return $this->sectionheaderformatheaders[$section];
+            }
         }
         return false;
     }
