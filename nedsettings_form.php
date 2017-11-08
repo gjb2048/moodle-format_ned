@@ -45,12 +45,18 @@ class course_ned_edit_form extends moodleform {
         $mform->addElement('static', 'formatinfo', get_string('formatinfo', 'format_ned'),
             '<a target="_blank" href="//ned.ca/ned-format">ned.ca/ned-format</a>');
 
+        if (is_siteadmin()) {
+            $sitesettings = new moodle_url('/admin/settings.php?section=formatsettingned');
+            $mform->addElement('static', 'sitewidesettings', get_string('sitewidesettings', 'format_ned'),
+                '<a href="'.$sitesettings.'">'.get_string('opensitesettings', 'format_ned').'</a>');
+        }
+
         $choices = array(
             0 => get_string('sectionformatmoodle', 'format_ned'),
             1 => get_string('sectionformatframed', 'format_ned'),
             3 => get_string('sectionformatframedformatted', 'format_ned')
         );
-        if (get_config('format_ned', 'framedsectionscustomheader') == 1) // Show - see settings.php.
+        if (get_config('format_ned', 'framedsectionscustomheader') == 1) { // Show - see settings.php.
             $choices[2] = get_string('sectionformatframedcustom', 'format_ned');
         }
         $label = get_string('sectionformat', 'format_ned');

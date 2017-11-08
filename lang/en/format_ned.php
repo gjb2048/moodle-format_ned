@@ -55,6 +55,8 @@ $string['sectionscheduleerror'] = 'Please state either section or schedule deliv
 // NED Settings form.
 $string['format'] = 'Format';
 $string['formatinfo'] = 'Format info';
+$string['opensitesettings'] = 'Open settings page';
+$string['sitewidesettings'] = 'Site-wide settings';
 
 $string['sectionformat'] = 'Section format';
 $string['sectionformatmoodle'] = 'Moodle default';
