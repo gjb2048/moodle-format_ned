@@ -63,7 +63,7 @@ class ned_admin_setting_button extends admin_setting { // Like admin_setting_hea
      * @return string Always returns an empty string
      */
     public function write_setting($data) {
-    // do not write any setting
+        // Do not write any setting.
         return '';
     }
 
