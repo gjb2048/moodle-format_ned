@@ -139,6 +139,19 @@ if ($ADMIN->fulltree) {
     );
     $settings->add($setting);
 
+    $name = 'format_ned/viewsectionforwardbacklinks';
+    $title = get_string('viewsectionforwardbacklinks', 'format_ned');
+    $description = get_string('viewsectionforwardbacklinks_desc', 'format_ned');
+    $default = 0;
+    $setting = new ned_admin_setting_configselect($name, $title, $description, $default,
+        array(
+            0 => get_string('everyone', 'format_ned'),
+            1 => get_string('courseeditors', 'format_ned'),
+            2 => get_string('nobody', 'format_ned')
+        )
+    );
+    $settings->add($setting);
+
     // Experimental settings.
     $settings->add(new admin_setting_heading('format_net_experimentalsettings',
         get_string('experimentalsettings', 'format_ned'), ''));

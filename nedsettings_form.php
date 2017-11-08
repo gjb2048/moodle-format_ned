@@ -156,16 +156,6 @@ class course_ned_edit_form extends moodleform {
             unset($choices);
         }
 
-        $viewsectionforwardbacklinksoptions = array(
-            0 => get_string('everyone', 'format_ned'),
-            1 => get_string('courseeditors', 'format_ned'),
-            2 => get_string('nobody', 'format_ned')
-        );
-        $mform->addElement('select', 'viewsectionforwardbacklinks',
-            get_string('viewsectionforwardbacklinks', 'format_ned'), $viewsectionforwardbacklinksoptions
-        );
-        unset($viewsectionforwardbacklinksoptions);
-
         $progresstooltipoptions = array(
             0 => get_string('hideicon', 'format_ned'),
             1 => get_string('hidemanualcompletion', 'format_ned'),

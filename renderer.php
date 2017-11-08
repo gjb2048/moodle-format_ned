@@ -644,8 +644,9 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Display section bottom navigation.
         $sectionbottomnav = '';
-        if (($this->settings['viewsectionforwardbacklinks'] == 0) ||
-            (($this->settings['viewsectionforwardbacklinks'] == 1) && (has_capability('moodle/course:update', $context)))) {
+        $viewsectionforwardbacklinks = get_config('format_ned', 'viewsectionforwardbacklinks');
+        if (($viewsectionforwardbacklinks == 0) ||
+            (($viewsectionforwardbacklinks == 1) && (has_capability('moodle/course:update', $context)))) {
             $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
             $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
             $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
