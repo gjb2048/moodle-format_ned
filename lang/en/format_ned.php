@@ -88,7 +88,6 @@ $string['nediconsleft'] = 'NED icons left';
 $string['nediconsright'] = 'NED icons right';
 $string['sectioncontentjustification'] = 'Center and left jusfify content in sections';
 $string['editnedformatsettings'] = 'Edit Ned Format settings';
-$string['viewjumptomenu'] = "View 'Jump to...' menu";
 $string['viewsectionforwardbacklinks'] = 'View section forward/back links';
 $string['courseeditors'] = 'Course editors';
 $string['everyone'] = 'Everyone';
@@ -113,6 +112,8 @@ $string['locationoftrackingicons_desc'] = 'Set the location of the tracking icon
 $string['sectionformatframedcustom_desc'] = 'Allow the \'Framed sections + Custom header\' option in the \'Section formats\'.  Note: This may change the value of the \'Section format\' setting above.';
 $string['sectionheaderformats'] = 'Header formats';
 $string['sectionheaderformats_desc'] = 'Header formats for use when the section format is \'Framed sections + Formatted header\'.';
+$string['viewjumptomenu'] = "View 'Jump to...' menu";
+$string['viewjumptomenu_desc'] = "Set the default for view 'Jump to...' menu.";
 
 // Colour presets.
 $string['action'] = 'Action';

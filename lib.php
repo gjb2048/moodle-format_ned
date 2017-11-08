@@ -798,10 +798,6 @@ class format_ned extends format_base {
                     'default' => 0,
                     'type' => PARAM_INT
                 ),
-                'viewjumptomenu' => array(
-                    'default' => 0,
-                    'type' => PARAM_INT
-                ),
                 'viewsectionforwardbacklinks' => array(
                     'default' => 0,
                     'type' => PARAM_INT
@@ -856,8 +852,6 @@ class format_ned extends format_base {
                 'label' => 'showsection0', 'element_type' => 'hidden');
             $courseformatoptionsedit['sectioncontentjustification'] = array(
                 'label' => 'sectioncontentjustification', 'element_type' => 'hidden');
-            $courseformatoptionsedit['viewjumptomenu'] = array(
-                'label' => 'viewjumptomenu', 'element_type' => 'hidden');
             $courseformatoptionsedit['viewsectionforwardbacklinks'] = array(
                 'label' => 'viewsectionforwardbacklinks', 'element_type' => 'hidden');
             $courseformatoptionsedit['progresstooltip'] = array(

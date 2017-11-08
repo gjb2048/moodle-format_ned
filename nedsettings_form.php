@@ -156,16 +156,6 @@ class course_ned_edit_form extends moodleform {
             unset($choices);
         }
 
-        $viewjumptomenuoptions = array(
-            0 => get_string('everyone', 'format_ned'),
-            1 => get_string('courseeditors', 'format_ned'),
-            2 => get_string('nobody', 'format_ned')
-        );
-        $mform->addElement('select', 'viewjumptomenu',
-            get_string('viewjumptomenu', 'format_ned'), $viewjumptomenuoptions
-        );
-        unset($viewjumptomenuoptions);
-
         $viewsectionforwardbacklinksoptions = array(
             0 => get_string('everyone', 'format_ned'),
             1 => get_string('courseeditors', 'format_ned'),

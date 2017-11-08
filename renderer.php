@@ -650,8 +650,9 @@ class format_ned_renderer extends format_section_renderer_base {
             $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
             $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
         }
-        if (($this->settings['viewjumptomenu'] == 0) ||
-            (($this->settings['viewjumptomenu'] == 1) && (has_capability('moodle/course:update', $context)))) {
+        $viewjumptomenu = get_config('format_ned', 'viewjumptomenu');
+        if (($viewjumptomenu == 0) ||
+            (($viewjumptomenu == 1) && (has_capability('moodle/course:update', $context)))) {
             $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection),
                 array('class' => 'mdl-align'));
         }
