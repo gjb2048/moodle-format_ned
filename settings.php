@@ -55,6 +55,11 @@ if ($ADMIN->fulltree) {
     );
     $setting = new ned_admin_setting_configselect($name, $title, $description, $default, $defaultsectionformatoptions);
     $settings->add($setting);
+    $PAGE->requires->js_call_amd('format_ned/nedsitesettingsform', 'init',
+        array('data' => array(
+            'defaultsectionformatoptionsdata' => $defaultsectionformatoptions
+        ))
+    );
     unset($defaultsectionformatoptions);
 
     // Default colour preset.
@@ -137,4 +142,15 @@ if ($ADMIN->fulltree) {
     );
     $settings->add($setting);
 
+    $name = 'format_ned/framedsectionscustomheader';
+    $title = get_string('sectionformatframedcustom', 'format_ned');
+    $description = get_string('sectionformatframedcustom_desc', 'format_ned');
+    $default = 0;
+    $setting = new ned_admin_setting_configselect($name, $title, $description, $default,
+        array(
+            0 => get_string('hide'),
+            1 => get_string('show')
+        )
+    );
+    $settings->add($setting);
 }

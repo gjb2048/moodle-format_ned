@@ -48,9 +48,11 @@ class course_ned_edit_form extends moodleform {
         $choices = array(
             0 => get_string('sectionformatmoodle', 'format_ned'),
             1 => get_string('sectionformatframed', 'format_ned'),
-            2 => get_string('sectionformatframedcustom', 'format_ned'),
             3 => get_string('sectionformatframedformatted', 'format_ned')
         );
+        if (get_config('format_ned', 'framedsectionscustomheader') == 1) // Show - see settings.php.
+            $choices[2] = get_string('sectionformatframedcustom', 'format_ned');
+        }
         $label = get_string('sectionformat', 'format_ned');
         $mform->addElement('select', 'sectionformat', $label, $choices);
         unset($choices);

@@ -108,6 +108,7 @@ $string['defaultsectionformat_desc'] = 'Set the default section format used when
 $string['experimentalsettings'] = 'Experimental settings';
 $string['locationoftrackingicons'] = 'Location of tracking icons';
 $string['locationoftrackingicons_desc'] = 'Set the location of the tracking icons.';
+$string['sectionformatframedcustom_desc'] = 'Allow the \'Framed sections + Custom header\' option in the \'Section formats\'.  Note: This may change the value of the \'Section format\' setting above.';
 $string['sectionheaderformats'] = 'Header formats';
 $string['sectionheaderformats_desc'] = 'Header formats for use when the section format is \'Framed sections + Formatted header\'.';
 
