@@ -1,5 +1,8 @@
 Version Information
 ===================
+Version 3.3.1.2
+  1. Stage 5.
+
 Version 3.3.1.1
   1. Add border width to colour presets.
 
