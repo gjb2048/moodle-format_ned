@@ -72,6 +72,7 @@ class format_ned extends format_base {
             $this->settings['activitytrackingbackground'] = get_config('format_ned', 'activitytrackingbackground');
             $this->settings['activityresourcemouseover'] = get_config('format_ned', 'activityresourcemouseover');
             $this->settings['locationoftrackingicons'] = get_config('format_ned', 'locationoftrackingicons');
+            $this->settings['progresstooltip'] = get_config('format_ned', 'progresstooltip');
         }
         return $this->settings;
     }
@@ -98,6 +99,8 @@ class format_ned extends format_base {
             return $this->settings['activityresourcemouseover'];
         } else if ($name == 'locationoftrackingicons') {
             return $this->settings['locationoftrackingicons'];
+        } else if ($name == 'progresstooltip') {
+            return $this->settings['progresstooltip'];
         } else if ($settings['sectionformat'] == 3) {
             if (($name === 'sectionheaderformat') && ($section !== null)) {
                 return $this->sectionheaderformatheaders[$section];
@@ -798,10 +801,6 @@ class format_ned extends format_base {
                     'default' => 0,
                     'type' => PARAM_INT
                 ),
-                'progresstooltip' => array(
-                    'default' => 0,
-                    'type' => PARAM_INT
-                ),
                 'sectiondeliverymethod' => array(
                     'default' => '{"sectiondeliverymethod": 1, "defaultsection": 1}', // JSON String for use in array.
                     'type' => PARAM_RAW
@@ -848,8 +847,6 @@ class format_ned extends format_base {
                 'label' => 'showsection0', 'element_type' => 'hidden');
             $courseformatoptionsedit['sectioncontentjustification'] = array(
                 'label' => 'sectioncontentjustification', 'element_type' => 'hidden');
-            $courseformatoptionsedit['progresstooltip'] = array(
-                'label' => 'progresstooltip', 'element_type' => 'hidden');
             $courseformatoptionsedit['sectiondeliverymethod'] = array(
                  // Storage for complex element in 'create_edit_form_elements()'.  This is in the course not ned settings.
                 'label' => 'sectiondeliverymethod', 'element_type' => 'hidden');
