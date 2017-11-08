@@ -193,3 +193,8 @@ div.nedshfeditrightcolumn {
     margin-top: 0 !important;
     padding-top: 0 !important;
 }
+
+/* Site settings */
+a.ned-button {
+    margin-bottom: 10px;
+}

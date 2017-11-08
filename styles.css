@@ -466,8 +466,3 @@ ul.ned-framedsections .section.main:last-child {
 .course-content ul.ned.nedactresmouseover li.section .activity.completion-background:hover:not(.label) .actions {
     top: 14px;
 }
-
-/* Site settings */
-.ned-button {
-    margin-right: 10px;
-}

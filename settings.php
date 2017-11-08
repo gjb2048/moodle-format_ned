@@ -129,7 +129,7 @@ if ($ADMIN->fulltree) {
     $name = 'format_ned/viewjumptomenu';
     $title = get_string('viewjumptomenu', 'format_ned');
     $description = get_string('viewjumptomenu_desc', 'format_ned');
-    $default = 0;
+    $default = 2;
     $setting = new ned_admin_setting_configselect($name, $title, $description, $default,
         array(
             0 => get_string('everyone', 'format_ned'),
@@ -142,7 +142,7 @@ if ($ADMIN->fulltree) {
     $name = 'format_ned/viewsectionforwardbacklinks';
     $title = get_string('viewsectionforwardbacklinks', 'format_ned');
     $description = get_string('viewsectionforwardbacklinks_desc', 'format_ned');
-    $default = 0;
+    $default = 2;
     $setting = new ned_admin_setting_configselect($name, $title, $description, $default,
         array(
             0 => get_string('everyone', 'format_ned'),
