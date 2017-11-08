@@ -18,12 +18,14 @@ define(['jquery', 'core/log'], function($, log) {
 
         $.fn.defaultSectionFormat = function(data) {
             var defaultsectionformatoptionsdata = data.defaultsectionformatoptionsdata;
+            var defaultsectionformatdefaultdata = data.defaultsectionformatdefaultdata;
             var defaultSectionFormat = $('#id_s_format_ned_defaultsectionformat');
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
                 log.debug('NED Format Site Settings Form AMD checkSelect chosen: ' + chosen);
 
+                var dsfCurrent = defaultSectionFormat.find(':selected').val();
                 // Change the section format name values.
                 defaultSectionFormat.empty();
                 $.each(defaultsectionformatoptionsdata, function(key, value) {
@@ -33,6 +35,12 @@ define(['jquery', 'core/log'], function($, log) {
                             .text(value));
                     }
                 });
+                var dsfSetTo = dsfCurrent;
+                if ((chosen == 0) && (dsfCurrent == 2)) {
+                    // Cannot set back to what it was so set to default.
+                    dsfSetTo = defaultsectionformatdefaultdata;
+                }
+                defaultSectionFormat.val(dsfSetTo).prop('selected', 'selected');
             };
 
             // Initial check to remove the custom header option only if we are 'hide'.

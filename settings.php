@@ -57,7 +57,8 @@ if ($ADMIN->fulltree) {
     $settings->add($setting);
     $PAGE->requires->js_call_amd('format_ned/nedsitesettingsform', 'init',
         array('data' => array(
-            'defaultsectionformatoptionsdata' => $defaultsectionformatoptions
+            'defaultsectionformatoptionsdata' => $defaultsectionformatoptions,
+            'defaultsectionformatdefaultdata' => $default
         ))
     );
     unset($defaultsectionformatoptions);
