@@ -81,7 +81,6 @@ $string['colourpresetmoodle'] = 'Moodle default';
 $string['othersettings'] = 'Other settings';
 $string['showsection0'] = 'Show section 0';
 $string['showonlysection0'] = 'Show only section 0';
-$string['activityresourcemouseover'] = 'Activity resource mouseover effect';
 $string['moodleicons'] = 'Moodle icons';
 $string['nediconsleft'] = 'NED icons left';
 $string['nediconsright'] = 'NED icons right';
@@ -98,12 +97,15 @@ $string['hidemanualcompletion'] = 'Hide manual completion description';
 $string['showalldescriptions'] = 'Show all descriptions';
 
 // NED Site settings.
+$string['activityresourcemouseover'] = 'Activity resource mouseover effect';
+$string['activityresourcemouseover_desc'] = 'Set the default activity resource mouseover effect';
 $string['activitytrackingbackground'] = 'Activity tracking background';
 $string['activitytrackingbackground_desc'] = 'Show or hide the activity tracking background.';
 $string['defaultcolourpreset'] = 'Default colour preset';
 $string['defaultcolourpreset_desc'] = 'Set the default colour preset used when creating a course or a preset gets deleted that is being used by a course.';
 $string['defaultsectionformat'] = 'Section format';
 $string['defaultsectionformat_desc'] = 'Set the default section format used when creating a course.';
+$string['experimentalsettings'] = 'Experimental settings';
 $string['locationoftrackingicons'] = 'Location of tracking icons';
 $string['locationoftrackingicons_desc'] = 'Set the location of the tracking icons.';
 $string['sectionheaderformats'] = 'Header formats';

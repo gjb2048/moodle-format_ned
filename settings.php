@@ -120,4 +120,21 @@ if ($ADMIN->fulltree) {
     $setting = new ned_admin_setting_configselect($name, $title, $description, $default, $locationoftrackingiconsoptions);
     $settings->add($setting);
     unset($locationoftrackingiconsoptions);
+
+    // Experimental settings.
+    $settings->add(new admin_setting_heading('format_net_experimentalsettings',
+        get_string('experimentalsettings', 'format_ned'), ''));
+
+    $name = 'format_ned/activityresourcemouseover';
+    $title = get_string('activityresourcemouseover', 'format_ned');
+    $description = get_string('activityresourcemouseover_desc', 'format_ned');
+    $default = 0;
+    $setting = new ned_admin_setting_configselect($name, $title, $description, $default,
+        array(
+            0 => get_string('hide'),
+            1 => get_string('show')
+        )
+    );
+    $settings->add($setting);
+
 }
