@@ -209,9 +209,13 @@ ul.ned.sectioncontentjustification .section .activity .actions {
     display: none;
 }
 
+#fgroup_id_sectiondeliverymethodgroup .fgroup span:nth-child(1) label span,
 #fgroup_id_sectiondeliverymethodgroup .fgroup span:nth-child(3),
 #fgroup_id_sectiondeliverymethodgroup .fgroup span:nth-child(5),
-#fgroup_id_sectiondeliverymethodgroup .fgroup span:nth-child(7) {
+#fgroup_id_sectiondeliverymethodgroup .fgroup span:nth-child(7),
+#fgroup_id_sectiondeliverymethodgroup .fgroup.error span:nth-child(5),
+#fgroup_id_sectiondeliverymethodgroup .fgroup.error span:nth-child(7),
+#fgroup_id_sectiondeliverymethodgroup .fgroup.error span:nth-child(9) {
     margin-left: 24px;
 }
 
@@ -226,20 +230,18 @@ ul.ned.sectioncontentjustification .section .activity .actions {
     display: none;
 }
 
-#fgroup_id_sectiondeliverymethodgroup .fgroup.error span:nth-child(3),
-#fgroup_id_sectiondeliverymethodgroup .fgroup.error span:nth-child(5),
-#fgroup_id_sectiondeliverymethodgroup .fgroup.error span:nth-child(7) {
+#fgroup_id_sectiondeliverymethodgroup .fgroup.error span:nth-child(3) {
     margin-left: 0;
-}
-
-#fgroup_id_sectiondeliverymethodgroup .fgroup.error span:nth-child(5),
-#fgroup_id_sectiondeliverymethodgroup .fgroup.error span:nth-child(7),
-#fgroup_id_sectiondeliverymethodgroup .fgroup.error span:nth-child(9) {
-    margin-left: 24px;
 }
 
 #fgroup_id_sectiondeliverymethodgroup .fgroup span {
     vertical-align: top;
+}
+
+#fgroup_id_sectiondeliverymethodgroup .fgroup #id_specifydefaultoptionnumber,
+#fgroup_id_sectiondeliverymethodgroup .fgroup #id_scheduleadvanceoptionnumber,
+#fgroup_id_sectiondeliverymethodgroup .fgroup #id_scheduleadvanceoptionunit {
+    margin-left: 4px;
 }
 
 /* Framed sections */

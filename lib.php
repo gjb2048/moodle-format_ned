@@ -886,7 +886,8 @@ class format_ned extends format_base {
         if (!$forsection) {
             $sectiondeliverymethodgroupdata = $this->get_setting('sectiondeliverymethod');
             $sectiondeliverymethodgroup = array();
-            $sectiondeliverymethodgroup[] =& $mform->createElement('advcheckbox', 'sectiondeliveryoption', null,
+            //$sectiondeliverymethodgroup[] =& $mform->createElement('html', '<div id="nedsectiondeliverymethodgroup">');
+            $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'sectiondeliveryoption', null,
                 get_string('sectiondeliveryoption', 'format_ned'));
 
             $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
@@ -900,8 +901,7 @@ class format_ned extends format_base {
             for ($sectionnum = 1; $sectionnum <= $totalsections; $sectionnum++) {
                 $sections[$sectionnum] = ''.$sectionnum;
             }
-            $specifydefaultoptionnumber =& $mform->createElement('select', 'specifydefaultoptionnumber', null, $sections,
-                array('class' => 'specifydefaultoptionnumber'));
+            $specifydefaultoptionnumber =& $mform->createElement('select', 'specifydefaultoptionnumber', null, $sections);
             if (!empty($sectiondeliverymethodgroupdata->specifydefaultoptionnumber)) {
                 $specifydefaultoptionnumber->setSelected($sectiondeliverymethodgroupdata->specifydefaultoptionnumber);
             }
@@ -912,7 +912,7 @@ class format_ned extends format_base {
                 $mform->setDefault('sectiondeliveryoptions', 1);
             }
 
-            $sectiondeliverymethodgroup[] =& $mform->createElement('advcheckbox', 'scheduledeliveryoption', null,
+            $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'scheduledeliveryoption', null,
                 get_string('scheduledeliveryoption', 'format_ned'));
 
             $scheduleadvanceoptionnumbers = array();
@@ -920,8 +920,7 @@ class format_ned extends format_base {
                 $scheduleadvanceoptionnumbers[$opnum] = ''.$opnum;
             }
             $scheduleadvanceoptionnumber =& $mform->createElement('select', 'scheduleadvanceoptionnumber',
-                get_string('scheduleadvanceoption', 'format_ned'), $scheduleadvanceoptionnumbers,
-                array('class' => 'scheduleadvanceoptionnumber'));
+                get_string('scheduleadvanceoption', 'format_ned'), $scheduleadvanceoptionnumbers);
             if (!empty($sectiondeliverymethodgroupdata->scheduleadvanceoptionnumber)) {
                 $scheduleadvanceoptionnumber->setSelected($sectiondeliverymethodgroupdata->scheduleadvanceoptionnumber);
             }
@@ -953,6 +952,8 @@ class format_ned extends format_base {
             $mform->disabledIf('scheduleadvanceoptionnumber', 'scheduledeliveryoption', 'notchecked');
             $mform->disabledIf('scheduleadvanceoptionunit', 'scheduledeliveryoption', 'notchecked');
 
+            //$sectiondeliverymethodgroup[] =& $mform->createElement('html', '</div>');
+
             $elements[] = $mform->addGroup($sectiondeliverymethodgroup, 'sectiondeliverymethodgroup',
                 get_string('sectiondeliverymethod', 'format_ned'), array('<br class="nedsep" />'), false);
             $mform->addHelpButton('sectiondeliverymethodgroup', 'sectiondeliverymethod', 'format_ned');
@@ -982,13 +983,16 @@ class format_ned extends format_base {
      */
     public function update_course_format_options($data, $oldcourse = null) {
         $data = (array)$data;
+		//error_log('0: '.print_r($data, true));
 
         // Convert section delivery method to JSON for storage.
         $sectiondeliverymethod = array();
-        if (!empty($data['sectiondeliveryoption'])) {
+        if (!empty($data['sectiondeliveryoption']) && ($data['sectiondeliveryoption'] == 1)) {
             $sectiondeliverymethod['sectiondeliverymethod'] = 1;
-        } else if (!empty($data['scheduledeliveryoption'])) {
+			//error_log('1: '.print_r($data['sectiondeliveryoption'], true));
+        } else if (!empty($data['scheduledeliveryoption']) && ($data['scheduledeliveryoption'] == 1)) {
             $sectiondeliverymethod['sectiondeliverymethod'] = 2;
+			//error_log('2: '.print_r($data['scheduledeliveryoption'], true));
         }
         unset($data['sectiondeliveryoption']);
         unset($data['scheduledeliveryoption']);
@@ -1011,6 +1015,7 @@ class format_ned extends format_base {
         if (!empty($sectiondeliverymethod)) {
             // Only update if we have been parsed a set of data to update by the course edit form.
             $data['sectiondeliverymethod'] = json_encode($sectiondeliverymethod);
+			//error_log('3: '.print_r($data['sectiondeliverymethod'], true));
         }
 
         if ($oldcourse !== null) {

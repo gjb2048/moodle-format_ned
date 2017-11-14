@@ -42,9 +42,9 @@ $string['addsectionbelow'] = 'Add section below';
 // Course Settings form.
 $string['sectiondeliverymethod'] = 'Section delivery method';
 $string['sectiondeliverymethod_help'] = 'Section delivery method help';
-$string['sectiondeliveryoption'] = 'Section (do not advance sections automatically)<br>Default section:';
-$string['moodledefaultoption'] = 'Moodle default.';
-$string['sectionnotattemptedoption'] = 'Section that contains the earliest "not attempted" activity.';
+$string['sectiondeliveryoption'] = 'Section (do not advance sections automatically)<br><span>Default section:</span>';
+$string['moodledefaultoption'] = 'Moodle default';
+$string['sectionnotattemptedoption'] = 'Section that contains the earliest "not attempted" activity';
 $string['specifydefaultoption'] = 'Specify default section: ';
 $string['scheduledeliveryoption'] = 'Schedule:';
 $string['scheduleadvanceoption'] = 'Advance section every';
