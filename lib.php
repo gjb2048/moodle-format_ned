@@ -886,6 +886,7 @@ class format_ned extends format_base {
         if (!$forsection) {
             $sectiondeliverymethodgroupdata = $this->get_setting('sectiondeliverymethod');
             $sectiondeliverymethodgroup = array();
+            $sectiondeliverymethodgroup[] =& $mform->createElement('html', '<div id="nedsectiondeliverymethod">'); // Boost based themes only!
             $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'sectiondeliveryoption', null,
                 get_string('sectiondeliveryoption', 'format_ned'));
 
@@ -893,6 +894,7 @@ class format_ned extends format_base {
                 get_string('moodledefaultoption', 'format_ned'), 1);
             $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
                 get_string('sectionnotattemptedoption', 'format_ned'), 2);
+            $sectiondeliverymethodgroup[] =& $mform->createElement('html', '<div class="nedforminline">');  // Boost based themes only!
             $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
                 get_string('specifydefaultoption', 'format_ned'), 3);
             $sections = array();
@@ -911,6 +913,7 @@ class format_ned extends format_base {
             } else {
                 $mform->setDefault('sectiondeliveryoptions', 1);
             }
+            $sectiondeliverymethodgroup[] =& $mform->createElement('html', '</div><div id="nedschedule" class="nedforminline">'); // Boost based themes only!
 
             $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'scheduledeliveryoption', null,
                 get_string('scheduledeliveryoption', 'format_ned'));
@@ -944,6 +947,7 @@ class format_ned extends format_base {
             } else {
                 $mform->setDefault('sectiondeliveryoption', 'checked');
             }
+            $sectiondeliverymethodgroup[] =& $mform->createElement('html', '</div></div>'); // Boost based themes only!
 
             $mform->disabledIf('sectiondeliveryoption', 'scheduledeliveryoption', 'checked');
             $mform->disabledIf('scheduledeliveryoption', 'sectiondeliveryoption', 'checked');

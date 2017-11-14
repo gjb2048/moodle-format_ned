@@ -56,6 +56,35 @@ body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
     margin-left: .5rem;
 }
 
+/* Course settings. */
+#nedsectiondeliverymethod {
+    margin-top: -20px;
+}
+
+#nedsectiondeliverymethod label span,
+#nedsectiondeliverymethod #id_sectiondeliveryoptions_1,
+#nedsectiondeliverymethod #id_sectiondeliveryoptions_2,
+#nedsectiondeliverymethod #id_sectiondeliveryoptions_3 {
+    margin-left: 24px;
+}
+
+#nedsectiondeliverymethod .nedforminline {
+    display: flex;
+}
+
+#nedsectiondeliverymethod .nedforminline label {
+    margin: auto 0;
+    vertical-align: middle;
+}
+
+#nedsectiondeliverymethod .nedforminline select {
+    margin-left: 4px;
+}
+
+#nedsectiondeliverymethod .nedforminline#nedschedule {
+    margin-top: 4px;
+}
+
 /* Edit section icon. */
 .editing .course-content ul.ned.ned-framedsections .nedrightside .icon.edit {
     position: relative;
