@@ -115,15 +115,16 @@ class format_ned_course_renderer extends core_course_renderer {
         if ($this->relocateactivitydescription == 0) { // No change.
             return parent::course_section_cm($course, $completioninfo, $mod, $sectionreturn, $displayoptions);
         }
+        // Output here will only be for 'above'.
 
         $output = '';
-        // We return empty string (because course module will not be displayed at all)
-        // if:
-        // 1) The activity is not visible to users
-        // and
-        // 2) The 'availableinfo' is empty, i.e. the activity was
-        //     hidden in a way that leaves no info, such as using the
-        //     eye icon.
+        /* We return empty string (because course module will not be displayed at all)
+           if:
+           1) The activity is not visible to users
+           and
+           2) The 'availableinfo' is empty, i.e. the activity was
+              hidden in a way that leaves no info, such as using the
+              eye icon. */
         if (!$mod->is_visible_on_course_page()) {
             return $output;
         }
@@ -147,10 +148,10 @@ class format_ned_course_renderer extends core_course_renderer {
         // This div is used to indent the content.
         $output .= html_writer::div('', $indentclasses);
 
-        // Start a wrapper for the actual content to keep the indentation consistent
+        // Start a wrapper for the actual content to keep the indentation consistent.
         $output .= html_writer::start_tag('div');
 
-        // Display the link to the module (or do nothing if module has no url)
+        // Display the link to the module (or do nothing if module has no url).
         $cmname = $this->course_section_cm_name($mod, $displayoptions);
 
         // Content part.  This will normally be the summary but can be the content of a label.
@@ -170,8 +171,7 @@ class format_ned_course_renderer extends core_course_renderer {
             $output .= html_writer::start_tag('div', array('class' => 'activityinstance'));
             $output .= $cmname;
 
-
-            // Module can put text after the link (e.g. forum unread)
+            // Module can put text after the link (e.g. forum unread).
             $output .= $mod->afterlink;
 
             // Closing the tag which contains everything but edit icons. Content part of the module should not be part of this.
@@ -198,7 +198,11 @@ class format_ned_course_renderer extends core_course_renderer {
         $modicons .= $this->course_section_cm_completion($course, $completioninfo, $mod, $displayoptions);
 
         if (!empty($modicons)) {
-            $output .= html_writer::span($modicons, 'actions');
+            $classes = 'actions';
+            if (!empty($url)) { // Move to the bottom only if the description is above.
+                $classes .= ' nediconsbottom';
+            }
+            $output .= html_writer::span($modicons, $classes);
         }
 
         // Show availability info (if module is not available).
@@ -241,8 +245,7 @@ class format_ned_course_renderer extends core_course_renderer {
                     $textclasses .= ' nedaboveicon';
                 }
 
-                $output = html_writer::tag('div', $content, array('class' =>
-                        trim('contentafterlink '.$textclasses)));
+                $output = html_writer::tag('div', $content, array('class' => trim('contentafterlink '.$textclasses)));
             }
         } else {
             $groupinglabel = $mod->get_grouping_label($textclasses);

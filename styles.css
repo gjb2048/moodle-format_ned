@@ -161,6 +161,10 @@ ul.ned.sectioncontentjustification .section .activity .actions {
     padding: 5px 15px 1px 10px;
 }
 
+.section .activity.completion-background .contentafterlink {
+    margin-left: 40px;
+}
+
 .course-content ul.ned li.section .activity.completion-auto-fail .activityinstance,
 .course-content ul.ned li.section .activity.completion-auto-n .activityinstance,
 .course-content ul.ned li.section .activity.completion-auto-pass .activityinstance,
@@ -427,6 +431,17 @@ ul.ned-framedsections .section.main:last-child {
 }
 
 /* Relocate activity description */
-.section .activity .contentafterlink.nedaboveicon {
+.section .activity .contentafterlink.nedaboveicon,
+.section .activity.completion-background .contentafterlink.nedaboveicon {
     margin-left: 0;
+}
+
+.section .activity .actions.nediconsbottom {
+    bottom: 0;
+    top: auto;
+}
+
+.course-content ul.ned li.section .activity.completion-background .actions.nediconsbottom {
+    bottom: 7px;
+    top: auto;
 }

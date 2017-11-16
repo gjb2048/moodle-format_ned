@@ -3,6 +3,8 @@ Version Information
 Version 3.3.1.2
   1. Stage 5.
   2. Added experimental 'Relocate activity description' setting.
+  3. Fix indentation of activity description when 'Activity tracking background' is 'Show'.
+  4. Fix position of completion icon when 'Relocate activity description' is in an 'Above' state and when 'Activity tracking background' is 'Show'.
 
 Version 3.3.1.1
   1. Add border width to colour presets.
