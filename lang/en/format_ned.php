@@ -96,7 +96,9 @@ $string['hidemanualcompletion'] = 'Hide manual completion description';
 $string['showalldescriptions'] = 'Show all descriptions';
 
 // NED Site settings.
-$string['activityresourcemouseover'] = 'Activity resource mouseover effect';
+$string['aboveicon'] = 'Above icon';
+$string['abovetext'] = 'Above text';
+$string['activityresourcemouseover'] = 'Activity resource mouseover effect.';
 $string['activityresourcemouseover_desc'] = 'Set the default activity resource mouseover effect';
 $string['activitytrackingbackground'] = 'Activity tracking background';
 $string['activitytrackingbackground_desc'] = 'Show or hide the activity tracking background.';
@@ -109,6 +111,8 @@ $string['locationoftrackingicons'] = 'Location of tracking icons';
 $string['locationoftrackingicons_desc'] = 'Set the location of the tracking icons.';
 $string['progresstooltip'] = 'Progress tooltip';
 $string['progresstooltip_desc'] = 'Set the default for the progress tooltip.';
+$string['relocateactivitydescription'] = 'Relocate activity description';
+$string['relocateactivitydescription_desc'] = 'Choose the postion of the activity description.';
 $string['sectionformatframedcustom_desc'] = 'Allow the \'Framed sections + Custom header\' option in the \'Section formats\'.  Note: This may change the value of the \'Section format\' setting above.';
 $string['sectionheaderformats'] = 'Header formats';
 $string['sectionheaderformats_desc'] = 'Header formats for use when the section format is \'Framed sections + Formatted header\'.';

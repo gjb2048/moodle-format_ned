@@ -30,6 +30,19 @@ class format_ned_course_renderer extends core_course_renderer {
 
     private $activitytrackingbackground;
     private $locationoftrackingicons;
+    private $relocateactivitydescription;
+
+    /**
+     * Override the constructor so that we can initialise the relocate activity description
+     * as it will be used many times.
+     *
+     * @param moodle_page $page
+     * @param string $target
+     */
+    public function __construct(moodle_page $page, $target) {
+        $this->relocateactivitydescription = get_config('format_ned', 'relocateactivitydescription');
+        parent::__construct($page, $target);
+    }
 
     /**
      * Set the state of settings needed to make decisions upon.
@@ -73,6 +86,170 @@ class format_ned_course_renderer extends core_course_renderer {
                 }
             }
             $output .= html_writer::tag('li', $modulehtml, array('class' => $modclasses, 'id' => 'module-' . $mod->id));
+        }
+        return $output;
+    }
+
+    /**
+     * Renders HTML to display one course module in a course section
+     *
+     * This includes link, content, availability, completion info and additional information
+     * that module type wants to display (i.e. number of unread forum posts)
+     *
+     * This function calls:
+     * {@link core_course_renderer::course_section_cm_name()}
+     * {@link core_course_renderer::course_section_cm_text()}
+     * {@link core_course_renderer::course_section_cm_availability()}
+     * {@link core_course_renderer::course_section_cm_completion()}
+     * {@link course_get_cm_edit_actions()}
+     * {@link core_course_renderer::course_section_cm_edit_actions()}
+     *
+     * @param stdClass $course
+     * @param completion_info $completioninfo
+     * @param cm_info $mod
+     * @param int|null $sectionreturn
+     * @param array $displayoptions
+     * @return string
+     */
+    public function course_section_cm($course, &$completioninfo, cm_info $mod, $sectionreturn, $displayoptions = array()) {
+        if ($this->relocateactivitydescription == 0) { // No change.
+            return parent::course_section_cm($course, $completioninfo, $mod, $sectionreturn, $displayoptions);
+        }
+
+        $output = '';
+        // We return empty string (because course module will not be displayed at all)
+        // if:
+        // 1) The activity is not visible to users
+        // and
+        // 2) The 'availableinfo' is empty, i.e. the activity was
+        //     hidden in a way that leaves no info, such as using the
+        //     eye icon.
+        if (!$mod->is_visible_on_course_page()) {
+            return $output;
+        }
+
+        $indentclasses = 'mod-indent';
+        if (!empty($mod->indent)) {
+            $indentclasses .= ' mod-indent-'.$mod->indent;
+            if ($mod->indent > 15) {
+                $indentclasses .= ' mod-indent-huge';
+            }
+        }
+
+        $output .= html_writer::start_tag('div');
+
+        if ($this->page->user_is_editing()) {
+            $output .= course_get_cm_move($mod, $sectionreturn);
+        }
+
+        $output .= html_writer::start_tag('div', array('class' => 'mod-indent-outer'));
+
+        // This div is used to indent the content.
+        $output .= html_writer::div('', $indentclasses);
+
+        // Start a wrapper for the actual content to keep the indentation consistent
+        $output .= html_writer::start_tag('div');
+
+        // Display the link to the module (or do nothing if module has no url)
+        $cmname = $this->course_section_cm_name($mod, $displayoptions);
+
+        // Content part.  This will normally be the summary but can be the content of a label.
+        $contentpart = $this->course_section_cm_text($mod, $displayoptions);
+        $url = $mod->url;
+
+        /* If there is content AND a link, then display the content here
+           (BEFORE any icons).  Otherwise it will be after in the 'parent' call.
+           Thus $this->relocateactivitydescription will be in an 'Above' state.
+        */
+        if (!empty($url)) {
+            $output .= $contentpart;
+        }
+
+        if (!empty($cmname)) {
+            // Start the div for the activity title, excluding the edit icons.
+            $output .= html_writer::start_tag('div', array('class' => 'activityinstance'));
+            $output .= $cmname;
+
+
+            // Module can put text after the link (e.g. forum unread)
+            $output .= $mod->afterlink;
+
+            // Closing the tag which contains everything but edit icons. Content part of the module should not be part of this.
+            $output .= html_writer::end_tag('div'); // .activityinstance
+        }
+
+        /* If there is content but NO link (eg label), then display the
+           content here (BEFORE any icons). In this case icons must be
+           displayed after the content so that it makes more sense visually
+           and for accessibility reasons, e.g. if you have a one-line label
+           it should work similarly (at least in terms of ordering) to an
+           activity. */
+        if (empty($url)) {
+            $output .= $contentpart;
+        }
+
+        $modicons = '';
+        if ($this->page->user_is_editing()) {
+            $editactions = course_get_cm_edit_actions($mod, $mod->indent, $sectionreturn);
+            $modicons .= ' '. $this->course_section_cm_edit_actions($editactions, $mod, $displayoptions);
+            $modicons .= $mod->afterediticons;
+        }
+
+        $modicons .= $this->course_section_cm_completion($course, $completioninfo, $mod, $displayoptions);
+
+        if (!empty($modicons)) {
+            $output .= html_writer::span($modicons, 'actions');
+        }
+
+        // Show availability info (if module is not available).
+        $output .= $this->course_section_cm_availability($mod, $displayoptions);
+
+        $output .= html_writer::end_tag('div'); // $indentclasses.
+
+        // End of indentation div.
+        $output .= html_writer::end_tag('div');
+
+        $output .= html_writer::end_tag('div');
+        return $output;
+    }
+
+    /**
+     * Renders html to display the module content on the course page (i.e. text of the labels)
+     *
+     * @param cm_info $mod
+     * @param array $displayoptions
+     * @return string
+     */
+    public function course_section_cm_text(cm_info $mod, $displayoptions = array()) {
+        if ($this->relocateactivitydescription == 0) { // No change.
+            return parent::course_section_cm_text($mod, $displayoptions);
+        }
+
+        $output = '';
+        if (!$mod->is_visible_on_course_page()) {
+            // nothing to be displayed to the user
+            return $output;
+        }
+        $content = $mod->get_formatted_content(array('overflowdiv' => true, 'noclean' => true));
+        list($linkclasses, $textclasses) = $this->course_section_cm_classes($mod);
+        if ($mod->url && $mod->uservisible) {
+            if ($content) {
+                // If specified, display extra content after link.
+
+                // If above the icon then will need to adjust the margin.
+                if ($this->relocateactivitydescription == 2) { // Above icon.
+                    $textclasses .= ' nedaboveicon';
+                }
+
+                $output = html_writer::tag('div', $content, array('class' =>
+                        trim('contentafterlink '.$textclasses)));
+            }
+        } else {
+            $groupinglabel = $mod->get_grouping_label($textclasses);
+
+            // No link, so display only content.
+            $output = html_writer::tag('div', $content . $groupinglabel,
+                    array('class' => 'contentwithoutlink '.$textclasses));
         }
         return $output;
     }

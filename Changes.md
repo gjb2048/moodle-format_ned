@@ -2,6 +2,7 @@ Version Information
 ===================
 Version 3.3.1.2
   1. Stage 5.
+  2. Added experimental 'Relocate activity description' setting.
 
 Version 3.3.1.1
   1. Add border width to colour presets.

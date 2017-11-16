@@ -425,3 +425,8 @@ ul.ned-framedsections .section.main:last-child {
 .course-content ul.ned.nedactresmouseover li.section .activity.completion-background:hover:not(.label) .actions {
     top: 14px;
 }
+
+/* Relocate activity description */
+.section .activity .contentafterlink.nedaboveicon {
+    margin-left: 0;
+}

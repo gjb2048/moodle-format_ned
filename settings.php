@@ -193,4 +193,17 @@ if ($ADMIN->fulltree) {
         )
     );
     $settings->add($setting);
+
+    $name = 'format_ned/relocateactivitydescription';
+    $title = get_string('relocateactivitydescription', 'format_ned');
+    $description = get_string('relocateactivitydescription_desc', 'format_ned');
+    $default = 0;
+    $setting = new ned_admin_setting_configselect($name, $title, $description, $default,
+        array(
+            0 => get_string('nochange'),
+            1 => get_string('abovetext', 'format_ned'),
+            2 => get_string('aboveicon', 'format_ned')
+        )
+    );
+    $settings->add($setting);
 }
