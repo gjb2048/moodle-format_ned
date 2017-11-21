@@ -18,23 +18,32 @@ define(['jquery', 'core/log'], function($, log) {
         init: function() {
             $(document).ready(function($) {
                 // Individual toggles.
-                $('ul.nededitingsection li.section').off('click').click(function (e) {
-                    // Somehow getting the 'click' twice!  So had to remove all click handlers on the selectors first.
-                    var target = $(e.target);
-                    if (target.is('ul.section')) return;
-                    if (target.is('div.visibleifjs')) return;
-                    $(this).find('.content .section').toggle();
+                $('ul.nededitingsection li.section .left .nededitingsectionpix').click(function (e) {
+                    $(this).parent('.left').parent('.section').find('.content .section').toggle();
+                    if ($(this).hasClass('closed')) {
+                        $(this).removeClass('closed').addClass('open');
+                    } else {
+                        $(this).removeClass('open').addClass('closed');
+                    }
                 });
                 // All toggles compress.
                 $('#nededitingsectioncompressed').click(function () {
                     $('ul.nededitingsection li.section').each(function () {
                         $(this).find('.content .section').hide();
+                        var nededitingsectionpix = $(this).find('.left .nededitingsectionpix');
+                        if ($(nededitingsectionpix).hasClass('open')) {
+                            $(nededitingsectionpix).removeClass('open').addClass('closed');
+                        }
                     });
                 });
                 // All toggles expand.
                 $('#nededitingsectionexpanded').click(function () {
                     $('ul.nededitingsection li.section').each(function () {
                         $(this).find('.content .section').show();
+                        var nededitingsectionpix = $(this).find('.left .nededitingsectionpix');
+                        if ($(nededitingsectionpix).hasClass('closed')) {
+                            $(nededitingsectionpix).removeClass('closed').addClass('open');
+                        }
                     });
                 });
             });

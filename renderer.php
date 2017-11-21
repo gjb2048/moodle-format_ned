@@ -415,6 +415,27 @@ class format_ned_renderer extends format_section_renderer_base {
     }
 
     /**
+     * Generate the content to displayed on the left part of a section
+     * before course modules are included
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @param stdClass $course The course entry from DB
+     * @param bool $onsectionpage true if being printed on a section page
+     * @return string HTML to output.
+     */
+    protected function section_left_content($section, $course, $onsectionpage) {
+        $o = '';
+
+        if (($this->settings['compressedsections'] == 1) && ($this->editing)) {
+            $o .= html_writer::tag('span', '', array('class' => 'nededitingsectionpix closed'));
+        }
+
+        $o .= parent::section_left_content($section, $course, $onsectionpage);
+
+        return $o;
+    }
+
+    /**
      * Generate the content to displayed on the right part of a section
      * before course modules are included
      *

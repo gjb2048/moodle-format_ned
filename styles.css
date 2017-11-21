@@ -454,3 +454,17 @@ ul.ned-framedsections .section.main:last-child {
 ul.nededitingsection li.section .content .section {
     display: none;
 }
+
+ul.nededitingsection li.section .left .nededitingsectionpix {
+    display: block;
+    height: 24px;
+    width: 24px;
+}
+
+ul.nededitingsection li.section .left .nededitingsectionpix.closed {
+    background-image: url([[pix:format_ned|point_right]]);
+}
+
+ul.nededitingsection li.section .left .nededitingsectionpix.open {
+    background-image: url([[pix:format_ned|point_down]]);
+}
