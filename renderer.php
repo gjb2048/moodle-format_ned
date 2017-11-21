@@ -67,6 +67,9 @@ class format_ned_renderer extends format_section_renderer_base {
             $this->settings['activitytrackingbackground'],
             $this->settings['locationoftrackingicons']
         );
+        if (($this->settings['compressedsections'] == 1) && ($this->editing)) {
+            $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init', array());
+        }
     }
 
     /**
@@ -86,6 +89,8 @@ class format_ned_renderer extends format_section_renderer_base {
             if ((false) && ($this->settings['sectioncontentjustification'])) {
                 $classes .= ' sectioncontentjustification';
             }
+        } else if ($this->settings['compressedsections'] == 1) {
+            $classes .= ' nededitingsection';
         }
         return html_writer::start_tag('ul', array('class' => $classes));
     }
@@ -96,6 +101,7 @@ class format_ned_renderer extends format_section_renderer_base {
      */
     protected function start_section_list() {
         $classes = 'ned';
+
         if ($this->settings['sectionformat'] >= 1) { // Framed sections.
             $classes .= ' ned-framedsections';
             if ($this->settings['sectionformat'] == 2) { // Framed sections with custom header.
@@ -115,6 +121,8 @@ class format_ned_renderer extends format_section_renderer_base {
             if ((false) && ($this->settings['sectioncontentjustification'])) {
                 $classes .= ' sectioncontentjustification';
             }
+        } else if ($this->settings['compressedsections'] == 1) {
+            $classes .= ' nededitingsection';
         }
         return html_writer::start_tag('ul', array('class' => $classes));
     }

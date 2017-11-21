@@ -71,6 +71,7 @@ class format_ned extends format_base {
             }
             $this->settings['activitytrackingbackground'] = get_config('format_ned', 'activitytrackingbackground');
             $this->settings['activityresourcemouseover'] = get_config('format_ned', 'activityresourcemouseover');
+            $this->settings['compressedsections'] = get_config('format_ned', 'compressedsections');
             $this->settings['locationoftrackingicons'] = get_config('format_ned', 'locationoftrackingicons');
             $this->settings['progresstooltip'] = get_config('format_ned', 'progresstooltip');
         }
@@ -97,6 +98,8 @@ class format_ned extends format_base {
             return $this->settings['activitytrackingbackground'];
         } else if ($name == 'activityresourcemouseover') {
             return $this->settings['activityresourcemouseover'];
+        } else if ($name == 'compressedsections') {
+            return $this->settings['compressedsections'];
         } else if ($name == 'locationoftrackingicons') {
             return $this->settings['locationoftrackingicons'];
         } else if ($name == 'progresstooltip') {

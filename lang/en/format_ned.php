@@ -157,3 +157,9 @@ If a box with a dotted border is shown, a tick will appear automatically when yo
 $string['completion-alt-saved'] = 'Saved: {$a}';
 $string['completion-alt-submitted'] = 'Submitted: {$a}';
 $string['completion-alt-waitinggrade'] = 'Waiting for grade: {$a}';
+
+// Editing toggle all.
+$string['compressed'] = 'Compressed';
+$string['expanded'] = 'Expanded';
+$string['compressedsections'] = 'Compressed sections';
+$string['compressedsections_desc'] = 'Allow compressed sections, so when \'editing\' compress the section content on page load.  To expand or re-compress a section, click on it.  To expand / re-compress all sections, use the buttons provided adjacent to the \'Edit NED Format Settings\' icon.';

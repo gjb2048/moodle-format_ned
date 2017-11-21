@@ -445,3 +445,12 @@ ul.ned-framedsections .section.main:last-child {
     bottom: 7px;
     top: auto;
 }
+
+/* Editing toggle all. */
+.nededitingsectionmenu span {
+    margin-left: 4px;
+}
+
+ul.nededitingsection li.section .content .section {
+    display: none;
+}
