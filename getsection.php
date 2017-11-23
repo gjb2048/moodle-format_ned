@@ -42,8 +42,7 @@ $courseid = optional_param('courseid', 0, PARAM_INT);
 $sectionno = optional_param('sectionno', -1, PARAM_INT);
 if (($courseid > 0) && ($sectionno > -1)) {
     header('HTTP/1.1 200 OK');
-    echo 'CID: '.$courseid.' SNO: '.$sectionno;
-    echo '<div courseid="'.$courseid.'" sectionno="'.$sectionno.'"></div>';
+    echo '<div courseid="'.$courseid.'" sectionno="'.$sectionno.'">CID: '.$courseid.' SNO: '.$sectionno.'</div>';
 } else {
     header('HTTP/1.1 400 Bad Request');
     echo 'Bad Request';
