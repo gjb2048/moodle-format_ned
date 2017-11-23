@@ -48,7 +48,7 @@ define(['jquery', 'core/log'], function($, log) {
                     log.debug('NED Format Editing Section AMD data: ' + JSON.stringify(data));
                 }
 
-                $().getSection(data.courseid, 2);
+                $().getSection(data.courseid, 1);
 
                 // Individual toggles.
                 $('ul.nededitingsection li.section .left .nededitingsectionpix').click(function (e) {

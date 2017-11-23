@@ -48,9 +48,10 @@ if (($courseid > 0) && ($sectionno > -1)) {
     global $PAGE;
     $coursecontext = context_course::instance($courseid);
     $PAGE->set_context($coursecontext);
-    $courseformat = course_get_format($courseid);
+    $course = course_get_format($courseid)->get_course();
     $renderer = $PAGE->get_renderer('format_ned');
-    $renderer->set_courseformat($courseformat);
+    //$renderer->set_courseformat($courseformat);
+    echo $renderer->get_section($course, $sectionno);
     //$courserenderer = $PAGE->get_renderer('format_ned', 'course');
 
 } else {

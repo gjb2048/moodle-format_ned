@@ -596,6 +596,11 @@ class format_ned_renderer extends format_section_renderer_base {
         return $o;
     }
 
+    public function get_section($course, $sectionno) {
+        $this->courserenderer = $this->page->get_renderer('format_ned', 'course');
+        return $this->courserenderer->course_section_cm_list($course, $sectionno, 0);
+    }
+
     /**
      * Output the html for a single section page.
      *
