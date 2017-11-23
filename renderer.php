@@ -68,7 +68,9 @@ class format_ned_renderer extends format_section_renderer_base {
             $this->settings['locationoftrackingicons']
         );
         if (($this->settings['compressedsections'] == 1) && ($this->editing)) {
-            $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init', array());
+            $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init',
+                array('data' => array('courseid' => $this->courseformat->get_courseid()))
+            );
         }
     }
 
@@ -194,9 +196,16 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Note 'get_section_name(course, section)' just calls the format's lib.php 'get_section_name(section)'!
         $thesectionname = $this->courseformat->get_section_name($section);
-        $o .= html_writer::start_tag('li', array('id' => 'section-'.$section->section,
-            'class' => 'section main clearfix'.$sectionstyle, 'role' => 'region',
-            'aria-label' => $thesectionname));
+        $liattributes = array(
+            'id' => 'section-'.$section->section,
+            'class' => 'section main clearfix'.$sectionstyle,
+            'role' => 'region',
+            'aria-label' => $thesectionname
+        );
+        if (($this->editing) && ($this->settings['compressedsections'] == 1)) {
+            $liattributes['nedsection'] = $section->section;
+        }
+        $o .= html_writer::start_tag('li', $liattributes);
 
         // Create a span that contains the section title to be used to create the keyboard section move menu.
         $o .= html_writer::tag('span', $thesectionname, array('class' => 'hidden sectionname'));
@@ -802,5 +811,6 @@ class format_ned_renderer extends format_section_renderer_base {
         } else {
             echo $this->end_section_list();
         }
+		echo '<div class="nedlog"> ME! </div>';
     }
 }

@@ -14,9 +14,40 @@
 define(['jquery', 'core/log'], function($, log) {
     log.debug('NED Format Editing Section AMD');
 
+    (function($) {
+        "use strict";
+
+        $.fn.getSection = function(courseid, sectionno) {
+            var url = M.cfg.wwwroot + '/course/format/ned/getsection.php?sesskey=' + M.cfg.sesskey + '&courseid=' + encodeURI(courseid) + '&sectionno=' + encodeURI(sectionno); // jshint ignore:line
+            log.debug('NED Format Editing Section AMD request url: ' + url);
+            var request = $.ajax({
+                url: url,
+                method: "GET",
+                cache: false,
+                dataType: "html"
+            });
+ 
+            request.done(function(msg) {
+                log.debug('NED Format Editing Section AMD request done: ' + msg);
+                $('.nedlog').html(msg);
+            });
+ 
+            request.fail(function(jqXHR, textStatus) {
+                log.debug('NED Format Editing Section AMD request failed: ' + textStatus);
+            });
+
+        }
+    }($));
+
     return {
-        init: function() {
+        init: function(data) {
             $(document).ready(function($) {
+                if (window.JSON && window.JSON.stringify) {
+                    log.debug('NED Format Editing Section AMD data: ' + JSON.stringify(data));
+                }
+
+                $().getSection(data.courseid, 4);
+
                 // Individual toggles.
                 $('ul.nededitingsection li.section .left .nededitingsectionpix').click(function (e) {
                     $(this).parent('.left').parent('.section').find('.content .section').toggle();
