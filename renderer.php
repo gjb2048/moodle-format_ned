@@ -68,7 +68,14 @@ class format_ned_renderer extends format_section_renderer_base {
             $this->settings['locationoftrackingicons']
         );
         if (($this->settings['compressedsections'] == 1) && ($this->editing)) {
-            $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init', array());
+            $courseid = $this->courseformat->get_courseid();
+            $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init',
+                array('data' => array('courseid' => $courseid))
+            );
+            $this->page->requires->js_init_call('M.format_ned.init', array(
+                $courseid,
+                $this->editing)
+            );
         }
     }
 
@@ -194,9 +201,13 @@ class format_ned_renderer extends format_section_renderer_base {
 
         // Note 'get_section_name(course, section)' just calls the format's lib.php 'get_section_name(section)'!
         $thesectionname = $this->courseformat->get_section_name($section);
-        $o .= html_writer::start_tag('li', array('id' => 'section-'.$section->section,
-            'class' => 'section main clearfix'.$sectionstyle, 'role' => 'region',
-            'aria-label' => $thesectionname));
+        $liattributes = array(
+            'id' => 'section-'.$section->section,
+            'class' => 'section main clearfix'.$sectionstyle,
+            'role' => 'region',
+            'aria-label' => $thesectionname
+        );
+        $o .= html_writer::start_tag('li', $liattributes);
 
         // Create a span that contains the section title to be used to create the keyboard section move menu.
         $o .= html_writer::tag('span', $thesectionname, array('class' => 'hidden sectionname'));
@@ -587,6 +598,11 @@ class format_ned_renderer extends format_section_renderer_base {
         return $o;
     }
 
+    public function get_section($course, $sectionno) {
+        $this->courserenderer = $this->page->get_renderer('format_ned', 'course');
+        return $this->courserenderer->course_section_cm_list($course, $sectionno, 0);
+    }
+
     /**
      * Output the html for a single section page.
      *
@@ -774,7 +790,12 @@ class format_ned_renderer extends format_section_renderer_base {
                             }
                             echo $this->display_completion_help_icon($completioninfo, $course->id);
                         }
-                        echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                        if (($this->settings['compressedsections'] == 1) && ($this->editing)) {
+                            //echo html_writer::tag('div', '', array('class' => 'section img-text', 'nedsectionno' => $section));
+                            echo $this->courserenderer->course_section_cm_list_empty($course, $thissection, 0);
+                        } else {
+                            echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                        }
                         echo $this->courserenderer->course_section_add_cm_control($course, $section, 0);
                     }
                     echo $this->section_footer();
