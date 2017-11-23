@@ -29,6 +29,7 @@ if (!defined('AJAX_SCRIPT')) {
 }
 
 require_once(__DIR__.'/../../../config.php');
+require_once(__DIR__.'/../lib.php');
 
 // Check access.
 if (!confirm_sesskey()) {
@@ -42,7 +43,16 @@ $courseid = optional_param('courseid', 0, PARAM_INT);
 $sectionno = optional_param('sectionno', -1, PARAM_INT);
 if (($courseid > 0) && ($sectionno > -1)) {
     header('HTTP/1.1 200 OK');
-    echo '<div courseid="'.$courseid.'" sectionno="'.$sectionno.'">CID: '.$courseid.' SNO: '.$sectionno.'</div>';
+    //echo '<div courseid="'.$courseid.'" sectionno="'.$sectionno.'">CID: '.$courseid.' SNO: '.$sectionno.'</div>';
+
+    global $PAGE;
+    $coursecontext = context_course::instance($courseid);
+    $PAGE->set_context($coursecontext);
+    $courseformat = course_get_format($courseid);
+    $renderer = $PAGE->get_renderer('format_ned');
+    $renderer->set_courseformat($courseformat);
+    //$courserenderer = $PAGE->get_renderer('format_ned', 'course');
+
 } else {
     header('HTTP/1.1 400 Bad Request');
     echo 'Bad Request';
