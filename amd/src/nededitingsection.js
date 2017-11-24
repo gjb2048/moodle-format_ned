@@ -63,7 +63,10 @@ define(['jquery', 'core/log'], function($, log) {
                         var sectionno = $(this).attr('nedsectionno');
                         if (sectionno != undefined) {
                             $(this).getSection(data.courseid, sectionno);
-                            Y.use("moodle-course-dragdrop", function() {M.course.init_section_dragdrop({"courseid":"5","ajaxurl":"/course/rest.php","config":{"resourceurl":"/course/rest.php","sectionurl":"/course/rest.php","pageparams":[]}});});
+                            //Y.use("moodle-course-dragdrop", function() {M.course.init_resource_dragdrop({"courseid":"5","ajaxurl":"/course/rest.php","config":{"resourceurl":"/course/rest.php","sectionurl":"/course/rest.php","pageparams":[]}});});
+                            //M.course.init_resource_dragdrop({"courseid":"5","ajaxurl":"/course/rest.php","config":{"resourceurl":"/course/rest.php","sectionurl":"/course/rest.php","pageparams":[]}});
+                            //M.course.init_resource_dragdrop.setup_for_section('.course-content li.section');
+                            //Y.use("moodle-course-dragdrop", function() { M.course.init_resource_dragdrop.setup_for_section('.course-content li.section');});
                         } else {
                             $(this).toggle();
                         }
