@@ -202,9 +202,6 @@ class format_ned_renderer extends format_section_renderer_base {
             'role' => 'region',
             'aria-label' => $thesectionname
         );
-        if (($this->editing) && ($this->settings['compressedsections'] == 1)) {
-            $liattributes['nedsection'] = $section->section;
-        }
         $o .= html_writer::start_tag('li', $liattributes);
 
         // Create a span that contains the section title to be used to create the keyboard section move menu.
@@ -788,7 +785,12 @@ class format_ned_renderer extends format_section_renderer_base {
                             }
                             echo $this->display_completion_help_icon($completioninfo, $course->id);
                         }
-                        echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                        if (($this->settings['compressedsections'] == 1) && ($this->editing)) {
+                            //echo html_writer::tag('div', '', array('class' => 'section img-text', 'nedsectionno' => $section));
+                            echo $this->courserenderer->course_section_cm_list_empty($course, $thissection, 0);
+                        } else {
+                            echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                        }
                         echo $this->courserenderer->course_section_add_cm_control($course, $section, 0);
                     }
                     echo $this->section_footer();
@@ -816,6 +818,5 @@ class format_ned_renderer extends format_section_renderer_base {
         } else {
             echo $this->end_section_list();
         }
-		echo '<div class="nedlog"> ME! </div>';
     }
 }

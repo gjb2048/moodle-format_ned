@@ -18,8 +18,9 @@ define(['jquery', 'core/log'], function($, log) {
         "use strict";
 
         $.fn.getSection = function(courseid, sectionno) {
-            //var url = M.cfg.wwwroot + '/course/format/ned/getsection.php?sesskey=' + M.cfg.sesskey + '&courseid=' + encodeURI(courseid) + '&sectionno=' + encodeURI(sectionno); // jshint ignore:line
             var url = M.cfg.wwwroot + '/course/format/ned/getsection.php'; // jshint ignore:line
+            var us = this;
+
             log.debug('NED Format Editing Section AMD request url: ' + url);
             var request = $.ajax({
                 url: url,
@@ -29,9 +30,9 @@ define(['jquery', 'core/log'], function($, log) {
                 dataType: "html"
             });
  
-            request.done(function(msg) {
-                log.debug('NED Format Editing Section AMD request done: ' + msg);
-                $('.nedlog').html(msg);
+            request.done(function(html) {
+                log.debug('NED Format Editing Section AMD request done: ' + html);
+                $(us).replaceWith(html);
             });
  
             request.fail(function(jqXHR, textStatus) {
@@ -48,16 +49,25 @@ define(['jquery', 'core/log'], function($, log) {
                     log.debug('NED Format Editing Section AMD data: ' + JSON.stringify(data));
                 }
 
-                $().getSection(data.courseid, 1);
+                //$().getSection(data.courseid, 1);
 
                 // Individual toggles.
                 $('ul.nededitingsection li.section .left .nededitingsectionpix').click(function (e) {
-                    $(this).parent('.left').parent('.section').find('.content .section').toggle();
                     if ($(this).hasClass('closed')) {
                         $(this).removeClass('closed').addClass('open');
                     } else {
                         $(this).removeClass('open').addClass('closed');
                     }
+                    $(this).parent('.left').parent('.section').find('.content .section').each(function() {
+                        //$(this).html('<div>Me!</div>');
+                        var sectionno = $(this).attr('nedsectionno');
+                        if (sectionno != undefined) {
+                            $(this).getSection(data.courseid, sectionno);
+                            Y.use("moodle-course-dragdrop", function() {M.course.init_section_dragdrop({"courseid":"5","ajaxurl":"/course/rest.php","config":{"resourceurl":"/course/rest.php","sectionurl":"/course/rest.php","pageparams":[]}});});
+                        } else {
+                            $(this).toggle();
+                        }
+                    });
                 });
                 // All toggles compress.
                 $('#nededitingsectioncompressed').click(function () {
