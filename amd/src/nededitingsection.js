@@ -67,6 +67,16 @@ define(['jquery', 'core/log'], function($, log) {
                             //M.course.init_resource_dragdrop({"courseid":"5","ajaxurl":"/course/rest.php","config":{"resourceurl":"/course/rest.php","sectionurl":"/course/rest.php","pageparams":[]}});
                             //M.course.init_resource_dragdrop.setup_for_section('.course-content li.section');
                             //Y.use("moodle-course-dragdrop", function() { M.course.init_resource_dragdrop.setup_for_section('.course-content li.section');});
+                            //log.debug('NED Format Editing Section AMD DD: ' + JSON.stringify(M.course.init_resource_dragdrop));
+                            //log.debug('NED Format Editing Section AMD Y: ' + JSON.stringify(Y));
+                            log.debug('NED Format Editing Section AMD M.cfg: ' + JSON.stringify(M.cfg));
+                            log.debug('NED Format Editing Section AMD M.course.init_resource_dragdrop(NY): ' + JSON.stringify(M.course.init_resource_dragdrop));
+                            Y.use("moodle-course-dragdrop", function() {
+                                log.debug('NED Format Editing Section AMD M.course.init_resource_dragdrop(UY): ' + JSON.stringify(M.course.init_resource_dragdrop));
+                                //log.debug('NED Format Editing Section AMD M.course(UY): ' + JSON.stringify(M.course));
+                            });
+                            log.debug('NED Format Editing Section AMD M.format_ned.init: ' + JSON.stringify(M.format_ned.init));
+                            M.format_ned.dragdrop();
                         } else {
                             $(this).toggle();
                         }

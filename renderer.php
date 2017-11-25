@@ -68,8 +68,13 @@ class format_ned_renderer extends format_section_renderer_base {
             $this->settings['locationoftrackingicons']
         );
         if (($this->settings['compressedsections'] == 1) && ($this->editing)) {
+            $courseid = $this->courseformat->get_courseid();
             $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init',
-                array('data' => array('courseid' => $this->courseformat->get_courseid()))
+                array('data' => array('courseid' => $courseid))
+            );
+            $this->page->requires->js_init_call('M.format_ned.init', array(
+                $courseid,
+                $this->editing)
             );
         }
     }
