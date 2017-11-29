@@ -453,7 +453,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $controls = $this->section_edit_control_items($course, $section, $onsectionpage);
 
         if (array_key_exists("edit", $controls)) {
-            $icon = $this->output->pix_icon($controls['edit']['icon'], $controls['edit']['name'], 'moodle', $controls['edit']['pixattr']);
+            $icon = $this->output->pix_icon('edit_header', $controls['edit']['name'], 'format_ned', $controls['edit']['pixattr']);
             $o .= html_writer::link($controls['edit']['url'], $icon, $controls['edit']['attr']);
 
             unset($controls['edit']);
