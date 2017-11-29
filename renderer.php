@@ -78,6 +78,9 @@ class format_ned_renderer extends format_section_renderer_base {
      */
     protected function start_section0_list() {
         $classes = 'ned';
+        if ($this->settings['sectionformat'] >= 1) { // Framed sections.
+            $classes .= ' ned-framedsections-s0';
+        }
         if (!$this->editing) {
             if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
                 $classes .= ' '.\format_ned\toolbox::$nediconsleft;

@@ -45,3 +45,9 @@ div.ned-button.row {
 #fgroup_id_sectiondeliverymethodgroup .fgroup #id_scheduleadvanceoptionunit {
     margin-left: 4px;
 }
+
+/* Framed sections with section 0 */
+.course-content ul.ned-framedsections-s0 li.section.main,
+.course-content ul.ned-framedsections li.section.main {
+    border-bottom-width: 0;
+}

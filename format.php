@@ -62,6 +62,8 @@ if (!empty($formatdisplaysectionno)) {
     $displaysection = $formatdisplaysectionno;
 }
 
+$weareediting = $PAGE->user_is_editing();
+
 $sectionformat = $courseformat->get_setting('sectionformat');
 if ($sectionformat >= 1) { // Framed sections.
     $formatcolourpreset = $courseformat->get_setting('colourpreset');
@@ -71,9 +73,21 @@ if ($sectionformat >= 1) { // Framed sections.
             echo '<style type="text/css" media="screen">';
             echo '/* <![CDATA[ */';
 
-            echo 'ul.ned-framedsections .section.main {';
-            echo 'background-color: #'.$preset->framedsectionbgcolour.';';
-            echo '}';
+            if ($weareediting) {
+                echo 'ul.ned-framedsections .section.main .header,';
+                echo 'ul.ned-framedsections .section.main .footer {';
+                echo 'background-color: #'.$preset->framedsectionbgcolour.';';
+                echo '}';
+
+                echo 'ul.ned-framedsections .section.main .content {';
+                echo 'border-left-color: #'.$preset->framedsectionbgcolour.';';
+                echo 'border-right-color: #'.$preset->framedsectionbgcolour.';';
+                echo '}';
+            } else {
+                echo 'ul.ned-framedsections .section.main {';
+                echo 'background-color: #'.$preset->framedsectionbgcolour.';';
+                echo '}';
+            }
 
             if ($sectionformat == 3) { // Framed sections + Formatted header.
                 echo '.ned-framedsections .section .header,';
@@ -143,18 +157,34 @@ if ($sectionformat >= 1) { // Framed sections.
                     } else {
                         $sectionpreset = $DB->get_record('format_ned_colour', array('id' => $presetno));
                     }
-
-                    $selectors = array();
-                    foreach ($sectionnos as $sectionno) {
-                        $selectors[] = 'ul.ned-framedsections '.$sectionno.'.section.main';
-                    }
-                    echo implode(',', $selectors).' {';
                     /* Note: If $sectionpreset is null then check that 'sectionheaderformats' in the 'course_format_options' table
                              in the database has not been corrupted and contains 'null's for the 'colourpreset'.
                              This can be caused by '$data[$shfrow.'colourpreset']' being 'null' in 'update_course_format_options()'
                              in lib.php. */
+
+                    $selectors = array();
+                    foreach ($sectionnos as $sectionno) {
+                        if ($weareediting) {
+                            $selectors[] = 'ul.ned-framedsections '.$sectionno.'.section.main .header,'.
+                                'ul.ned-framedsections '.$sectionno.'.section.main .footer';
+                        } else {
+                            $selectors[] = 'ul.ned-framedsections '.$sectionno.'.section.main';
+                        }
+                    }
+                    echo implode(',', $selectors).' {';
                     echo 'background-color: #'.$sectionpreset->framedsectionbgcolour.';';
                     echo '}';
+
+                    if ($weareediting) {
+                        $selectors = array();
+                        foreach ($sectionnos as $sectionno) {
+                            $selectors[] = 'ul.ned-framedsections '.$sectionno.'.section.main .content';
+                        }
+                        echo implode(',', $selectors).' {';
+                        echo 'border-left-color: #'.$sectionpreset->framedsectionbgcolour.';';
+                        echo 'border-right-color: #'.$sectionpreset->framedsectionbgcolour.';';
+                        echo '}';
+                    }
 
                     $selectors = array();
                     foreach ($sectionnos as $sectionno) {
@@ -226,7 +256,7 @@ course_create_sections_if_missing($course, 0);
 $renderer = $PAGE->get_renderer('format_ned');
 $renderer->set_courseformat($courseformat);
 
-if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
+if ($weareediting && has_capability('moodle/course:update', $context)) {
     if ($courseformat->get_setting('compressedsections') == 1) {
         echo html_writer::start_tag('div', array('class' => 'nededitingsectionmenu'));
     }

@@ -225,7 +225,8 @@ ul.ned-framedsections .section.main:last-child {
     margin-right: 20px;
 }
 
-.editing .course-content ul.ned-framedsections .section.main .header {
+.editing .course-content ul.ned-framedsections .section.main .header,
+.editing .course-content ul.ned-framedsections .section.main .footer {
     margin-left: 40px;
     margin-right: 40px;
 }
@@ -233,6 +234,10 @@ ul.ned-framedsections .section.main:last-child {
 .course-content ul.ned-framedsections .section.main .header,
 .course-content ul.ned-framedsections .section.main .footer {
     min-height: 8px;
+}
+
+.editing .course-content ul.ned-framedsections .section.main .header {
+    padding: 0 8px;
 }
 
 .course-content ul.ned-framedsections .section.main.current .content {
@@ -247,6 +252,18 @@ ul.ned-framedsections .section.main:last-child {
 .course-content ul.ned.ned-framedsections li.section .right {
     padding: 0;
     width: 8px;
+}
+
+.editing .course-content ul.ned.ned-framedsections li.section .left,
+.editing .course-content ul.ned.ned-framedsections li.section .right {
+    width: auto;
+}
+
+.editing .course-content ul.ned.ned-framedsections li.section .content {
+    border-left-style: solid;
+    border-left-width: 8px;
+    border-right-style: solid;
+    border-right-width: 8px;
 }
 
 .editing .course-content ul.ned-framedsections .section.main .content {
