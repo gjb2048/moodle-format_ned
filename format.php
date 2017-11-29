@@ -103,9 +103,9 @@ if ($sectionformat >= 1) { // Framed sections.
             echo 'color: #'.$preset->framedsectionheadertxtcolour.';';
             echo '}';
 
-            echo '.jsenabled .ned-framedsections .right .moodle-actionmenu[data-enhance] .toggle-display.textmenu .caret {';
+/*            echo '.jsenabled .ned-framedsections .right .moodle-actionmenu[data-enhance] .toggle-display.textmenu .caret {';
             echo 'border-top-color: #'.$preset->framedsectionheadertxtcolour.';';
-            echo '}';
+            echo '}';*/
 
             echo 'body:not(.editing) .course-content ul.ned.ned-framedsections li.section .left, ';
             echo 'body:not(.editing) .course-content ul.ned.ned-framedsections li.section .right {';
@@ -195,13 +195,13 @@ if ($sectionformat >= 1) { // Framed sections.
                     echo 'color: #'.$sectionpreset->framedsectionheadertxtcolour.';';
                     echo '}';
 
-                    $selectors = array();
+/*                    $selectors = array();
                     foreach ($sectionnos as $sectionno) {
                         $selectors[] = '.jsenabled .ned-framedsections '.$sectionno.' .right .moodle-actionmenu[data-enhance] .toggle-display.textmenu .caret';
                     }
                     echo implode(',', $selectors).' {';
                     echo 'border-top-color: #'.$sectionpreset->framedsectionheadertxtcolour.';';
-                    echo '}';
+                    echo '}'; */
 
                     $selectors = array();
                     foreach ($sectionnos as $sectionno) {
