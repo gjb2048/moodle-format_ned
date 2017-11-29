@@ -588,6 +588,31 @@ class format_ned_renderer extends format_section_renderer_base {
     }
 
     /**
+     * States if section 0 should be shown.
+     *
+     * @return boolean Yes = true or No = false.
+     */
+    protected function showsection0() {
+        $showsection0 = false;
+        $showsection0setting = $this->courseformat->get_setting('showsection0');
+        switch ($showsection0setting) {
+            case 1: // Show.
+                $showsection0 = true;
+                break;
+            case 2: // Only 0.
+                $showsection0 = true;
+                break;
+            case 3: // Only in editing mode.
+                if ($this->editing) {
+                    $showsection0 = true;
+                }
+                break;
+        }
+
+        return $showsection0;
+    }
+
+    /**
      * Output the html for a single section page.
      *
      * @param stdClass $course The course object.
@@ -621,7 +646,7 @@ class format_ned_renderer extends format_section_renderer_base {
         echo $this->course_activity_clipboard($course, $displaysection);
         $thissection = $modinfo->get_section_info(0);
         if ($thissection->summary or !empty($modinfo->sections[0]) or $this->editing) {
-            if (($this->editing) or ($this->settings['showsection0'] == 1)) {
+            if ($this->showsection0()) {
                 echo $this->start_section0_list();
                 echo $this->section_header($thissection, $course, true, $displaysection);
                 // Show completion help icon.
@@ -718,7 +743,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $numsections = $this->courseformat->get_last_section_number();
 
         // Section 0.
-        if (($this->editing) or ($this->settings['showsection0'] > 0)) {
+        if ($this->showsection0()) {
             // Section 0 is displayed a little different then the others.
             $thissection = $modinfo->get_section_info(0);
             if ($thissection->summary or !empty($modinfo->sections[0]) or $this->editing) {

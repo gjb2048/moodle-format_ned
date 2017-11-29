@@ -82,6 +82,7 @@ $string['colourpresetmoodle'] = 'Moodle default';
 
 $string['othersettings'] = 'Other settings';
 $string['showsection0'] = 'Show section 0';
+$string['showsection0editmode'] = 'Show only in edit mode';
 $string['showonlysection0'] = 'Show only section 0';
 $string['moodleicons'] = 'Moodle icons';
 $string['nediconsleft'] = 'NED icons left';
