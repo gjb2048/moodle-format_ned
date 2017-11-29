@@ -98,8 +98,6 @@ if ($sectionformat >= 1) { // Framed sections.
                 echo '.ned-framedsections .section .header .summary,';
             }
             echo '.ned-framedsections .section .left,';
-            echo '.ned-framedsections .section .right a.toggle-display,';
-            echo '.ned-framedsections .section .right a.toggle-display:hover,';
             echo '.ned-framedsections .section .right a.dropdown-toggle,';
             echo '.ned-framedsections .section .right a.dropdown-toggle:hover {';
             echo 'color: #'.$preset->framedsectionheadertxtcolour.';';
@@ -190,8 +188,6 @@ if ($sectionformat >= 1) { // Framed sections.
                     foreach ($sectionnos as $sectionno) {
                         $selectors[] = '.ned-framedsections '.$sectionno.'.section .header,'.
                             '.ned-framedsections '.$sectionno.'.section .left,'.
-                            '.ned-framedsections '.$sectionno.'.section .right a.toggle-display,'.
-                            '.ned-framedsections '.$sectionno.'.section .right a.toggle-display:hover,'.
                             '.ned-framedsections '.$sectionno.'.section .right a.dropdown-toggle,'.
                             '.ned-framedsections '.$sectionno.'.section .right a.dropdown-toggle:hover';
                     }
