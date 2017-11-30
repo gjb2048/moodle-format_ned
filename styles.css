@@ -470,7 +470,8 @@ ul.ned-framedsections .section.main:last-child {
     margin-left: 4px;
 }
 
-ul.nededitingsection li.section .content .section {
+ul.nededitingsection li.section .content .section,
+ul.nededitingsection li.section .content .addresourcemodchooser {
     display: none;
 }
 

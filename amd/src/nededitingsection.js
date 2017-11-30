@@ -20,6 +20,7 @@ define(['jquery', 'core/log'], function($, log) {
                 // Individual toggles.
                 $('ul.nededitingsection li.section .left .nededitingsectionpix').click(function (e) {
                     $(this).parent('.left').parent('.section').find('.content .section').toggle();
+                    $(this).parent('.left').parent('.section').find('.content .addresourcemodchooser').toggle();
                     if ($(this).hasClass('closed')) {
                         $(this).removeClass('closed').addClass('open');
                     } else {
@@ -30,6 +31,7 @@ define(['jquery', 'core/log'], function($, log) {
                 $('#nededitingsectioncompressed').click(function () {
                     $('ul.nededitingsection li.section').each(function () {
                         $(this).find('.content .section').hide();
+                        $(this).find('.content .addresourcemodchooser').hide();
                         var nededitingsectionpix = $(this).find('.left .nededitingsectionpix');
                         if ($(nededitingsectionpix).hasClass('open')) {
                             $(nededitingsectionpix).removeClass('open').addClass('closed');
@@ -40,6 +42,7 @@ define(['jquery', 'core/log'], function($, log) {
                 $('#nededitingsectionexpanded').click(function () {
                     $('ul.nededitingsection li.section').each(function () {
                         $(this).find('.content .section').show();
+                        $(this).find('.content .addresourcemodchooser').show();
                         var nededitingsectionpix = $(this).find('.left .nededitingsectionpix');
                         if ($(nededitingsectionpix).hasClass('closed')) {
                             $(nededitingsectionpix).removeClass('closed').addClass('open');
