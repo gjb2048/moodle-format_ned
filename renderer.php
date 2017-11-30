@@ -436,11 +436,13 @@ class format_ned_renderer extends format_section_renderer_base {
         if ($this->editing) {
             if ($section->section != 0) {
                 if (is_null($this->displaysection)) {
-                    $sectionicon = $this->output->pix_icon('single_section', get_string('opensinglesection', 'format_ned', array('sectionno' => $section->section)), 'format_ned');
+                    $sectionicon = $this->output->pix_icon('single_section', get_string('opensinglesection', 'format_ned',
+                        array('sectionno' => $section->section)), 'format_ned', array('class' => 'nedsinglesectionicon'));
                     $sectionurl = new moodle_url('/course/view.php', array('id' => $course->id, 'section' => $section->section));
                     $o .= html_writer::link($sectionurl, $sectionicon);
                 } else {
-                    $sectionicon = $this->output->pix_icon('expand_section', get_string('maincoursepage'), 'format_ned');
+                    $sectionicon = $this->output->pix_icon('expand_section', get_string('maincoursepage'), 'format_ned',
+                        array('class' => 'nedsinglesectionicon'));
                     $sectionurl = new moodle_url('/course/view.php', array('id' => $course->id));
                     $o .= html_writer::link($sectionurl, $sectionicon);
                 }

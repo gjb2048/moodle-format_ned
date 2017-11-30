@@ -489,3 +489,20 @@ ul.nededitingsection li.section .left .nededitingsectionpix.closed {
 ul.nededitingsection li.section .left .nededitingsectionpix.open {
     background-image: url([[pix:format_ned|point_down]]);
 }
+
+ul.ned.nededitingsection li.section .left,
+ul.ned.nededitingsection li.section .right {
+    padding: 0;
+}
+
+ul.ned.nededitingsection li.section .left {
+    text-align: center;
+}
+
+ul.nededitingsection li.section .left .nedsinglesectionicon {
+    padding-right: 0;
+}
+
+.editing .course-content ul.ned.nededitingsection li.section .left .section-handle .icon {
+    margin-left: 0;
+}
