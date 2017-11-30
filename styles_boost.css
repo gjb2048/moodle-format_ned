@@ -85,19 +85,6 @@ body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
     margin-top: 4px;
 }
 
-/* Edit section icon. */
-.editing .course-content ul.ned.ned-framedsections .nedrightside .icon.edit {
-    position: relative;
-}
-
-.editing .course-content ul.ned.ned-framedsections.ned-framedsectionscustom .nedrightside .icon.edit {
-    top: -32px;
-}
-
-.editing .course-content ul.ned.ned-framedsections.ned-framedsectionsformatted .nedrightside .icon.edit {
-    top: -38px;
-}
-
 /* Boost does not know how (via a template I suspect) how to style the colour picker. */
 .format-ned .colourpresetform {
     width: 100%;

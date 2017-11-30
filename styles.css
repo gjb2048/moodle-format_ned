@@ -51,7 +51,6 @@
 }
 
 .editing .course-content ul.ned.ned-framedsections li.section .nedrightside {
-    position: relative;
     width: 40px;
 }
 
@@ -65,19 +64,8 @@
     width: 16px;
 }
 
-.editing .course-content ul.ned.ned-framedsections .nedrightside .icon.edit {
-    left: 0;
-    position: absolute;
-    right: 0;
-    top:0;
-}
-
-.editing .course-content ul.ned.ned-framedsections.ned-framedsectionscustom .nedrightside .icon.edit {
-    top: -38px;
-}
-
-.editing .course-content ul.ned.ned-framedsections.ned-framedsectionsformatted .nedrightside .icon.edit {
-    top: -28px;
+.editing .course-content ul.ned.ned-framedsections.ned-framedsectionsformatted .nedrightside .icon.spacer {
+    display: none;
 }
 
 .editing .course-content ul.ned li.section .right .icon.edit .icon {
@@ -508,4 +496,21 @@ ul.nededitingsection li.section .left .nedsinglesectionicon {
 
 .editing .course-content ul.ned.nededitingsection li.section .left .section-handle .icon {
     margin-left: 0;
+}
+
+/* Framed sections with section 0 */
+.editing .course-content ul.ned-framedsections li.section.main {
+    position: relative;
+}
+
+.editing .course-content ul.ned-framedsections li.section .left,
+.editing .course-content ul.ned-framedsections li.section .nedrightside,
+.editing .course-content ul.ned-framedsections-s0 li.section .nedrightside {
+    position: absolute;
+    top: 0;
+}
+
+.editing .course-content ul.ned-framedsections li.section .nedrightside,
+.editing .course-content ul.ned-framedsections-s0 li.section .nedrightside {
+    right: 0;
 }
