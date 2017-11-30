@@ -246,6 +246,8 @@ ul.ned-framedsections .section.main:last-child {
 
 .course-content ul.ned-framedsections ul.section {
     margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 14px;
 }
 
 .course-content ul.ned.ned-framedsections li.section .left,
