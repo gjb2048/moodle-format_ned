@@ -475,6 +475,7 @@ ul.nededitingsection li.section .content .section {
 }
 
 ul.nededitingsection li.section .left .nededitingsectionpix {
+    cursor: pointer;
     display: block;
     height: 24px;
     width: 24px;
