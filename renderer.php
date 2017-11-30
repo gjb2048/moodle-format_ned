@@ -450,13 +450,6 @@ class format_ned_renderer extends format_section_renderer_base {
         $o = "";
         if (!empty($controls)) {
             $menu = new action_menu();
-            $menu->set_menu_trigger(' ');
-            $menu->actionicon = new pix_icon(
-                'section_menu',
-                '',
-                'format_ned',
-                array('class' => 'iconsmall actionmenu', 'title' => '')
-            );
             $menu->attributes['class'] .= ' section-actions';
             foreach ($controls as $value) {
                 $url = empty($value['url']) ? '' : $value['url'];
