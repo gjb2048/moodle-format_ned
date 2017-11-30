@@ -30,7 +30,7 @@ require_once($CFG->dirroot.'/course/format/renderer.php');
 class format_ned_renderer extends format_section_renderer_base {
 
     private $courseformat = null; // Our course format object as defined in lib.php.
-    private $displaysection = null; // Display section if on a single section page.
+    private $displaysection = null; // Display section number if on a single section page.
     private $editing = false;
     private $settings = null;
     private $sectionheaderformatssetting = null; // JSON decode of 'sectionheaderformats' setting.
@@ -55,9 +55,10 @@ class format_ned_renderer extends format_section_renderer_base {
 
     /**
      * Set the course format from which we can then get the settings for our decisions.
-     * @param format_ned $courseformat
+     * @param format_ned $courseformat Reference to the course format object.
+     * @param bool $singlesection If we are on a single section page.
      */
-    public function set_courseformat($courseformat) {
+    public function set_courseformat($courseformat, $singlesection) {
         $this->courseformat = $courseformat; // Needed for settings retrieval.
         $this->settings = $this->courseformat->get_settings();
         if ($this->settings['sectionformat'] == 3) {
@@ -68,7 +69,8 @@ class format_ned_renderer extends format_section_renderer_base {
             $this->settings['activitytrackingbackground'],
             $this->settings['locationoftrackingicons']
         );
-        if (($this->settings['compressedsections'] == 1) && ($this->editing)) {
+        if (($this->settings['compressedsections'] == 1) && ($this->editing) &&
+            (!$singlesection)) {
             $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init', array());
         }
     }
@@ -93,7 +95,7 @@ class format_ned_renderer extends format_section_renderer_base {
             if ((false) && ($this->settings['sectioncontentjustification'])) {
                 $classes .= ' sectioncontentjustification';
             }
-        } else if ($this->settings['compressedsections'] == 1) {
+        } else if ((is_null($this->displaysection)) && ($this->settings['compressedsections'] == 1)) {
             $classes .= ' nededitingsection';
         }
         return html_writer::start_tag('ul', array('class' => $classes));
@@ -125,7 +127,7 @@ class format_ned_renderer extends format_section_renderer_base {
             if ((false) && ($this->settings['sectioncontentjustification'])) {
                 $classes .= ' sectioncontentjustification';
             }
-        } else if ($this->settings['compressedsections'] == 1) {
+        } else if ((is_null($this->displaysection)) && ($this->settings['compressedsections'] == 1)) {
             $classes .= ' nededitingsection';
         }
         return html_writer::start_tag('ul', array('class' => $classes));
@@ -447,7 +449,7 @@ class format_ned_renderer extends format_section_renderer_base {
                     $o .= html_writer::link($sectionurl, $sectionicon);
                 }
             }
-            if ($this->settings['compressedsections'] == 1) {
+            if ((is_null($this->displaysection)) && ($this->settings['compressedsections'] == 1)) {
                 $o .= html_writer::tag('span', '', array('class' => 'nededitingsectionpix closed'));
             }
         }
