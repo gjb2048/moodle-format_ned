@@ -30,6 +30,7 @@ require_once($CFG->dirroot.'/course/format/renderer.php');
 class format_ned_renderer extends format_section_renderer_base {
 
     private $courseformat = null; // Our course format object as defined in lib.php.
+    private $displaysection = null; // Display section if on a single section page.
     private $editing = false;
     private $settings = null;
     private $sectionheaderformatssetting = null; // JSON decode of 'sectionheaderformats' setting.
@@ -391,30 +392,33 @@ class format_ned_renderer extends format_section_renderer_base {
         // Do not have to worry about the edit key as not in the menu in 'section_right_content()' below but data still used.
         $mergedone = array_merge($controls, $parentcontrols);
 
-        $addsectionbelowurl = new moodle_url('/course/changenumsections.php',
+        if (is_null($this->displaysection)) {
+            $addsectionbelowurl = new moodle_url('/course/changenumsections.php',
                 ['courseid' => $course->id, 'insertsection' => ($section->section + 1), 'sesskey' => sesskey()]);
-        $addsectionbelowstr = get_string('addsectionbelow', 'format_ned');
-        $addsectionbelowcontrol = array('addsectionbelow' => array('url' => $addsectionbelowurl, "icon" => 'i/down',
-            'name' => $addsectionbelowstr,
-            'pixattr' => array('alt' => $addsectionbelowstr),
-            'attr' => array('title' => $addsectionbelowstr)));
-        $mergedtwo = array();
-        // If the delete key exists, we are going to insert our add section below control before it.
-        if (array_key_exists("delete", $mergedone)) {
-            // We can't use splice because we are using associative arrays.
-            // Step through the array and merge the arrays.
-            foreach ($mergedone as $key => $action) {
-                $mergedtwo[$key] = $action;
-                if ($key == "delete") {
-                    // If we have come to the delete key, merge these controls here.
-                    $mergedtwo = array_merge($mergedtwo, $addsectionbelowcontrol);
+            $addsectionbelowstr = get_string('addsectionbelow', 'format_ned');
+            $addsectionbelowcontrol = array('addsectionbelow' => array('url' => $addsectionbelowurl, "icon" => 'i/down',
+                'name' => $addsectionbelowstr,
+                'pixattr' => array('alt' => $addsectionbelowstr),
+                'attr' => array('title' => $addsectionbelowstr)));
+            $mergedtwo = array();
+            // If the delete key exists, we are going to insert our add section below control before it.
+            if (array_key_exists("delete", $mergedone)) {
+                // We can't use splice because we are using associative arrays.
+                // Step through the array and merge the arrays.
+                foreach ($mergedone as $key => $action) {
+                    $mergedtwo[$key] = $action;
+                    if ($key == "delete") {
+                        // If we have come to the delete key, merge these controls here.
+                        $mergedtwo = array_merge($mergedtwo, $addsectionbelowcontrol);
+                    }
                 }
+            } else {
+                $mergedtwo = array_merge($mergedone, $addsectionbelowcontrol);
             }
+            return $mergedtwo;
         } else {
-            $mergedtwo = array_merge($mergedone, $addsectionbelowcontrol);
+            return $mergedone;
         }
-
-        return $mergedtwo;
     }
 
     /**
@@ -429,8 +433,21 @@ class format_ned_renderer extends format_section_renderer_base {
     protected function section_left_content($section, $course, $onsectionpage) {
         $o = '';
 
-        if (($this->settings['compressedsections'] == 1) && ($this->editing)) {
-            $o .= html_writer::tag('span', '', array('class' => 'nededitingsectionpix closed'));
+        if ($this->editing) {
+            if ($section->section != 0) {
+                if (is_null($this->displaysection)) {
+                    $sectionicon = $this->output->pix_icon('single_section', get_string('opensinglesection', 'format_ned', array('sectionno' => $section->section)), 'format_ned');
+                    $sectionurl = new moodle_url('/course/view.php', array('id' => $course->id, 'section' => $section->section));
+                    $o .= html_writer::link($sectionurl, $sectionicon);
+                } else {
+                    $sectionicon = $this->output->pix_icon('expand_section', get_string('maincoursepage'), 'format_ned');
+                    $sectionurl = new moodle_url('/course/view.php', array('id' => $course->id));
+                    $o .= html_writer::link($sectionurl, $sectionicon);
+                }
+            }
+            if ($this->settings['compressedsections'] == 1) {
+                $o .= html_writer::tag('span', '', array('class' => 'nededitingsectionpix closed'));
+            }
         }
 
         $o .= parent::section_left_content($section, $course, $onsectionpage);
@@ -662,6 +679,7 @@ class format_ned_renderer extends format_section_renderer_base {
      * @param int $displaysection The section number in the course which is being displayed.
      */
     public function print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection) {
+        $this->displaysection = $displaysection;
         $modinfo = get_fast_modinfo($course);
 
         // Can we view the section in question?
@@ -735,25 +753,27 @@ class format_ned_renderer extends format_section_renderer_base {
         echo $this->section_footer();
         echo $this->end_section_list();
 
-        // Display section bottom navigation.
-        $sectionbottomnav = '';
-        $viewsectionforwardbacklinks = get_config('format_ned', 'viewsectionforwardbacklinks');
-        if (($viewsectionforwardbacklinks == 0) ||
-            (($viewsectionforwardbacklinks == 1) && (has_capability('moodle/course:update', $context)))) {
-            $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
-            $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
-            $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
-        }
-        $viewjumptomenu = get_config('format_ned', 'viewjumptomenu');
-        if (($viewjumptomenu == 0) ||
-            (($viewjumptomenu == 1) && (has_capability('moodle/course:update', $context)))) {
-            $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection),
-                array('class' => 'mdl-align'));
-        }
-        if (!empty($sectionbottomnav)) {
-            echo html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
-            echo $sectionbottomnav;
-            echo html_writer::end_tag('div');
+        // Display section bottom navigation only when 'Show one section per page' course display.
+        if ($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) {
+            $sectionbottomnav = '';
+            $viewsectionforwardbacklinks = get_config('format_ned', 'viewsectionforwardbacklinks');
+            if (($viewsectionforwardbacklinks == 0) ||
+                (($viewsectionforwardbacklinks == 1) && (has_capability('moodle/course:update', $context)))) {
+                $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
+                $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
+                $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
+            }
+            $viewjumptomenu = get_config('format_ned', 'viewjumptomenu');
+            if (($viewjumptomenu == 0) ||
+                (($viewjumptomenu == 1) && (has_capability('moodle/course:update', $context)))) {
+                $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection),
+                    array('class' => 'mdl-align'));
+            }
+            if (!empty($sectionbottomnav)) {
+                echo html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
+                echo $sectionbottomnav;
+                echo html_writer::end_tag('div');
+            }
         }
 
         // Close single-section div.

@@ -164,3 +164,6 @@ $string['compressed'] = 'Compressed';
 $string['expanded'] = 'Expanded';
 $string['compressedsections'] = 'Compressed sections';
 $string['compressedsections_desc'] = 'Allow compressed sections, so when \'editing\' compress the section content on page load.  To expand or re-compress a section, click on it.  To expand / re-compress all sections, use the buttons provided adjacent to the \'Edit NED Format Settings\' icon.';
+
+// Section navigation.
+$string['opensinglesection'] = 'Open section {$a->sectionno} on a single page';
