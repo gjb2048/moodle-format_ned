@@ -190,7 +190,8 @@ ul.ned.sectioncontentjustification .section .activity .actions {
 
 /* Framed sections */
 /* Set the background colour of the li.section - less to style and no adaption for editing but format has to set the section content background and highlight colour. */
-ul.ned-framedsections .section.main {
+ul.ned-framedsections .section.main,
+ul.ned-framedsections-s0 .section.main {
     margin-bottom: 15px;
 }
 
