@@ -511,7 +511,7 @@ class format_ned_renderer extends format_section_renderer_base {
      * @return string HTML to output.
      */
     protected function section_right_content($section, $course, $onsectionpage) {
-        $o = $this->output->spacer();
+        $o = '';
 
         $controls = $this->section_edit_control_items($course, $section, $onsectionpage);
 

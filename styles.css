@@ -63,10 +63,6 @@
     width: 16px;
 }
 
-.editing .course-content ul.ned.ned-framedsections.ned-framedsectionsformatted .nedrightside .icon.spacer {
-    display: none;
-}
-
 .editing .course-content ul.ned li.section .right .icon.edit .icon {
     margin-left: 0;
     margin-right: 0;
@@ -456,6 +452,10 @@ ul.ned-framedsections .section.main:last-child {
 }
 
 /* Editing toggle all. */
+.nededitingsectionmenu {
+    margin-bottom: 4px;
+}
+
 .nededitingsectionmenu span {
     margin-left: 4px;
 }
