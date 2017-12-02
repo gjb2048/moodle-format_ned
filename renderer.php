@@ -84,6 +84,9 @@ class format_ned_renderer extends format_section_renderer_base {
         if ($this->settings['sectionformat'] >= 1) { // Framed sections.
             $classes .= ' ned-framedsections-s0';
         }
+        if (!is_null($this->displaysection)) {
+            $classes .= ' ned-single-section';
+        }
         if (!$this->editing) {
             if ($this->settings['locationoftrackingicons'] == \format_ned\toolbox::$nediconsleft) {
                 $classes .= ' '.\format_ned\toolbox::$nediconsleft;
@@ -115,6 +118,9 @@ class format_ned_renderer extends format_section_renderer_base {
             } else if ($this->settings['sectionformat'] == 3) { // Framed sections with formatted.
                 $classes .= ' ned-framedsectionsformatted';
             }
+        }
+        if (!is_null($this->displaysection)) {
+            $classes .= ' ned-single-section';
         }
         if (!$this->editing) {
             if ($this->settings['activityresourcemouseover'] == 1) {
