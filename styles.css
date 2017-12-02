@@ -513,3 +513,7 @@ ul.nededitingsection li.section .left .nedsinglesectionicon {
 .editing .course-content ul.ned-framedsections-s0 li.section .nedrightside {
     right: 0;
 }
+
+.editing .course-content ul.ned-framedsections-s0 li.section .content {
+    border: 3px solid #999;
+}
