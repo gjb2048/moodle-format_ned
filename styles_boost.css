@@ -56,6 +56,13 @@ body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
     margin-left: .5rem;
 }
 
+.editing .course-content ul.ned li.section .right .section_action_menu .dropdown-toggle .icon {
+    font-size: 24px;
+    height: 24px;
+    margin-right: 0;
+    width: 24px;
+}
+
 /* Course settings. */
 #nedsectiondeliverymethod {
     margin-top: -20px;

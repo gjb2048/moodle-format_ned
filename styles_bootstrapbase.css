@@ -4,6 +4,12 @@ div.ned-button.row {
 }
 
 /* Course settings. */
+.editing .course-content ul.ned li.section .right .section_action_menu .toggle-display  .icon {
+    height: 24px;
+    width: 24px;
+}
+
+/* Course settings. */
 /* Makes items 'inline'. */
 #fgroup_id_sectiondeliverymethodgroup .fgroup br.nedsep:nth-child(8),
 #fgroup_id_sectiondeliverymethodgroup .fgroup br.nedsep:nth-child(13),
