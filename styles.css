@@ -264,6 +264,7 @@ ul.ned-framedsections .section.main:last-child {
     width: auto;
 }
 
+.course-content ul.ned-framedsections-s0 .section.main .content,
 .course-content ul.ned-framedsections .section.main .content {
     min-height: 1em;
     padding-bottom: 8px;
@@ -517,4 +518,8 @@ ul.nededitingsection li.section .left .nedsinglesectionicon {
 
 .editing .course-content ul.ned-framedsections-s0 li.section .content {
     border: 3px solid #999;
+}
+
+body:not(.editing) .course-content ul.ned-framedsections-s0 li.section .content {
+    margin: 0 3px;
 }
