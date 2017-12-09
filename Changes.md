@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3
+  1. Stage 7.
+  2. Added 'format/ned:formatupdate' capability.
+
 Version 3.3.1.2
   1. Stage 5.
   2. Added experimental 'Relocate activity description' setting.

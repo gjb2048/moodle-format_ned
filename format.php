@@ -240,15 +240,18 @@ course_create_sections_if_missing($course, 0);
 $renderer = $PAGE->get_renderer('format_ned');
 $renderer->set_courseformat($courseformat, (!empty($displaysection)));
 
-if ($weareediting && has_capability('moodle/course:update', $context)) {
-    if ($courseformat->get_setting('compressedsections') == 1) {
+$courseupdatecapability = has_capability('moodle/course:update', $context);
+if ($weareediting) {
+    if (($courseformat->get_setting('compressedsections') == 1) && $courseupdatecapability) {
         echo html_writer::start_tag('div', array('class' => 'nededitingsectionmenu'));
     }
-    $nedsettingsurl = new moodle_url('/course/format/ned/nedsettings.php', array('id' => $course->id));
-    echo html_writer::link($nedsettingsurl,
+    if (has_capability('format/ned:formatupdate', $context)) {
+        $nedsettingsurl = new moodle_url('/course/format/ned/nedsettings.php', array('id' => $course->id));
+        echo html_writer::link($nedsettingsurl,
         $OUTPUT->pix_icon('ned_icon', get_string('editnedformatsettings', 'format_ned'), 'format_ned'),
-        array('title' => get_string('editnedformatsettings', 'format_ned'), 'class' => 'nededitsection'));
-    if ((empty($displaysection)) && ($courseformat->get_setting('compressedsections') == 1)) {
+            array('title' => get_string('editnedformatsettings', 'format_ned'), 'class' => 'nededitsection'));
+    }
+    if ((empty($displaysection)) && ($courseformat->get_setting('compressedsections') == 1) && $courseupdatecapability) {
         echo html_writer::tag('span', get_string('compressed', 'format_ned'), array('id' => 'nededitingsectioncompressed', 'class' => 'btn'));
         echo html_writer::tag('span', get_string('expanded', 'format_ned'), array('id' => 'nededitingsectionexpanded', 'class' => 'btn'));
         echo html_writer::end_tag('div');

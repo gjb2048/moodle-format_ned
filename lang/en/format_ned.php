@@ -167,3 +167,6 @@ $string['compressedsections_desc'] = 'Allow compressed sections, so when \'editi
 
 // Section navigation.
 $string['opensinglesection'] = 'Open section {$a->sectionno} on a single page';
+
+// Capabilities.
+$string['ned:formatupdate'] = 'Update the NED format';
