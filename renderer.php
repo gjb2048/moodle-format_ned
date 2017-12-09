@@ -203,6 +203,9 @@ class format_ned_renderer extends format_section_renderer_base {
                 $sectionstyle = ' current';
             }
         }
+        if ((is_null($this->displaysection)) && ($this->settings['compressedsections'] == 1)) {
+            $sectionstyle .= ' closed';
+        }
 
         // Note 'get_section_name(course, section)' just calls the format's lib.php 'get_section_name(section)'!
         $thesectionname = $this->courseformat->get_section_name($section);
@@ -456,7 +459,7 @@ class format_ned_renderer extends format_section_renderer_base {
                 }
             }
             if ((is_null($this->displaysection)) && ($this->settings['compressedsections'] == 1)) {
-                $o .= html_writer::tag('span', '', array('class' => 'nededitingsectionpix closed'));
+                $o .= html_writer::tag('span', '', array('class' => 'nededitingsectionpix'));
             }
         }
 

@@ -476,11 +476,11 @@ ul.nededitingsection li.section .left .nededitingsectionpix {
     width: 24px;
 }
 
-ul.nededitingsection li.section .left .nededitingsectionpix.closed {
+ul.nededitingsection li.section.closed .left .nededitingsectionpix {
     background-image: url([[pix:format_ned|point_right]]);
 }
 
-ul.nededitingsection li.section .left .nededitingsectionpix.open {
+ul.nededitingsection li.section.open .left .nededitingsectionpix {
     background-image: url([[pix:format_ned|point_down]]);
 }
 
@@ -519,7 +519,16 @@ ul.nededitingsection li.section .left .nedsinglesectionicon {
 }
 
 .editing .course-content ul.ned-framedsections-s0 li.section .content {
-    border: 3px solid #999;
+    border-color: #999;
+    border-style: solid;
+}
+.editing .course-content ul.ned-framedsections-s0 li.section.closed .content {
+    border-width: 1px;
+    padding-left: 27px;
+    padding-right: 27px;
+}
+.editing .course-content ul.ned-framedsections-s0 li.section.open .content {
+    border-width: 3px;
 }
 
 body:not(.editing) .course-content ul.ned-framedsections-s0 li.section .content {
