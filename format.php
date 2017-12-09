@@ -242,7 +242,7 @@ $renderer->set_courseformat($courseformat, (!empty($displaysection)));
 
 $courseupdatecapability = has_capability('moodle/course:update', $context);
 if ($weareediting) {
-    if (($courseformat->get_setting('compressedsections') == 1) && $courseupdatecapability) {
+    if ((empty($displaysection)) && ($courseformat->get_setting('compressedsections') == 1) && $courseupdatecapability) {
         echo html_writer::start_tag('div', array('class' => 'nededitingsectionmenu'));
     }
     if (has_capability('format/ned:formatupdate', $context)) {
