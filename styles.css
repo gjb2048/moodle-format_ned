@@ -317,6 +317,7 @@ ul.ned-framedsections .section.main:last-child {
 .nedshfcolumnswithcontent .nedshfleftcolumn span,
 .nedshfcolumnswithcontent .nedshfmiddlecolumn span,
 .nedshfcolumnswithcontent .nedshfrightcolumn span {
+    display: block;
     font-size: 16px;
 }
 
