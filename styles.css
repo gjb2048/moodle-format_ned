@@ -45,6 +45,13 @@
     margin-left: 7px;
 }
 
+/* Edit section icon on the editing section menu. */
+.nededitsection img.icon {
+    height: 24px;
+    vertical-align: middle;
+    width: 24px;
+}
+
 /* Edit section icon. */
 .editing .course-content ul.ned li.section .right {
     text-align: center;
