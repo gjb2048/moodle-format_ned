@@ -56,6 +56,7 @@ class format_ned extends format_base {
      * @return type The settings as an array.
      */
     public function get_settings() {
+        global $DB;
         if (empty($this->settings) == true) {
             $this->settings = $this->get_format_options();
             // TODO: Do these (JSON Strings) need to be 'unset' from 'settings' and 'get_setting($name)' updated?
@@ -64,8 +65,19 @@ class format_ned extends format_base {
                 $numsections = $this->get_last_section_number();
                 $this->sectionheaderformatheaders = array();
                 $section = 1;
+                $sql = "SELECT cs.id, fn.value
+                          FROM {course_sections} cs
+                          JOIN {format_ned} fn
+                            ON cs.id = fn.sectionid
+                         WHERE fn.name = ?
+                           AND cs.section = ?
+                           AND cs.course = ?";
                 while ($section <= $numsections) {
-                    $this->sectionheaderformatheaders[$section] = json_decode($this->get_format_options($section)['headerformat'], true);
+                    if ($headerformat = $DB->get_record_sql($sql, array('headerformat', $section, $this->courseid))) {
+                        $this->sectionheaderformatheaders[$section] = json_decode($headerformat->value, true);
+                    } else {
+                        $this->sectionheaderformatheaders[$section] = json_decode($this->get_format_options($section)['headerformat'], true);
+                    }
                     $section++;
                 }
             }
@@ -890,7 +902,7 @@ class format_ned extends format_base {
             $sectiondeliverymethodgroupdata = $this->get_setting('sectiondeliverymethod');
             $sectiondeliverymethodgroup = array();
             $sectiondeliverymethodgroup[] =& $mform->createElement('html', '<div id="nedsectiondeliverymethod">'); // Boost based themes only!
-            $sectiondeliverymethodgroup[] =& $mform->createElement('checkbox', 'sectiondeliveryoption', null,
+            $sectiondeliverymethodgroup[] =& $mform->createElement('advcheckbox', 'sectiondeliveryoption', null,
                 get_string('sectiondeliveryoption', 'format_ned'));
 
             $sectiondeliverymethodgroup[] =& $mform->createElement('radio', 'sectiondeliveryoptions', null,
@@ -941,14 +953,14 @@ class format_ned extends format_base {
 
             if (!empty($sectiondeliverymethodgroupdata->specifydefaultoptionnumber)) {
                 if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 1) {
-                    $mform->setDefault('sectiondeliveryoption', 'checked');
+                    $mform->setDefault('sectiondeliveryoption', '1');
                 } else if ($sectiondeliverymethodgroupdata->sectiondeliverymethod == 2) {
                     $mform->setDefault('scheduledeliveryoption', 'checked');
                 } else {
-                    $mform->setDefault('sectiondeliveryoption', 'checked');
+                    $mform->setDefault('sectiondeliveryoption', '1');
                 }
             } else {
-                $mform->setDefault('sectiondeliveryoption', 'checked');
+                $mform->setDefault('sectiondeliveryoption', '1');
             }
             $sectiondeliverymethodgroup[] =& $mform->createElement('html', '</div></div>'); // Boost based themes only!
 
@@ -1045,6 +1057,25 @@ class format_ned extends format_base {
      * @return bool whether there were any changes to the options values
      */
     protected function update_format_options($data, $sectionid = null) {
+        global $DB;
+        if ($sectionid) {
+            if ($sectiondata = $DB->get_record('format_ned', array('courseid' => $this->courseid, 'sectionid' => $sectionid, 'name'=> 'headerformat'))) {
+                // Update.
+                $rec = new stdClass();
+                $rec->id = $sectiondata->id;
+                $rec->value = $data['headerformat'];
+                $DB->update_record('format_ned', $rec);
+            } else {
+                // Insert.
+                $rec = new stdClass();
+                $rec->courseid = $this->courseid;
+                $rec->sectionid = $sectionid;
+                $rec->name = 'headerformat';
+                $rec->value = $data['headerformat'];
+                $DB->insert_record('format_ned', $rec);
+            }
+
+        }
         $changed = parent::update_format_options($data, $sectionid);
         if ($changed) {
             // Settings have changed so clear our member attribute.

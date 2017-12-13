@@ -89,6 +89,7 @@ function xmldb_format_ned_upgrade($oldversion) {
         // NED savepoint reached.
         upgrade_plugin_savepoint(true, 2017061903, 'format', 'ned');
     }
+
     if ($oldversion < 2017061907) {
         global $DB;
         $dbman = $DB->get_manager();
@@ -111,6 +112,30 @@ function xmldb_format_ned_upgrade($oldversion) {
     if ($oldversion < 2117101700) {
         purge_all_caches();
     }
+
+    if ($oldversion < 2017121200) {
+        $dbman = $DB->get_manager();
+
+        $table = new xmldb_table('format_ned');
+
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('courseid', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('sectionid', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('name', XMLDB_TYPE_CHAR, '100', null, null, null, null);
+        $table->add_field('value', XMLDB_TYPE_TEXT, null, null, null, null, null);
+
+        $table->add_key('mdl_courformopti_couforsec_uix', XMLDB_KEY_UNIQUE, array('courseid', 'sectionid', 'name'));
+        $table->add_key('id', XMLDB_KEY_PRIMARY, array('id'));
+
+        $table->add_index('mdl_courformopti_cou_ix', XMLDB_INDEX_NOTUNIQUE, array('courseid'));
+
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        upgrade_plugin_savepoint(true, 2017121200, 'format', 'ned');
+    }
+
 
     return true;
 }
