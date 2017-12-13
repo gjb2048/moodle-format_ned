@@ -96,6 +96,19 @@ if ($ADMIN->fulltree) {
     $description = get_string('managecolourpresets_desc', 'format_ned');
     $settings->add(new ned_admin_setting_button($name, $title, $description, 'colourpreset'));
 
+    $settings->add($setting);
+    $name = 'format_ned/compressedsections';
+    $title = get_string('compressedsections', 'format_ned');
+    $description = get_string('compressedsections_desc', 'format_ned');
+    $default = 1;
+    $setting = new ned_admin_setting_configselect($name, $title, $description, $default,
+        array(
+            0 => get_string('hide'),
+            1 => get_string('show')
+        )
+    );
+    $settings->add($setting);
+
     // Other settings.
     $settings->add(new admin_setting_heading('format_net_othersettings',
         get_string('othersettings', 'format_ned'), ''));
@@ -205,17 +218,4 @@ if ($ADMIN->fulltree) {
             2 => get_string('aboveicon', 'format_ned')
         )
     );
-
-    $settings->add($setting);
-    $name = 'format_ned/compressedsections';
-    $title = get_string('compressedsections', 'format_ned');
-    $description = get_string('compressedsections_desc', 'format_ned');
-    $default = 0;
-    $setting = new ned_admin_setting_configselect($name, $title, $description, $default,
-        array(
-            0 => get_string('hide'),
-            1 => get_string('show')
-        )
-    );
-    $settings->add($setting);
 }
