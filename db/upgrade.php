@@ -114,6 +114,7 @@ function xmldb_format_ned_upgrade($oldversion) {
     }
 
     if ($oldversion < 2017121200) {
+        global $DB;
         $dbman = $DB->get_manager();
 
         $table = new xmldb_table('format_ned');
