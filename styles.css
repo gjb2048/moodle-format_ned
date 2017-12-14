@@ -57,10 +57,6 @@
     text-align: center;
 }
 
-.editing .course-content ul.ned.ned-framedsections li.section .nedrightside {
-    width: 40px;
-}
-
 .editing .course-content ul.ned li.section .right .icon.edit {
     display: block;
     height: 16px;
@@ -250,9 +246,20 @@ ul.ned-framedsections .section.main:last-child {
     width: 8px;
 }
 
-.editing .course-content ul.ned.ned-framedsections li.section .left,
+.editing .course-content ul.ned.ned-framedsections li.section .left {
+    width: 40px;
+}
+
 .editing .course-content ul.ned.ned-framedsections li.section .right {
     width: auto;
+}
+
+.editing .course-content ul.ned.ned-framedsections li.section .left a {
+    display: block;
+}
+
+.editing .course-content ul.ned.ned-framedsections li.section .left a img.nedsinglesectionicon{
+    padding-right: 0;
 }
 
 .editing .course-content ul.ned.ned-framedsections li.section .content {
@@ -264,11 +271,6 @@ ul.ned-framedsections .section.main:last-child {
 
 .editing .course-content ul.ned-framedsections .section.main .content {
     margin: 0 40px;
-}
-
-.editing .course-content ul.ned.ned-framedsections li.section .left,
-.editing .course-content ul.ned.ned-framedsections li.section .right {
-    width: auto;
 }
 
 .course-content ul.ned-framedsections-s0 .section.main .content,
@@ -477,10 +479,12 @@ ul.nededitingsection li.section .content .addresourcemodchooser {
 }
 
 ul.nededitingsection li.section .left .nededitingsectionpix {
+    background-position: center;
+    background-repeat: no-repeat;
     cursor: pointer;
     display: block;
     height: 24px;
-    width: 24px;
+    width: 40px;
 }
 
 ul.nededitingsection li.section.closed .left .nededitingsectionpix {
@@ -496,15 +500,12 @@ ul.ned.nededitingsection li.section .right {
     padding: 0;
 }
 
-ul.ned.nededitingsection li.section .left {
+.editing ul.ned.ned-framedsections-s0 li.section .left,
+.editing ul.ned.ned-framedsections li.section .left {
     text-align: center;
 }
 
-ul.nededitingsection li.section .left .nedsinglesectionicon {
-    padding-right: 0;
-}
-
-.editing .course-content ul.ned.nededitingsection li.section .left .section-handle .icon {
+.editing .course-content ul.ned li.section .left .section-handle .icon {
     margin-left: 0;
 }
 
