@@ -42,4 +42,30 @@ class format_ned_observer {
         // Here for future development if needed to delete things specific to a given course.
         // Note: Now implemened colour and removed the need for course specific entries.
     }
+
+    /**
+     * Observer for the event course_deleted.
+     *
+     * Deletes format options that are kept in format_ned table for the given course upon course deletion.
+     *
+     * @param \core\event\course_deleted $event
+     */
+    public static function course_deleted(\core\event\course_deleted $event) {
+       global $DB;
+        $data = $event->get_data();
+        $DB->delete_records('format_ned', array('courseid' => $data['objectid']));
+    }
+
+    /**
+     * Observer for the event course_section_deleted.
+     *
+     * Deletes format options that are kept in format_ned table for the given course upon section deletion.
+     *
+     * @param \core\event\course_section_deleted
+     */
+    public static function course_section_deleted(\core\event\course_section_deleted $event) {
+       global $DB;
+        $data = $event->get_data();
+        $DB->delete_records('format_ned', array('sectionid' => $data['objectid']));
+    }
 }

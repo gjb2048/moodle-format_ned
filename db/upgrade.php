@@ -137,6 +137,5 @@ function xmldb_format_ned_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2017121200, 'format', 'ned');
     }
 
-
     return true;
 }

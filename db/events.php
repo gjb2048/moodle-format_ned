@@ -33,5 +33,13 @@ $observers = array(
         'eventname'   => '\core\event\course_content_deleted',
         'callback'    => 'format_ned_observer::course_content_deleted',
     ),
+    array(
+        'eventname'   => '\core\event\course_deleted',
+        'callback'    => 'format_ned_observer::course_deleted',
+    ),
+    array(
+        'eventname'   => '\core\event\course_section_deleted',
+        'callback'    => 'format_ned_observer::course_section_deleted',
+    ),
 
 );
