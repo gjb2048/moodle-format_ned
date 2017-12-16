@@ -195,7 +195,7 @@ ul.ned.sectioncontentjustification .section .activity .actions {
 /* Set the background colour of the li.section - less to style and no adaption for editing but format has to set the section content background and highlight colour. */
 ul.ned-framedsections .section.main,
 ul.ned-framedsections-s0 .section.main {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 ul.ned-framedsections .section.main:last-child {
@@ -465,7 +465,7 @@ ul.ned-framedsections .section.main:last-child {
 
 /* Editing toggle all. */
 .nededitingsectionmenu {
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     text-align: center;
 }
 
@@ -532,6 +532,7 @@ ul.ned.nededitingsection li.section .right {
 }
 .editing .course-content ul.ned-framedsections-s0 li.section.closed .content {
     border-width: 1px;
+    min-height: 36px;
     padding-left: 27px;
     padding-right: 27px;
 }
