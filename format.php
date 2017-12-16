@@ -90,15 +90,13 @@ if ($sectionformat >= 1) { // Framed sections.
             }
 
             if ($sectionformat == 3) { // Framed sections + Formatted header.
-                echo '.ned-framedsections .section .header,';
+                echo '.ned-framedsections .section .header {';
             } else {
                 echo '.ned-framedsections .section .header .sectionname,';
                 echo '.ned-framedsections .section .header .sectionname a,';
                 echo '.ned-framedsections .section .header .sectionname a:hover,';
-                echo '.ned-framedsections .section .header .summary,';
+                echo '.ned-framedsections .section .header .summary {';
             }
-            echo '.ned-framedsections .section .right a.dropdown-toggle,';
-            echo '.ned-framedsections .section .right a.dropdown-toggle:hover {';
             echo 'color: #'.$preset->framedsectionheadertxtcolour.';';
             echo '}';
 
@@ -181,9 +179,7 @@ if ($sectionformat >= 1) { // Framed sections.
 
                     $selectors = array();
                     foreach ($sectionnos as $sectionno) {
-                        $selectors[] = '.ned-framedsections '.$sectionno.'.section .header,'.
-                            '.ned-framedsections '.$sectionno.'.section .right a.dropdown-toggle,'.
-                            '.ned-framedsections '.$sectionno.'.section .right a.dropdown-toggle:hover';
+                        $selectors[] = '.ned-framedsections '.$sectionno.'.section .header';
                     }
                     echo implode(',', $selectors).' {';
                     echo 'color: #'.$sectionpreset->framedsectionheadertxtcolour.';';
