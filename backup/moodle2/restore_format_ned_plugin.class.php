@@ -83,6 +83,44 @@ class restore_format_ned_plugin extends restore_format_plugin {
     }
 
     /**
+     * Returns the paths to be handled by the plugin at section level
+     */
+    protected function define_section_plugin_structure() {
+        $paths = array();
+
+        // Add own format stuff.
+        $elename = 'nedsection';
+        $elepath = $this->get_pathfor('/');
+        $paths[] = new restore_path_element($elename, $elepath);
+
+        return $paths; // And we return the interesting paths.
+    }
+
+    /**
+     * Process the format/ned element
+     */
+    public function process_nedsection($data) {
+        global $DB;
+        $data = (object)$data;
+
+        $format = $DB->get_field('course', 'format', array('id' => $this->task->get_courseid()));
+
+        if ($format != 'ned') {
+            return;
+        }
+        $data->courseid = $this->task->get_courseid();
+        $data->sectionid = $this->task->get_sectionid();
+
+        if (!$DB->record_exists('format_ned', array('courseid' => $data->courseid, 'sectionid' => $data->sectionid))) {
+            $DB->insert_record('format_ned', $data);
+        } else {
+            $old = $DB->get_record('format_ned', array('courseid' => $data->courseid, 'sectionid' => $data->sectionid));
+            $data->id = $old->id;
+            $DB->update_record('format_ned', $data);
+        }
+    }
+
+    /**
      * Executed after course restore is complete
      *
      * This method is only executed if course configuration was overridden

@@ -65,18 +65,20 @@ class format_ned extends format_base {
                 $numsections = $this->get_last_section_number();
                 $this->sectionheaderformatheaders = array();
                 $section = 1;
-                $sql = "SELECT cs.id, fn.value
+                $sql = "SELECT cs.section, fn.value
                           FROM {course_sections} cs
                           JOIN {format_ned} fn
                             ON cs.id = fn.sectionid
                          WHERE fn.name = ?
-                           AND cs.section = ?
                            AND cs.course = ?";
+                $headerformats = $DB->get_records_sql($sql, array('headerformat', $this->courseid));
+
                 while ($section <= $numsections) {
-                    if ($headerformat = $DB->get_record_sql($sql, array('headerformat', $section, $this->courseid))) {
-                        $this->sectionheaderformatheaders[$section] = json_decode($headerformat->value, true);
+                    if ($headerformats && isset($headerformats[$section])) {
+                        $this->sectionheaderformatheaders[$section] = json_decode($headerformats[$section]->value, true);
                     } else {
-                        $this->sectionheaderformatheaders[$section] = json_decode($this->get_format_options($section)['headerformat'], true);
+                        $this->sectionheaderformatheaders[$section]
+                            = json_decode($this->get_format_options($section)['headerformat'], true);
                     }
                     $section++;
                 }
@@ -1074,9 +1076,10 @@ class format_ned extends format_base {
                 $rec->value = $data['headerformat'];
                 $DB->insert_record('format_ned', $rec);
             }
-
+            $changed = true;
+        } else {
+            $changed = parent::update_format_options($data, $sectionid);
         }
-        $changed = parent::update_format_options($data, $sectionid);
         if ($changed) {
             // Settings have changed so clear our member attribute.
             unset($this->settings);

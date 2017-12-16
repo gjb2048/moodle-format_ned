@@ -10,7 +10,7 @@
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" DEFAULT="" SEQUENCE="false"/>
         <FIELD NAME="framedsectionbgcolour" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="framedsectionheadertxtcolour" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="framedsectionborderwidth" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="3" SEQUENCE="false"/>
+        <FIELD NAME="framedsectionborderwidth" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="3" UNSIGNED="true" SEQUENCE="false"/>
         <FIELD NAME="predefined" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
