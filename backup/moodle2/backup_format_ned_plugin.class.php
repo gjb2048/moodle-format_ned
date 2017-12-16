@@ -20,8 +20,7 @@
  * @copyright  NED {@link http://ned.ca}
  * @author     NED {@link http://ned.ca}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @developer  G J Barnard - {@link http://about.me/gjbarnard} and
- *                           {@link http://moodle.org/user/profile.php?id=442195}
+ * @developer  2017 Michael Gardener
  */
 
 defined('MOODLE_INTERNAL') || die();
