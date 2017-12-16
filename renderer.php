@@ -833,7 +833,7 @@ class format_ned_renderer extends format_section_renderer_base {
                 echo $this->end_section_list();
             }
         }
-        if ((!$this->editing) and ($this->settings['showsection0'] == 2)) {
+        if ($this->settings['showsection0'] == 2) {
             $numsections = 0; // Effectively don't show the other sections, only 0.
         }
 
