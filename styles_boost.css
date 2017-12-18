@@ -31,7 +31,8 @@
 }
 
 .format-ned.path-course-view h3.sectionname {
-    margin-bottom: .25rem;
+    margin-bottom: 0;
+    padding-bottom: .25rem;
     padding-top: .25rem;
 }
 
@@ -209,6 +210,13 @@ div.nedshfeditrightcolumn {
     margin-left: -110px;
     margin-top: 12px;
     width: 50%;
+}
+
+/* Framed sections with section 0 */
+.editing .course-content ul.ned-framedsections li.section .left,
+.editing .course-content ul.ned-framedsections li.section .nedrightside,
+.editing .course-content ul.ned-framedsections-s0 li.section .nedrightside {
+    margin-top: 0;
 }
 
 /* Why?! -> https://github.com/moodle/moodle/blame/master/theme/boost/scss/moodle/drawer.scss#L9-L12 -> MDL-55074 */
