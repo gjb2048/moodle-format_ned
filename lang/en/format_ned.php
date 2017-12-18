@@ -163,7 +163,12 @@ $string['completion-alt-waitinggrade'] = 'Waiting for grade: {$a}';
 $string['compressed'] = 'Compressed';
 $string['expanded'] = 'Expanded';
 $string['compressedsections'] = 'Compressed sections';
-$string['compressedsections_desc'] = 'Allow compressed sections, so when \'editing\' compress the section content on page load.  To expand or re-compress a section, click on it.  To expand / re-compress all sections, use the buttons provided adjacent to the \'Edit NED Format Settings\' icon.';
+$string['compressedsections_desc'] = 'Load sections in compressed mode when editing is turned on.  Show Compressed / Expanded buttons at the top of the page control the view.';
+$string['compressedmodeview'] = 'Compressed mode view';
+$string['compressedmodeview_desc'] = 'Hide the summary in favour of the section number or show the summary (if present) when compressed mode and editing.  This only applies when the \'Section format\' is not \'Framed sections + Custom header\'.  Summary is always shown (if present) in expanded mode.';
+$string['hidesummarysection'] = 'Hide summary section';
+$string['showsummarysection'] = 'Show summary section';
+$string['compressedsectionformat'] = '(section {$a->sectionno})';
 
 // Section navigation.
 $string['opensinglesection'] = 'Open section {$a->sectionno} on a single page';

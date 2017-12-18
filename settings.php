@@ -109,6 +109,19 @@ if ($ADMIN->fulltree) {
     );
     $settings->add($setting);
 
+    $settings->add($setting);
+    $name = 'format_ned/compressedmodeview';
+    $title = get_string('compressedmodeview', 'format_ned');
+    $description = get_string('compressedmodeview_desc', 'format_ned');
+    $default = 0;
+    $setting = new ned_admin_setting_configselect($name, $title, $description, $default,
+        array(
+            0 => get_string('hidesummarysection', 'format_ned'),
+            1 => get_string('showsummarysection', 'format_ned')
+        )
+    );
+    $settings->add($setting);
+
     // Other settings.
     $settings->add(new admin_setting_heading('format_net_othersettings',
         get_string('othersettings', 'format_ned'), ''));

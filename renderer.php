@@ -71,7 +71,7 @@ class format_ned_renderer extends format_section_renderer_base {
         );
         if (($this->settings['compressedsections'] == 1) && ($this->editing) &&
             (!$singlesection)) {
-            $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init', array());
+            $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init');
         }
     }
 
@@ -247,7 +247,7 @@ class format_ned_renderer extends format_section_renderer_base {
 
         if ($this->settings['sectionformat'] == 1) { // Framed sections.
             $o .= html_writer::tag('div', '', array('class' => 'header'));
-        } else if ($this->settings['sectionformat'] == 2) { // Framed sections + custom header.
+        } else if ($this->settings['sectionformat'] == 2) { // Framed sections + Custom header.
             if ($this->settings['sectionnamelocation'] == 1) { // 1 is show in the section header.
                 $sectionheadercontent = $sectionnamemarkup;
                 if ($this->settings['sectionsummarylocation'] == 0) { // 0 is show in the section header.
@@ -332,7 +332,23 @@ class format_ned_renderer extends format_section_renderer_base {
             (($this->settings['sectionformat'] == 2) &&
              ($this->settings['sectionsummarylocation'] == 1)) || // 1 is show in the section body.
             ($this->settings['sectionformat'] == 3)) {
-            $o .= $summarymarkup;
+            if (($this->editing) &&
+                ($this->settings['sectionformat'] != 2) &&
+                (is_null($this->displaysection)) &&
+                ($this->settings['compressedsections'] == 1) &&
+                ($this->settings['compressedmodeview'] == 0)) {
+                /* Not Framed sections + Custom header on editing a multiple section page (regardless of 'One section per page' or
+                   'Show all sections on one page' 'Course layout') with compressed sections shown and compressed mode view is
+                   'Hide summary section'.
+                   Then we need a 'flip/flop' on the compressed / expanded toggle to show / hide the format section with the 
+                   summary itself.*/
+                $o .= html_writer::start_tag('div', array('class' => 'compressedmodeviewhide'));
+                $o .= html_writer::tag('div', get_string('compressedsectionformat', 'format_ned', array('sectionno' => $section->section)), array('class' => 'compressedmodeviewhideformat'));
+                $o .= $summarymarkup;
+                $o .= html_writer::end_tag('div');
+            } else {
+                $o .= $summarymarkup;
+            }
         }
 
         return $o;

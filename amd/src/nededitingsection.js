@@ -20,31 +20,53 @@ define(['jquery', 'core/log'], function($, log) {
                 // Individual toggles.
                 $('ul.nededitingsection li.section .left .nededitingsectionpix').click(function (e) {
                     var section = $(this).parent('.left').parent('.section');
+                    var compressedmodeviewhideformat = section.find('.compressedmodeviewhide .compressedmodeviewhideformat');
+                    var compressedmodeviewhidesummary = section.find('.compressedmodeviewhide .summary');
                     section.find('.content .section').toggle();
                     section.find('.content .addresourcemodchooser').toggle();
                     if (section.hasClass('closed')) {
                         section.removeClass('closed').addClass('open');
+                        if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
+                            compressedmodeviewhideformat.hide();
+                            compressedmodeviewhidesummary.show();
+                        }
                     } else {
                         section.removeClass('open').addClass('closed');
+                        if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
+                            compressedmodeviewhideformat.show();
+                            compressedmodeviewhidesummary.hide();
+                        }
                     }
                 });
                 // All toggles compress.
                 $('#nededitingsectioncompressed').click(function () {
                     $('ul.nededitingsection li.section').each(function () {
+                        var compressedmodeviewhideformat = $(this).find('.compressedmodeviewhide .compressedmodeviewhideformat');
+                        var compressedmodeviewhidesummary = $(this).find('.compressedmodeviewhide .summary');
                         $(this).find('.content .section').hide();
                         $(this).find('.content .addresourcemodchooser').hide();
                         if ($(this).hasClass('open')) {
                             $(this).removeClass('open').addClass('closed');
+                            if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
+                                compressedmodeviewhideformat.show();
+                                compressedmodeviewhidesummary.hide();
+                            }
                         }
                     });
                 });
                 // All toggles expand.
                 $('#nededitingsectionexpanded').click(function () {
                     $('ul.nededitingsection li.section').each(function () {
+                        var compressedmodeviewhideformat = $(this).find('.compressedmodeviewhide .compressedmodeviewhideformat');
+                        var compressedmodeviewhidesummary = $(this).find('.compressedmodeviewhide .summary');
                         $(this).find('.content .section').show();
                         $(this).find('.content .addresourcemodchooser').show();
                         if ($(this).hasClass('closed')) {
                             $(this).removeClass('closed').addClass('open');
+                            if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
+                                compressedmodeviewhideformat.hide();
+                                compressedmodeviewhidesummary.show();
+                            }
                         }
                     });
                 });

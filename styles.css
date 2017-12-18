@@ -543,3 +543,13 @@ ul.ned.nededitingsection li.section .right {
 body:not(.editing) .course-content ul.ned-framedsections-s0 li.section .content {
     margin: 0 3px;
 }
+
+/* Compressed mode view */
+.compressedmodeviewhide .compressedmodeviewhideformat {
+    color: #999;
+    text-align: center;
+}
+
+.compressedmodeviewhide .summary {
+    display: none;
+}

@@ -34,3 +34,7 @@ $string['deletecolourpreset'] = 'Delete this color preset';
 $string['framedsectionbgcolour'] = 'Background color - A';
 $string['managecolourpresets'] = 'Manage color presets';
 $string['managecolourpresets_desc'] = 'Manage the color presets';
+
+// Editing toggle all.
+$string['compressedmodeview_desc'] = 'Hide the summary in favor of the section number or show the summary (if present) when compressed.  Summary is always shown (if present) in expanded mode.';
+
