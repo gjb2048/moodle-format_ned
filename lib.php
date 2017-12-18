@@ -33,6 +33,7 @@ class format_ned extends format_base {
     private $sectionheaderformatheaders = null; // Array (indexed by section number) of JSON decodes of 'headerformat' section settings.
     private $displaysection = false;
     private $displaysectioncalculated = false;
+    private $headercache = null;
 
     /**
      * Creates a new instance of class
@@ -49,6 +50,7 @@ class format_ned extends format_base {
             $courseid = $COURSE->id;  // Save lots of global $COURSE as we will never be the site course.
         }
         parent::__construct($format, $courseid);
+        $this->headercache = cache::make('format_ned', 'headerformat');
     }
 
     /**
@@ -65,13 +67,8 @@ class format_ned extends format_base {
                 $numsections = $this->get_last_section_number();
                 $this->sectionheaderformatheaders = array();
                 $section = 1;
-                $sql = "SELECT cs.section, fn.value
-                          FROM {course_sections} cs
-                          JOIN {format_ned} fn
-                            ON cs.id = fn.sectionid
-                         WHERE fn.name = ?
-                           AND cs.course = ?";
-                $headerformats = $DB->get_records_sql($sql, array('headerformat', $this->courseid));
+
+                $headerformats = $this->get_headerformats();
 
                 while ($section <= $numsections) {
                     if ($headerformats && isset($headerformats[$section])) {
@@ -1083,6 +1080,7 @@ class format_ned extends format_base {
         if ($changed) {
             // Settings have changed so clear our member attribute.
             unset($this->settings);
+            $this->headercache->purge();
         }
     }
 
@@ -1273,6 +1271,24 @@ class format_ned extends format_base {
         $renderer = $PAGE->get_renderer('format_ned');
         $rv['section_availability'] = $renderer->section_availability($this->get_section($section));
         return $rv;
+    }
+
+    public function get_headerformats() {
+        global $DB;
+
+        if ($headerformats = $this->headercache->get($this->courseid)) {
+            return $headerformats;
+        }
+        $sql = "SELECT cs.section, fn.value
+                  FROM {course_sections} cs
+                  JOIN {format_ned} fn
+                    ON cs.id = fn.sectionid
+                 WHERE fn.name = ?
+                   AND cs.course = ?";
+        $headerformats = $DB->get_records_sql($sql, array('headerformat', $this->courseid));
+
+        $this->headercache->set($this->courseid, $headerformats);
+        return $headerformats;
     }
 }
 

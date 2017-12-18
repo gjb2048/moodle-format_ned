@@ -38,6 +38,7 @@ $string['page-course-view-ned-x'] = 'Any course page in ned format';
 $string['hidefromothers'] = 'Hide section';
 $string['showfromothers'] = 'Show section';
 $string['addsectionbelow'] = 'Add section below';
+$string['cachedef_headerformat'] = 'NED Headerformat';
 
 // Course Settings form.
 $string['sectiondeliverymethod'] = 'Section delivery method';
