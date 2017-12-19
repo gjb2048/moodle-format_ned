@@ -59,7 +59,18 @@ class format_ned extends format_base {
      */
     public function get_settings() {
         global $DB;
-        if (empty($this->settings) == true) {
+
+        static $headerformatdefault = '{'.
+                '"headerformat": 1, '. // 1, 2 or 3 for 'sectionheaderformatone' etc.
+                '"navigationname": 0, '. // 0 = Default, 1 = left column, 2 = middle column and 3 = right column.
+                '"sectionname": {'.
+                    '"leftcolumn": "", '.
+                    '"middlecolumn": "", '.
+                    '"rightcolumn": ""'.
+                '}'.
+            '}';
+
+			if (empty($this->settings) == true) {
             $this->settings = $this->get_format_options();
             // TODO: Do these (JSON Strings) need to be 'unset' from 'settings' and 'get_setting($name)' updated?
             $this->sectiondeliverymethoddata = json_decode($this->settings['sectiondeliverymethod']);
@@ -75,7 +86,7 @@ class format_ned extends format_base {
                         $this->sectionheaderformatheaders[$section] = json_decode($headerformats[$section]->value, true);
                     } else {
                         $this->sectionheaderformatheaders[$section]
-                            = json_decode($this->get_format_options($section)['headerformat'], true);
+                            = json_decode($headerformatdefault, true);
                     }
                     $section++;
                 }
@@ -535,68 +546,6 @@ class format_ned extends format_base {
      */
     private function get_colourpreset_default() {
         return get_config('format_ned', 'defaultcolourpreset');
-    }
-
-    /**
-     * Definitions of the additional options that this course format uses for section
-     *
-     * See {@link format_base::course_format_options()} for return array definition.
-     *
-     * Additionally section format options may have property 'cache' set to true
-     * if this option needs to be cached in {@link get_fast_modinfo()}. The 'cache' property
-     * is recommended to be set only for fields used in {@link format_base::get_section_name()},
-     * {@link format_base::extend_course_navigation()} and {@link format_base::get_view_url()}
-     *
-     * For better performance cached options are recommended to have 'cachedefault' property
-     * Unlike 'default', 'cachedefault' should be static and not access get_config().
-     *
-     * Regardless of value of 'cache' all options are accessed in the code as
-     * $sectioninfo->OPTIONNAME
-     * where $sectioninfo is instance of section_info, returned by
-     * get_fast_modinfo($course)->get_section_info($sectionnum)
-     * or get_fast_modinfo($course)->get_section_info_all()
-     *
-     * All format options for particular section are returned by calling:
-     * $this->get_format_options($section);
-     *
-     * @param bool $foreditform
-     * @return array
-     */
-    public function section_format_options($foreditform = false) {
-        static $sectionformatoptions = false;
-        static $headerformatdefault = '{'.
-                '"headerformat": 1, '. // 1, 2 or 3 for 'sectionheaderformatone' etc.
-                '"navigationname": 0, '. // 0 = Default, 1 = left column, 2 = middle column and 3 = right column.
-                '"sectionname": {'.
-                    '"leftcolumn": "", '.
-                    '"middlecolumn": "", '.
-                    '"rightcolumn": ""'.
-                '}'.
-            '}';
-
-        if ($sectionformatoptions === false) {
-            $sectionformatoptions = array(
-                'headerformat' => array(
-                    'default' => $headerformatdefault, // JSON String for use in array.
-                    'type' => PARAM_RAW
-                )
-            );
-        }
-        if ($foreditform && !isset($sectionformatoptions['headerformat']['label'])) {
-            $sectionformatoptionsedit = array(
-                'headerformat' => array(
-                    'label' => 'headerformat',
-                    'element_type' => 'hidden'
-                )
-            );
-            $sectionformatoptions = array_merge_recursive($sectionformatoptions, $sectionformatoptionsedit);
-        }
-
-        if ($this->get_setting('sectionformat') == 3) {
-            return $sectionformatoptions;
-        } else {
-            return array();
-        }
     }
 
     /**
