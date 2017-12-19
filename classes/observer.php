@@ -51,7 +51,7 @@ class format_ned_observer {
      * @param \core\event\course_deleted $event
      */
     public static function course_deleted(\core\event\course_deleted $event) {
-       global $DB;
+        global $DB;
         $data = $event->get_data();
         $DB->delete_records('format_ned', array('courseid' => $data['objectid']));
     }
@@ -64,7 +64,7 @@ class format_ned_observer {
      * @param \core\event\course_section_deleted
      */
     public static function course_section_deleted(\core\event\course_section_deleted $event) {
-       global $DB;
+        global $DB;
         $data = $event->get_data();
         $DB->delete_records('format_ned', array('sectionid' => $data['objectid']));
     }

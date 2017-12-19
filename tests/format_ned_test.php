@@ -29,6 +29,10 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/course/lib.php');
 
+/**
+ * Tests for the NED course format.
+ * @group format_ned
+ */
 class format_ned_testcase extends advanced_testcase {
 
     /**

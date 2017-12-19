@@ -340,10 +340,11 @@ class format_ned_renderer extends format_section_renderer_base {
                 /* Not Framed sections + Custom header on editing a multiple section page (regardless of 'One section per page' or
                    'Show all sections on one page' 'Course layout') with compressed sections shown and compressed mode view is
                    'Hide summary section'.
-                   Then we need a 'flip/flop' on the compressed / expanded toggle to show / hide the format section with the 
+                   Then we need a 'flip/flop' on the compressed / expanded toggle to show / hide the format section with the
                    summary itself.*/
                 $o .= html_writer::start_tag('div', array('class' => 'compressedmodeviewhide'));
-                $o .= html_writer::tag('div', get_string('compressedsectionformat', 'format_ned', array('sectionno' => $section->section)), array('class' => 'compressedmodeviewhideformat'));
+                $o .= html_writer::tag('div', get_string('compressedsectionformat', 'format_ned',
+                    array('sectionno' => $section->section)), array('class' => 'compressedmodeviewhideformat'));
                 $o .= $summarymarkup;
                 $o .= html_writer::end_tag('div');
             } else {

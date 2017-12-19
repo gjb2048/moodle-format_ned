@@ -1,0 +1,17 @@
+Ref: https://docs.moodle.org/dev/PHPUnit
+
+composer install --dev
+
+php admin/tool/phpunit/cli/init.php
+
+vendor/bin/phpunit format_ned_testcase course/format/ned/tests/format_ned_test.php
+or
+vendor\bin\phpunit format_ned_testcase course/format/ned/tests/format_ned_test.php
+
+vendor/bin/phpunit format_ned_upgrade_testcase course/format/ned/tests/format_ned_upgrade_test.php
+or
+vendor\bin\phpunit format_ned_upgrade_testcase course/format/ned/tests/format_ned_upgrade_test.php
+
+vendor/bin/phpunit --group format_ned
+or
+vendor\bin\phpunit --group format_ned

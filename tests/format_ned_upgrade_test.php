@@ -30,6 +30,10 @@ global $CFG;
 require_once($CFG->dirroot . '/course/lib.php');
 require_once($CFG->dirroot . '/course/format/ned/db/upgradelib.php');
 
+/**
+ * Tests for the NED course format.
+ * @group format_ned
+ */
 class format_ned_upgrade_testcase extends advanced_testcase {
 
     /**
