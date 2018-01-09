@@ -1009,7 +1009,7 @@ class format_ned extends format_base {
      */
     protected function update_format_options($data, $sectionid = null) {
         global $DB;
-        if (($sectionid) && ($this->settings['sectionformat'] == 3)) {
+        if ((!empty($data['headerformat'])) && ($sectionid) && ($this->settings['sectionformat'] == 3)) {
             if ($sectiondata = $DB->get_record('format_ned', array('courseid' => $this->courseid, 'sectionid' => $sectionid,
                 'name' => 'headerformat'))) {
                 // Update.

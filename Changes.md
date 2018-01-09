@@ -3,6 +3,7 @@ Version Information
 Version 3.3.1.3.1
   1. Stage 7 continued.
   2. No white space above section title: https://www.screencast.com/t/bBysNCTVhA4u.
+  3. Fix null data being written to the database in the 'format_ned' table when '/course/editsection.php' has no parameters.
 
 Version 3.3.1.3
   1. Stage 7.
