@@ -747,7 +747,7 @@ class format_ned_renderer extends format_section_renderer_base {
         }
 
         // Start single-section div.
-        echo html_writer::start_tag('div', array('class' => 'single-section'));
+        echo html_writer::start_tag('div', array('class' => 'single-section ned-single-section'));
 
         // The requested section page.
         $thissection = $modinfo->get_section_info($displaysection);
