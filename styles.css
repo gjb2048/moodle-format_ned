@@ -49,6 +49,10 @@
     margin-top: 0;
 }
 
+.course-content div.ned-single-section .content {
+    padding-top: 10px;
+}
+
 /* Edit section icon on the editing section menu. */
 .nededitsection img.icon {
     height: 24px;

@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.3
+  1. Stage 7 continued.
+  2. Colour and spacing changes.  Colour specific to NED Boost theme only.  See: https://www.screencast.com/t/TEmjGlxn.
+
 Version 3.3.1.3.2
   1. Stage 7 continued.
   2. Fix Moodle default issue.  NED default is the course colour preset setting.  https://www.screencast.com/t/e3MKUEiPS and https://www.screencast.com/t/yQMAhNzww.
