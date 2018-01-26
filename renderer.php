@@ -163,6 +163,9 @@ class format_ned_renderer extends format_section_renderer_base {
      * @return string HTML to output.
      */
     public function section_title($section, $course) {
+        if (empty($this->courseformat)) {
+            $this->courseformat = course_get_format($course);
+        }
         return $this->render($this->courseformat->inplace_editable_render_section_name($section));
     }
 
@@ -174,6 +177,9 @@ class format_ned_renderer extends format_section_renderer_base {
      * @return string HTML to output.
      */
     public function section_title_without_link($section, $course) {
+        if (empty($this->courseformat)) {
+            $this->courseformat = course_get_format($course);
+        }
         return $this->render($this->courseformat->inplace_editable_render_section_name($section, false));
     }
 

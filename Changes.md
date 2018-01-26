@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.4
+  1. Stage 8.
+  2. Fix drag and drop failure.
+
 Version 3.3.1.3.3
   1. Stage 7 continued.
   2. Colour and spacing changes.  Colour specific to NED Boost theme only.  See: https://www.screencast.com/t/TEmjGlxn.
