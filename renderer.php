@@ -782,8 +782,8 @@ class format_ned_renderer extends format_section_renderer_base {
         $context = context_course::instance($course->id);
 
         // For simplicity, this just deals with the single section page.  Multiple section implemented in print_multiple_section_page().
+        echo html_writer::start_tag('div', array('class' => 'nedsectionmenu'));
         if ($this->editing) {
-            echo html_writer::start_tag('div', array('class' => 'nededitingsectionmenu'));
 
             if (has_capability('format/ned:formatupdate', $context)) {
                 $nedsettingsurl = new moodle_url('/course/format/ned/nedsettings.php', array('id' => $course->id));
@@ -791,15 +791,23 @@ class format_ned_renderer extends format_section_renderer_base {
                     $this->pix_icon('ned_icon', get_string('editnedformatsettings', 'format_ned'), 'format_ned'),
                     array('title' => get_string('editnedformatsettings', 'format_ned'), 'class' => 'nededitsection'));
             }
+        }
 
+        $showjumptomenu = false;
+        if ($this->editing) {
             $viewjumptomenu = get_config('format_ned', 'viewjumptomenu');
             if (($viewjumptomenu == 0) ||
                 (($viewjumptomenu == 1) && (has_capability('moodle/course:update', $context)))) {
-                echo html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection));
+                $showjumptomenu = true;
             }
-
-            echo html_writer::end_tag('div');
+        } else {
+            $showjumptomenu = true;
         }
+        if ($showjumptomenu) {
+            echo html_writer::tag('div', $this->section_nav_selection($course, $sections, false));
+        }
+
+        echo html_writer::end_tag('div');
 
         if (!$sectioninfo->uservisible) {
             if (!$course->hiddensections) {
@@ -898,28 +906,43 @@ class format_ned_renderer extends format_section_renderer_base {
         echo $this->course_activity_clipboard($course, 0);
 
         // For simplicity, this just deals with the multiple section page.  Single section implemented in print_single_section_page().
+        echo html_writer::start_tag('div', array('class' => 'nedsectionmenu'));
         if ($this->editing) {
-            echo html_writer::start_tag('div', array('class' => 'nededitingsectionmenu'));
             if (has_capability('format/ned:formatupdate', $context)) {
                 $nedsettingsurl = new moodle_url('/course/format/ned/nedsettings.php', array('id' => $course->id));
                 echo html_writer::link($nedsettingsurl,
                 $this->pix_icon('ned_icon', get_string('editnedformatsettings', 'format_ned'), 'format_ned'),
                     array('title' => get_string('editnedformatsettings', 'format_ned'), 'class' => 'nededitsection'));
             }
+        }
 
+        $showjumptomenu = false;
+        if ($this->editing) {
             $viewjumptomenu = get_config('format_ned', 'viewjumptomenu');
             if (($viewjumptomenu == 0) ||
                 (($viewjumptomenu == 1) && (has_capability('moodle/course:update', $context)))) {
-                echo html_writer::tag('div', $this->section_nav_selection($course, $sections, false));
+                $showjumptomenu = true;
             }
+        } else {
+            $showjumptomenu = true;
+        }
+        if ($showjumptomenu) {
+            echo html_writer::tag('div', $this->section_nav_selection($course, $sections, false));
+        }
 
+        if ($this->editing) {
             $courseupdatecapability = has_capability('moodle/course:update', $context);
             if (($this->courseformat->get_setting('compressedsections') == 1) && $courseupdatecapability) {
-                echo html_writer::tag('span', $this->pix_icon('compressed', '', 'format_ned'), array('id' => 'nededitingsectioncompressed', 'title' => get_string('compressed', 'format_ned')));
-                echo html_writer::tag('span', $this->pix_icon('expanded', '', 'format_ned'), array('id' => 'nededitingsectionexpanded', 'title' => get_string('expanded', 'format_ned')));
+                echo html_writer::tag('span',
+                    $this->pix_icon('compressed', '', 'format_ned'),
+                    array('id' => 'nededitingsectioncompressed', 'title' => get_string('compressed', 'format_ned')));
+                echo html_writer::tag('span',
+                    $this->pix_icon('expanded', '', 'format_ned'),
+                    array('id' => 'nededitingsectionexpanded', 'title' => get_string('expanded', 'format_ned')));
             }
-            echo html_writer::end_tag('div');
         }
+
+        echo html_writer::end_tag('div');
 
         $numsections = $this->courseformat->get_last_section_number();
 

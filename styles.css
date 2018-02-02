@@ -472,17 +472,17 @@ ul.ned-framedsections .section.main:last-child {
 }
 
 /* Editing toggle all. */
-.nededitingsectionmenu {
+.nedsectionmenu {
     margin-bottom: 12px;
     text-align: right;
 }
 
-.nededitingsectionmenu div,
-.nededitingsectionmenu a {
+.nedsectionmenu div,
+.nedsectionmenu a {
     display: inline-block;
 }
 
-.nededitingsectionmenu span {
+.nedsectionmenu span {
     margin-left: 4px;
 }
 
