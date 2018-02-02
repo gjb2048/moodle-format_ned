@@ -722,7 +722,8 @@ class format_ned_renderer extends format_section_renderer_base {
         $o = '';
         $sectionmenu = array();
 
-        $mainpageurl = course_get_url($course);
+        $mainpageurl = $this->courseformat->get_view_url(null);
+        $sectionurl = $mainpageurl;
         if ($this->courseformat->get_mainpageoption()) {
             $mainpageurl->param('mainpage', 1);
         }
@@ -730,12 +731,14 @@ class format_ned_renderer extends format_section_renderer_base {
         $sectionmenu[$mainpageurl->out(false)] = get_string('maincoursepage');
         $modinfo = get_fast_modinfo($course);
         $section = 1;
-        $numsections = course_get_format($course)->get_last_section_number();
+        $numsections = $this->courseformat->get_last_section_number();
+        // As the 'Jump to' menu is on a single section page then don't use 'anchors'.
         while ($section <= $numsections) {
             $thissection = $modinfo->get_section_info($section);
             $showsection = $thissection->uservisible or !$course->hiddensections;
-            if (($showsection) && ($section != $displaysection) && ($url = course_get_url($course, $section))) {
-                $sectionmenu[$url->out(false)] = get_section_name($course, $section);
+            if (($showsection) && ($section != $displaysection)) {
+                $sectionurl->param('section', $section);
+                $sectionmenu[$sectionurl->out(false)] = get_section_name($course, $section);
             }
             $section++;
         }
@@ -833,27 +836,25 @@ class format_ned_renderer extends format_section_renderer_base {
         echo $this->section_footer();
         echo $this->end_section_list();
 
-        // Display section bottom navigation only when 'Show one section per page' course display.
-        if ($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) {
-            $sectionbottomnav = '';
-            $viewsectionforwardbacklinks = get_config('format_ned', 'viewsectionforwardbacklinks');
-            if (($viewsectionforwardbacklinks == 0) ||
-                (($viewsectionforwardbacklinks == 1) && (has_capability('moodle/course:update', $context)))) {
-                $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
-                $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
-                $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
-            }
-            $viewjumptomenu = get_config('format_ned', 'viewjumptomenu');
-            if (($viewjumptomenu == 0) ||
-                (($viewjumptomenu == 1) && (has_capability('moodle/course:update', $context)))) {
-                $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection),
-                    array('class' => 'mdl-align'));
-            }
-            if (!empty($sectionbottomnav)) {
-                echo html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
-                echo $sectionbottomnav;
-                echo html_writer::end_tag('div');
-            }
+        // Always section bottom navigation on a single section page.
+        $sectionbottomnav = '';
+        $viewsectionforwardbacklinks = get_config('format_ned', 'viewsectionforwardbacklinks');
+        if (($viewsectionforwardbacklinks == 0) ||
+            (($viewsectionforwardbacklinks == 1) && (has_capability('moodle/course:update', $context)))) {
+            $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
+            $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
+            $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
+        }
+        $viewjumptomenu = get_config('format_ned', 'viewjumptomenu');
+        if (($viewjumptomenu == 0) ||
+            (($viewjumptomenu == 1) && (has_capability('moodle/course:update', $context)))) {
+            $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection),
+                array('class' => 'mdl-align'));
+        }
+        if (!empty($sectionbottomnav)) {
+            echo html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
+            echo $sectionbottomnav;
+            echo html_writer::end_tag('div');
         }
 
         // Close single-section div.
