@@ -772,6 +772,28 @@ class format_ned_renderer extends format_section_renderer_base {
             return;
         }
 
+        $context = context_course::instance($course->id);
+
+        // For simplicity, this just deals with the single section page.  Multiple section implemented in format.php.
+        if ($this->editing) {
+            echo html_writer::start_tag('div', array('class' => 'nededitingsectionmenu'));
+
+            if (has_capability('format/ned:formatupdate', $context)) {
+                $nedsettingsurl = new moodle_url('/course/format/ned/nedsettings.php', array('id' => $course->id));
+                echo html_writer::link($nedsettingsurl,
+                    $this->pix_icon('ned_icon', get_string('editnedformatsettings', 'format_ned'), 'format_ned'),
+                    array('title' => get_string('editnedformatsettings', 'format_ned'), 'class' => 'nededitsection'));
+            }
+
+            $viewjumptomenu = get_config('format_ned', 'viewjumptomenu');
+            if (($viewjumptomenu == 0) ||
+                (($viewjumptomenu == 1) && (has_capability('moodle/course:update', $context)))) {
+                echo html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection));
+            }
+
+            echo html_writer::end_tag('div');
+        }
+
         if (!$sectioninfo->uservisible) {
             if (!$course->hiddensections) {
                 echo $this->start_section_list();
@@ -805,8 +827,6 @@ class format_ned_renderer extends format_section_renderer_base {
         // The requested section page.
         $thissection = $modinfo->get_section_info($displaysection);
 
-        $context = context_course::instance($course->id);
-
         // Title without section navigation links.
         if ($this->settings['sectionformat'] == 0) {
             $sectiontitle = html_writer::start_tag('div', array('class' => 'section-navigation navigationtitle'));
@@ -837,21 +857,13 @@ class format_ned_renderer extends format_section_renderer_base {
         echo $this->end_section_list();
 
         // Always section bottom navigation on a single section page.
-        $sectionbottomnav = '';
         $viewsectionforwardbacklinks = get_config('format_ned', 'viewsectionforwardbacklinks');
         if (($viewsectionforwardbacklinks == 0) ||
             (($viewsectionforwardbacklinks == 1) && (has_capability('moodle/course:update', $context)))) {
             $sectionnavlinks = $this->get_nav_links($course, $modinfo->get_section_info_all(), $displaysection);
-            $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
+            $sectionbottomnav = html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
             $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
-        }
-        $viewjumptomenu = get_config('format_ned', 'viewjumptomenu');
-        if (($viewjumptomenu == 0) ||
-            (($viewjumptomenu == 1) && (has_capability('moodle/course:update', $context)))) {
-            $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection),
-                array('class' => 'mdl-align'));
-        }
-        if (!empty($sectionbottomnav)) {
+
             echo html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
             echo $sectionbottomnav;
             echo html_writer::end_tag('div');

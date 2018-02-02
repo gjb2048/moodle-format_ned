@@ -474,7 +474,12 @@ ul.ned-framedsections .section.main:last-child {
 /* Editing toggle all. */
 .nededitingsectionmenu {
     margin-bottom: 12px;
-    text-align: center;
+    text-align: right;
+}
+
+.nededitingsectionmenu div,
+.nededitingsectionmenu a {
+    display: inline-block;
 }
 
 .nededitingsectionmenu span {

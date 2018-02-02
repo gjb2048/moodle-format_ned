@@ -237,8 +237,9 @@ $renderer = $PAGE->get_renderer('format_ned');
 $renderer->set_courseformat($courseformat, (!empty($displaysection)));
 
 $courseupdatecapability = has_capability('moodle/course:update', $context);
-if ($weareediting) {
-    if ((empty($displaysection)) && ($courseformat->get_setting('compressedsections') == 1) && $courseupdatecapability) {
+// For simplicity, this just deals with the multiple section page.  Single section implemented in print_single_section_page().
+if ((empty($displaysection)) && ($weareediting)) {
+    if (($courseformat->get_setting('compressedsections') == 1) && $courseupdatecapability) {
         echo html_writer::start_tag('div', array('class' => 'nededitingsectionmenu'));
     }
     if (has_capability('format/ned:formatupdate', $context)) {
@@ -247,7 +248,7 @@ if ($weareediting) {
         $OUTPUT->pix_icon('ned_icon', get_string('editnedformatsettings', 'format_ned'), 'format_ned'),
             array('title' => get_string('editnedformatsettings', 'format_ned'), 'class' => 'nededitsection'));
     }
-    if ((empty($displaysection)) && ($courseformat->get_setting('compressedsections') == 1) && $courseupdatecapability) {
+    if (($courseformat->get_setting('compressedsections') == 1) && $courseupdatecapability) {
         echo html_writer::tag('span', get_string('compressed', 'format_ned'), array('id' => 'nededitingsectioncompressed', 'class' => 'btn'));
         echo html_writer::tag('span', get_string('expanded', 'format_ned'), array('id' => 'nededitingsectionexpanded', 'class' => 'btn'));
         echo html_writer::end_tag('div');
