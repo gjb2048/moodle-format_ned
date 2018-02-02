@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.5
+  1. Stage 8 continued.
+  2. When user in the default section, prevent all sections from loading when editing is turned on - https://www.screencast.com/t/iCX4cuKc0M0.
+
 Version 3.3.1.3.4
   1. Stage 8.
   2. Fix drag and drop failure.

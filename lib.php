@@ -34,6 +34,7 @@ class format_ned extends format_base {
     private $displaysection = false;
     private $displaysectioncalculated = false;
     private $headercache = null;
+    private $needmainpageoption = false; // Ref: https://www.screencast.com/t/iCX4cuKc0M0.
 
     /**
      * Creates a new instance of class
@@ -181,11 +182,25 @@ class format_ned extends format_base {
                         }
                     }
                 }
+            } else {
+                /* Editing is on so select the first available section when the course display is
+                   'One section per page' unless the main page has been selected from the 'Jump to'
+                   menu or the 'Main course page' icon. */
+                $course = $this->get_course();
+                $mainpage = optional_param('mainpage', 0, PARAM_INT);
+                if ((!$mainpage) && ($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE)) {
+                    $this->displaysection = 1;
+                    $this->needmainpageoption = true;
+                }
             }
             $this->displaysectioncalculated = true;
         }
 
         return $this->displaysection;
+    }
+
+    public function get_mainpageoption() {
+        return $this->needmainpageoption;
     }
 
     /**

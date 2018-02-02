@@ -477,7 +477,11 @@ class format_ned_renderer extends format_section_renderer_base {
                 } else {
                     $sectionicon = $this->output->pix_icon('expand_section', get_string('maincoursepage'), 'format_ned',
                         array('class' => 'nedsinglesectionicon'));
-                    $sectionurl = new moodle_url('/course/view.php', array('id' => $course->id));
+                    $params = array('id' => $course->id);
+                    if ($this->courseformat->get_mainpageoption()) {
+                        $params['mainpage'] = 1;
+                    }
+                    $sectionurl = new moodle_url('/course/view.php', $params);
                     $o .= html_writer::link($sectionurl, $sectionicon);
                 }
             }
@@ -702,6 +706,46 @@ class format_ned_renderer extends format_section_renderer_base {
         }
 
         return $showsection0;
+    }
+
+    /**
+     * Generate the html for the 'Jump to' menu on a single section page.
+     *
+     * @param stdClass $course The course entry from DB
+     * @param array $sections The course_sections entries from the DB
+     * @param $displaysection the current displayed section number.
+     *
+     * @return string HTML to output.
+     */
+    protected function section_nav_selection($course, $sections, $displaysection) {
+        global $CFG;
+        $o = '';
+        $sectionmenu = array();
+
+        $mainpageurl = course_get_url($course);
+        if ($this->courseformat->get_mainpageoption()) {
+            $mainpageurl->param('mainpage', 1);
+        }
+
+        $sectionmenu[$mainpageurl->out(false)] = get_string('maincoursepage');
+        $modinfo = get_fast_modinfo($course);
+        $section = 1;
+        $numsections = course_get_format($course)->get_last_section_number();
+        while ($section <= $numsections) {
+            $thissection = $modinfo->get_section_info($section);
+            $showsection = $thissection->uservisible or !$course->hiddensections;
+            if (($showsection) && ($section != $displaysection) && ($url = course_get_url($course, $section))) {
+                $sectionmenu[$url->out(false)] = get_section_name($course, $section);
+            }
+            $section++;
+        }
+
+        $select = new url_select($sectionmenu, '', array('' => get_string('jumpto')));
+        $select->class = 'jumpmenu';
+        $select->formid = 'sectionmenu';
+        $o .= $this->output->render($select);
+
+        return $o;
     }
 
     /**
