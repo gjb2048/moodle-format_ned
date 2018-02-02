@@ -915,8 +915,8 @@ class format_ned_renderer extends format_section_renderer_base {
 
             $courseupdatecapability = has_capability('moodle/course:update', $context);
             if (($this->courseformat->get_setting('compressedsections') == 1) && $courseupdatecapability) {
-                echo html_writer::tag('span', get_string('compressed', 'format_ned'), array('id' => 'nededitingsectioncompressed', 'class' => 'btn'));
-                echo html_writer::tag('span', get_string('expanded', 'format_ned'), array('id' => 'nededitingsectionexpanded', 'class' => 'btn'));
+                echo html_writer::tag('span', $this->pix_icon('compressed', '', 'format_ned'), array('id' => 'nededitingsectioncompressed', 'title' => get_string('compressed', 'format_ned')));
+                echo html_writer::tag('span', $this->pix_icon('expanded', '', 'format_ned'), array('id' => 'nededitingsectionexpanded', 'title' => get_string('expanded', 'format_ned')));
             }
             echo html_writer::end_tag('div');
         }

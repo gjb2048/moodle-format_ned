@@ -6,6 +6,7 @@ Version 3.3.1.3.5
   3. Always show 'Jump to' menu on a single section page.
   4. Move icon and always show Jump To menu when view single section in edit mode.
   5. Jump to menu on multiple section page.
+  6. Change compressed / expanded buttons to icons.
 
 Version 3.3.1.3.4
   1. Stage 8.
