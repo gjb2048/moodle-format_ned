@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.9
+  1. Stage 8 continued.
+  2. Refix Jump to menu and style changes.
+
 Version 3.3.1.3.8
   1. Stage 8 continued.
   2. Fix broken Jump to menu on main course page.

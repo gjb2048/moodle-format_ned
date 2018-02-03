@@ -64,6 +64,10 @@ body:not(.editing) .ned-framedsections .section .right a.dropdown-toggle:hover {
     width: 24px;
 }
 
+.format-ned #region-main .card ul.ned .right .dropdown-toggle i.icon {
+    color: #999;
+}
+
 /* Course settings. */
 #nedsectiondeliverymethod {
     margin-top: -20px;

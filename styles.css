@@ -68,9 +68,7 @@
 .editing .course-content ul.ned li.section .right .icon.edit {
     display: block;
     height: 16px;
-    margin-bottom: 4px;
-    margin-left: 0;
-    margin-right: auto;
+    margin: 9px auto 9px 0;
     width: 16px;
 }
 
@@ -473,12 +471,12 @@ ul.ned-framedsections .section.main:last-child {
 
 /* Editing toggle all. */
 .nedsectionmenu {
-    margin-bottom: 12px;
+    margin: 0 10px 12px;
     text-align: right;
 }
 
 .editing .nedsectionmenu {
-    margin: 0 40px;
+    margin: 0 60px 12px;
 }
 
 .nedsectionmenu div,

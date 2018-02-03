@@ -773,7 +773,7 @@ class format_ned_renderer extends format_section_renderer_base {
         }
 
         $showjumptomenu = false;
-        if ($this->editing) {
+        if (!$this->editing) {
             $viewjumptomenu = get_config('format_ned', 'viewjumptomenu');
             if (($viewjumptomenu == 0) ||
                 (($viewjumptomenu == 1) && (has_capability('moodle/course:update', $context)))) {
