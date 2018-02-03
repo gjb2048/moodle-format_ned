@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.7
+  1. Stage 8 continued.
+  2. Alignment fix - https://www.screencast.com/t/NdYkJ8HDk.
+
 Version 3.3.1.3.6
   1. Stage 8 continued.
   2. When editing always show Jump To menu.

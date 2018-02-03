@@ -477,6 +477,10 @@ ul.ned-framedsections .section.main:last-child {
     text-align: right;
 }
 
+.editing .nedsectionmenu {
+    margin: 0 40px;
+}
+
 .nedsectionmenu div,
 .nedsectionmenu a {
     display: inline-block;
