@@ -484,7 +484,7 @@ ul.ned-framedsections .section.main:last-child {
     display: inline-block;
 }
 
-.nedsectionmenu span {
+.nedsectionmenu #nededitingsectioncompressed {
     margin-left: 4px;
 }
 

@@ -15,11 +15,41 @@ define(['jquery', 'core/log'], function($, log) {
     log.debug('NED Format Editing Section AMD');
 
     return {
-        init: function() {
+        init: function(data) {
             $(document).ready(function($) {
-                // Individual toggles.
-                $('ul.nededitingsection li.section .left .nededitingsectionpix').click(function (e) {
-                    var section = $(this).parent('.left').parent('.section');
+                var nededitingsectioncompressed = function() {
+                    $('ul.nededitingsection li.section').each(function () {
+                        var compressedmodeviewhideformat = $(this).find('.compressedmodeviewhide .compressedmodeviewhideformat');
+                        var compressedmodeviewhidesummary = $(this).find('.compressedmodeviewhide .summary');
+                        $(this).find('.content .section').hide();
+                        $(this).find('.content .addresourcemodchooser').hide();
+                        if ($(this).hasClass('open')) {
+                            $(this).removeClass('open').addClass('closed');
+                            if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
+                                compressedmodeviewhideformat.show();
+                                compressedmodeviewhidesummary.hide();
+                            }
+                        }
+                    });
+                };
+
+                var nededitingsectionexpanded = function() {
+                    $('ul.nededitingsection li.section').each(function () {
+                        var compressedmodeviewhideformat = $(this).find('.compressedmodeviewhide .compressedmodeviewhideformat');
+                        var compressedmodeviewhidesummary = $(this).find('.compressedmodeviewhide .summary');
+                        $(this).find('.content .section').show();
+                        $(this).find('.content .addresourcemodchooser').show();
+                        if ($(this).hasClass('closed')) {
+                            $(this).removeClass('closed').addClass('open');
+                            if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
+                                compressedmodeviewhideformat.hide();
+                                compressedmodeviewhidesummary.show();
+                            }
+                        }
+                    });
+                };
+
+                var nededitingsectionexpand = function(section) {
                     var compressedmodeviewhideformat = section.find('.compressedmodeviewhide .compressedmodeviewhideformat');
                     var compressedmodeviewhidesummary = section.find('.compressedmodeviewhide .summary');
                     section.find('.content .section').toggle();
@@ -37,39 +67,27 @@ define(['jquery', 'core/log'], function($, log) {
                             compressedmodeviewhidesummary.hide();
                         }
                     }
+                };
+
+                // Initial page load.
+                if (data.nedsectionstate == data.allexpanded) {
+                    nededitingsectionexpanded();
+                } else if (data.nedsectionstate > 0) {
+                    var section = $('.section#section-' + data.nedsectionstate);
+                    if (section.length) {
+                        nededitingsectionexpand(section);
+                    }
+                }
+
+                // Individual toggles on the page after load.
+                $('ul.nededitingsection li.section .left .nededitingsectionpix').click(function (e) {
+                    var section = $(this).parent('.left').parent('.section');
+                    nededitingsectionexpand(section);
                 });
                 // All toggles compress.
-                $('#nededitingsectioncompressed').click(function () {
-                    $('ul.nededitingsection li.section').each(function () {
-                        var compressedmodeviewhideformat = $(this).find('.compressedmodeviewhide .compressedmodeviewhideformat');
-                        var compressedmodeviewhidesummary = $(this).find('.compressedmodeviewhide .summary');
-                        $(this).find('.content .section').hide();
-                        $(this).find('.content .addresourcemodchooser').hide();
-                        if ($(this).hasClass('open')) {
-                            $(this).removeClass('open').addClass('closed');
-                            if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
-                                compressedmodeviewhideformat.show();
-                                compressedmodeviewhidesummary.hide();
-                            }
-                        }
-                    });
-                });
+                $('#nededitingsectioncompressed').click(nededitingsectioncompressed);
                 // All toggles expand.
-                $('#nededitingsectionexpanded').click(function () {
-                    $('ul.nededitingsection li.section').each(function () {
-                        var compressedmodeviewhideformat = $(this).find('.compressedmodeviewhide .compressedmodeviewhideformat');
-                        var compressedmodeviewhidesummary = $(this).find('.compressedmodeviewhide .summary');
-                        $(this).find('.content .section').show();
-                        $(this).find('.content .addresourcemodchooser').show();
-                        if ($(this).hasClass('closed')) {
-                            $(this).removeClass('closed').addClass('open');
-                            if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
-                                compressedmodeviewhideformat.hide();
-                                compressedmodeviewhidesummary.show();
-                            }
-                        }
-                    });
-                });
+                $('#nededitingsectionexpanded').click(nededitingsectionexpanded);
             });
             log.debug('NED Format Editing Section AMD init.');
         }

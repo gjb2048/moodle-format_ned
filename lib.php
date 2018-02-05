@@ -184,12 +184,16 @@ class format_ned extends format_base {
                 }
             } else {
                 /* Editing is on so select the first available section when the course display is
-                   'One section per page' unless the main page has been selected from the 'Jump to'
-                   menu or the 'Main course page' icon. */
+                   'One section per page' and we are on the main course page, unless the main page
+                   has been selected from the 'Jump to' menu or the 'Main course page' icon. */
                 $course = $this->get_course();
-                $mainpage = optional_param('mainpage', 0, PARAM_INT);
-                if ((!$mainpage) && ($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE)) {
+                $mainpage = optional_param(\format_ned\toolbox::$mainpageparam, 0, PARAM_INT);
+                $displaysection = optional_param('section', 0, PARAM_INT);
+                if ((!$mainpage) && (empty($displaysection)) && ($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE)) {
                     $this->displaysection = 1;
+                    $this->needmainpageoption = true;
+                } else if (!empty($displaysection)) {
+                    $this->displaysection = $displaysection;
                     $this->needmainpageoption = true;
                 }
             }

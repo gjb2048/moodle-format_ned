@@ -54,4 +54,12 @@ class toolbox {
 
     // Activity / resource mouseover effect.
     public static $activityresourcemouseover = 'nedactresmouseover';
+
+    // Navigation.
+    public static $mainpageparam = 'nedmainpage';
+
+    // Compressed / expanded sections.
+    public static $allcompressed = -2;
+    public static $allexpanded = -1;
+    public static $compressedsectionsparam = 'nedsectionstate';
 }

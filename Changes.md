@@ -1,6 +1,15 @@
 Version Information
 ===================
-Version 3.3.1.3.9
+Version 3.3.1.3.10
+  1. Stage 8 continued.
+  2. Add compressed / expanded buttons to single section page activating associated respective functionality on load of main course
+     page.  Subject to the 'compressedsections' setting being '1' thus 'show' and the having the 'moodle/course:update' capability.
+  3. Fix single section return to main page button on single section page to open that section only on the main page when returning
+     to the main page.
+  4. Fix load of single section page only showing section specified by 'Section delivery method' course format setting rather than
+     the section specified in the url.  This only applies to when editing.
+
+  Version 3.3.1.3.9
   1. Stage 8 continued.
   2. Refix Jump to menu and style changes.
 
@@ -18,7 +27,8 @@ Version 3.3.1.3.6
 
 Version 3.3.1.3.5
   1. Stage 8 continued.
-  2. When user in the default section, prevent all sections from loading when editing is turned on - https://www.screencast.com/t/iCX4cuKc0M0.
+  2. When user in the default section, prevent all sections from loading when editing is turned on - 
+     https://www.screencast.com/t/iCX4cuKc0M0.
   3. Always show 'Jump to' menu on a single section page.
   4. Move icon and always show Jump To menu when view single section in edit mode.
   5. Jump to menu on multiple section page.
@@ -34,7 +44,8 @@ Version 3.3.1.3.3
 
 Version 3.3.1.3.2
   1. Stage 7 continued.
-  2. Fix Moodle default issue.  NED default is the course colour preset setting.  https://www.screencast.com/t/e3MKUEiPS and https://www.screencast.com/t/yQMAhNzww.
+  2. Fix Moodle default issue.  NED default is the course colour preset setting.  https://www.screencast.com/t/e3MKUEiPS and
+     https://www.screencast.com/t/yQMAhNzww.
 
 Version 3.3.1.3.1
   1. Stage 7 continued.
@@ -49,7 +60,8 @@ Version 3.3.1.2
   1. Stage 5.
   2. Added experimental 'Relocate activity description' setting.
   3. Fix indentation of activity description when 'Activity tracking background' is 'Show'.
-  4. Fix position of completion icon when 'Relocate activity description' is in an 'Above' state and when 'Activity tracking background' is 'Show'.
+  4. Fix position of completion icon when 'Relocate activity description' is in an 'Above' state and when
+     'Activity tracking background' is 'Show'.
 
 Version 3.3.1.1
   1. Add border width to colour presets.

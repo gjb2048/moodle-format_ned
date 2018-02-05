@@ -71,7 +71,14 @@ class format_ned_renderer extends format_section_renderer_base {
         );
         if (($this->settings['compressedsections'] == 1) && ($this->editing) &&
             (!$singlesection)) {
-            $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init');
+            $data = array('data' => array(
+                'allcompressed' => \format_ned\toolbox::$allcompressed,
+                'allexpanded' => \format_ned\toolbox::$allexpanded,
+                 // If positive then expand that section only, if zero then currently not compressable so same as 'allcompressed'.
+                'nedsectionstate' =>
+                    optional_param(\format_ned\toolbox::$compressedsectionsparam, \format_ned\toolbox::$allcompressed, PARAM_INT)
+            ));
+            $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init', $data);
         }
     }
 
@@ -479,7 +486,8 @@ class format_ned_renderer extends format_section_renderer_base {
                         array('class' => 'nedsinglesectionicon'));
                     $params = array('id' => $course->id);
                     if ($this->courseformat->get_mainpageoption()) {
-                        $params['mainpage'] = 1;
+                        $params[\format_ned\toolbox::$mainpageparam] = 1;
+                        $params[\format_ned\toolbox::$compressedsectionsparam] = $section->section;
                     }
                     $sectionurl = new moodle_url('/course/view.php', $params);
                     $o .= html_writer::link($sectionurl, $sectionicon);
@@ -725,7 +733,8 @@ class format_ned_renderer extends format_section_renderer_base {
         if ($displaysection) {
             $mainpageurl = $this->courseformat->get_view_url(null);
             if ($this->courseformat->get_mainpageoption()) {
-                $mainpageurl->param('mainpage', 1);
+                $mainpageurl->param(\format_ned\toolbox::$mainpageparam, 1);
+                $mainpageurl->param(\format_ned\toolbox::$compressedsectionsparam, $displaysection);
             }
 
             $sectionmenu[$mainpageurl->out(false)] = get_string('maincoursepage');
@@ -786,15 +795,34 @@ class format_ned_renderer extends format_section_renderer_base {
             $o .= html_writer::tag('div', $this->section_nav_selection($course, null, $displaysection));
         }
 
-        if (($displaysection == false) && ($this->editing)) {
+        if ($this->editing) {
             $courseupdatecapability = has_capability('moodle/course:update', $context);
             if (($this->courseformat->get_setting('compressedsections') == 1) && $courseupdatecapability) {
-                $o .= html_writer::tag('span',
-                    $this->pix_icon('compressed', '', 'format_ned'),
-                    array('id' => 'nededitingsectioncompressed', 'title' => get_string('compressed', 'format_ned')));
-                $o .= html_writer::tag('span',
-                    $this->pix_icon('expanded', '', 'format_ned'),
-                    array('id' => 'nededitingsectionexpanded', 'title' => get_string('expanded', 'format_ned')));
+                if ($displaysection == false) {
+                    // On main page.
+                    $o .= html_writer::tag('span',
+                        $this->pix_icon('compressed', '', 'format_ned'),
+                        array('id' => 'nededitingsectioncompressed', 'title' => get_string('compressed', 'format_ned')));
+                    $o .= html_writer::tag('span',
+                        $this->pix_icon('expanded', '', 'format_ned'),
+                        array('id' => 'nededitingsectionexpanded', 'title' => get_string('expanded', 'format_ned')));
+                } else {
+                    // On section page.
+                    $mainpageurl = $this->courseformat->get_view_url(null);
+                    $mainpageurl->param(\format_ned\toolbox::$mainpageparam, 1);
+                    $mainpageurl->param(\format_ned\toolbox::$compressedsectionsparam, \format_ned\toolbox::$allcompressed);
+                    $o .= html_writer::tag('a',
+                        $this->pix_icon('compressed', '', 'format_ned'),
+                        array('id' => 'nededitingsectioncompressed', 'href' => $mainpageurl->out(false),
+                           'title' => get_string('compressed', 'format_ned')
+                        ));
+                    $mainpageurl->param(\format_ned\toolbox::$compressedsectionsparam, \format_ned\toolbox::$allexpanded);
+                    $o .= html_writer::tag('a',
+                        $this->pix_icon('expanded', '', 'format_ned'),
+                        array('id' => 'nededitingsectionexpanded', 'href' => $mainpageurl->out(false),
+                           'title' => get_string('expanded', 'format_ned')
+                        ));
+                }
             }
         }
 

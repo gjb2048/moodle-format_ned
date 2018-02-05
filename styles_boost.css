@@ -36,6 +36,12 @@
     padding-top: .25rem;
 }
 
+/* Editing toggle all. */
+.nedsectionmenu #nededitingsectioncompressed img.icon,
+.nedsectionmenu #nededitingsectionexpanded img.icon {
+    margin-left: .5rem;
+}
+
 .format-ned.path-course-view .course-content ul.ned-framedsections ul.section {
     margin: 0; /* Compromise for empty sections and yet still have section title vertically centred. */
 }
