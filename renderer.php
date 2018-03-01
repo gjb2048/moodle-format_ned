@@ -755,7 +755,7 @@ class format_ned_renderer extends format_section_renderer_base {
         }
 
         $select = new url_select($sectionmenu, '', array('' => get_string('jumpto')));
-        $select->class = 'jumpmenu';
+        $select->class = 'jumpmenu_';
         $select->formid = 'sectionmenu';
         $o .= $this->output->render($select);
 
