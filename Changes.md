@@ -1,5 +1,13 @@
 Version Information
 ===================
+Version 3.3.1.3.11
+  1. Stage 9.
+  2. Fix returning to main page when editing a section on 'One section per page' mode but we are on the main page
+     because we have previously clicked on the 'Main course page' icon on the section selected by the 'Section delivery method'
+     and then edited another section and wish to return back to the main page and that specific section rather than
+     the section selected by the 'Section delivery method' in the first place.  Currently requests that the section
+     returned to is 'jumped to' on the page and expanded.  Ref: https://www.screencast.com/t/aVc2QsEIQjV.
+
 Version 3.3.1.3.10
   1. Stage 8 continued.
   2. Add compressed / expanded buttons to single section page activating associated respective functionality on load of main course
