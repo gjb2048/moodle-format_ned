@@ -538,6 +538,11 @@ class format_ned extends format_base {
      */
     public function ajax_section_move() {
         global $PAGE;
+
+        // Purge cache to rebuild after ajax move.
+        $headercache = cache::make('format_ned', 'headerformat');
+        $headercache->purge();
+
         $titles = array();
         $course = $this->get_course();
         $modinfo = get_fast_modinfo($course);
