@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.12
+  1. Stage 9 continued.
+  2. Fix Framed sections + Formatted headers keeping their colours when drag and drop.
+
 Version 3.3.1.3.11
   1. Stage 9.
   2. Fix returning to main page when editing a section on 'One section per page' mode but we are on the main page

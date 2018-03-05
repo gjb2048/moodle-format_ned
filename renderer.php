@@ -220,6 +220,15 @@ class format_ned_renderer extends format_section_renderer_base {
             $sectionstyle .= ' closed';
         }
 
+        if (($section->section != 0) && ($this->settings['sectionformat'] == 3)) { // Framed sections + Formatted header.
+            static $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
+            $sectionheaderformatdata = $this->courseformat->get_setting('sectionheaderformat', $section->section);
+            $colourpreset = $this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['colourpreset'];
+            if ($colourpreset > 0) {
+                $sectionstyle .= ' colourpreset-'.$colourpreset;
+            }
+        }
+
         // Note 'get_section_name(course, section)' just calls the format's lib.php 'get_section_name(section)'!
         $thesectionname = $this->courseformat->get_section_name($section);
         $o .= html_writer::start_tag('li', array('id' => 'section-'.$section->section,
@@ -276,8 +285,6 @@ class format_ned_renderer extends format_section_renderer_base {
             $o .= html_writer::tag('div', $sectionheadercontent, array('class' => 'header'));
         } else if ($this->settings['sectionformat'] == 3) { // Framed sections + Formatted header.
             if ($section->section != 0) {
-                $sectionheaderformatdata = $this->courseformat->get_setting('sectionheaderformat', $section->section);
-                static $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
                 $hasheadercontent = false;
                 $sectionheadercontent = '<div class="nedshfleftcolumn">';
                 $leftcontent = '&nbsp;';
@@ -655,6 +662,15 @@ class format_ned_renderer extends format_section_renderer_base {
             $linkclasses .= ' dimmed_text';
         } else if (course_get_format($course)->is_section_current($section)) {
             $classattr .= ' current';
+        }
+
+        if (($section->section != 0) && ($this->settings['sectionformat'] == 3)) { // Framed sections + Formatted header.
+            static $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
+            $sectionheaderformatdata = $this->courseformat->get_setting('sectionheaderformat', $section->section);
+            $colourpreset = $this->sectionheaderformatssetting[$shfrows[$sectionheaderformatdata['headerformat']]]['colourpreset'];
+            if ($colourpreset > 0) {
+                $classattr .= ' colourpreset-'.$colourpreset;
+            }
         }
 
         $title = get_section_name($course, $section);

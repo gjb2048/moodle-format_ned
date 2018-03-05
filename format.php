@@ -79,10 +79,7 @@ if ($sectionformat >= 1) { // Framed sections.
             $sectionformat = $courseformat->get_setting('sectionheaderformat', $sectionno);
             $sectioncolourpreset = $sectionheaderformats[$shfrows[$sectionformat['headerformat']]]['colourpreset'];
             if ($sectioncolourpreset != 0) { // Not Moodle Default.
-                if (empty($sectioncolourpresets[$sectioncolourpreset])) {
-                    $sectioncolourpresets[$sectioncolourpreset] = array();
-                }
-                $sectioncolourpresets[$sectioncolourpreset][] = '#section-'.$sectionno; // Prefixing the CSS id selector here helps below.
+                $sectioncolourpresets[$sectioncolourpreset] = $sectioncolourpreset;
             }
             $sectionno++;
         }
@@ -91,7 +88,7 @@ if ($sectionformat >= 1) { // Framed sections.
             echo '<style type="text/css" media="screen">';
             echo '/* <![CDATA[ */';
 
-            foreach ($sectioncolourpresets as $presetno => $sectionnos) {
+            foreach ($sectioncolourpresets as $presetno) {
                 if ($presetno == -1) {
                     // NED Default so see what the course colour preset is.
                     $formatcolourpreset = $courseformat->get_setting('colourpreset');
@@ -104,67 +101,46 @@ if ($sectionformat >= 1) { // Framed sections.
                 } else {
                     $sectionpreset = $DB->get_record('format_ned_colour', array('id' => $presetno));
                 }
-                /* Note: If $sectionpreset is null then check that 'sectionheaderformats' in the 'course_format_options' table
-                         in the database has not been corrupted and contains 'null's for the 'colourpreset'.
-                         This can be caused by '$data[$shfrow.'colourpreset']' being 'null' in 'update_course_format_options()'
-                         in lib.php. */
+                /* Notes: If $sectionpreset is null then check that 'sectionheaderformats' in the 'course_format_options' table
+                          in the database has not been corrupted and contains 'null's for the 'colourpreset'.
+                          This can be caused by '$data[$shfrow.'colourpreset']' being 'null' in 'update_course_format_options()'
+                          in lib.php.
 
-                $selectors = array();
-                foreach ($sectionnos as $sectionno) {
-                    if ($weareediting) {
-                        $selectors[] = 'ul.ned-framedsections '.$sectionno.'.section.main .header,'.
-                            'ul.ned-framedsections '.$sectionno.'.section.main .footer';
-                    } else {
-                        $selectors[] = 'ul.ned-framedsections '.$sectionno.'.section.main';
-                    }
+                          li.colourpreset- is determined from section_header() and section_summary() in renderer.php.
+                */
+
+                if ($weareediting) {
+                    echo 'ul.ned-framedsections li.colourpreset-'.$presetno.'.section.main .header,'.
+                         'ul.ned-framedsections li.colourpreset-'.$presetno.'.section.main .footer {';
+                } else {
+                    echo 'ul.ned-framedsections li.colourpreset-'.$presetno.'.section.main {';
                 }
-                echo implode(',', $selectors).' {';
                 echo 'background-color: #'.$sectionpreset->framedsectionbgcolour.';';
                 echo '}';
 
                 if ($weareediting) {
-                    $selectors = array();
-                    foreach ($sectionnos as $sectionno) {
-                        $selectors[] = 'ul.ned-framedsections '.$sectionno.'.section.main .content';
-                    }
-                    echo implode(',', $selectors).' {';
+                    echo 'ul.ned-framedsections li.colourpreset-'.$presetno.'.section.main .content {';
                     echo 'border-left-color: #'.$sectionpreset->framedsectionbgcolour.';';
                     echo 'border-right-color: #'.$sectionpreset->framedsectionbgcolour.';';
                     echo '}';
                 }
 
-                $selectors = array();
-                foreach ($sectionnos as $sectionno) {
-                    $selectors[] = '.ned-framedsections '.$sectionno.'.section .header';
-                }
-                echo implode(',', $selectors).' {';
+                echo '.ned-framedsections li.colourpreset-'.$presetno.'.section .header {';
                 echo 'color: #'.$sectionpreset->framedsectionheadertxtcolour.';';
                 echo '}';
 
-                $selectors = array();
-                foreach ($sectionnos as $sectionno) {
-                    $selectors[] = 'body:not(.editing) .course-content ul.ned.ned-framedsections li.section'.$sectionno.' .left,'.
-                        'body:not(.editing) .course-content ul.ned.ned-framedsections li.section'.$sectionno.' .right';
-                }
-                echo implode(',', $selectors).' {';
+                echo 'body:not(.editing) .course-content ul.ned.ned-framedsections li.section.colourpreset-'.$presetno.' .left,'.
+                     'body:not(.editing) .course-content ul.ned.ned-framedsections li.section.colourpreset-'.$presetno.' .right {';
                 echo 'width: '.$sectionpreset->framedsectionborderwidth.'px;';
                 echo '}';
 
-                $selectors = array();
-                foreach ($sectionnos as $sectionno) {
-                    $selectors[] = 'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .content';
-                }
-                echo implode(',', $selectors).' {';
+                echo 'body:not(.editing) .course-content ul.ned-framedsections .section.main.colourpreset-'.$presetno.' .content {';
                 echo 'margin: 0 '.$sectionpreset->framedsectionborderwidth.'px;';
                 echo '}';
 
-                $selectors = array();
-                foreach ($sectionnos as $sectionno) {
-                    $selectors[] = 'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .header,'.
-                        'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .footer,'.
-                        'body:not(.editing) .course-content ul.ned-framedsections .section.main'.$sectionno.' .header .nedshfcolumnswithoutcontent';
-                }
-                echo implode(',', $selectors).' {';
+                echo 'body:not(.editing) .course-content ul.ned-framedsections .section.main.colourpreset-'.$presetno.' .header,'.
+                     'body:not(.editing) .course-content ul.ned-framedsections .section.main.colourpreset-'.$presetno.' .footer,'.
+                     'body:not(.editing) .course-content ul.ned-framedsections .section.main.colourpreset-'.$presetno.' .header .nedshfcolumnswithoutcontent {';
                 echo 'min-height: '.$sectionpreset->framedsectionborderwidth.'px;';
                 echo '}';
             }
