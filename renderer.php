@@ -976,7 +976,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $numsections = $this->courseformat->get_last_section_number();
 
         // Section 0.
-        if ($this->showsection0()) {
+        if ($this->showsection0() || $this->editing) {
             // Section 0 is displayed a little different then the others.
             $thissection = $modinfo->get_section_info(0);
             if ($thissection->summary or !empty($modinfo->sections[0]) or $this->editing) {
