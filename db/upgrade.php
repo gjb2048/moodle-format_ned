@@ -140,7 +140,7 @@ function xmldb_format_ned_upgrade($oldversion) {
         $table = new xmldb_table('format_ned_colour');
 
         // Add 'Grey Skies' if the table exists, which it should.
-        if (!$dbman->table_exists($table)) {
+        if ($dbman->table_exists($table)) {
 
             $recthree = new stdClass();
             $recthree->name = 'Grey Skies';
