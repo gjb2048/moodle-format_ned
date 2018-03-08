@@ -594,7 +594,7 @@ class format_ned extends format_base {
                         '{"active": 1, "value": "Title"}, '.
                     '"rightcolumn": '.
                         '{"active": 1, "value": "Time"}, '.
-                    '"colourpreset": -1, '.
+                    '"colourpreset": 0, '.
                     '"navigationtitle": 1'.
                     '}, '.
                 '"sectionheaderformattwo": {'.
@@ -606,7 +606,7 @@ class format_ned extends format_base {
                         '{"active": 1, "value": "Title"}, '.
                     '"rightcolumn": '.
                         '{"active": 1, "value": "Time"}, '.
-                    '"colourpreset": -1, '.
+                    '"colourpreset": 0, '.
                     '"navigationtitle": 2'.
                     '}, '.
                 '"sectionheaderformatthree": {'.
@@ -618,7 +618,7 @@ class format_ned extends format_base {
                         '{"active": 1, "value": "Title"}, '.
                     '"rightcolumn": '.
                         '{"active": 0, "value": ""}, '.
-                    '"colourpreset": -1, '.
+                    '"colourpreset": 0, '.
                     '"navigationtitle": 2'.
                     '}, '.
                 '"shfmclt": 1'.

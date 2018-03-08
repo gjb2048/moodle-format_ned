@@ -43,7 +43,7 @@ class course_ned_sitesettingheaderformats_form extends moodleform {
 
         // List of colour presets.
         global $DB;
-        $colourpresetitems = array(0 => get_string('colourpresetmoodle', 'format_ned'));
+        $colourpresetitems = array(0 => get_string('colourpresetformattheme', 'format_ned'));
         if ($presets = $DB->get_records('format_ned_colour', null, null, 'id,name')) {
             foreach ($presets as $preset) {
                 $colourpresetitems[$preset->id] = $preset->name;
@@ -153,7 +153,7 @@ class course_ned_sitesettingheaderformats_form extends moodleform {
 
             // Colour preset.
             $shfrowcolourpreset = $shfrow.'colourpreset';
-            $shfrowcolourpresetarray = array(-1 => get_string('shfldefault', 'format_ned'));
+            $shfrowcolourpresetarray = array();
             foreach ($colourpresetitems as $cpikey => $cpivalue) {
                 $shfrowcolourpresetarray[$cpikey] = $cpivalue;
             }
