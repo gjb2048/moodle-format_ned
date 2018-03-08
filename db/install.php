@@ -33,6 +33,7 @@ function xmldb_format_ned_install() {
     $rec->name = 'Embassy Green';
     $rec->framedsectionbgcolour = '9DBB61';
     $rec->framedsectionheadertxtcolour = 'FFFFFF';
+    $rec->framedsectionborderwidth = 3;
     $rec->predefined = 1;
     $rec->timecreated = time();
     $rec->timemodified = time();
@@ -42,6 +43,17 @@ function xmldb_format_ned_install() {
     $rec->name = 'Blues on Whyte';
     $rec->framedsectionbgcolour = '7CAAFE';
     $rec->framedsectionheadertxtcolour = 'FFFFFF';
+    $rec->framedsectionborderwidth = 3;
+    $rec->predefined = 1;
+    $rec->timecreated = time();
+    $rec->timemodified = time();
+    $DB->insert_record('format_ned_colour', $rec);
+
+    $rec = new stdClass();
+    $rec->name = 'Grey Skies';
+    $rec->framedsectionbgcolour = '999999';
+    $rec->framedsectionheadertxtcolour = 'FFFFFF';
+    $rec->framedsectionborderwidth = 3;
     $rec->predefined = 1;
     $rec->timecreated = time();
     $rec->timemodified = time();

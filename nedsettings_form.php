@@ -94,6 +94,7 @@ class course_ned_edit_form extends moodleform {
         } else {
             $colourpresetitems[1] = 'Embassy Green';
             $colourpresetitems[2] = 'Blues on Whyte';
+            $colourpresetitems[3] = 'Grey Skies';
         }
 
         $mform->addElement('html', '<div id="managecolourpresets">');
