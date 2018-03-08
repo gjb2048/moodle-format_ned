@@ -70,16 +70,15 @@ $string['showsectionbody'] = 'Show in section body';
 $string['sectionsummarylocation'] = 'Section summary location';
 
 $string['sectionheaderformat'] = 'Header format';
-$string['shfldefault'] = 'NED default';
 $string['shflname'] = 'Name';
-$string['shflnavigationname'] = 'Set section name in Navigation block';
+$string['shflnavigationname'] = 'Name in Navigation block';
 $string['shfllc'] = 'Left column';
 $string['shflmc'] = 'Middle column';
 $string['shflrc'] = 'Right column';
 $string['shfmclt'] = 'Show larger text in middle column?';
 
 $string['colourpreset'] = 'Colour preset';
-$string['colourpresetmoodle'] = 'Moodle default';
+$string['colourpresetformattheme'] = 'Format/Theme default';
 
 $string['othersettings'] = 'Other settings';
 $string['showsection0'] = 'Show section 0';

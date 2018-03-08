@@ -66,7 +66,7 @@ if ($ADMIN->fulltree) {
     // Default colour preset.
     // List of colour presets.
     global $DB;
-    $defaultcolourpresetitems = array(0 => get_string('colourpresetmoodle', 'format_ned'));
+    $defaultcolourpresetitems = array(0 => get_string('colourpresetformattheme', 'format_ned'));
     if ($presets = $DB->get_records('format_ned_colour', null, null, 'id,name')) {
         foreach ($presets as $preset) {
             $defaultcolourpresetitems[$preset->id] = $preset->name;

@@ -19,7 +19,6 @@ define(['jquery', 'core/log'], function($, log) {
         $.fn.sectionFormat = function() {
             var locationTarget = $('#nedsectionlocation');
             var locationColourPresets = $('#managecolourpresets');
-            var colourPresetAppliesTo = $('#cpappliesto');
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
@@ -27,30 +26,15 @@ define(['jquery', 'core/log'], function($, log) {
                 if (chosen == 0) { // Moodle default.
                     locationTarget.hide();
                     locationColourPresets.hide();
-                    if (colourPresetAppliesTo.length == true) {
-                        colourPresetAppliesTo.hide();
-                    }
                 } else if (chosen == 2) { // Framed sections + Custom header.
                     locationTarget.show();
                     locationColourPresets.show();
-                    if (colourPresetAppliesTo.length == true) {
-                        colourPresetAppliesTo.hide();
-                    }
                 } else if (chosen == 3) { // Framed sections + Formatted header.
                     locationTarget.hide();
-                     // Do we have at least one site section header format with a colour preset of 'NED Default' so the setting will have an effect?
-                    if (colourPresetAppliesTo.length == true) {
-                        locationColourPresets.show();
-                        colourPresetAppliesTo.show();
-                    } else {
-                        locationColourPresets.hide();
-                    }
+                    locationColourPresets.hide();
                 } else { // Effectively 1 being framed sections.
                     locationColourPresets.show();
                     locationTarget.hide();
-                    if (colourPresetAppliesTo.length == true) {
-                        colourPresetAppliesTo.hide();
-                    }
                 }
             };
 

@@ -68,8 +68,8 @@ $sectionformat = $courseformat->get_setting('sectionformat');
 if ($sectionformat >= 1) { // Framed sections.
     global $DB;
     if ($sectionformat == 3) { // Framed sections + Formatted header.
-        /* Build an array of sections with their colour preset value.  Any that are not '-1', the
-           NED Default, as set above will need to be specified here. */
+        /* Build an array of sections with their colour preset value.  Any that are not '0', the
+           Format / Theme Default, as set above will need to be specified here. */
         static $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
         $sectionheaderformats = $courseformat->get_setting('sectionheaderformats');
         $sectioncolourpresets = array(); // Indexed by colour preset.
@@ -78,7 +78,7 @@ if ($sectionformat >= 1) { // Framed sections.
         while ($sectionno <= $numsections) {
             $sectionformat = $courseformat->get_setting('sectionheaderformat', $sectionno);
             $sectioncolourpreset = $sectionheaderformats[$shfrows[$sectionformat['headerformat']]]['colourpreset'];
-            if ($sectioncolourpreset != 0) { // Not Moodle Default.
+            if ($sectioncolourpreset != 0) { // Not Format / Theme Default.
                 $sectioncolourpresets[$sectioncolourpreset] = $sectioncolourpreset;
             }
             $sectionno++;
@@ -89,15 +89,9 @@ if ($sectionformat >= 1) { // Framed sections.
             echo '/* <![CDATA[ */';
 
             foreach ($sectioncolourpresets as $presetno) {
-                if ($presetno == -1) {
-                    // NED Default so see what the course colour preset is.
-                    $formatcolourpreset = $courseformat->get_setting('colourpreset');
-                    if (!empty($formatcolourpreset)) { // 0 is 'Moodle default'.
-                        $sectionpreset = $DB->get_record('format_ned_colour', array('id' => $formatcolourpreset));
-                    } else {
-                        // Set to Moodle default so nothing to do.
-                        continue;
-                    }
+                if ($presetno == 0) {
+                    // Set to Format / Theme default so nothing to do.
+                    continue;
                 } else {
                     $sectionpreset = $DB->get_record('format_ned_colour', array('id' => $presetno));
                 }
@@ -150,7 +144,7 @@ if ($sectionformat >= 1) { // Framed sections.
         }
     } else {
         $formatcolourpreset = $courseformat->get_setting('colourpreset');
-        if (!empty($formatcolourpreset)) { // 0 is 'Moodle default'.
+        if (!empty($formatcolourpreset)) { // 0 is 'Format / Theme default'.
             if ($preset = $DB->get_record('format_ned_colour', array('id' => $formatcolourpreset))) {
                 echo '<style type="text/css" media="screen">';
                 echo '/* <![CDATA[ */';
