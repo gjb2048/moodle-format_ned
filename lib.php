@@ -578,14 +578,12 @@ class format_ned extends format_base {
     }
 
     /**
-     * Returns the global header section formats setting.
+     * Returns the header section formats default.
      *
-     * If not set in the Moodle installation then set to the default.
-     * Static access so can be called from the nedsitesettingheaderformats.php file without needing a course.
      *
-     * @return array Multidimensional array represening the header formats.
+     * @return array Multidimensional array representing the header formats if decoded = true or JSON string if decoded = false.
      */
-    public static function get_section_header_formats_setting() {
+    public static function get_section_header_formats_default_setting($decoded = false) {
         static $sectionheaderformatsdefault = '{'.
                 '"sectionheaderformatone": {'.
                     '"active": 1, '.
@@ -596,7 +594,9 @@ class format_ned extends format_base {
                         '{"active": 1, "value": "Title"}, '.
                     '"rightcolumn": '.
                         '{"active": 1, "value": "Time"}, '.
-                    '"colourpreset": -1}, '.
+                    '"colourpreset": -1, '.
+                    '"navigationtitle": 1'.
+                    '}, '.
                 '"sectionheaderformattwo": {'.
                     '"active": 1, '.
                     '"name": "Unit", '.
@@ -606,7 +606,9 @@ class format_ned extends format_base {
                         '{"active": 1, "value": "Title"}, '.
                     '"rightcolumn": '.
                         '{"active": 1, "value": "Time"}, '.
-                    '"colourpreset": -1},'.
+                    '"colourpreset": -1, '.
+                    '"navigationtitle": 2'.
+                    '}, '.
                 '"sectionheaderformatthree": {'.
                     '"active": 0, '.
                     '"name": "Other", '.
@@ -616,13 +618,32 @@ class format_ned extends format_base {
                         '{"active": 1, "value": "Title"}, '.
                     '"rightcolumn": '.
                         '{"active": 0, "value": ""}, '.
-                    '"colourpreset": -1}, '.
+                    '"colourpreset": -1, '.
+                    '"navigationtitle": 2'.
+                    '}, '.
                 '"shfmclt": 1'.
             '}';
 
+        if ($decoded) {
+            return json_decode($sectionheaderformatsdefault, true);
+        } else {
+            return $sectionheaderformatsdefault;
+        }
+    }
+
+    /**
+     * Returns the global header section formats setting.
+     *
+     * If not set in the Moodle installation then set to the default.
+     * Static access so can be called from the nedsitesettingheaderformats.php file without needing a course.
+     *
+     * @return array Multidimensional array representing the header formats.
+     */
+    public static function get_section_header_formats_setting() {
+
         $sectionheaderformats = get_config('format_ned', 'sectionheaderformats');
         if (!$sectionheaderformats) {
-            $sectionheaderformats = $sectionheaderformatsdefault;
+            $sectionheaderformats = self::get_section_header_formats_default_setting();
             set_config('sectionheaderformats', $sectionheaderformats, 'format_ned');
         }
 
@@ -735,6 +756,13 @@ class format_ned extends format_base {
                 $shfupdated = true;
             }
             unset($data[$shfrow.'colourpreset']);
+
+            // Navigation title.
+            if ($data[$shfrow.'navigationtitle'] != $sectionheaderformats[$shfrow]['navigationtitle']) {
+                $sectionheaderformats[$shfrow]['navigationtitle'] = $data[$shfrow.'navigationtitle'];
+                $shfupdated = true;
+            }
+            unset($data[$shfrow.'navigationtitle']);
         }
 
         if ($data['shfmclt'] !== $sectionheaderformats['shfmclt']) {

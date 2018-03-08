@@ -29,6 +29,7 @@ defined('MOODLE_INTERNAL') || die;
 require_once("$CFG->libdir/formslib.php");
 require_once($CFG->libdir.'/completionlib.php');
 require_once($CFG->dirroot.'/course/edit_form.php');
+require_once($CFG->dirroot.'/course/format/ned/lib.php');
 
 class course_ned_sitesettingheaderformats_form extends moodleform {
 
@@ -52,6 +53,13 @@ class course_ned_sitesettingheaderformats_form extends moodleform {
             $colourpresetitems[2] = 'Blues on Whyte';
         }
 
+        // List of Navigation titles.
+        $navigationtitleitems = array(
+            1 => get_string('shfntl', 'format_ned'),
+            2 => get_string('shfntm', 'format_ned'),
+            3 => get_string('shfntr', 'format_ned')
+        );
+
         $mform->addElement('html', '<div id="nedsectionheaderformats">');
 
         $sectionheaderformatslabelsgroup = array();
@@ -61,6 +69,7 @@ class course_ned_sitesettingheaderformats_form extends moodleform {
         $sectionheaderformatsnamelabelscontent .= '<span class="nedhfeditcolumn">'.get_string('shflmc', 'format_ned').'</span>';
         $sectionheaderformatsnamelabelscontent .= '<span class="nedhfeditcolumn">'.get_string('shflrc', 'format_ned').'</span>';
         $sectionheaderformatsnamelabelscontent .= '<span class="nedhfeditcolumn">'.get_string('colourpreset', 'format_ned').'</span>';
+        $sectionheaderformatsnamelabelscontent .= '<span class="nedhfeditcolumn">'.get_string('shfnt', 'format_ned').'</span>';
         $sectionheaderformatsnamelabelscontent .= '</div>';
         $sectionheaderformatslabelsgroup[] =& $mform->createElement('static', 'hflcolumns', '', $sectionheaderformatsnamelabelscontent);
         $mform->addGroup($sectionheaderformatslabelsgroup, 'sectionheaderformatslabelsgroup', get_string('sectionheaderformats', 'format_ned'),
@@ -155,10 +164,29 @@ class course_ned_sitesettingheaderformats_form extends moodleform {
             $mform->setDefault($shfrow.'colourpreset', $shfdata[$shfrow]['colourpreset']);
             $mform->disabledIf($shfrow.'colourpreset', $shfrow.'active');
 
+            ${$shfgroupdataname}[] =& $mform->createElement('static', 'nedhfeditcolourcolumn'.$shfrow, '', '</div></div><div class="nedhfeditcolumn">');
+
+            // Navigation titles.
+            $shfrownavigationtitle = $shfrow.'navigationtitle';
+            ${$shfgroupdataname}[] =& $mform->createElement('static', 'nedhfeditnavigationcolumnvalue'.$shfrow, '', '<div class="nedhfeditcolumnvalue">');
+            $$shfrownavigationtitle =& $mform->createElement('select', $shfrow.'navigationtitle', null, $navigationtitleitems);
+            ${$shfgroupdataname}[] = $$shfrownavigationtitle;
+
+            if (empty($shfdata[$shfrow]['navigationtitle'])) {
+                $navigationtitledefaults = format_ned::get_section_header_formats_default_setting(true);
+                $navigationtitledefault = $navigationtitledefaults[$shfrow]['navigationtitle'];
+            } else {
+                $navigationtitledefault = $shfdata[$shfrow]['navigationtitle'];
+            }
+            $mform->setDefault($shfrow.'navigationtitle', $navigationtitledefault);
+            $mform->disabledIf($shfrow.'navigationtitle', $shfrow.'active');
+
             ${$shfgroupdataname}[] =& $mform->createElement('static', 'nedhfeditend'.$shfrow, '', '</div></div></div>');
+
             $mform->addGroup($$shfgroupdataname, $shfgroupname, '', array('<span class="nedshfsep"></span>'), false);
         }
         unset($colourpresetitems);
+        unset($navigationtitleitems);
 
         $choices = array(
             0 => get_string('no'),

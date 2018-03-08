@@ -78,6 +78,11 @@ $string['shflmc'] = 'Middle column';
 $string['shflrc'] = 'Right column';
 $string['shfmclt'] = 'Show larger text in middle column?';
 
+$string['shfnt'] = 'Navigation title';
+$string['shfntl'] = 'Left'; // Index 1.
+$string['shfntm'] = 'Middle'; // Index 2.
+$string['shfntr'] = 'Right'; // Index 3.
+
 $string['colourpreset'] = 'Colour preset';
 $string['colourpresetmoodle'] = 'Moodle default';
 
