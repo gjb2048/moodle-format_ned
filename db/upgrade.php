@@ -94,7 +94,7 @@ function xmldb_format_ned_upgrade($oldversion) {
         global $DB;
         $dbman = $DB->get_manager();
 
-        // Define table format_ned_colour to be created.
+        // Define table format_ned_colour.
         $table = new xmldb_table('format_ned_colour');
 
         $field = new xmldb_field('framedsectionborderwidth', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '3');
@@ -106,11 +106,6 @@ function xmldb_format_ned_upgrade($oldversion) {
 
         // NED savepoint reached.
         upgrade_plugin_savepoint(true, 2017061907, 'format', 'ned');
-    }
-
-    // Automatic 'Purge all caches'....
-    if ($oldversion < 2117101700) {
-        purge_all_caches();
     }
 
     if ($oldversion < 2017121200) {
@@ -135,6 +130,36 @@ function xmldb_format_ned_upgrade($oldversion) {
         }
 
         upgrade_plugin_savepoint(true, 2017121200, 'format', 'ned');
+    }
+
+    if ($oldversion < 2018030602) {
+        global $DB;
+        $dbman = $DB->get_manager();
+
+        // Define table format_ned_colour.
+        $table = new xmldb_table('format_ned_colour');
+
+        // Add 'Grey Skies' if the table exists, which it should.
+        if (!$dbman->table_exists($table)) {
+
+            $recthree = new stdClass();
+            $recthree->name = 'Grey Skies';
+            $recthree->framedsectionbgcolour = '999999';
+            $recthree->framedsectionheadertxtcolour = 'FFFFFF';
+            $recthree->framedsectionborderwidth = 3;
+            $recthree->predefined = 1;
+            $recthree->timecreated = time();
+            $recthree->timemodified = time();
+ 
+            $DB->insert_record('format_ned_colour', $recthree);
+        }
+        // NED savepoint reached.
+        upgrade_plugin_savepoint(true, 2018030602, 'format', 'ned');
+    }
+
+    // Automatic 'Purge all caches'....
+    if ($oldversion < 2117101700) {
+        purge_all_caches();
     }
 
     return true;

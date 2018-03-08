@@ -51,6 +51,7 @@ class course_ned_sitesettingheaderformats_form extends moodleform {
         } else {
             $colourpresetitems[1] = 'Embassy Green';
             $colourpresetitems[2] = 'Blues on Whyte';
+            $colourpresetitems[3] = 'Grey Skies';
         }
 
         // List of Navigation titles.

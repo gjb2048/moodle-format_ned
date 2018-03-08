@@ -74,6 +74,7 @@ if ($ADMIN->fulltree) {
     } else {
         $defaultcolourpresetitems[1] = 'Embassy Green';
         $defaultcolourpresetitems[2] = 'Blues on Whyte';
+        $defaultcolourpresetitems[3] = 'Grey Skies';
     }
     $name = 'format_ned/defaultcolourpreset';
     $title = get_string('defaultcolourpreset', 'format_ned');
