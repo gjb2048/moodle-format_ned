@@ -95,13 +95,28 @@ define(['jquery', 'core/log'], function($, log) {
                         navigationNameBlockValue.text(sectionnamenavblockvaluedata);
                         break;
                     case '1':
-                        navigationNameBlockValue.text(leftValue.val());
+                        var leftVal = leftValue.val();
+                        if (!leftVal.trim()) {
+                            navigationNameBlockValue.html('&nbsp;');
+                        } else {
+                            navigationNameBlockValue.text(leftVal);
+                        }
                         break;
                     case '2':
-                        navigationNameBlockValue.text(middleValue.val());
+                        var middleVal = middleValue.val();
+                        if (!middleVal.trim()) {
+                            navigationNameBlockValue.html('&nbsp;');
+                        } else {
+                            navigationNameBlockValue.text(middleVal);
+                        }
                         break;
                     case '3':
-                        navigationNameBlockValue.text(rightValue.val());
+                        var rightVal = rightValue.val();
+                        if (!rightVal.trim()) {
+                            navigationNameBlockValue.html('&nbsp;');
+                        } else {
+                            navigationNameBlockValue.text(rightVal);
+                        }
                         break;
                 }
                 navigationNameSelectValue = chosen;
