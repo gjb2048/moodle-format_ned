@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.15
+  1. Stage 9 continued.
+  2. Fix empty space causing alignment issues on NED edit section form when 'Framed sections + Formatted header'.
+
 Version 3.3.1.3.14
   1. Stage 9 continued.
   2. Add 'Grey Skies' predefined colour preset - https://www.screencast.com/t/r7IdtuBiCBej.
