@@ -31,7 +31,6 @@ define(['jquery', 'core/log'], function($, log) {
             var leftActive = $('#id_shfcleftcolumn');
             var middleActive = $('#id_shfcmiddlecolumn');
             var rightActive = $('#id_shfcrightcolumn');
-            var navigationDefaultString = data.defaultstring;
 
             var checkSelect = function(us) {
                 var chosen = us.find(':selected').val();
@@ -69,16 +68,13 @@ define(['jquery', 'core/log'], function($, log) {
 
                 // Change the navigation name values.
                 navigationNameSelect.empty();
-                navigationNameSelect.append($("<option></option>")
-                    .attr("value", '0')
-                    .text(navigationDefaultString));
                 $.each(sectionheaderformatsdata[chosen]['navigationname'], function(key, value) {
                     navigationNameSelect.append($("<option></option>")
                         .attr("value", key)
                         .text(value));
                 });
                 // Goes back to 'default' so update the text.
-                navigationNameBlockValue.text(data.sectionnamenavblockvaluedata);
+                navigationNameBlockValue.text(data.sectionnamenavblockvaluedefault);
             };
 
             this.on('change', function (e) {
@@ -91,9 +87,6 @@ define(['jquery', 'core/log'], function($, log) {
                 // Change the navigation name block value.
                 var chosen = $(this).find(':selected').val();
                 switch (chosen) {
-                    case '0':
-                        navigationNameBlockValue.text(sectionnamenavblockvaluedata);
-                        break;
                     case '1':
                         var leftVal = leftValue.val();
                         if (!leftVal.trim()) {

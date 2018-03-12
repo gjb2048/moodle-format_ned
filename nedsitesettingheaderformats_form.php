@@ -56,6 +56,7 @@ class course_ned_sitesettingheaderformats_form extends moodleform {
 
         // List of Navigation titles.
         $navigationtitleitems = array(
+            0 => get_string('default'),
             1 => get_string('shfntl', 'format_ned'),
             2 => get_string('shfntm', 'format_ned'),
             3 => get_string('shfntr', 'format_ned')

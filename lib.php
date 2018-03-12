@@ -595,7 +595,7 @@ class format_ned extends format_base {
                     '"rightcolumn": '.
                         '{"active": 1, "value": "Time"}, '.
                     '"colourpreset": 1, '.
-                    '"navigationtitle": 1'.
+                    '"navigationtitle": 0'.
                     '}, '.
                 '"sectionheaderformattwo": {'.
                     '"active": 1, '.
@@ -607,7 +607,7 @@ class format_ned extends format_base {
                     '"rightcolumn": '.
                         '{"active": 1, "value": "Time"}, '.
                     '"colourpreset": 2, '.
-                    '"navigationtitle": 2'.
+                    '"navigationtitle": 0'.
                     '}, '.
                 '"sectionheaderformatthree": {'.
                     '"active": 0, '.
@@ -619,7 +619,7 @@ class format_ned extends format_base {
                     '"rightcolumn": '.
                         '{"active": 0, "value": ""}, '.
                     '"colourpreset": 3, '.
-                    '"navigationtitle": 2'.
+                    '"navigationtitle": 0'.
                     '}, '.
                 '"shfmclt": 1'.
             '}';

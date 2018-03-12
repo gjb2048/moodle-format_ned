@@ -46,8 +46,8 @@ class nededitsection_form extends editsection_form {
         /* Note: From 'update_section_format_options($data)' - If $data does not contain property with the option name,
                  the option will not be updated, therefore we still need it! */
 
-        $mform->addElement('hidden', 'name', $sectioninfo->name);
-        $mform->setType('name', PARAM_RAW);
+        //$mform->addElement('hidden', 'name', $sectioninfo->name);
+        //$mform->setType('name', PARAM_RAW);
 
         $mform->addElement('hidden', 'sectionno', $sectioninfo->section);
         $mform->setType('sectionno', PARAM_INT);
@@ -56,9 +56,8 @@ class nededitsection_form extends editsection_form {
 
         global $PAGE;
         $courseformat = course_get_format($course);
-        $sectionheaderformats = $courseformat->get_setting('sectionheaderformats');
-        $sectionheaderformat = $courseformat->get_setting('sectionheaderformat', $sectioninfo->section);
-        $defaultstring = get_string('default');
+        $sectionheaderformats = $courseformat->get_setting('sectionheaderformats'); // Site values.
+        $sectionheaderformat = $courseformat->get_setting('sectionheaderformat', $sectioninfo->section); // Section values.
         $defaultvalue = $courseformat->get_section_name_noshf($sectioninfo->section);
         $shfrows = array(1 => 'sectionheaderformatone', 2 => 'sectionheaderformattwo', 3 => 'sectionheaderformatthree');
         $formatchoices = array();
@@ -103,7 +102,6 @@ class nededitsection_form extends editsection_form {
         unset($formatchoices);
 
         $sectionnamenavblockvaluedata = array(
-            0 => $defaultvalue,
             1 => $sectionheaderformat['sectionname']['leftcolumn'],
             2 => $sectionheaderformat['sectionname']['middlecolumn'],
             3 => $sectionheaderformat['sectionname']['rightcolumn']
@@ -111,15 +109,14 @@ class nededitsection_form extends editsection_form {
         $PAGE->requires->js_call_amd('format_ned/nededitsectionform', 'init',
             array('data' => array(
                 'sectionheaderformatsdata' => $sectionheaderformatsdata,
-                'sectionnamenavblockvaluedata' => $sectionnamenavblockvaluedata[0], // JS gets the others from the values of the inputs.
-                'defaultstring' => $defaultstring)
+                'sectionnamenavblockvaluedefault' => 'TODO' // JS gets the others from the values of the inputs.
             )
         );
 
         // Section name in navigation block.
         $mform->addElement('html', '<div id="sectionnamenavblock">');
-        $sectionnav = array(0 => $defaultstring); // 0 = Default, 1 = left column, 2 = middle column and 3 = right column.
-        /* Only add the column name as an option if it is active.  The assocated nededitsectionform.js does this dynamically when
+        $sectionnav = array(); // 1 = left column, 2 = middle column and 3 = right column.
+        /* Only add the column name as an option if it is active.  The associated nededitsectionform.js does this dynamically when
            'sectionheaderformat' changes. */
         if ($sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['active'] == 1) {
             $sectionnav[1] = $sectionheaderformats[$shfrows[$sectionheaderformat['headerformat']]]['leftcolumn']['value'];
@@ -135,6 +132,14 @@ class nededitsection_form extends editsection_form {
         $mform->setDefault('navigationname', $sectionheaderformat['navigationname']);
         unset($sectionnav);
         $mform->addElement('html', '<div id="sectionnamenavblockvalue">'.$sectionnamenavblockvaluedata[$sectionheaderformat['navigationname']].'</div>');
+// Flip flop.
+        $mform->addElement('defaultcustom', 'name', get_string('sectionname'), [
+            'defaultvalue' => $this->_customdata['defaultsectionname'],
+            'customvalue' => $sectioninfo->name,
+        ], ['size' => 30, 'maxlength' => 255]);
+        $mform->setDefault('name', false);
+        $mform->addGroupRule('name', array('name' => array(array(get_string('maximumchars', '', 255), 'maxlength', 255))));
+
         $mform->addElement('html', '</div>');
 
         // Section name.
