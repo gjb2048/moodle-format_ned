@@ -63,7 +63,6 @@ class format_ned extends format_base {
 
         static $headerformatdefault = '{'.
                 '"headerformat": 1, '. // 1, 2 or 3 for 'sectionheaderformatone' etc.
-                '"navigationname": 0, '. // 0 = Default, 1 = left column, 2 = middle column and 3 = right column.
                 '"sectionname": {'.
                     '"leftcolumn": "", '.
                     '"middlecolumn": "", '.
@@ -217,7 +216,7 @@ class format_ned extends format_base {
     }
 
     /**
-     * Returns the display name of the given section that the course prefers.
+     * Returns the display name of the given section.
      *
      * Use section name is specified by user. Otherwise use default ("Section #")
      *
@@ -225,50 +224,6 @@ class format_ned extends format_base {
      * @return string Display name that the course format prefers, e.g. "Section 2"
      */
     public function get_section_name($section) {
-        $section = $this->get_section($section);
-
-        if (is_object($section)) {
-            $sectionnum = $section->section;
-        } else {
-            $sectionnum = $section;
-        }
-        if ($sectionnum != 0) {
-            $sectionheaderformat = $this->get_setting('sectionheaderformat', $sectionnum);
-        } else {
-            $sectionheaderformat = false;
-        }
-        if ($sectionheaderformat) {
-            // 0 = Default, 1 = left column, 2 = middle column and 3 = right column.
-            if ($sectionheaderformat['navigationname'] > 0) {
-                switch($sectionheaderformat['navigationname']) {
-                    case 1:
-                        $navigationname = $sectionheaderformat['sectionname']['leftcolumn'];
-                    break;
-                    case 2:
-                        $navigationname = $sectionheaderformat['sectionname']['middlecolumn'];
-                    break;
-                    case 3:
-                        $navigationname = $sectionheaderformat['sectionname']['rightcolumn'];
-                    break;
-                    default:
-                        $navigationname = 'Error: Unknown in format_ned/lib.php -> get_section_name()';
-                }
-                return format_string($navigationname, true,
-                    array('context' => context_course::instance($this->courseid)));
-            }
-        }
-        return $this->get_section_name_noshf($section);
-    }
-
-    /**
-     * Returns the display name of the given section ignoring the 'sectionheaderformat' setting.
-     *
-     * Use section name is specified by user. Otherwise use default ("Section #")
-     *
-     * @param int|stdClass $section Section object from database or just field section.section
-     * @return string Display name that the course format prefers, e.g. "Section 2"
-     */
-    public function get_section_name_noshf($section) {
         if (!is_object($section)) {
             $section = $this->get_section($section);
         }
@@ -1088,12 +1043,6 @@ class format_ned extends format_base {
                 $changeddata = true;
             }
             unset($data['sectionheaderformat']);
-
-            if ($data['navigationname'] != $this->sectionheaderformatheaders[$data['sectionno']]['navigationname']) {
-                $this->sectionheaderformatheaders[$data['sectionno']]['navigationname'] = $data['navigationname'];
-                $changeddata = true;
-            }
-            unset($data['navigationname']);
 
             if (!empty($data['shfcleftcolumn'])) { // Tick is ticked.
                 if ($this->sectionheaderformatheaders[$data['sectionno']]['sectionname']['leftcolumn'] !== $data['shfvleftcolumn']) {

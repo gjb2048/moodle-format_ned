@@ -417,15 +417,6 @@ ul.ned-framedsections .section.main:last-child {
     }
 }
 
-#sectionnamenavblock > div {
-    display: inline-block;
-}
-
-#sectionnamenavblockvalue {
-    padding-left: 10px;
-    vertical-align: super;
-}
-
 /* Colour presets */
 #page-course-format-ned-nedsettings #managecolourpresets > div {
     display: inline-block;
