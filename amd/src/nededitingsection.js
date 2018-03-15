@@ -26,8 +26,10 @@ define(['jquery', 'core/log'], function($, log) {
                         $(this).find('.content .addresourcemodchooser').hide();
                         if ($(this).hasClass('open')) {
                             $(this).removeClass('open').addClass('closed');
-                            if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
+                            if (compressedmodeviewhideformat.length) {
                                 compressedmodeviewhideformat.show();
+                            }
+                            if (compressedmodeviewhidesummary.length) {
                                 compressedmodeviewhidesummary.hide();
                             }
                             if (compressedmodeviewhidesectionname.length) {
@@ -46,8 +48,10 @@ define(['jquery', 'core/log'], function($, log) {
                         $(this).find('.content .addresourcemodchooser').show();
                         if ($(this).hasClass('closed')) {
                             $(this).removeClass('closed').addClass('open');
-                            if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
+                            if (compressedmodeviewhideformat.length) {
                                 compressedmodeviewhideformat.hide();
+                            }
+                            if (compressedmodeviewhidesummary.length) {
                                 compressedmodeviewhidesummary.show();
                             }
                             if (compressedmodeviewhidesectionname.length) {
@@ -65,8 +69,10 @@ define(['jquery', 'core/log'], function($, log) {
                     section.find('.content .addresourcemodchooser').toggle();
                     if (section.hasClass('closed')) {
                         section.removeClass('closed').addClass('open');
-                        if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
+                        if (compressedmodeviewhideformat.length) {
                             compressedmodeviewhideformat.hide();
+                        }
+                        if (compressedmodeviewhidesummary.length) {
                             compressedmodeviewhidesummary.show();
                         }
                         if (compressedmodeviewhidesectionname.length) {
@@ -74,8 +80,10 @@ define(['jquery', 'core/log'], function($, log) {
                         }
                     } else {
                         section.removeClass('open').addClass('closed');
-                        if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
+                        if (compressedmodeviewhideformat.length) {
                             compressedmodeviewhideformat.show();
+                        }
+                        if (compressedmodeviewhidesummary.length) {
                             compressedmodeviewhidesummary.hide();
                         }
                         if (compressedmodeviewhidesectionname.length) {

@@ -366,10 +366,14 @@ class format_ned_renderer extends format_section_renderer_base {
                    summary itself.*/
                 $o .= html_writer::start_tag('div', array('class' => 'compressedmodeviewhide'));
                 if ($this->settings['sectionformat'] == 3) { // Framed sections + Formatted header.
-                    $o .= html_writer::tag('span', $this->section_title($section, $course), array('class' => 'sectioname'));
+                    $sectiontitle = get_string('compressedsectionsectionname', 'format_ned',
+                        array('sectionno' => $section->section));
+                    $sectiontitle .= $this->section_title($section, $course);
+                    $o .= html_writer::tag('span', $sectiontitle, array('class' => 'sectioname'));
+                } else {
+                    $o .= html_writer::tag('div', get_string('compressedsectionformat', 'format_ned',
+                        array('sectionno' => $section->section)), array('class' => 'compressedmodeviewhideformat'));
                 }
-                $o .= html_writer::tag('div', get_string('compressedsectionformat', 'format_ned',
-                    array('sectionno' => $section->section)), array('class' => 'compressedmodeviewhideformat'));
                 $o .= $summarymarkup;
                 $o .= html_writer::end_tag('div');
             } else {

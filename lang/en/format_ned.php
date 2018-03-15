@@ -169,6 +169,7 @@ $string['compressedmodeview_desc'] = 'Hide the summary in favour of the section 
 $string['hidesummarysection'] = 'Hide summary section';
 $string['showsummarysection'] = 'Show summary section';
 $string['compressedsectionformat'] = '(section {$a->sectionno})';
+$string['compressedsectionsectionname'] = 'section {$a->sectionno}: ';
 
 // Section navigation.
 $string['opensinglesection'] = 'Open section {$a->sectionno} on a single page';
