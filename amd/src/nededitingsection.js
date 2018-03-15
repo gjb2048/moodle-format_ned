@@ -20,6 +20,7 @@ define(['jquery', 'core/log'], function($, log) {
                 var nededitingsectioncompressed = function() {
                     $('ul.nededitingsection li.section').each(function () {
                         var compressedmodeviewhideformat = $(this).find('.compressedmodeviewhide .compressedmodeviewhideformat');
+                        var compressedmodeviewhidesectionname = $(this).find('.compressedmodeviewhide .sectioname');
                         var compressedmodeviewhidesummary = $(this).find('.compressedmodeviewhide .summary');
                         $(this).find('.content .section').hide();
                         $(this).find('.content .addresourcemodchooser').hide();
@@ -29,6 +30,9 @@ define(['jquery', 'core/log'], function($, log) {
                                 compressedmodeviewhideformat.show();
                                 compressedmodeviewhidesummary.hide();
                             }
+                            if (compressedmodeviewhidesectionname.length) {
+                                compressedmodeviewhidesectionname.show();
+                            }
                         }
                     });
                 };
@@ -36,6 +40,7 @@ define(['jquery', 'core/log'], function($, log) {
                 var nededitingsectionexpanded = function() {
                     $('ul.nededitingsection li.section').each(function () {
                         var compressedmodeviewhideformat = $(this).find('.compressedmodeviewhide .compressedmodeviewhideformat');
+                        var compressedmodeviewhidesectionname = $(this).find('.compressedmodeviewhide .sectioname');
                         var compressedmodeviewhidesummary = $(this).find('.compressedmodeviewhide .summary');
                         $(this).find('.content .section').show();
                         $(this).find('.content .addresourcemodchooser').show();
@@ -45,12 +50,16 @@ define(['jquery', 'core/log'], function($, log) {
                                 compressedmodeviewhideformat.hide();
                                 compressedmodeviewhidesummary.show();
                             }
+                            if (compressedmodeviewhidesectionname.length) {
+                                compressedmodeviewhidesectionname.hide();
+                            }
                         }
                     });
                 };
 
                 var nededitingsectionexpand = function(section) {
                     var compressedmodeviewhideformat = section.find('.compressedmodeviewhide .compressedmodeviewhideformat');
+                    var compressedmodeviewhidesectionname = section.find('.compressedmodeviewhide .sectioname');
                     var compressedmodeviewhidesummary = section.find('.compressedmodeviewhide .summary');
                     section.find('.content .section').toggle();
                     section.find('.content .addresourcemodchooser').toggle();
@@ -60,11 +69,17 @@ define(['jquery', 'core/log'], function($, log) {
                             compressedmodeviewhideformat.hide();
                             compressedmodeviewhidesummary.show();
                         }
+                        if (compressedmodeviewhidesectionname.length) {
+                            compressedmodeviewhidesectionname.hide();
+                        }
                     } else {
                         section.removeClass('open').addClass('closed');
                         if ((compressedmodeviewhideformat.length) && (compressedmodeviewhidesummary.length)) {
                             compressedmodeviewhideformat.show();
                             compressedmodeviewhidesummary.hide();
+                        }
+                        if (compressedmodeviewhidesectionname.length) {
+                            compressedmodeviewhidesectionname.show();
                         }
                     }
                 };

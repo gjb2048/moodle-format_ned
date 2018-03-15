@@ -335,6 +335,8 @@ class format_ned_renderer extends format_section_renderer_base {
         }
         $o .= html_writer::tag('div', $rightcontent, array('class' => $rightclasses));
         $o .= html_writer::start_tag('div', array('class' => 'content'));
+        if (($this->editing) && ($this->settings['sectionformat'] == 3)) { // Framed sections + Formatted header.
+        }
 
         // Heading in the body of the section.
         if (($this->settings['sectionformat'] == 0) ||
@@ -363,6 +365,9 @@ class format_ned_renderer extends format_section_renderer_base {
                    Then we need a 'flip/flop' on the compressed / expanded toggle to show / hide the format section with the
                    summary itself.*/
                 $o .= html_writer::start_tag('div', array('class' => 'compressedmodeviewhide'));
+                if ($this->settings['sectionformat'] == 3) { // Framed sections + Formatted header.
+                    $o .= html_writer::tag('span', $this->section_title($section, $course), array('class' => 'sectioname'));
+                }
                 $o .= html_writer::tag('div', get_string('compressedsectionformat', 'format_ned',
                     array('sectionno' => $section->section)), array('class' => 'compressedmodeviewhideformat'));
                 $o .= $summarymarkup;

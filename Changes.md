@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.17
+  1. Stage 9 continued.
+  2. Section name when 'Framed sections + Formatted header' editing a compressed section on the main page - https://www.screencast.com/t/cG25dzXWw.
+
 Version 3.3.1.3.16
   1. Stage 9 continued.
   2. Remove all navigation title functionality - https://www.screencast.com/t/ghgl0GIG.
