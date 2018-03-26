@@ -336,6 +336,7 @@ class format_ned_renderer extends format_section_renderer_base {
         $o .= html_writer::tag('div', $rightcontent, array('class' => $rightclasses));
         $o .= html_writer::start_tag('div', array('class' => 'content'));
         if (($this->editing) && ($this->settings['sectionformat'] == 3)) { // Framed sections + Formatted header.
+            $o .= html_writer::tag('h3', html_writer::tag('span', '', array('class' => 'inplaceeditable', 'data-itemid' => $section->id)), array('class' => 'sectionname hidden'));
         }
 
         // Heading in the body of the section.
