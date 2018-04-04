@@ -232,4 +232,5 @@ if ($ADMIN->fulltree) {
             2 => get_string('aboveicon', 'format_ned')
         )
     );
+    $settings->add($setting);
 }

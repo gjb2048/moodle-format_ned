@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.20
+  1. Stage 9 continued.
+  2. Put back 'relocateactivitydescription' setting.
+
 Version 3.3.1.3.19
   1. Stage 9 continued.
   2. Add workaround code for Sharing Cart when 'Framed Sections + Formatted Header' - https://www.screencast.com/t/zoqIjRRJcw.
