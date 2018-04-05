@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.21
+  1. Stage 9 continued.
+  2. Fix card colour issue whereby the transparency affects other pages that it should not - https://www.screencast.com/t/TEmjGlxn.
+
 Version 3.3.1.3.20
   1. Stage 9 continued.
   2. Put back 'relocateactivitydescription' setting.
