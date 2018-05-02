@@ -88,6 +88,9 @@ class format_ned_renderer extends format_section_renderer_base {
      */
     protected function start_section0_list() {
         $classes = 'ned';
+        if (!$this->editing) {
+            $classes .= ' ned-static';
+        }
         if ($this->settings['sectionformat'] >= 1) { // Framed sections.
             $classes .= ' ned-framedsections-s0';
         }
@@ -117,7 +120,9 @@ class format_ned_renderer extends format_section_renderer_base {
      */
     protected function start_section_list() {
         $classes = 'ned';
-
+        if (!$this->editing) {
+            $classes .= ' ned-static';
+        }
         if ($this->settings['sectionformat'] >= 1) { // Framed sections.
             $classes .= ' ned-framedsections';
             if ($this->settings['sectionformat'] == 2) { // Framed sections with custom header.

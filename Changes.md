@@ -1,6 +1,10 @@
 Version Information
 ===================
 Version 3.3.1.3.21
+  1. Stage 10.
+  2. Fix drag and drop alignment - https://www.screencast.com/t/FqxZkac9L.
+
+Version 3.3.1.3.21
   1. Stage 9 continued.
   2. Fix card colour issue whereby the transparency affects other pages that it should not - https://www.screencast.com/t/TEmjGlxn.
 
