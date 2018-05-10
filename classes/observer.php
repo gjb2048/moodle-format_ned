@@ -67,5 +67,20 @@ class format_ned_observer {
         global $DB;
         $data = $event->get_data();
         $DB->delete_records('format_ned', array('sectionid' => $data['objectid']));
+
+        // Purge cache to rebuild after section deleted.
+        $headercache = cache::make('format_ned', 'headerformat');
+        $headercache->purge();
+    }
+
+    /**
+     * Observer for the event course_section_created.
+     *
+     * @param \core\event\course_section_created
+     */
+    public static function course_section_created(\core\event\course_section_created $event) {
+        // Purge cache to rebuild after section created.
+        $headercache = cache::make('format_ned', 'headerformat');
+        $headercache->purge();
     }
 }

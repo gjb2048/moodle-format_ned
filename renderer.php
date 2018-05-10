@@ -75,8 +75,8 @@ class format_ned_renderer extends format_section_renderer_base {
                 'allcompressed' => \format_ned\toolbox::$allcompressed,
                 'allexpanded' => \format_ned\toolbox::$allexpanded,
                  // If positive then expand that section only, if zero then currently not compressable so same as 'allcompressed'.
-                'nedsectionstate' =>
-                    optional_param(\format_ned\toolbox::$compressedsectionsparam, \format_ned\toolbox::$allcompressed, PARAM_INT)
+                'nedsectionstate' => optional_param(\format_ned\toolbox::$compressedsectionsparam,
+                    \format_ned\toolbox::$allcompressed, PARAM_INT)
             ));
             $this->page->requires->js_call_amd('format_ned/nededitingsection', 'init', $data);
         }

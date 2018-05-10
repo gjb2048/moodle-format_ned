@@ -150,7 +150,7 @@ function xmldb_format_ned_upgrade($oldversion) {
             $recthree->predefined = 1;
             $recthree->timecreated = time();
             $recthree->timemodified = time();
- 
+
             $DB->insert_record('format_ned_colour', $recthree);
         }
         // NED savepoint reached.
