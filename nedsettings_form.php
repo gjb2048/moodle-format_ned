@@ -107,7 +107,6 @@ class course_ned_edit_form extends moodleform {
         $mform->addElement('header', 'nedformat', get_string('othersettings', 'format_ned'));
 
         $choices = array(
-            0 => get_string('hide'),
             1 => get_string('show'),
             3 => get_string('showsection0editmode', 'format_ned'),
             2 => get_string('showonlysection0', 'format_ned')

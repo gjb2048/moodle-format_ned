@@ -742,6 +742,9 @@ class format_ned_renderer extends format_section_renderer_base {
                     $showsection0 = true;
                 }
                 break;
+            default:
+                $showsection0 = true;
+                break;
         }
 
         return $showsection0;
