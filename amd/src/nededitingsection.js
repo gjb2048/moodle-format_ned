@@ -95,10 +95,13 @@ define(['jquery', 'core/log'], function($, log) {
                 // Initial page load.
                 if (data.nedsectionstate == data.allexpanded) {
                     nededitingsectionexpanded();
-                } else if (data.nedsectionstate > 0) {
-                    var section = $('.section#section-' + data.nedsectionstate);
-                    if (section.length) {
-                        nededitingsectionexpand(section);
+                } else {
+                    nededitingsectioncompressed();
+                    if (data.nedsectionstate > 0) {
+                        var section = $('.section#section-' + data.nedsectionstate);
+                        if (section.length) {
+                            nededitingsectionexpand(section);
+                        }
                     }
                 }
 

@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.25
+  1. Stage 10 continued.
+  2. Fix: Do not show section content when moving compressed section: https://www.screencast.com/t/2tDxgmAaXV.
+
 Version 3.3.1.3.24
   1. Stage 10 continued.
   2. Remove hide-section-zero option, since it doesn’t actually do anything: https://www.screencast.com/t/bY6UQHkB4Yv7.
