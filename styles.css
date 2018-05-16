@@ -559,3 +559,8 @@ body:not(.editing) .course-content ul.ned-framedsections-s0 li.section .content 
 .compressedmodeviewhide .summary {
     display: none;
 }
+
+.compressedmodeviewhide .empty {
+    color: red;
+    text-align: center;
+}

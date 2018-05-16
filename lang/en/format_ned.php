@@ -39,6 +39,7 @@ $string['hidefromothers'] = 'Hide section';
 $string['showfromothers'] = 'Show section';
 $string['addsectionbelow'] = 'Add section below';
 $string['cachedef_headerformat'] = 'NED Headerformat';
+$string['empty'] = '(empty)';
 
 // Course Settings form.
 $string['sectiondeliverymethod'] = 'Section delivery method';

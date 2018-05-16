@@ -223,7 +223,7 @@ class format_ned_renderer extends format_section_renderer_base {
                 $sectionstyle = ' current';
             }
         }
-        if ((is_null($this->displaysection)) && ($this->settings['compressedsections'] == 1)) {
+        if ((is_null($this->displaysection)) && ($this->settings['compressedsections'] == 1)) { // TODO: Need to check 'editing' too?
             $sectionstyle .= ' closed';
         }
 
@@ -383,6 +383,10 @@ class format_ned_renderer extends format_section_renderer_base {
                         array('sectionno' => $section->section)), array('class' => 'compressedmodeviewhideformat'));
                 }
                 $o .= $summarymarkup;
+                // Empty section?
+                if (!empty($section->cmlistempty)) {
+                    $o .= html_writer::tag('div', get_string('empty', 'format_ned'), array('class' => 'empty'));
+                }
                 $o .= html_writer::end_tag('div');
             } else {
                 $o .= $summarymarkup;
@@ -1042,6 +1046,10 @@ class format_ned_renderer extends format_section_renderer_base {
                     // Display section summary only.
                     echo $this->section_summary($thissection, $course, null);
                 } else {
+                    $cmlist = $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                    if ($this->courserenderer->last_section_empty()) {
+                        $thissection->cmlistempty = true;
+                    }
                     echo $this->section_header($thissection, $course, false, 0);
                     if ($thissection->uservisible) {
                         // Don't display on the multiple section list page when "One section per page".
@@ -1052,7 +1060,7 @@ class format_ned_renderer extends format_section_renderer_base {
                             }
                             echo $this->display_completion_help_icon($completioninfo, $course->id);
                         }
-                        echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                        echo $cmlist;
                         echo $this->courserenderer->course_section_add_cm_control($course, $section, 0);
                     }
                     echo $this->section_footer();

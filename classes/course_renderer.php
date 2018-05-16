@@ -32,6 +32,8 @@ class format_ned_course_renderer extends core_course_renderer {
     private $locationoftrackingicons;
     private $relocateactivitydescription;
 
+    private $lastsectionempty = false; // States if the last section processed by course_section_cm_list is empty.
+
     /**
      * Override the constructor so that we can initialise the relocate activity description
      * as it will be used many times.
@@ -337,7 +339,22 @@ class format_ned_course_renderer extends core_course_renderer {
             $output .= html_writer::tag('ul', $sectionoutput, array('class' => 'section img-text'));
         }
 
+        if (empty($sectionoutput)) {
+            $this->lastsectionempty = true;
+        } else {
+            $this->lastsectionempty = false;
+        }
+
         return $output;
+    }
+
+    /**
+     * States if the last section processed by course_section_cm_list was empty.
+     *
+     * @return boolean
+     */
+    public function last_section_empty() {
+        return $this->lastsectionempty;
     }
 
     /**

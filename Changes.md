@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.28
+  1. Stage 10 continued.
+  2. New: Indicate if section is empty in collapsed view: https://www.screencast.com/t/C1MrGHaE7vWU.
+
 Version 3.3.1.3.27
   1. Stage 10 continued.
   2. Fix: This happens in collapsed mode: When sections title is edited and then saved, the section view is expanded.
