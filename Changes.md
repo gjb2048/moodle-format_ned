@@ -1,5 +1,11 @@
 Version Information
 ===================
+Version 3.3.1.3.27
+  1. Stage 10 continued.
+  2. Fix: This happens in collapsed mode: When sections title is edited and then saved, the section view is expanded.
+     Instead, the section should remain collapsed.
+     Previous logic: https://github.com/ned-code/moodle-format_ned/commit/878d52a5c6d1580551aecc5332330d8916f5d656.
+
 Version 3.3.1.3.26
   1. Stage 10 continued.
   2. Fix: section numbers do not refresh after section is moved: https://www.screencast.com/t/cRqNWqy1dO.

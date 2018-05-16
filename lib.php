@@ -387,7 +387,6 @@ class format_ned extends format_base {
                 if ($sr !== null) {
                     // Intent that we are on the main page after editing a section.
                     $url->param(\format_ned\toolbox::$mainpageparam, 1);
-                    $url->param(\format_ned\toolbox::$compressedsectionsparam, $sectionno);
                 }
             }
         }
