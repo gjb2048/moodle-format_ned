@@ -61,6 +61,16 @@ M.course.format.process_sections = function(Y, sectionlist, response, sectionfro
         SECTIONLEFTSIDE : '.left .section-handle .icon'
     };
 
+    
+    var replacecssn = function(i, stringvalue) {
+        // From M.util.get_string and for 'compressedsectionsectionname' language string.
+        var search = '{$a->sectionno}';
+        search = search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+        search = new RegExp(search, 'g');
+        stringvalue = stringvalue.replace(search, i);
+        return stringvalue;
+    };
+
     if (response.action == 'move') {
         // If moving up swap around 'sectionfrom' and 'sectionto' so the that loop operates.
         if (sectionfrom > sectionto) {
@@ -72,10 +82,45 @@ M.course.format.process_sections = function(Y, sectionlist, response, sectionfro
         // Update titles and move icons in all affected sections.
         var ele, str, stridx, newstr;
 
+        // As M.str does not contain the string we need, thus get from the markup - populated by renderer.php.
+        var datasectiontitle = Y.all('#nedcssn');
+        if (datasectiontitle != null) {
+            console.log(datasectiontitle.getData('cssn'));
+            datasectiontitle = datasectiontitle.getData('cssn');
+        }
+
         for (var i = sectionfrom; i <= sectionto; i++) {
+            console.log('Swapper');
+            var sectionnameitem = sectionlist.item(i).all('.' + CSS.SECTIONNAME);
+			console.log('SN ' + i);
+            //console.log(sectionlist.item(i).getHTML());
+            //console.log(sectionnameitem.get('parentNode').getHTML());
+            //console.log(sectionnameitem.get('parentNode').hasClass('compressedmodeviewhide'));
+            console.log(sectionnameitem.getHTML());
+            console.log(sectionnameitem.hasClass('compressedsectionsectionname'));
             // Update section title.
-            var content = Y.Node.create('<span>' + response.sectiontitles[i] + '</span>');
-            sectionlist.item(i).all('.' + CSS.SECTIONNAME).setHTML(content);
+            var content = null;
+            if (sectionnameitem.hasClass('compressedsectionsectionname')) {
+				console.log(i + ' compressedsectionsectionname');
+                //var sectionprefix = M.util.get_string('compressedsectionsectionname', 'format_ned', {sectionno: i});
+				console.log(M.util.get_string('pluginname', 'format_ned'));
+				console.log(M.util.get_string('choosedots', 'moodle'));
+				console.log(M.str.hasOwnProperty('format_ned'));
+				console.log(M.str['format_ned']);
+				console.log(M.str['format_ned'].hasOwnProperty('compressedsectionsectionname'));
+				sectionprefix = '';
+				if (datasectiontitle != null) {
+					console.log(replacecssn);
+					console.log(replacecssn(i, '' + datasectiontitle));
+					sectionprefix = replacecssn(i, '' + datasectiontitle);
+				}
+                content = Y.Node.create('<span>' + sectionprefix + response.sectiontitles[i] + '</span>');
+            } else {
+                content = Y.Node.create('<span>' + response.sectiontitles[i] + '</span>');
+            }
+			console.log('To: ' + content.getHTML());
+			console.log('From: ' + sectionnameitem.getHTML());
+            sectionnameitem.setHTML(content);
             // Update move icon.
             ele = sectionlist.item(i).one(SELECTORS.SECTIONLEFTSIDE);
             str = ele.getAttribute('alt');

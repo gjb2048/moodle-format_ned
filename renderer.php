@@ -147,6 +147,8 @@ class format_ned_renderer extends format_section_renderer_base {
             }
         } else if ((is_null($this->displaysection)) && ($this->settings['compressedsections'] == 1)) {
             $classes .= ' nededitingsection';
+            return html_writer::start_tag('ul', array('id' => 'nedcssn', 'class' => $classes,
+                'data-cssn' => get_string('compressedsectionsectionname', 'format_ned')));
         }
         return html_writer::start_tag('ul', array('class' => $classes));
     }
@@ -375,7 +377,7 @@ class format_ned_renderer extends format_section_renderer_base {
                     $sectiontitle = get_string('compressedsectionsectionname', 'format_ned',
                         array('sectionno' => $section->section));
                     $sectiontitle .= $this->section_title($section, $course);
-                    $o .= html_writer::tag('span', $sectiontitle, array('class' => 'sectioname'));
+                    $o .= html_writer::tag('span', $sectiontitle, array('class' => 'sectionname compressedsectionsectionname'));
                 } else {
                     $o .= html_writer::tag('div', get_string('compressedsectionformat', 'format_ned',
                         array('sectionno' => $section->section)), array('class' => 'compressedmodeviewhideformat'));
