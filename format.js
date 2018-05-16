@@ -61,7 +61,6 @@ M.course.format.process_sections = function(Y, sectionlist, response, sectionfro
         SECTIONLEFTSIDE : '.left .section-handle .icon'
     };
 
-    
     var replacecssn = function(i, stringvalue) {
         // From M.util.get_string and for 'compressedsectionsectionname' language string.
         var search = '{$a->sectionno}';
@@ -94,7 +93,7 @@ M.course.format.process_sections = function(Y, sectionlist, response, sectionfro
             // Update section title.
             var content = null;
             if (sectionnameitem.hasClass('compressedsectionsectionname')) {
-                sectionprefix = '';
+                var sectionprefix = '';
                 if (datasectiontitle != null) {
                     sectionprefix = replacecssn(i, '' + datasectiontitle);
                 }
