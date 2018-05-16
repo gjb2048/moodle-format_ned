@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.26
+  1. Stage 10 continued.
+  2. Fix: section numbers do not refresh after section is moved: https://www.screencast.com/t/cRqNWqy1dO.
+
 Version 3.3.1.3.25
   1. Stage 10 continued.
   2. Fix: Do not show section content when moving compressed section: https://www.screencast.com/t/2tDxgmAaXV.

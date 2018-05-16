@@ -85,41 +85,23 @@ M.course.format.process_sections = function(Y, sectionlist, response, sectionfro
         // As M.str does not contain the string we need, thus get from the markup - populated by renderer.php.
         var datasectiontitle = Y.all('#nedcssn');
         if (datasectiontitle != null) {
-            console.log(datasectiontitle.getData('cssn'));
             datasectiontitle = datasectiontitle.getData('cssn');
         }
 
         for (var i = sectionfrom; i <= sectionto; i++) {
-            console.log('Swapper');
             var sectionnameitem = sectionlist.item(i).all('.' + CSS.SECTIONNAME);
-			console.log('SN ' + i);
-            //console.log(sectionlist.item(i).getHTML());
-            //console.log(sectionnameitem.get('parentNode').getHTML());
-            //console.log(sectionnameitem.get('parentNode').hasClass('compressedmodeviewhide'));
-            console.log(sectionnameitem.getHTML());
-            console.log(sectionnameitem.hasClass('compressedsectionsectionname'));
+
             // Update section title.
             var content = null;
             if (sectionnameitem.hasClass('compressedsectionsectionname')) {
-				console.log(i + ' compressedsectionsectionname');
-                //var sectionprefix = M.util.get_string('compressedsectionsectionname', 'format_ned', {sectionno: i});
-				console.log(M.util.get_string('pluginname', 'format_ned'));
-				console.log(M.util.get_string('choosedots', 'moodle'));
-				console.log(M.str.hasOwnProperty('format_ned'));
-				console.log(M.str['format_ned']);
-				console.log(M.str['format_ned'].hasOwnProperty('compressedsectionsectionname'));
-				sectionprefix = '';
-				if (datasectiontitle != null) {
-					console.log(replacecssn);
-					console.log(replacecssn(i, '' + datasectiontitle));
-					sectionprefix = replacecssn(i, '' + datasectiontitle);
-				}
+                sectionprefix = '';
+                if (datasectiontitle != null) {
+                    sectionprefix = replacecssn(i, '' + datasectiontitle);
+                }
                 content = Y.Node.create('<span>' + sectionprefix + response.sectiontitles[i] + '</span>');
             } else {
                 content = Y.Node.create('<span>' + response.sectiontitles[i] + '</span>');
             }
-			console.log('To: ' + content.getHTML());
-			console.log('From: ' + sectionnameitem.getHTML());
             sectionnameitem.setHTML(content);
             // Update move icon.
             ele = sectionlist.item(i).one(SELECTORS.SECTIONLEFTSIDE);
