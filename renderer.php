@@ -888,7 +888,7 @@ class format_ned_renderer extends format_section_renderer_base {
         // Can we view the section in question?
         if (!($sectioninfo = $modinfo->get_section_info($displaysection))) {
             // This section doesn't exist.
-            print_error('unknowncoursesection', 'error', null, $course->fullname);
+            print_error('unknowncoursesection - '.$displaysection, 'error', null, $course->fullname);
             return;
         }
 

@@ -1,5 +1,10 @@
 Version Information
 ===================
+Version 3.3.1.3.29
+  1. Stage 10 continued.
+  2. Prevent section deletion on a single section page.
+  3. Cope with section specified in the settings that is greater than the number of sections.
+
 Version 3.3.1.3.28
   1. Stage 10 continued.
   2. New: Indicate if section is empty in collapsed view: https://www.screencast.com/t/C1MrGHaE7vWU.

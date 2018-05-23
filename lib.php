@@ -166,6 +166,9 @@ class format_ned extends format_base {
                         if ($sdmdata->defaultsection == 3) {
                             if (empty($displaysection)) {
                                 $usesectionno = $sdmdata->specifydefaultoptionnumber;
+                                if ((!empty($usesectionno)) && ($usesectionno > $this->get_last_section_number())) {
+                                    $usesectionno = false;
+                                }
                             } else {
                                 $this->displaysection = $displaysection;
                             }
@@ -188,7 +191,9 @@ class format_ned extends format_base {
                 $course = $this->get_course();
                 $mainpage = optional_param(\format_ned\toolbox::$mainpageparam, 0, PARAM_INT);
                 $displaysection = optional_param('section', 0, PARAM_INT);
-                if ((!$mainpage) && (empty($displaysection)) && ($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE)) {
+                if ((!$mainpage) && (empty($displaysection)) &&
+                    ($course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) &&
+                    ($this->get_last_section_number() > 0)) { // Must have at least one section.
                     $this->displaysection = 1;
                     $this->needmainpageoption = true;
                 } else if (!empty($displaysection)) {
@@ -1139,6 +1144,9 @@ class format_ned extends format_base {
      * @return bool
      */
     public function can_delete_section($section) {
+        if (!empty($this->displaysection)) {
+            return false; // Don't allow the deletion of the only section showing!
+        }
         return true;
     }
 
