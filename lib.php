@@ -1144,9 +1144,6 @@ class format_ned extends format_base {
      * @return bool
      */
     public function can_delete_section($section) {
-        if (!empty($this->displaysection)) {
-            return false; // Don't allow the deletion of the only section showing!
-        }
         return true;
     }
 

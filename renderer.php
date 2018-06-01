@@ -458,6 +458,11 @@ class format_ned_renderer extends format_section_renderer_base {
 
         $parentcontrols = parent::section_edit_control_items($course, $section, $onsectionpage);
 
+        if (($onsectionpage) && (array_key_exists('delete', $parentcontrols))) {
+            // Remove 'delete' from single section pages.
+            unset($parentcontrols['delete']);
+        }
+
         // Do not have to worry about the edit key as not in the menu in 'section_right_content()' below but data still used.
         $mergedone = array_merge($controls, $parentcontrols);
 

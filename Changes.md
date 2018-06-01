@@ -1,5 +1,9 @@
 Version Information
 ===================
+Version 3.3.1.3.30
+  1. Stage 10 continued.
+  2. Prevent section deletion on a single section page, second solution.
+
 Version 3.3.1.3.29
   1. Stage 10 continued.
   2. Prevent section deletion on a single section page.
